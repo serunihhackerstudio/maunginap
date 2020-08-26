@@ -3,6 +3,8 @@ import {
   BrowserRouter as Router, 
   Route, Switch
 } from 'react-router-dom'
+
+// src
 import Registrasi from './pages/registrasi'
 import Login from './pages/login'
 import LupaPassword from './pages/lupa-password'
@@ -10,6 +12,7 @@ import NotFound from './pages/404'
 import Private from './pages/private'
 import PrivateRoute from './components/PrivateRoute';
 import FirebaseProvider from './components/FirebaseProvider';
+import Home from './pages/home'
 
 // import komponent material UI
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -32,13 +35,15 @@ function App() {
         {/* halaman private */}
         <PrivateRoute path="/produk" component={Private}/>
         <PrivateRoute path="/transaksi" component={Private} />
-        <PrivateRoute path="/" exact component={Private} />
+        <PrivateRoute path="/dashboard" exact component={Private} />
         <PrivateRoute path="/pengaturan" component={Private}/>
         
         {/* halaman public */}
+        <Route path="/" exact component={Home} />
         <Route path="/registrasi" component={Registrasi}/>
         <Route path="/login" component={Login} />
         <Route path="/lupa-password" component={LupaPassword}/>
+
         
         <Route component={NotFound}/>
         </Switch>

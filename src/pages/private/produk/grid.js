@@ -75,13 +75,10 @@ function GridProduk(){
                     await storage.setFromUrl(fotoUrl).delete();
                 }
             }
-
         } catch (e){
             console.log(e)
         }
-        
     }
-
     return(
         <>
         {
@@ -96,7 +93,7 @@ function GridProduk(){
                     const produkData = produkDoc.data();
                     console.log(produkData)
                     return <Grid key={produkDoc.id}
-                    item={true} xs={12} xm={12} md={6} lg={6}>
+                    item={true} xs={12} xm={12} md={4} lg={4}>
                         <Card className={classes.root}>
                         <CardActionArea>
                             <CardMedia

@@ -122,7 +122,7 @@ function Login(props) {
         const redirectTo = location.state && 
         location.state.from &&
         location.state.from.pathname ?
-        location.state.from.pathname : '/';
+        location.state.from.pathname : '/dashboard';
         return <Redirect to={redirectTo} />
     }
     

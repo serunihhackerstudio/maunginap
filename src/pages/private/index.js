@@ -54,7 +54,7 @@ function Copyright() {
   );
 }
 
-export default function Private() {
+export default function Private(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const {auth} = useFirebase()
@@ -69,6 +69,7 @@ export default function Private() {
   const handleSignOut = (e) => {
       if(window.confirm("Apakah Anda yakin ingin keluar ? "))
       auth.signOut()
+      props.history.push("/")
   }
 
   return (
@@ -122,7 +123,7 @@ export default function Private() {
                         <ListItem 
                             selected={props.match?true:false}
                             onClick={()=> {
-                                props.history.push('/')
+                                props.history.push('/dashboard')
                             }}
                             button>
                                 <ListItemIcon>
@@ -191,7 +192,7 @@ export default function Private() {
                 <Route path="/pengaturan" component={Pengaturan} />
                 <Route path="/produk" component={Produk}/>
                 <Route path="/transaksi" component={Transaksi}/>
-                <Route path="/" component={Home} />
+                <Route path="/dashboard" component={Home} />
             </Switch>
         </Container>
       </main>

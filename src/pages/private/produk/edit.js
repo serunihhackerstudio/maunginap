@@ -128,6 +128,10 @@ function EditProduk({match}){
             newError.harga = "Harga wajib diisi!";
         }
 
+        if (!form.lokasi){
+            newError.lokasi = "Lokasi wajib diisi"
+        }
+
         if (!form.jumlahKamar){
             newError.jumlahKamar = "Stok wajib diisi"
         }
