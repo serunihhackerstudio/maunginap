@@ -18,7 +18,7 @@ import AppPageLoading from '../../../components/AppPageLoading'
 function Identitas(){
 
     const {firestore, user} = useFirebase()
-    const dataDoc = firestore.doc(`/identitas/${user.uid}`)
+    const dataDoc = firestore.doc(`/user/${user.uid}`)
     const [snapshot, loading] = useDocument(dataDoc)
     const classes = useStyles()
     const { enqueueSnackbar } = useSnackbar()

@@ -1,7 +1,7 @@
 service firebase.storage {
   match /b/{bucket}/o {
-    match /identitas/{uid}/produk/{filename} {
-      allow read, write: if request.auth.uid == uid;
+    match /penginapan/data/produk/{filename} {
+      allow read, write: if true;
     }
   }
 }

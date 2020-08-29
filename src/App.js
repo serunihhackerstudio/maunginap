@@ -13,6 +13,7 @@ import Private from './pages/private'
 import PrivateRoute from './components/PrivateRoute';
 import FirebaseProvider from './components/FirebaseProvider';
 import Home from './pages/home'
+import User from './pages/user'
 
 // import komponent material UI
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -40,10 +41,11 @@ function App() {
         
         {/* halaman public */}
         <Route path="/" exact component={Home} />
+        <Route path="/view" component={Home} />
         <Route path="/registrasi" component={Registrasi}/>
         <Route path="/login" component={Login} />
         <Route path="/lupa-password" component={LupaPassword}/>
-
+        <Route path="/user" component={User} />
         
         <Route component={NotFound}/>
         </Switch>

@@ -40,7 +40,7 @@ function GridProduk(){
 
     const [openAddDialog, setOpenAddDialog] = useState(false)
 
-    const produkCol = firestore.collection(`identitas/${user.uid}/produk`)
+    const produkCol = firestore.collection(`penginapan/data/produk`)
 
     const [snapshot, loading] = useCollection(produkCol);
 

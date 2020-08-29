@@ -31,10 +31,10 @@ function EditProduk({match}){
 
     // const {firestore} = useFirebase();
     const {firestore,storage,user} = useFirebase()
-    const produkDoc = firestore.doc(`identitas/${user.uid}/produk/${match.params.produkId}`);
+    const produkDoc = firestore.doc(`penginapan/data/produk/${match.params.produkId}`);
     const {enqueueSnackbar} = useSnackbar()
     const [snapshot, loading] = useDocument(produkDoc)
-    const produkStorageRef = storage.ref(`identitas/${user.uid}/produk`)
+    const produkStorageRef = storage.ref(`penginapan/data/produk`)
 
     const [form, setForm] = useState({
         namaPenginapan:'',

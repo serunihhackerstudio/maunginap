@@ -13,15 +13,20 @@ function PrivateRoute({ component: Component, ...restProps }) {
             <Component {...props} />
             :
             // reirect to home
-            <Redirect to="/dashboard" />
+            // <Redirect to={{
+            //     pathname:'/dashboard',
+            //     state:{
+            //         from:props.location
+            //     }
+            // }}  />
 
             // reirect to login
-            // <Redirect to={{
-            //     pathname:'/login',
-            //     state:{
-            //         from:props.location   
-            //     }
-            // }} /> 
+            <Redirect to={{
+                pathname:'/login',
+                state:{
+                    from:props.location   
+                }
+            }} /> 
 
         }} 
 

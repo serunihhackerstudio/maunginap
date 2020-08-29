@@ -29,7 +29,7 @@ function AddDialog({history, open, handleClose}){
     
     const [isSubmitting, setSubmitting] = useState(false);
 
-    const produkCol = firestore.collection(`identitas/${user.uid}/produk`);
+    const produkCol = firestore.collection('penginapan').doc('data').collection('produk');
     console.log(produkCol)
 
     const handleChange = (e) => {

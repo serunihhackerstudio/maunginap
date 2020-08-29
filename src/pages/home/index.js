@@ -33,12 +33,18 @@ import useStyles from './styles';
 import {useFirebase} from '../../components/FirebaseProvider';
 import { Divider } from '@material-ui/core';
 import { positions } from '@material-ui/system';
+import HomeProduk from './produk'
 
-function Home({history}) {
+
+// page-detail-produk
+import DetailProduk from './produk/detail'
+
+
+function DetailBooking({history}) {
         
         const classes = useStyles();
         const [open, setOpen] = React.useState(false);
-        const {auth} = useFirebase()
+        const {auth, user} = useFirebase()
 
         const handleDrawerOpen = () => {
             setOpen(true);
@@ -72,21 +78,27 @@ function Home({history}) {
                     <MenuIcon />
                 </IconButton>
                 <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+
                     {/* LOGO TITLE */}
                     <Switch>
                         <Route path="/" exact children="Home" /> 
-                        {/* <Route path="/produk" children="Produk" />
-                        <Route path="/transaksi" children="Transaksi & Pemesanan"/>
-                        <Route path="/pengaturan" children="Pengaturan"/>  */}
                     </Switch>
                     {/* LOGO TITLE */}
 
                 </Typography>
-                <IconButton color="inherit">
-                    <a href="/login" onClick={() => window.location.reload()} style={{ color: '#FFFFFF'}}>
-                        <AccountCircleIcon/>
-                    </a>
-                </IconButton>
+                {
+                    !user && <IconButton color="inherit">
+                                <a href="/user/login" onClick={() => window.location.reload()} style={{ color: '#FFFFFF'}}>
+                                    <AccountCircleIcon/>
+                                </a>
+                            </IconButton>
+                }
+                {
+                    user && <IconButton color="inherit" onClick={handleSignOut}>
+                            <SignOutIcon onClick={handleSignOut}/>
+                            </IconButton>
+                }
+                
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -138,41 +150,31 @@ function Home({history}) {
                             )
                         }} />
 
-                        <Route path="#" children={ (props) => {
-                            return (
-                                <ListItem 
-                                    selected={props.match?true:false}
-                                    onClick={()=>{
-                                        props.history.push("#")
-                                    }}
-                                    button>
-                                        <ListItemIcon>
-                                            <ShoppingCartIcon />
-                                        </ListItemIcon>
-                                    <ListItemText primary="Keranjang" />
-                                </ListItem>
-                            )
-                        }} />
-
                     </List>
                     
             </Drawer>
+
+
+            {/* ROUTING ADDRESS */}
+
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Switch>
-                        {/* <Route path="/pengaturan" component={Pengaturan} />
-                        <Route path="/produk" component={Produk}/>
-                        <Route path="/transaksi" component={Transaksi}/> */}
-                        {/* <Route path="/" component={Home} /> */}
+                        <Route path="/view/penginapan/:penginapanId" component={DetailProduk} />
+                        {/* <Router path="/view/penginapan/:penginpanId/pesan/:pesanId" component={DetailBooking} /> */}
+                        <Route path="/" exact component={HomeProduk} />
                     </Switch>
                 </Container>
             </main>
+
+            {/* ROUTING ADDRESS */}
+
             </div>
         );
         }
 
-export default Home
+export default DetailBooking;
 
 
 
