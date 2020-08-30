@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {withRouter} from 'react-router-dom'
+import {withRouter, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -17,14 +17,22 @@ import { useFirebase } from '../../../../components/FirebaseProvider'
 import useStyles from './styles'
 import { useSnackbar } from 'notistack';
 
-const DialogBooking = ({history, open, handleClose}) => {
+// util
+import ID from '../../../../utils/idgenerator'
+
+// import context
+import {usePesanan} from '../../../../components/PesananProvider'
+
+const DialogBooking = ({history, open, handleClose, jenisIuran, namaPenginapan, harga, match}) => {
     const [isSubmitting, setSubmitting] = useState(false);
-    // const [namaPemesan, setNamaPemesan] = useState('');
+    const {formBooking, setFormBooking} = usePesanan()
     const [form, setForm] = useState({
         namaKTP:'',
         nomorKTP:'',
         jumlahKamar:'',
+        jenisIuran:jenisIuran
     })
+    
     const [error, setError] = useState({
         namaKTP:'',
         nomorKTP:'',
@@ -34,9 +42,12 @@ const DialogBooking = ({history, open, handleClose}) => {
     const {enqueueSnackbar} = useSnackbar()
     const classes = useStyles()
     const {firestore, user} = useFirebase()
-    // const pesanProduk = firestore.collection('user').doc(`${user.uid}`).collection('pesan')
-    const pesanProduk = firestore.collection(`penginapan/pesan/${user.uid}`)
-    console.log(user.uid)
+    const pesanProduk = firestore.collection('pesanan').doc(`${user.uid}`)
+    
+    // memasukan data tambahan ke form
+    form.namaPenginapan=namaPenginapan
+    form.jenisIuran=jenisIuran
+    form.harga=harga
 
     const handleChange = (e) => {
         setError({
@@ -76,9 +87,9 @@ const DialogBooking = ({history, open, handleClose}) => {
             if (Object.values(findError).some(err=>err !== '')){
                 setError(findError)
             } else{
-                const pesan = await pesanProduk.add({...form})
-                history.push(`view/penginapan/${user.uid}/pesan/${pesan.id}`)
-                console.log("terkirim")
+                const pesan = await pesanProduk.set({...form}, {merge:true})
+                history.push(`/view/penginapan/${user.uid}/checkout`)
+                
             }
         
         } catch (e){
@@ -94,7 +105,7 @@ const DialogBooking = ({history, open, handleClose}) => {
                 disableBackdropClick={isSubmitting}
                 disableEscapeKeyDown={isSubmitting}
                 open={open} onClose={handleClose}>
-              <DialogTitle>Pesan Kostan</DialogTitle>
+              <DialogTitle>Pesan {namaPenginapan}</DialogTitle>
               <DialogContent divides>
                 <DialogContentText id="alert-dialog-slide-description">
                     Data yang Anda masukan sepenuhnya dilindungi oleh platform kami karena kemanan data Anda adalah prioritas kami

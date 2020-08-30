@@ -5,7 +5,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography'
 import useStyles from './styles'
 
-function AppLoading(){
+function AppLoading({message}){
     const classes = useStyles();
     return (
         <Container maxWidth="xs">
@@ -15,7 +15,7 @@ function AppLoading(){
                     variant="h6"
                     className={classes.title}
                 >
-                    Loading...
+                    {message}
                 </Typography>
                 <LinearProgress />
             </div>

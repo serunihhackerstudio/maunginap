@@ -47,7 +47,7 @@ function HomeProduk(){
             produkItems.length <= 0 &&
             <Typography>Belum ada data Kost-kostan / peninapan</Typography>
         }
-
+        
         <Grid container spacing={5}>
             {
                 produkItems.map((produkDoc) => {
@@ -56,7 +56,7 @@ function HomeProduk(){
                     return <Grid key={produkDoc.id}
                     item={true} xs={12} xm={12} md={4} lg={4}>
                         <Card className={classes.root}>
-                        <CardActionArea component={Link} to={`/penginapan/${produkDoc.id}`}>
+                        <CardActionArea component={Link} to={`/view/penginapan/${produkDoc.id}`}>
                             <CardMedia
                             className={classes.media}
                             image={produkData.foto}

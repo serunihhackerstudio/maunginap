@@ -36,9 +36,11 @@ import { positions } from '@material-ui/system';
 import HomeProduk from './produk'
 
 
-// page-detail-produk
+// pages
 import DetailProduk from './produk/detail'
-
+import Checkout from './produk/checkout'
+import PesananProvider from '../../components/PesananProvider'
+import Bayar from './produk/bayar'
 
 function DetailBooking({history}) {
         
@@ -65,6 +67,7 @@ function DetailBooking({history}) {
         
 
         return (
+            <PesananProvider>
             <div className={classes.root}>
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
@@ -161,7 +164,12 @@ function DetailBooking({history}) {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Switch>
-                        <Route path="/view/penginapan/:penginapanId" component={DetailProduk} />
+                    
+                        <Route path="/view/penginapan/:checkoutId/checkout" exact component={Checkout} />
+                        <Route path="/view/penginapan/:penginapanId" exact component={DetailProduk} />
+                        <Route path="/view/penginapan/:checkoutId/checkout/bayar" exact component={Bayar} />
+                        
+                        
                         {/* <Router path="/view/penginapan/:penginpanId/pesan/:pesanId" component={DetailBooking} /> */}
                         <Route path="/" exact component={HomeProduk} />
                     </Switch>
@@ -171,34 +179,11 @@ function DetailBooking({history}) {
             {/* ROUTING ADDRESS */}
 
             </div>
+            </PesananProvider>
         );
         }
 
 export default DetailBooking;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// function Copyright() {
-//   return (
-//     <Typography variant="body2" color="textSecondary" align="center">
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://material-ui.com/">
-//         Maunginap.com
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
 
