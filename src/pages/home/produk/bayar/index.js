@@ -69,7 +69,12 @@ function Bayar({ match }) {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button size="medium" color="primary">
+                  <Button
+                    size="medium"
+                    color="primary"
+                    component={Link}
+                    to={`/view/penginapan/${match.params.checkoutId}/proses/${produkDoc.id}`}
+                  >
                     {produkDoc.button}
                   </Button>
                 </CardActions>
