@@ -13,7 +13,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -27,11 +26,9 @@ import DialogBooking from '../dialog'
 
 // import context
 import { useFirebase } from '../../../../components/FirebaseProvider';
-import { usePesanan } from '../../../../components/PesananProvider';
 
 function DetailProduk({match}) {
-    const {formBooking, setFormBooking} = usePesanan()
-    const {firestore,storage,user} = useFirebase()
+    const {firestore} = useFirebase()
     const produkDoc = firestore.collection('penginapan').doc('data').collection('produk').doc(`${match.params.penginapanId}`)
     const [snapshot, loading] = useDocument(produkDoc)
     const [aktivasiDialog, setAktivasiDialog] = React.useState(false)

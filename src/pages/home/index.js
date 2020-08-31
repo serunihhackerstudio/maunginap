@@ -34,6 +34,7 @@ import {useFirebase} from '../../components/FirebaseProvider';
 import { Divider } from '@material-ui/core';
 import { positions } from '@material-ui/system';
 import HomeProduk from './produk'
+import Proses from './produk/bayar/proses'
 
 
 // pages
@@ -168,6 +169,7 @@ function DetailBooking({history}) {
                         <Route path="/view/penginapan/:checkoutId/checkout" exact component={Checkout} />
                         <Route path="/view/penginapan/:penginapanId" exact component={DetailProduk} />
                         <Route path="/view/penginapan/:checkoutId/checkout/bayar" exact component={Bayar} />
+                        <Route path="/view/penginapan/:checkoutId/proses/:prosesId" exact component={Proses} />
                         
                         
                         {/* <Router path="/view/penginapan/:penginpanId/pesan/:pesanId" component={DetailBooking} /> */}

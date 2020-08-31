@@ -1,4 +1,4 @@
-import React, {useState, forwardRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,31 +24,44 @@ import useStyles from './styles'
 import {usePesanan} from '../../../../components/PesananProvider'
 
 
-
-
-
 function Checkout({match, history}) {
-    const {firestore,storage,user} = useFirebase()
+    const {firestore,user} = useFirebase()
     const produkDoc = firestore.collection('pesanan').doc(`${match.params.checkoutId}`)
     const [snapshot, loading] = useDocument(produkDoc)
     const classes = useStyles();    
-    const [state, setState] = React.useState({})
+    const [state, setState] = useState({})
+    const [isSubmitting, setSubmitting] = useState(false)
   
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (snapshot){
           setState(snapshot.data())
         }
     }, [snapshot])
 
+    function sleep(milliseconds) {
+      setSubmitting(true)
+      const date = Date.now();
+      let currentDate = null;
+      do {
+        currentDate = Date.now();
+      } while (currentDate - date < milliseconds);
+      setSubmitting(false)  
+    }
+
     if (loading){
       return <AppLoading message="Checkout"/>
     }
-
-    const handleCheckout = (e) => {
+    const handleCheckout = async (e) => {
       e.preventDefault()
-      history.push(`/view/penginapan/${user.uid}/checkout/bayar`)
+      
+      await sleep(2000)  
+      
+      history.push(`/view/penginapan/${user.uid}/checkout/bayar`)    
+      
     }
+
+    console.log(isSubmitting)
 
     return (
         <div>
@@ -71,17 +84,15 @@ function Checkout({match, history}) {
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        
                       </TableCell>
                       <TableCell align="right"></TableCell>
                       <TableCell align="right">
-                          <Button variant="contained" color="primary" onClick={handleCheckout}>Checkout</Button>
+                          <Button disabled={isSubmitting} variant="contained" color="primary" onClick={handleCheckout}>Checkout</Button>
                       </TableCell>
                     </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
-            
         </div>
     )
 }

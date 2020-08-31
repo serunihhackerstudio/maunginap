@@ -28,6 +28,12 @@ const useStyles = makeStyles(theme => ({
     media: {
         height: 140,
     },
+    heading:{
+
+    },
+    headline:{
+        marginBottom:theme.spacing(3)
+    }
 }));
 
 export default useStyles;
