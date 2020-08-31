@@ -32,7 +32,7 @@ const Proses = ({ match }) => {
       <Paper className={classes.paper}>
         <div className={classes.headingCenter}>
           <Typography variant="h4" color="textSecondary">
-            PEMBAYARAN BERHASIL
+            Pembayaran Berhasil
           </Typography>
         </div>
         <div>

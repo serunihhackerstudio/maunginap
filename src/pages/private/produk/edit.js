@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { useDocument } from "react-firebase-hooks/firestore";
@@ -28,7 +27,7 @@ function EditProduk({ match }) {
   const [isSomethingChange, setSomethingChange] = useState(false);
 
   // const {firestore} = useFirebase();
-  const { firestore, storage, user } = useFirebase();
+  const { firestore, storage } = useFirebase();
   const produkDoc = firestore.doc(
     `penginapan/data/produk/${match.params.produkId}`
   );
