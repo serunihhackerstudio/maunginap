@@ -1,23 +1,23 @@
-import numeral from 'numeral';
+import numeral from "numeral";
 
-numeral.register('locale', 'id', {
-    delimiters:{
-        thousands:'.',
-        decimal:','
-    }, 
-    abbreviations:{
-        thousand:'rb',
-        milion:'jt',
-        billion:'m',
-        trillion:'t'
-    },
-    currency:{
-        symbol:'Rp'
-    }
-})
+numeral.register("locale", "id", {
+  delimiters: {
+    thousands: ".",
+    decimal: ",",
+  },
+  abbreviations: {
+    thousand: "rb",
+    milion: "jt",
+    billion: "m",
+    trillion: "t",
+  },
+  currency: {
+    symbol: "Rp",
+  },
+});
 
-numeral.locale('id');
+numeral.locale("id");
 
 export const currency = (number) => {
-    return numeral(number).format('$0,0');
-}
+  return numeral(number).format("$0,0");
+};

@@ -1,51 +1,53 @@
-import React, {createContext, useContext} from 'react';
-import ID from '../utils/idgenerator'
+import React, { createContext, useContext } from "react";
+import ID from "../utils/idgenerator";
 
-export const PesananContext = createContext()
+export const PesananContext = createContext();
 
 export const usePesanan = () => {
-    return useContext(PesananContext)
-}
+  return useContext(PesananContext);
+};
 
 const PesananProvider = (props) => {
-    const idGenerator = ID()
-    const [formBooking, setFormBooking]  = React.useState({
-        namaKTP:'',
-        nomorKTP:'',
-        jumlahKamar:'',
-        namaPenginapan:'',
-        harga:'',
-        jenisIuran:''
+  const idGenerator = ID();
+  const [formBooking, setFormBooking] = React.useState({
+    namaKTP: "",
+    nomorKTP: "",
+    jumlahKamar: "",
+    namaPenginapan: "",
+    harga: "",
+    jenisIuran: "",
+  });
+  const [akunBank, setAkunBank] = React.useState([
+    {
+      fotoBank:
+        "https://statik.tempo.co/data/2018/02/06/id_682386/682386_720.jpg",
+      bank: "Mandiri",
+      noRek: "164-0000-9823-94820",
+      atasNama: "Toufani Rizal Alfarisi",
+      id: `${idGenerator}?mandiri`,
+      button: "Pilih Mandiri",
+    },
+    {
+      fotoBank:
+        "https://bursadesain.com/wp-content/uploads/2016/08/VECTOR-LOGO-BANK-BCA.jpg",
+      bank: "BCA",
+      noRek: "998-875-956-0989",
+      atasNama: "Toufani Rizal Alfarisi",
+      id: `${idGenerator}?bca`,
+      button: "Pilih BCA",
+    },
+  ]);
 
-    })
-    const [akunBank, setAkunBank] = React.useState(
-        [
-            {
-                fotoBank:'https://statik.tempo.co/data/2018/02/06/id_682386/682386_720.jpg',
-                bank:'Mandiri',
-                noRek:'164-0000-9823-94820',
-                atasNama:'Toufani Rizal Alfarisi',
-                id:`${idGenerator}?mandiri`,
-                button:'Pilih Mandiri'
-            },
-            {
-                fotoBank:'https://bursadesain.com/wp-content/uploads/2016/08/VECTOR-LOGO-BANK-BCA.jpg',
-                bank:'BCA',
-                noRek:'998-875-956-0989',
-                atasNama:'Toufani Rizal Alfarisi',
-                id:`${idGenerator}?bca`,
-                button:'Pilih BCA'
-            }
-        ]
-    )
+  const progressPembayaran =
+    "Pembayaran sedang kami proses. Anda dapat melihat status kesiapan pesanan Anda pada tab pesanan. Pesanan Anda akan diproses selama kurang dari 1 hari. Hal ini kami lakukan untuk mempersiapkan kamar agar siap untuk ditempati. Jika ruang kost/penginapan telah siap, maka Anda langsung checkin saja";
 
-    
-    return (
-        <PesananContext.Provider value={{formBooking, setFormBooking, akunBank}}>
-            {props.children}
-        </PesananContext.Provider>
-    );
-}
+  return (
+    <PesananContext.Provider
+      value={{ formBooking, setFormBooking, akunBank, progressPembayaran }}
+    >
+      {props.children}
+    </PesananContext.Provider>
+  );
+};
 
 export default PesananProvider;
-
