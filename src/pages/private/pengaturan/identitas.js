@@ -40,7 +40,7 @@ function Identitas() {
 
   useEffect(() => {
     if (snapshot) {
-      setForm((currentForm) => ({
+      setForm((form) => ({
         ...form,
         ...snapshot.data(),
       }));
