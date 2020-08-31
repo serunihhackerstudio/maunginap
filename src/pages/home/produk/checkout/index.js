@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 import { useFirebase } from '../../../../components/FirebaseProvider';
 import { useDocument } from 'react-firebase-hooks/firestore';
@@ -69,24 +70,31 @@ function Checkout({match, history}) {
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                   <TableRow>
+                  <TableCell align="center">#</TableCell>
                     <TableCell>Penginapan</TableCell>
-                    <TableCell align="right">Jenis Iuran</TableCell>
-                    <TableCell align="right">Total</TableCell>
+                    <TableCell align="center">Kode Booking</TableCell>
+                    <TableCell align="center">Jenis Iuran</TableCell>
+                    <TableCell align="center">Total</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                     <TableRow>
+                    <TableCell align="center"><img src={state.foto} width={150}/></TableCell>
                       <TableCell component="th" scope="row">
-                        <strong>{state.namaPenginapan}</strong>
+                      <Typography variant="body1">{state.namaPenginapan}</Typography>
                       </TableCell>
-                      <TableCell align="right">{state.jenisIuran}</TableCell>
-                      <TableCell align="right">{state.harga}</TableCell>
+                      
+                      <TableCell align="center"><Typography variant="body1">{state.kodeBooking}</Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1">{state.jenisIuran}</Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1">{state.harga}</Typography></TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row">
                       </TableCell>
-                      <TableCell align="right"></TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center"></TableCell>
+                      <TableCell align="center">
                           <Button disabled={isSubmitting} variant="contained" color="primary" onClick={handleCheckout}>Checkout</Button>
                       </TableCell>
                     </TableRow>

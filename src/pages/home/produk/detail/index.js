@@ -16,10 +16,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-// react-router
+
 
 import AppLoading from '../../../../components/AppLoading'
 import {currency} from '../../../../utils/formatter'
+import { useSnackbar } from 'notistack'
 
 // import dialog booking
 import DialogBooking from '../dialog'
@@ -35,6 +36,7 @@ function DetailProduk({match}) {
     const [state, setstate] = React.useState({})
     const [jenisIuran, setJenisIuran] = React.useState('')
     const classes = useStyles();    
+    const {enqueueSnackbar} = useSnackbar()
     
 
     React.useEffect(()=>{
@@ -48,7 +50,12 @@ function DetailProduk({match}) {
     }
 
     const handleOpenDialog = () => {
-      setAktivasiDialog(true)
+      if (jenisIuran === ""){
+        enqueueSnackbar("'Jenis iuran' tidak boleh kosong ", {variant:'error'})
+      } else {
+        setAktivasiDialog(true)
+      }
+      
     }
 
     const handleCloseDialog = () => {
@@ -81,7 +88,7 @@ function DetailProduk({match}) {
                       Pesan 
                   </Button>
                   <ButtonBase>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} required>
                       <InputLabel id="demo-simple-select-label">Jenis iuran</InputLabel>
                       <Select
                       labelId="demo-simple-select-label"
@@ -124,7 +131,8 @@ function DetailProduk({match}) {
           jenisIuran={jenisIuran} 
           namaPenginapan={state.namaPenginapan}
           harga={currency(state.harga)}
-          jenisIursan = {state.jenisIuran}
+          jenisIursan = {jenisIuran}
+          foto={state.foto}
         />
             
         </div>

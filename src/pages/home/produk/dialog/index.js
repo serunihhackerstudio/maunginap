@@ -23,9 +23,9 @@ import ID from '../../../../utils/idgenerator'
 // import context
 import {usePesanan} from '../../../../components/PesananProvider'
 
-const DialogBooking = ({history, open, handleClose, jenisIuran, namaPenginapan, harga, match}) => {
+const DialogBooking = ({history, open, handleClose, jenisIuran, namaPenginapan, harga, location, foto}) => {
     const [isSubmitting, setSubmitting] = useState(false);
-    const {formBooking, setFormBooking} = usePesanan()
+    const idGenerator = ID()
     const [form, setForm] = useState({
         namaKTP:'',
         nomorKTP:'',
@@ -42,12 +42,31 @@ const DialogBooking = ({history, open, handleClose, jenisIuran, namaPenginapan, 
     const {enqueueSnackbar} = useSnackbar()
     const classes = useStyles()
     const {firestore, user} = useFirebase()
-    const pesanProduk = firestore.collection('pesanan').doc(`${user.uid}`)
+    let pesanProduk;
+
+    try {
+
+        console.log(user.uid)
+
+    } catch (e){
+        window.alert("Silahkan login dulu untuk dapat mengakses halaman ini")
+        return <Redirect to={{
+            pathname:"/user/login",
+            state:{
+                from:location
+            }
+        }} />
+    }
+
+    pesanProduk = firestore.collection('pesanan').doc(`${user.uid}`)
+
     
     // memasukan data tambahan ke form
     form.namaPenginapan=namaPenginapan
     form.jenisIuran=jenisIuran
     form.harga=harga
+    form.kodeBooking=idGenerator
+    form.foto=foto
 
     const handleChange = (e) => {
         setError({
