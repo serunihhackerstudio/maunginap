@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -19,12 +18,9 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 
 // Icon
 import HomeIcon from "@material-ui/icons/Home";
-import StoreIcon from "@material-ui/icons/Store";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SettingsIcon from "@material-ui/icons/Settings";
 
 // React router
-import { Route, Switch, Link, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 // styles
 import useStyles from "./styles";
@@ -32,7 +28,6 @@ import useStyles from "./styles";
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
 import { Divider } from "@material-ui/core";
-import { positions } from "@material-ui/system";
 import HomeProduk from "./produk";
 import Proses from "./produk/bayar/proses";
 
@@ -58,10 +53,10 @@ function DetailBooking({ history }) {
     if (window.confirm("Apakah Anda yakin ingin keluar ? ")) auth.signOut();
   };
 
-  const handleLogin = (e) => {
-    // history.push("/login")
-    return <Redirect to="/login" />;
-  };
+  // const handleLogin = (e) => {
+  //   // history.push("/login")
+  //   return <Redirect to="/login" />;
+  // };
 
   return (
     <PesananProvider>

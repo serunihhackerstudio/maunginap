@@ -42,6 +42,8 @@ function HomeProduk() {
     return <AppPageLoading />;
   }
 
+  console.log("ini HOME");
+
   return (
     <>
       {produkItems.length <= 0 && (

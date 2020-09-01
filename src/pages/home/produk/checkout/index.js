@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -16,13 +15,9 @@ import { useDocument } from "react-firebase-hooks/firestore";
 // react-router
 
 import AppLoading from "../../../../components/AppLoading";
-import { currency } from "../../../../utils/formatter";
 
 // styles
 import useStyles from "./styles";
-
-// pesanan provider
-import { usePesanan } from "../../../../components/PesananProvider";
 
 function Checkout({ match, history }) {
   const { firestore, user } = useFirebase();

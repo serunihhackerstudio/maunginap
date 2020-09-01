@@ -52,7 +52,8 @@ const DialogBooking = ({
   let pesanProduk;
 
   try {
-    console.log(user.uid);
+    const userUid = user.uid;
+    console.log("Ini dialog");
   } catch (e) {
     window.alert("Silahkan login dulu untuk dapat mengakses halaman ini");
     return (
@@ -86,8 +87,6 @@ const DialogBooking = ({
       [e.target.id]: e.target.value,
     });
   };
-
-  console.log(form);
 
   const validate = () => {
     const newError = { ...error };

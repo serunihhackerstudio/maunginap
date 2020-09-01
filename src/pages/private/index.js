@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -37,20 +36,6 @@ import useStyles from "./styles";
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
 import { Divider } from "@material-ui/core";
-import { positions } from "@material-ui/system";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Maunginap.com
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function Private(props) {
   const classes = useStyles();

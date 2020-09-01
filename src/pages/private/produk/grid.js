@@ -35,7 +35,7 @@ import { Link } from "react-router-dom";
 function GridProduk() {
   const classes = useStyles();
 
-  const { firestore, storage, user } = useFirebase();
+  const { firestore, storage } = useFirebase();
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
 
