@@ -18,6 +18,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import theme from "./config/theme";
 import PesananProvider from "./components/PesananProvider";
+import Checkout from "./testing/Checkout";
 
 // notistack
 import { SnackbarProvider } from "notistack";
@@ -38,6 +39,7 @@ function App() {
                   <PrivateRoute path="/dashboard" exact component={Private} />
                   <PrivateRoute path="/pengaturan" component={Private} />
                   {/* halaman public */}
+                  <Route path="/testing/checkout" component={Checkout} />
 
                   {/* <Route path="/view" component={Home} /> */}
                   {/* <Route path="/user/login" component={LoginUser} /> */}

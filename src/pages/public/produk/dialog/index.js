@@ -8,6 +8,10 @@ import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import { makeStyles } from "@material-ui/core/styles";
 
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -20,109 +24,41 @@ import { useSnackbar } from "notistack";
 // util
 import ID from "../../../../utils/idgenerator";
 
+// react fragment
+import AddressForm from "./fragment/AddressForm";
+import PaymentForm from "./fragment/PaymentForm";
+import FormPemesan from "./fragment/FormPemesan";
+import Review from "./fragment/Review";
+import { Typography } from "@material-ui/core";
+
 // import context
 
-const DialogBooking = ({
-  history,
-  open,
-  handleClose,
-  jenisIuran,
-  namaPenginapan,
-  harga,
-  location,
-  foto,
-}) => {
-  const [isSubmitting, setSubmitting] = useState(false);
-  const idGenerator = ID();
-  const [form, setForm] = useState({
-    namaKTP: "",
-    nomorKTP: "",
-    jumlahKamar: "",
-    jenisIuran: jenisIuran,
-  });
-
-  const [error, setError] = useState({
-    namaKTP: "",
-    nomorKTP: "",
-    jumlahKamar: "",
-  });
-
-  const { enqueueSnackbar } = useSnackbar();
+const DialogBooking = ({ open, handleClose, namaPenginapan }) => {
   const classes = useStyles();
-  const { firestore, user } = useFirebase();
-  const { needLogin, setNeedLogin } = usePesanan();
-  let pesanProduk;
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleNext = () => {
+    setActiveStep(activeStep + 1);
+  };
 
-  try {
-    const userUid = user.uid;
-    console.log("Ini dialog");
-  } catch (e) {
-    setNeedLogin(true);
-    console.log("DARI DIALOG " + needLogin);
-    return (
-      <Redirect
-        to={{
-          pathname: "/user/login",
-          state: {
-            from: location,
-          },
-        }}
-      />
-    );
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <FormPemesan />;
+      case 1:
+        return <PaymentForm />;
+      case 2:
+        return <Review />;
+      default:
+        throw new Error("Unknown step");
+    }
   }
 
-  pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
-
-  // memasukan data tambahan ke form
-  form.namaPenginapan = namaPenginapan;
-  form.jenisIuran = jenisIuran;
-  form.harga = harga;
-  form.kodeBooking = idGenerator;
-  form.foto = foto;
-
-  const handleChange = (e) => {
-    setError({
-      ...error,
-      [e.target.name]: "",
-    });
-    setForm({
-      ...form,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  const validate = () => {
-    const newError = { ...error };
-    if (!form.namaKTP) {
-      newError.namaKTP = "Nama sesuai KTP wajib diisi";
-    }
-    if (!form.nomorKTP) {
-      newError.nomorKTP = "Nomor KTP wajib diisi";
-    }
-
-    if (!form.jumlahKamar) {
-      newError.jumlahKamar = "Jumlah kamar harus diisi";
-    }
-    return newError;
-  };
-
-  const handleSimpan = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    const findError = validate();
-    try {
-      if (Object.values(findError).some((err) => err !== "")) {
-        setError(findError);
-      } else {
-        await pesanProduk.set({ ...form }, { merge: true });
-        history.push(`/view/penginapan/${user.uid}/checkout`);
-      }
-    } catch (e) {
-      enqueueSnackbar(e.message, { variant: "error" });
-      console.log("gagal terkirim");
-    }
-    setSubmitting(false);
-  };
+  const steps = ["Shipping address", "Payment details", "Review your order"];
 
   return (
     <div>
@@ -132,13 +68,104 @@ const DialogBooking = ({
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>Pesan {namaPenginapan}</DialogTitle>
+        <DialogTitle>
+          Checkout <Typography color="primary"> {namaPenginapan} </Typography>
+        </DialogTitle>
         <DialogContent divides>
           <DialogContentText id="alert-dialog-slide-description">
-            Data yang Anda masukan sepenuhnya dilindungi oleh platform kami
-            karena kemanan data Anda adalah prioritas kami
+            <Stepper activeStep={activeStep} className={classes.stepper}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           </DialogContentText>
-          <TextField
+          <React.Fragment>
+            {activeStep === steps.length ? (
+              <React.Fragment>
+                <Typography variant="h5" gutterBottom>
+                  Thank you for your order.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Your order number is #2001539. We have emailed your order
+                  confirmation, and will send you an update when your order has
+                  shipped.
+                </Typography>
+                <DialogActions>
+                  <Button variant="contained" color="primary">
+                    Pesanan
+                  </Button>
+                </DialogActions>
+                {/* 
+                  {akunBank.map((produkDoc) => {
+          return (
+            <Grid item xs={12} md={6}>
+              <Card className={classes.root}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={produkDoc.fotoBank}
+                    title="Contemplative Reptile"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="p" component="p">
+                      {produkDoc.bank}
+                    </Typography>
+                    <Typography variant="p" color="textSecondary" component="p">
+                      {produkDoc.noRek}
+                    </Typography>
+                    <Typography variant="p" color="textSecondary" component="p">
+                      a/n {produkDoc.atasNama}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          );
+        })}
+                */}
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {getStepContent(activeStep)}
+                <div className={classes.buttons}>
+                  {activeStep !== 0 && (
+                    <DialogActions>
+                      <Button onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                    </DialogActions>
+                  )}
+                  <DialogActions>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                    </Button>
+                  </DialogActions>
+                </div>
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+DialogBooking.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};
+
+export default withRouter(DialogBooking);
+
+{
+  /* <TextField
             id="namaKTP"
             name="namaKTP"
             label="Nama Lengkap (Sesuai KTP)"
@@ -177,27 +204,5 @@ const DialogBooking = ({
             helperText={error.jumlahKamar}
             error={error.jumlahKamar ? true : false}
             disabled={isSubmitting}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Batal</Button>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={isSubmitting}
-            onClick={handleSimpan}
-          >
-            Pesan
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-};
-
-DialogBooking.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
-};
-
-export default withRouter(DialogBooking);
+          /> */
+}
