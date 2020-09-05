@@ -6,6 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles.js";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import Alert from "@material-ui/lab/Alert";
+import IconButton from "@material-ui/core/IconButton";
+import Collapse from "@material-ui/core/Collapse";
+import CloseIcon from "@material-ui/icons/Close";
 
 // import react router dom
 import { Link, Redirect } from "react-router-dom";
@@ -14,11 +18,15 @@ import isEmail from "validator/lib/isEmail";
 
 // firebase hook
 import { useFirebase } from "../../../components/FirebaseProvider";
+import { usePesanan } from "../../../components/PesananProvider";
 
 // app component
 import AppLoading from "../../../components/AppLoading";
 
 function LoginUser(props) {
+  // ambil state openAlert
+  const { needLogin, setNeedLogin } = usePesanan();
+  console.log(needLogin);
   const { location } = props;
   // untuk keperluan styling
   const classes = useStyles();
@@ -123,11 +131,32 @@ function LoginUser(props) {
 
   return (
     <Container maxWidth="xs">
+      {!user && (
+        <Collapse in={needLogin}>
+          <Alert
+            severity="error"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setNeedLogin(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+          >
+            Login dulu untuk mengakses halaman ini
+          </Alert>
+        </Collapse>
+      )}
+
       <Paper className={classes.paper}>
         <Typography variant="h5" component="h1" className={classes.title}>
           Login User
         </Typography>
-
         <form onSubmit={handleSubmit} noValidate>
           <TextField
             id="email"

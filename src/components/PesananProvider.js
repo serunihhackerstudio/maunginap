@@ -17,6 +17,7 @@ const PesananProvider = (props) => {
     harga: "",
     jenisIuran: "",
   });
+  const [needLogin, setNeedLogin] = React.useState(false);
   const [akunBank, setAkunBank] = React.useState([
     {
       fotoBank:
@@ -43,7 +44,14 @@ const PesananProvider = (props) => {
 
   return (
     <PesananContext.Provider
-      value={{ formBooking, setFormBooking, akunBank, progressPembayaran }}
+      value={{
+        formBooking,
+        setFormBooking,
+        akunBank,
+        progressPembayaran,
+        needLogin,
+        setNeedLogin,
+      }}
     >
       {props.children}
     </PesananContext.Provider>

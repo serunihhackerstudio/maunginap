@@ -42,7 +42,6 @@ function HomeProduk() {
     return <AppPageLoading />;
   }
 
-
   return (
     <>
       {produkItems.length <= 0 && (
@@ -99,9 +98,9 @@ function HomeProduk() {
           );
         })}
       </Grid>
-      <Fab color="primary" className={classes.fab}>
+      {/* <Fab color="primary" className={classes.fab}>
         <ShoppingCartIcon />
-      </Fab>
+      </Fab> */}
     </>
   );
 }

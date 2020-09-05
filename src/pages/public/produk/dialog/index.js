@@ -11,6 +11,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
+import { usePesanan } from "../../../../components/PesananProvider";
 
 // styles
 import useStyles from "./styles";
@@ -49,13 +50,15 @@ const DialogBooking = ({
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { firestore, user } = useFirebase();
+  const { needLogin, setNeedLogin } = usePesanan();
   let pesanProduk;
 
   try {
     const userUid = user.uid;
     console.log("Ini dialog");
   } catch (e) {
-    window.alert("Silahkan login dulu untuk dapat mengakses halaman ini");
+    setNeedLogin(true);
+    console.log("DARI DIALOG " + needLogin);
     return (
       <Redirect
         to={{
