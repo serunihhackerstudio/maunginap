@@ -111,7 +111,7 @@ const DialogBooking = ({
       if (Object.values(findError).some((err) => err !== "")) {
         setError(findError);
       } else {
-        const pesan = await pesanProduk.set({ ...form }, { merge: true });
+        await pesanProduk.set({ ...form }, { merge: true });
         history.push(`/view/penginapan/${user.uid}/checkout`);
       }
     } catch (e) {

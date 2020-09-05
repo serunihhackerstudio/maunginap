@@ -53,10 +53,7 @@ function DetailBooking({ history }) {
     if (window.confirm("Apakah Anda yakin ingin keluar ? ")) auth.signOut();
   };
 
-  // const handleLogin = (e) => {
-  //   // history.push("/login")
-  //   return <Redirect to="/login" />;
-  // };
+
 
   return (
     <PesananProvider>
@@ -194,28 +191,28 @@ function DetailBooking({ history }) {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <Switch>
-              <Route
-                path="/view/penginapan/:checkoutId/checkout"
-                exact
-                component={Checkout}
-              />
-              <Route
-                path="/view/penginapan/:penginapanId"
-                exact
-                component={DetailProduk}
-              />
-              <Route
-                path="/view/penginapan/:checkoutId/checkout/bayar"
-                exact
-                component={Bayar}
-              />
-              <Route
-                path="/view/penginapan/:checkoutId/proses/:prosesId"
-                exact
-                component={Proses}
-              />
+                <Route
+                  path="/view/penginapan/:checkoutId/checkout"
+                  exact
+                  component={Checkout}
+                />
+                <Route
+                  path="/view/penginapan/:penginapanId"
+                  exact
+                  component={DetailProduk}
+                />
+                <Route
+                  path="/view/penginapan/:checkoutId/checkout/bayar"
+                  exact
+                  component={Bayar}
+                />
+                <Route
+                  path="/view/penginapan/:checkoutId/proses/:prosesId"
+                  exact
+                  component={Proses}
+                />
 
-              <Route path="/" exact component={HomeProduk} />
+              <Route component={HomeProduk} />
             </Switch>
           </Container>
         </main>

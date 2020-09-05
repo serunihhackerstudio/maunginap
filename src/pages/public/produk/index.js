@@ -42,7 +42,6 @@ function HomeProduk() {
     return <AppPageLoading />;
   }
 
-  console.log("ini HOME");
 
   return (
     <>

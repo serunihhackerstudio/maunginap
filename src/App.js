@@ -8,8 +8,9 @@ import LupaPassword from "./pages/lupa-password";
 import NotFound from "./pages/404";
 import Private from "./pages/private";
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 import FirebaseProvider from "./components/FirebaseProvider";
-import Home from "./pages/home";
+import Home from "./pages/public";
 import User from "./pages/user";
 
 // import komponent material UI
@@ -34,14 +35,15 @@ function App() {
                 <PrivateRoute path="/transaksi" component={Private} />
                 <PrivateRoute path="/dashboard" exact component={Private} />
                 <PrivateRoute path="/pengaturan" component={Private} />
-
                 {/* halaman public */}
-                <Route path="/" component={Home} />
+                
                 {/* <Route path="/view" component={Home} /> */}
-                <Route path="/registrasi" component={Registrasi} />
-                <Route path="/login" component={Login} />
-                <Route path="/lupa-password" component={LupaPassword} />
-                <Route path="/user" component={User} />
+                {/* <Route path="/user/login" component={LoginUser} /> */}
+                <PublicRoute path="/registrasi" component={Registrasi} />
+                <PublicRoute path="/login" component={Login} />
+                <PublicRoute path="/lupa-password" component={LupaPassword} />
+                <PublicRoute path="/user" component={User} />
+                <PublicRoute path="/" component={Home} />
 
                 <Route component={NotFound} />
               </Switch>
