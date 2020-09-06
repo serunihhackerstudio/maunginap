@@ -18,19 +18,26 @@ import Select from "@material-ui/core/Select";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
 export default function PaymentForm({ form, setForm, error, setError }) {
-  const { akunBank } = usePesanan();
+  const { akunBank, setFormBank } = usePesanan();
   const [isSubmitting, setSubmitting] = useState(false);
   const classes = useStyles();
+
   const handleChange = (e) => {
-    form.pilihBank = e.target.value;
+    const value = e.target.value;
+    if (value == "Bank Mandiri") {
+      form.pilihBank = value;
+      form.noRek = "161-0000-454-3980";
+      form.atasNama = "Toufani Rizal Alfarisi";
+      setFormBank({ ...form });
+    }
+    if (value == "Bank BCA") {
+      form.pilihBank = value;
+      form.noRek = "885-0000-9890-161";
+      form.atasNama = "Toufani Rizal Alfarisi";
+      setFormBank({ ...form });
+    }
     setSubmitting(true);
   };
-
-  // React.useEffect(() => {
-  //   if (form.pilihBank) {
-
-  //   }
-  // });
 
   return (
     <React.Fragment>
