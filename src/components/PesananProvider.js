@@ -40,7 +40,7 @@ const PesananProvider = (props) => {
   ]);
 
   const progressPembayaran =
-    "Pembayaran sedang kami proses. Anda dapat melihat status kesiapan pesanan Anda pada tab pesanan. Pesanan Anda akan diproses selama kurang dari 1 hari. Hal ini kami lakukan untuk mempersiapkan kamar agar siap untuk ditempati. Jika ruang kost/penginapan telah siap, maka Anda langsung checkin saja";
+    "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini : ";
 
   return (
     <PesananContext.Provider
