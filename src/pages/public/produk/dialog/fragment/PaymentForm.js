@@ -15,15 +15,22 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
-export default function PaymentForm({ form }) {
+export default function PaymentForm({ form, setForm, error, setError }) {
   const { akunBank } = usePesanan();
+  const [isSubmitting, setSubmitting] = useState(false);
   const classes = useStyles();
-  const [paymentBank, setPaymentBank] = useState("");
   const handleChange = (e) => {
-    setPaymentBank(e.target.value);
+    form.pilihBank = e.target.value;
+    setSubmitting(true);
   };
-  form.paymentBank = paymentBank;
+
+  // React.useEffect(() => {
+  //   if (form.pilihBank) {
+
+  //   }
+  // });
 
   return (
     <React.Fragment>
@@ -45,13 +52,18 @@ export default function PaymentForm({ form }) {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                name="jenisIuran"
-                value={paymentBank}
+                name="pilihBank"
+                value={form.pilihBank}
                 onChange={handleChange}
               >
                 <MenuItem value={"Bank Mandiri"}>Bank Mandiri</MenuItem>
                 <MenuItem value={"Bank BCA"}>Bank BCA</MenuItem>
               </Select>
+              {!form.pilihBank && (
+                <FormHelperText error={true} disabled={isSubmitting}>
+                  Harus diisi !
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
         </Grid>

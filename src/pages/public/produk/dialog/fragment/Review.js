@@ -39,7 +39,7 @@ export default function Review({ form }) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Order summary
+        Ringkasan Pesanan
       </Typography>
       <List disablePadding>
         <ListItem className={classes.listItem} key={form.namaPenginapan}>
@@ -60,7 +60,7 @@ export default function Review({ form }) {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
-            Shipping
+            Pemesan
           </Typography>
           <Typography variant="body1" gutterBottom>
             {form.namaKTP}
@@ -75,7 +75,7 @@ export default function Review({ form }) {
             Bank Tujuan
           </Typography>
           <Typography variant="body1" gutterBottom>
-            {form.paymentBank}
+            {form.pilihBank}
           </Typography>
         </Grid>
       </Grid>

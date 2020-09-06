@@ -60,12 +60,15 @@ const DialogBooking = ({
     namaKTP: "",
     nomorKTP: "",
     jumlahKamar: "",
+    pilihBank: "",
   });
 
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { firestore, user } = useFirebase();
   const { needLogin, setNeedLogin } = usePesanan();
+  // const [pilihBank, setPilihBank] = useState(false);
+
   let pesanProduk;
 
   try {
@@ -86,7 +89,13 @@ const DialogBooking = ({
     );
   }
 
-  pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
+  // pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
+  console.log("params ini : " + match.params.penginapanId);
+  pesanProduk = firestore
+    .collection("user")
+    .doc(`${user.uid}`)
+    .collection("pesanan")
+    .doc(`${match.params.penginapanId}`);
 
   // memasukan data tambahan ke form
   form.namaPenginapan = namaPenginapan;
@@ -108,6 +117,7 @@ const DialogBooking = ({
 
   const validate = () => {
     const newError = { ...error };
+
     if (!form.namaKTP) {
       newError.namaKTP = "Nama sesuai KTP wajib diisi";
     }
@@ -118,6 +128,13 @@ const DialogBooking = ({
     if (!form.jumlahKamar) {
       newError.jumlahKamar = "Jumlah kamar harus diisi";
     }
+    // } else {
+    //   if (!form.pilihBank) {
+    //     newError.pilihBank = "bank harus dipilih";
+    //   } else {
+    //     setActiveStep(activeStep + 1);
+    //   }
+
     return newError;
   };
 
@@ -129,7 +146,7 @@ const DialogBooking = ({
       if (Object.values(findError).some((err) => err !== "")) {
         setError(findError);
       } else {
-        await pesanProduk.set({ ...form }, { merge: true });
+        await pesanProduk.set({ ...form }, { merge: false });
         history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }
     } catch (e) {
@@ -141,8 +158,13 @@ const DialogBooking = ({
 
   // REQUIREMENTS
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+  const handleNext = (e) => {
+    e.preventDefault();
+    const findError = validate();
+    if (Object.values(findError).some((err) => err !== "")) setError(findError);
+    else {
+      setActiveStep(activeStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -161,7 +183,7 @@ const DialogBooking = ({
           />
         );
       case 1:
-        return <PaymentForm form={form} />;
+        return <PaymentForm form={form} setForm={setForm} error={error} />;
       case 2:
         return <Review form={form} />;
       default:
@@ -235,6 +257,7 @@ const DialogBooking = ({
                         variant="contained"
                         color="primary"
                         onClick={handleSimpan}
+                        disabled={isSubmitting}
                         className={classes.button}
                       >
                         Pesan sekarang
@@ -257,46 +280,3 @@ DialogBooking.propTypes = {
 };
 
 export default withRouter(DialogBooking);
-
-{
-  /* <TextField
-            id="namaKTP"
-            name="namaKTP"
-            label="Nama Lengkap (Sesuai KTP)"
-            fullWidth
-            required
-            margin="normal"
-            value={form.namaKTP}
-            onChange={handleChange}
-            helperText={error.namaKTP}
-            error={error.namaKTP ? true : false}
-            disabled={isSubmitting}
-          />
-          <TextField
-            id="nomorKTP"
-            name="nomorKTP"
-            label="Nomor KTP"
-            fullWidth
-            required
-            margin="normal"
-            value={form.nomorKTP}
-            onChange={handleChange}
-            helperText={error.nomorKTP}
-            error={error.nomorKTP ? true : false}
-            disabled={isSubmitting}
-          />
-          <TextField
-            id="jumlahKamar"
-            name="jumlahKamar"
-            label="Berapa Kamar ?"
-            type="number"
-            required
-            fullWidth
-            margin="normal"
-            value={form.jumlahKamar}
-            onChange={handleChange}
-            helperText={error.jumlahKamar}
-            error={error.jumlahKamar ? true : false}
-            disabled={isSubmitting}
-          /> */
-}

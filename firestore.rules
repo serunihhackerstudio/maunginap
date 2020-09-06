@@ -10,7 +10,7 @@ service cloud.firestore {
       }
 
     }
-    match /user/{uid} {
+    match /user/{uid}/pesanan/{penginapanId} {
       allow read, write: if request.auth.uid == uid;
       
     }
