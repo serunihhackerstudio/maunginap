@@ -19,6 +19,7 @@ const PesananProvider = (props) => {
   });
   const [needLogin, setNeedLogin] = React.useState(false);
   const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
+  const [formBank, setFormBank] = React.useState({});
   const [akunBank, setAkunBank] = React.useState([
     {
       fotoBank:
@@ -54,6 +55,8 @@ const PesananProvider = (props) => {
         setNeedLogin,
         jumlahPesanan,
         setJumlahPesanan,
+        formBank,
+        setFormBank,
       }}
     >
       {props.children}

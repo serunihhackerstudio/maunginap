@@ -23,21 +23,25 @@ import { currency } from "../../../../utils/formatter";
 
 function History({ match, history, location }) {
   const { firestore, user } = useFirebase();
+
   const produkDoc = firestore
     .collection("user")
     .doc(`${user.uid}`)
     .collection("pesanan");
+
   const [snapshot, loading] = useCollection(produkDoc);
   const classes = useStyles();
   const [state, setState] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
   const { setJumlahPesanan } = usePesanan();
+
   useEffect(() => {
     if (snapshot) {
       setState(snapshot.docs);
       console.log("datanya history = " + snapshot.docs);
     }
   }, [snapshot]);
+
   setJumlahPesanan(state.length);
 
   function sleep(milliseconds) {
@@ -103,7 +107,7 @@ function History({ match, history, location }) {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Typography variant="body1">Sudah dibayar</Typography>
+                    <Typography variant="body1">Menunggu pembayaran</Typography>
                   </TableCell>
                 </TableRow>
               );
