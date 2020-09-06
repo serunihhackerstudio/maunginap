@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect, Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import AppLoading from "../../../../components/AppLoading";
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -14,6 +15,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
+import { currency } from "../../../../utils/formatter";
+
 const Proses = ({ match }) => {
   const classes = useStyles();
   const { firestore } = useFirebase();
@@ -21,7 +24,7 @@ const Proses = ({ match }) => {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(dataQuery);
-  const { progressPembayaran } = usePesanan();
+  const { progressPembayaran, formBank } = usePesanan();
   const [activeStep, setActiveStep] = React.useState(3);
 
   React.useEffect(() => {
@@ -32,6 +35,10 @@ const Proses = ({ match }) => {
 
   if (loading) {
     return <AppLoading message="Memproses pesanan..." />;
+  }
+
+  if (!formBank.pilihBank) {
+    return <Redirect to="/history" />;
   }
 
   const steps = ["Shipping address", "Payment details", "Review your order"];
@@ -64,7 +71,7 @@ const Proses = ({ match }) => {
                 color="textSecondary"
                 className={classes.total}
               >
-                {"Bank Mandiri KCP Jakarta Raya"}
+                {formBank.pilihBank}
               </Typography>
             </ListItem>
 
@@ -75,7 +82,7 @@ const Proses = ({ match }) => {
                 color="textSecondary"
                 className={classes.total}
               >
-                {"a/n. Toufani Rizal Alfarisi"}
+                {`a/n ${formBank.atasNama}`}
               </Typography>
             </ListItem>
 
@@ -85,7 +92,7 @@ const Proses = ({ match }) => {
                 secondary="Tujuan Transfer"
               />
               <Typography variant="h6" className={classes.total}>
-                {"161-000-234-231"}
+                {formBank.noRek}
               </Typography>
             </ListItem>
 
@@ -96,7 +103,7 @@ const Proses = ({ match }) => {
                 className={classes.total}
                 color="primary"
               >
-                {"Rp. 200.000"}
+                {currency(formBank.harga)}
               </Typography>
             </ListItem>
           </List>
@@ -106,6 +113,8 @@ const Proses = ({ match }) => {
           variant="contained"
           color="primary"
           className={classes.cekPesanan}
+          component={Link}
+          to="/history"
         >
           Cek Pesanan
         </Button>
