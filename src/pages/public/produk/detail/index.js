@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import useStyles from "./styles";
@@ -6,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import SendIcon from "@material-ui/icons/Send";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -25,9 +26,10 @@ import DialogBooking from "../dialog";
 
 // import context
 import { useFirebase } from "../../../../components/FirebaseProvider";
+import { usePesanan } from "../../../../components/PesananProvider";
 
-function DetailProduk({ match }) {
-  const { firestore } = useFirebase();
+function DetailProduk({ match, location }) {
+  const { firestore, user } = useFirebase();
   const produkDoc = firestore
     .collection("penginapan")
     .doc("data")
@@ -40,11 +42,36 @@ function DetailProduk({ match }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
+  const produkDoc2 = firestore
+    .collection("user")
+    .doc(`${user.uid}`)
+    .collection("pesanan");
+
+  const [snapshot2, loading2] = useCollection(produkDoc2);
+  const { setJumlahPesanan } = usePesanan();
+
   React.useEffect(() => {
     if (snapshot) {
       setstate(snapshot.data());
     }
-  }, [snapshot]);
+    if (snapshot2) {
+      setJumlahPesanan(snapshot2.docs.length);
+    }
+  }, [snapshot, snapshot2]);
+  try {
+    console.log(user.uid);
+  } catch (e) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/user/login",
+          state: {
+            from: location,
+          },
+        }}
+      />
+    );
+  }
 
   if (loading) {
     return <AppLoading message="Memuat Data..." />;
