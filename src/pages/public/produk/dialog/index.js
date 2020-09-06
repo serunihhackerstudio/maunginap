@@ -33,10 +33,110 @@ import { Typography } from "@material-ui/core";
 
 // import context
 
-const DialogBooking = ({ open, handleClose, namaPenginapan }) => {
-  const classes = useStyles();
+const DialogBooking = ({
+  open,
+  handleClose,
+  namaPenginapan,
+  location,
+  history,
+}) => {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
+
+  // REQUIREMENTS
+  const idGenerator = ID();
+  const [form, setForm] = useState({
+    namaKTP: "",
+    nomorKTP: "",
+    jumlahKamar: "",
+    jenisIuran: "bulanan",
+  });
+
+  const [error, setError] = useState({
+    namaKTP: "",
+    nomorKTP: "",
+    jumlahKamar: "",
+  });
+
+  const { enqueueSnackbar } = useSnackbar();
+  const classes = useStyles();
+  const { firestore, user } = useFirebase();
+  const { needLogin, setNeedLogin } = usePesanan();
+  let pesanProduk;
+
+  try {
+    const userUid = user.uid;
+    console.log("Ini dialog");
+  } catch (e) {
+    setNeedLogin(true);
+    console.log("DARI DIALOG " + needLogin);
+    return (
+      <Redirect
+        to={{
+          pathname: "/user/login",
+          state: {
+            from: location,
+          },
+        }}
+      />
+    );
+  }
+
+  pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
+
+  // memasukan data tambahan ke form
+  form.namaPenginapan = namaPenginapan;
+  form.jenisIuran = "bulanan";
+  form.harga = "10000";
+  form.kodeBooking = idGenerator;
+  form.foto = "foto";
+
+  const handleChange = (e) => {
+    setError({
+      ...error,
+      [e.target.name]: "",
+    });
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const validate = () => {
+    const newError = { ...error };
+    if (!form.namaKTP) {
+      newError.namaKTP = "Nama sesuai KTP wajib diisi";
+    }
+    if (!form.nomorKTP) {
+      newError.nomorKTP = "Nomor KTP wajib diisi";
+    }
+
+    if (!form.jumlahKamar) {
+      newError.jumlahKamar = "Jumlah kamar harus diisi";
+    }
+    return newError;
+  };
+
+  const handleSimpan = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const findError = validate();
+    try {
+      if (Object.values(findError).some((err) => err !== "")) {
+        setError(findError);
+      } else {
+        await pesanProduk.set({ ...form }, { merge: true });
+        history.push(`/view/penginapan/${user.uid}/checkout`);
+      }
+    } catch (e) {
+      enqueueSnackbar(e.message, { variant: "error" });
+      console.log("gagal terkirim");
+    }
+    setSubmitting(false);
+  };
+
+  // REQUIREMENTS
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -48,7 +148,9 @@ const DialogBooking = ({ open, handleClose, namaPenginapan }) => {
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <FormPemesan />;
+        return (
+          <FormPemesan error={error} form={form} isSubmitting={isSubmitting} />
+        );
       case 1:
         return <PaymentForm />;
       case 2:
@@ -110,14 +212,25 @@ const DialogBooking = ({ open, handleClose, namaPenginapan }) => {
                     </DialogActions>
                   )}
                   <DialogActions>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                    </Button>
+                    {activeStep !== steps.length - 1 ? (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                        className={classes.button}
+                      >
+                        Next
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSimpan}
+                        className={classes.button}
+                      >
+                        Place order
+                      </Button>
+                    )}
                   </DialogActions>
                 </div>
               </React.Fragment>
