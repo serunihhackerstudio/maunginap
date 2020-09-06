@@ -95,7 +95,7 @@ const DialogBooking = ({
     .collection("user")
     .doc(`${user.uid}`)
     .collection("pesanan")
-    .doc(`${match.params.penginapanId}`);
+    .doc(`${idGenerator}`);
 
   // memasukan data tambahan ke form
   form.namaPenginapan = namaPenginapan;
@@ -161,9 +161,17 @@ const DialogBooking = ({
   const handleNext = (e) => {
     e.preventDefault();
     const findError = validate();
-    if (Object.values(findError).some((err) => err !== "")) setError(findError);
-    else {
-      setActiveStep(activeStep + 1);
+    switch (activeStep) {
+      case 0:
+        if (Object.values(findError).some((err) => err !== ""))
+          setError(findError);
+        else {
+          setActiveStep(activeStep + 1);
+        }
+      default:
+        if (form.pilihBank) {
+          setActiveStep(activeStep + 1);
+        }
     }
   };
 
