@@ -30,7 +30,7 @@ import PaymentForm from "./fragment/PaymentForm";
 import FormPemesan from "./fragment/FormPemesan";
 import Review from "./fragment/Review";
 import { Typography } from "@material-ui/core";
-
+import { currency } from "../../../../utils/formatter";
 // import context
 
 const DialogBooking = ({

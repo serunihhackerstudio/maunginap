@@ -19,6 +19,7 @@ import AppLoading from "../../../../components/AppLoading";
 // styles
 import useStyles from "./styles";
 import { Redirect } from "react-router";
+import { currency } from "../../../../utils/formatter";
 
 function History({ match, history, location }) {
   const { firestore, user } = useFirebase();
@@ -96,7 +97,9 @@ function History({ match, history, location }) {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Typography variant="body1">{dataProduk.harga}</Typography>
+                    <Typography variant="body1">
+                      {currency(dataProduk.harga)}
+                    </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="body1">Sudah dibayar</Typography>

@@ -21,3 +21,7 @@ numeral.locale("id");
 export const currency = (number) => {
   return numeral(number).format("$0,0");
 };
+
+export const decurrency = (number) => {
+  return numeral.defaultFormat(number);
+};

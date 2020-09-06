@@ -5,6 +5,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
+import { currency } from "../../../../../utils/formatter";
 
 const products = [{ name: "Product 1", desc: "A nice thing", price: "$9.99" }];
 const addresses = [
@@ -47,13 +48,17 @@ export default function Review({ form }) {
             primary={form.namaPenginapan}
             secondary={`${form.jenisIuran} - ${form.jumlahKamar} kamar`}
           />
-          <Typography variant="body2">{form.harga}</Typography>
+          <Typography variant="body2">
+            {form.jenisIuran === "Tahunan"
+              ? currency(form.harga / 12)
+              : currency(form.harga)}
+          </Typography>
         </ListItem>
 
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            {form.harga}
+            {currency(form.harga)}
           </Typography>
         </ListItem>
       </List>

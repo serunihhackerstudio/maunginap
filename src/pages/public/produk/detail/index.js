@@ -85,7 +85,11 @@ function DetailProduk({ match }) {
                 </Typography>
                 <Typography variant="h4" gutterBottom>
                   {currency(state.harga)}
+                  <Typography variant="body1" color="textSecondary">
+                    / bulan
+                  </Typography>
                 </Typography>
+
                 <Button
                   onClick={handleOpenDialog}
                   startIcon={<SendIcon />}
@@ -140,7 +144,7 @@ function DetailProduk({ match }) {
         handleClose={handleCloseDialog}
         jenisIuran={jenisIuran}
         namaPenginapan={state.namaPenginapan}
-        harga={currency(state.harga)}
+        harga={jenisIuran === "Tahunan" ? state.harga * 12 : state.harga}
         jenisIursan={jenisIuran}
         foto={state.foto}
       />
