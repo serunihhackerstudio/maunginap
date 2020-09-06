@@ -22,6 +22,8 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 
+import { usePesanan } from "../../../components/PesananProvider";
+
 function HomeProduk() {
   const classes = useStyles();
   const { firestore } = useFirebase();
@@ -31,12 +33,13 @@ function HomeProduk() {
     .collection("produk");
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
-
+  const { setJumlahPesanan } = usePesanan();
   useEffect(() => {
     if (snapshot) {
       setProdukItems(snapshot.docs);
     }
   }, [snapshot]);
+  setJumlahPesanan(produkItems.length);
 
   if (loading) {
     return <AppPageLoading />;

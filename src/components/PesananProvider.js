@@ -18,6 +18,7 @@ const PesananProvider = (props) => {
     jenisIuran: "",
   });
   const [needLogin, setNeedLogin] = React.useState(false);
+  const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
   const [akunBank, setAkunBank] = React.useState([
     {
       fotoBank:
@@ -51,6 +52,8 @@ const PesananProvider = (props) => {
         progressPembayaran,
         needLogin,
         setNeedLogin,
+        jumlahPesanan,
+        setJumlahPesanan,
       }}
     >
       {props.children}

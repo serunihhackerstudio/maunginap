@@ -37,20 +37,23 @@ import useStyles from "./styles";
 
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
+import { usePesanan } from "../../components/PesananProvider";
 import { Divider } from "@material-ui/core";
-import HomeProduk from "./produk";
-import Proses from "./produk/bayar/proses";
 
 // pages
 import DetailProduk from "./produk/detail";
 import Checkout from "./produk/checkout";
 import Bayar from "./produk/bayar";
+import HomeProduk from "./produk";
+import Proses from "./produk/bayar/proses";
+import History from "./produk/history";
 
 function DetailBooking({ history, location }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { auth, user } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
+  const { jumlahPesanan } = usePesanan();
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -134,8 +137,8 @@ function DetailBooking({ history, location }) {
           )}
 
           {user && (
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton color="inherit" component={Link} to={"/history"}>
+              <Badge badgeContent={jumlahPesanan} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -228,6 +231,7 @@ function DetailBooking({ history, location }) {
               exact
               component={DetailProduk}
             />
+            <Route path="/history" component={History} />
 
             {/* <Route
               path="/view/penginapan/:checkoutId/proses/:prosesId"
