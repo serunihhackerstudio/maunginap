@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     minWidth: 200,
   },
+  paymentTitle: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export default useStyles;

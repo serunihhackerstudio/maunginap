@@ -71,7 +71,7 @@ const DialogBooking = ({ open, handleClose, namaPenginapan }) => {
         <DialogTitle>
           Checkout <Typography color="primary"> {namaPenginapan} </Typography>
         </DialogTitle>
-        <DialogContent divides>
+        <DialogContent divides="true">
           <DialogContentText id="alert-dialog-slide-description">
             <Stepper activeStep={activeStep} className={classes.stepper}>
               {steps.map((label) => (
@@ -97,34 +97,6 @@ const DialogBooking = ({ open, handleClose, namaPenginapan }) => {
                     Pesanan
                   </Button>
                 </DialogActions>
-                {/* 
-                  {akunBank.map((produkDoc) => {
-          return (
-            <Grid item xs={12} md={6}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={produkDoc.fotoBank}
-                    title="Contemplative Reptile"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="p" component="p">
-                      {produkDoc.bank}
-                    </Typography>
-                    <Typography variant="p" color="textSecondary" component="p">
-                      {produkDoc.noRek}
-                    </Typography>
-                    <Typography variant="p" color="textSecondary" component="p">
-                      a/n {produkDoc.atasNama}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          );
-        })}
-                */}
               </React.Fragment>
             ) : (
               <React.Fragment>

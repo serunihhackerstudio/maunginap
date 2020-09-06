@@ -26,28 +26,35 @@ export default function PaymentForm() {
 
   return (
     <React.Fragment>
-      <Typography variant="p" color="textSecondary" gutterBottom>
-        Metode Pembayaran (Transfer Bank)
-      </Typography>
-      <Grid container>
-        <Grid item>
-          <FormControl className={classes.formControl} required>
-            <InputLabel id="demo-simple-select-label">
-              Pilih Bank Tujuan
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              name="jenisIuran"
-              value={paymentBank}
-              onChange={handleChange}
-            >
-              <MenuItem value={"Bank Mandiri"}>Bank Mandiri</MenuItem>
-              <MenuItem value={"Bank BCA"}>Bank BCA</MenuItem>
-            </Select>
-          </FormControl>
+      <div>
+        <Typography
+          className={classes.paymentTitle}
+          variant="body1"
+          color="textSecondary"
+          gutterBottom
+        >
+          Metode Pembayaran (Transfer Bank)
+        </Typography>
+        <Grid container>
+          <Grid item>
+            <FormControl className={classes.formControl} required>
+              <InputLabel id="demo-simple-select-label">
+                Pilih Bank Tujuan
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="jenisIuran"
+                value={paymentBank}
+                onChange={handleChange}
+              >
+                <MenuItem value={"Bank Mandiri"}>Bank Mandiri</MenuItem>
+                <MenuItem value={"Bank BCA"}>Bank BCA</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     </React.Fragment>
   );
 }
