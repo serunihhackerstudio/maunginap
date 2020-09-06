@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
-function FormPemesan({ form, error, isSubmitting }) {
+function FormPemesan({ form, error, isSubmitting, handleChange }) {
   return (
     <React.Fragment>
       <TextField
@@ -11,10 +11,10 @@ function FormPemesan({ form, error, isSubmitting }) {
         fullWidth
         required
         margin="normal"
-        // value={form.namaKTP}
-        // onChange={handleChange}
-        // helperText={error.namaKTP}
-        // error={error.namaKTP ? true : false}
+        value={form.namaKTP}
+        onChange={handleChange}
+        helperText={error.namaKTP}
+        error={error.namaKTP ? true : false}
         disabled={isSubmitting}
       />
       <TextField
@@ -24,11 +24,11 @@ function FormPemesan({ form, error, isSubmitting }) {
         fullWidth
         required
         margin="normal"
-        // value={form.nomorKTP}
-        // onChange={handleChange}
-        // helperText={error.nomorKTP}
-        // error={error.nomorKTP ? true : false}
-        // disabled={isSubmitting}
+        value={form.nomorKTP}
+        onChange={handleChange}
+        helperText={error.nomorKTP}
+        error={error.nomorKTP ? true : false}
+        disabled={isSubmitting}
       />
       <TextField
         id="jumlahKamar"
@@ -38,11 +38,11 @@ function FormPemesan({ form, error, isSubmitting }) {
         required
         fullWidth
         margin="normal"
-        // value={form.jumlahKamar}
-        // onChange={handleChange}
-        // helperText={error.jumlahKamar}
-        // error={error.jumlahKamar ? true : false}
-        // disabled={isSubmitting}
+        value={form.jumlahKamar}
+        onChange={handleChange}
+        helperText={error.jumlahKamar}
+        error={error.jumlahKamar ? true : false}
+        disabled={isSubmitting}
       />
     </React.Fragment>
   );

@@ -16,13 +16,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-export default function PaymentForm() {
+export default function PaymentForm({ form }) {
   const { akunBank } = usePesanan();
   const classes = useStyles();
   const [paymentBank, setPaymentBank] = useState("");
   const handleChange = (e) => {
     setPaymentBank(e.target.value);
   };
+  form.paymentBank = paymentBank;
 
   return (
     <React.Fragment>

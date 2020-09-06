@@ -39,6 +39,10 @@ const DialogBooking = ({
   namaPenginapan,
   location,
   history,
+  match,
+  jenisIuran,
+  harga,
+  foto,
 }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -49,7 +53,7 @@ const DialogBooking = ({
     namaKTP: "",
     nomorKTP: "",
     jumlahKamar: "",
-    jenisIuran: "bulanan",
+    jenisIuran: jenisIuran,
   });
 
   const [error, setError] = useState({
@@ -86,10 +90,10 @@ const DialogBooking = ({
 
   // memasukan data tambahan ke form
   form.namaPenginapan = namaPenginapan;
-  form.jenisIuran = "bulanan";
-  form.harga = "10000";
+  form.jenisIuran = jenisIuran;
+  form.harga = harga;
   form.kodeBooking = idGenerator;
-  form.foto = "foto";
+  form.foto = foto;
 
   const handleChange = (e) => {
     setError({
@@ -126,7 +130,7 @@ const DialogBooking = ({
         setError(findError);
       } else {
         await pesanProduk.set({ ...form }, { merge: true });
-        history.push(`/view/penginapan/${user.uid}/checkout`);
+        history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
@@ -149,18 +153,23 @@ const DialogBooking = ({
     switch (step) {
       case 0:
         return (
-          <FormPemesan error={error} form={form} isSubmitting={isSubmitting} />
+          <FormPemesan
+            error={error}
+            form={form}
+            isSubmitting={isSubmitting}
+            handleChange={handleChange}
+          />
         );
       case 1:
-        return <PaymentForm />;
+        return <PaymentForm form={form} />;
       case 2:
-        return <Review />;
+        return <Review form={form} />;
       default:
         throw new Error("Unknown step");
     }
   }
 
-  const steps = ["Shipping address", "Payment details", "Review your order"];
+  const steps = ["Data pemesan", "Metode pembayaran", "Review pesanan"];
 
   return (
     <div>
@@ -228,7 +237,7 @@ const DialogBooking = ({
                         onClick={handleSimpan}
                         className={classes.button}
                       >
-                        Place order
+                        Pesan sekarang
                       </Button>
                     )}
                   </DialogActions>

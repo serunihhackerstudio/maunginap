@@ -7,6 +7,9 @@ import Paper from "@material-ui/core/Paper";
 import useStyles from "./style";
 import { usePesanan } from "../../../../components/PesananProvider";
 import Button from "@material-ui/core/Button";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
 
 const Proses = ({ match }) => {
   const classes = useStyles();
@@ -16,6 +19,7 @@ const Proses = ({ match }) => {
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(dataQuery);
   const { progressPembayaran } = usePesanan();
+  const [activeStep, setActiveStep] = React.useState(3);
 
   React.useEffect(() => {
     if (snapshot) {
@@ -27,13 +31,22 @@ const Proses = ({ match }) => {
     return <AppLoading message="Memproses pesanan..." />;
   }
 
+  const steps = ["Shipping address", "Payment details", "Review your order"];
+
   return (
     <div>
       <Paper className={classes.paper}>
         <div className={classes.headingCenter}>
           <Typography variant="h4" color="textSecondary">
-            Pembayaran Berhasil
+            Menunggu Pross Pembayaran
           </Typography>
+          <Stepper activeStep={activeStep} className={classes.stepper}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
         </div>
         <div>
           <Typography

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Review() {
+export default function Review({ form }) {
   const classes = useStyles();
 
   return (
@@ -42,43 +42,41 @@ export default function Review() {
         Order summary
       </Typography>
       <List disablePadding>
-        {products.map((product) => (
-          <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
+        <ListItem className={classes.listItem} key={form.namaPenginapan}>
+          <ListItemText
+            primary={form.namaPenginapan}
+            secondary={`${form.jenisIuran} - ${form.jumlahKamar} kamar`}
+          />
+          <Typography variant="body2">{form.harga}</Typography>
+        </ListItem>
+
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            $34.06
+            {form.harga}
           </Typography>
         </ListItem>
       </List>
-      <Grid container spacing={2}>
+      <Grid container spacing={0}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom className={classes.title}>
             Shipping
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(", ")}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Payment details
+          <Typography variant="body1" gutterBottom>
+            {form.namaKTP}
           </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
+          {/* <Typography gutterBottom>{addresses.join(", ")}</Typography> */}
+          {/* <Typography variant="body1" gutterBottom>
+            {form.nomorKTP}
+          </Typography> */}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
+            Bank Tujuan
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            {form.paymentBank}
+          </Typography>
         </Grid>
       </Grid>
     </React.Fragment>

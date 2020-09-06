@@ -214,6 +214,11 @@ function DetailBooking({ history, location }) {
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
             <Route
+              path="/view/penginapan/:penginapanId/proses"
+              exact
+              component={Proses}
+            />
+            <Route
               path="/view/penginapan/:checkoutId/checkout"
               exact
               component={Checkout}
@@ -223,16 +228,12 @@ function DetailBooking({ history, location }) {
               exact
               component={DetailProduk}
             />
-            <Route
-              path="/view/penginapan/:checkoutId/checkout/bayar"
-              exact
-              component={Bayar}
-            />
-            <Route
+
+            {/* <Route
               path="/view/penginapan/:checkoutId/proses/:prosesId"
               exact
               component={Proses}
-            />
+            /> */}
 
             <Route component={HomeProduk} />
           </Switch>
