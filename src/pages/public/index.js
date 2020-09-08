@@ -47,6 +47,7 @@ import Bayar from "./produk/bayar";
 import HomeProduk from "./produk";
 import Proses from "./produk/bayar/proses";
 import History from "./produk/history";
+import DialogBooking from "./produk/dialog/index";
 
 function DetailBooking({ history, location }) {
   const classes = useStyles();
@@ -222,9 +223,9 @@ function DetailBooking({ history, location }) {
               component={Proses}
             />
             <Route
-              path="/view/penginapan/:checkoutId/checkout"
+              path="/view/penginapan/:penginapanId/checkout"
               exact
-              component={Checkout}
+              component={DialogBooking}
             />
             <Route
               path="/view/penginapan/:penginapanId"

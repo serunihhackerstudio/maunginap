@@ -148,7 +148,7 @@ function LoginUser(props) {
               </IconButton>
             }
           >
-            Login dulu untuk mengakses halaman ini
+            Login dulu sebelum melakukan pemesanan !
           </Alert>
         </Collapse>
       )}

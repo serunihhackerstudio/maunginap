@@ -44,6 +44,7 @@ const PesananProvider = (props) => {
   const progressPembayaran =
     "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini : ";
 
+  const [formPesanan, setFormPesanan] = React.useState({});
   return (
     <PesananContext.Provider
       value={{
@@ -57,6 +58,8 @@ const PesananProvider = (props) => {
         setJumlahPesanan,
         formBank,
         setFormBank,
+        formPesanan,
+        setFormPesanan,
       }}
     >
       {props.children}

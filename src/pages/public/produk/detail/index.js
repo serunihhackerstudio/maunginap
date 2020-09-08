@@ -28,7 +28,7 @@ import DialogBooking from "../dialog";
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 
-function DetailProduk({ match, location }) {
+function DetailProduk({ match, history }) {
   const { firestore, user } = useFirebase();
   const produkDoc = firestore
     .collection("penginapan")
@@ -41,37 +41,13 @@ function DetailProduk({ match, location }) {
   const [jenisIuran, setJenisIuran] = React.useState("");
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-
-  const produkDoc2 = firestore
-    .collection("user")
-    .doc(`${user.uid}`)
-    .collection("pesanan");
-
-  const [snapshot2, loading2] = useCollection(produkDoc2);
-  const { setJumlahPesanan } = usePesanan();
+  const { setJumlahPesanan, setFormPesanan } = usePesanan();
 
   React.useEffect(() => {
     if (snapshot) {
       setstate(snapshot.data());
     }
-    if (snapshot2) {
-      setJumlahPesanan(snapshot2.docs.length);
-    }
-  }, [snapshot, snapshot2]);
-  try {
-    console.log(user.uid);
-  } catch (e) {
-    return (
-      <Redirect
-        to={{
-          pathname: "/user/login",
-          state: {
-            from: location,
-          },
-        }}
-      />
-    );
-  }
+  }, [snapshot]);
 
   if (loading) {
     return <AppLoading message="Memuat Data..." />;
@@ -83,7 +59,25 @@ function DetailProduk({ match, location }) {
         variant: "error",
       });
     } else {
-      setAktivasiDialog(true);
+      {
+        /* <DialogBooking
+        open={aktivasiDialog}
+        handleClose={handleCloseDialog}
+        jenisIuran={jenisIuran}
+        namaPenginapan={state.namaPenginapan}
+        harga={jenisIuran === "Tahunan" ? state.harga * 12 : state.harga}
+        jenisIursan={jenisIuran}
+        foto={state.foto}
+      /> */
+      }
+      const harga = jenisIuran === "Tahunan" ? state.harga * 12 : state.harga;
+      setFormPesanan({
+        jenisIuran,
+        namaPenginapan: state.namaPenginapan,
+        harga,
+        foto: state.foto,
+      });
+      history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
     }
   };
 
@@ -166,7 +160,7 @@ function DetailProduk({ match, location }) {
         </Grid>
       </Paper>
 
-      <DialogBooking
+      {/* <DialogBooking
         open={aktivasiDialog}
         handleClose={handleCloseDialog}
         jenisIuran={jenisIuran}
@@ -174,7 +168,7 @@ function DetailProduk({ match, location }) {
         harga={jenisIuran === "Tahunan" ? state.harga * 12 : state.harga}
         jenisIursan={jenisIuran}
         foto={state.foto}
-      />
+      /> */}
     </div>
   );
 }

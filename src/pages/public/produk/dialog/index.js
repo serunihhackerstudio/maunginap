@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect, Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import Paper from "@material-ui/core/Paper";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -11,7 +12,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { makeStyles } from "@material-ui/core/styles";
+
+// transition
+import { CSSTransition } from "react-transition-group";
 
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -66,7 +71,7 @@ const DialogBooking = ({
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { firestore, user } = useFirebase();
-  const { needLogin, setNeedLogin } = usePesanan();
+  const { needLogin, setNeedLogin, formPesanan } = usePesanan();
   // const [pilihBank, setPilihBank] = useState(false);
 
   let pesanProduk;
@@ -76,7 +81,6 @@ const DialogBooking = ({
     console.log("Ini dialog");
   } catch (e) {
     setNeedLogin(true);
-    console.log("DARI DIALOG " + needLogin);
     return (
       <Redirect
         to={{
@@ -90,7 +94,6 @@ const DialogBooking = ({
   }
 
   // pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
-  console.log("params ini : " + match.params.penginapanId);
   pesanProduk = firestore
     .collection("user")
     .doc(`${user.uid}`)
@@ -98,11 +101,12 @@ const DialogBooking = ({
     .doc(`${idGenerator}`);
 
   // memasukan data tambahan ke form
-  form.namaPenginapan = namaPenginapan;
-  form.jenisIuran = jenisIuran;
-  form.harga = harga;
+  console.log(formPesanan);
+  form.namaPenginapan = formPesanan.namaPenginapan;
+  form.jenisIuran = formPesanan.jenisIuran;
+  form.harga = formPesanan.harga;
   form.kodeBooking = idGenerator;
-  form.foto = foto;
+  form.foto = formPesanan.foto;
 
   const handleChange = (e) => {
     setError({
@@ -114,6 +118,10 @@ const DialogBooking = ({
       [e.target.id]: e.target.value,
     });
   };
+
+  if (!form.namaPenginapan) {
+    return <Redirect to={`/view/penginapan/${match.params.penginapanId}`} />;
+  }
 
   const validate = () => {
     const newError = { ...error };
@@ -128,12 +136,6 @@ const DialogBooking = ({
     if (!form.jumlahKamar) {
       newError.jumlahKamar = "Jumlah kamar harus diisi";
     }
-    // } else {
-    //   if (!form.pilihBank) {
-    //     newError.pilihBank = "bank harus dipilih";
-    //   } else {
-    //     setActiveStep(activeStep + 1);
-    //   }
 
     return newError;
   };
@@ -203,25 +205,15 @@ const DialogBooking = ({
 
   return (
     <div>
-      <Dialog
-        disableBackdropClick={isSubmitting}
-        disableEscapeKeyDown={isSubmitting}
-        open={open}
-        onClose={handleClose}
-      >
-        <DialogTitle>
-          Checkout <Typography color="primary"> {namaPenginapan} </Typography>
-        </DialogTitle>
-        <DialogContent divides="true">
-          <DialogContentText id="alert-dialog-slide-description">
-            <Stepper activeStep={activeStep} className={classes.stepper}>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          </DialogContentText>
+      <CSSTransition classNames="fade">
+        <Paper className={classes.papper}>
+          <Stepper activeStep={activeStep} className={classes.stepper}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
           <React.Fragment>
             {activeStep === steps.length ? (
               <React.Fragment>
@@ -233,51 +225,60 @@ const DialogBooking = ({
                   confirmation, and will send you an update when your order has
                   shipped.
                 </Typography>
-                <DialogActions>
-                  <Button variant="contained" color="primary">
-                    Pesanan
-                  </Button>
-                </DialogActions>
+                {/* <DialogActions> */}
+                <Button variant="contained" color="primary">
+                  Pesanan
+                </Button>
+                {/* </DialogActions> */}
               </React.Fragment>
             ) : (
               <React.Fragment>
                 {getStepContent(activeStep)}
                 <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <DialogActions>
-                      <Button onClick={handleBack} className={classes.button}>
-                        Back
-                      </Button>
-                    </DialogActions>
+                  {activeStep === 0 && (
+                    // <DialogActions>
+                    <Button onClick={history.goBack} className={classes.button}>
+                      Back
+                    </Button>
+                    // </DialogActions>
                   )}
-                  <DialogActions>
-                    {activeStep !== steps.length - 1 ? (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNext}
-                        className={classes.button}
-                      >
-                        Next
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSimpan}
-                        disabled={isSubmitting}
-                        className={classes.button}
-                      >
-                        Pesan sekarang
-                      </Button>
-                    )}
-                  </DialogActions>
+                  {activeStep !== 0 && (
+                    // <DialogActions>
+                    <Button onClick={handleBack} className={classes.button}>
+                      Back
+                    </Button>
+                    // </DialogActions>
+                  )}
+                  {/* <DialogActions> */}
+                  {activeStep !== steps.length - 1 ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      Next
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSimpan}
+                      disabled={isSubmitting}
+                      className={classes.button}
+                    >
+                      Pesan sekarang
+                    </Button>
+                  )}
+                  {/* </DialogActions> */}
                 </div>
               </React.Fragment>
             )}
           </React.Fragment>
-        </DialogContent>
-      </Dialog>
+          {/* </DialogContent> */}
+          {/* </Dialog> */}
+        </Paper>
+      </CSSTransition>
     </div>
   );
 };
@@ -287,4 +288,5 @@ DialogBooking.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
 
-export default withRouter(DialogBooking);
+// export default withRouter(DialogBooking);
+export default DialogBooking;

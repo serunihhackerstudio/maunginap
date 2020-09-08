@@ -16,7 +16,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import FormHelperText from "@material-ui/core/FormHelperText";
-
+import { CSSTransition } from "react-transition-group";
 export default function PaymentForm({ form, setForm, error, setError }) {
   const { akunBank, setFormBank } = usePesanan();
   const [isSubmitting, setSubmitting] = useState(false);
@@ -41,40 +41,42 @@ export default function PaymentForm({ form, setForm, error, setError }) {
 
   return (
     <React.Fragment>
-      <div>
-        <Typography
-          className={classes.paymentTitle}
-          variant="body1"
-          color="textSecondary"
-          gutterBottom
-        >
-          Metode Pembayaran (Transfer Bank)
-        </Typography>
-        <Grid container>
-          <Grid item>
-            <FormControl className={classes.formControl} required>
-              <InputLabel id="demo-simple-select-label">
-                Pilih Bank Tujuan
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                name="pilihBank"
-                value={form.pilihBank}
-                onChange={handleChange}
-              >
-                <MenuItem value={"Bank Mandiri"}>Bank Mandiri</MenuItem>
-                <MenuItem value={"Bank BCA"}>Bank BCA</MenuItem>
-              </Select>
-              {!form.pilihBank && (
-                <FormHelperText error={true} disabled={isSubmitting}>
-                  Harus diisi !
-                </FormHelperText>
-              )}
-            </FormControl>
+      <CSSTransition classNames="display" timeout={350}>
+        <div>
+          <Typography
+            className={classes.paymentTitle}
+            variant="body1"
+            color="textSecondary"
+            gutterBottom
+          >
+            Metode Pembayaran (Transfer Bank)
+          </Typography>
+          <Grid container>
+            <Grid item>
+              <FormControl className={classes.formControl} required>
+                <InputLabel id="demo-simple-select-label">
+                  Pilih Bank Tujuan
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="pilihBank"
+                  value={form.pilihBank}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={"Bank Mandiri"}>Bank Mandiri</MenuItem>
+                  <MenuItem value={"Bank BCA"}>Bank BCA</MenuItem>
+                </Select>
+                {!form.pilihBank && (
+                  <FormHelperText error={true} disabled={isSubmitting}>
+                    Harus diisi !
+                  </FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </div>
+      </CSSTransition>
     </React.Fragment>
   );
 }

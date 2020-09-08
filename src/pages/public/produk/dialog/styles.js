@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  papper: {
+    padding: theme.spacing(4),
+    margin: "auto",
+    maxWidth: 700,
+  },
 }));
 
 export default useStyles;

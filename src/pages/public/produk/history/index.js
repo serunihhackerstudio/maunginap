@@ -118,16 +118,7 @@ function History({ match, history, location }) {
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
-              <TableCell align="center">
-                <Button
-                  disabled={isSubmitting}
-                  variant="contained"
-                  color="primary"
-                  onClick={handleCheckout}
-                >
-                  Checkout
-                </Button>
-              </TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableBody>
         </Table>
