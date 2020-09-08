@@ -205,80 +205,78 @@ const DialogBooking = ({
 
   return (
     <div>
-      <CSSTransition classNames="fade">
-        <Paper className={classes.papper}>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
-                  confirmation, and will send you an update when your order has
-                  shipped.
-                </Typography>
+      <Paper className={classes.papper}>
+        <Stepper activeStep={activeStep} className={classes.stepper}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <React.Fragment>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography variant="h5" gutterBottom>
+                Thank you for your order.
+              </Typography>
+              <Typography variant="subtitle1">
+                Your order number is #2001539. We have emailed your order
+                confirmation, and will send you an update when your order has
+                shipped.
+              </Typography>
+              {/* <DialogActions> */}
+              <Button variant="contained" color="primary">
+                Pesanan
+              </Button>
+              {/* </DialogActions> */}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {getStepContent(activeStep)}
+              <div className={classes.buttons}>
+                {activeStep === 0 && (
+                  // <DialogActions>
+                  <Button onClick={history.goBack} className={classes.button}>
+                    Back
+                  </Button>
+                  // </DialogActions>
+                )}
+                {activeStep !== 0 && (
+                  // <DialogActions>
+                  <Button onClick={handleBack} className={classes.button}>
+                    Back
+                  </Button>
+                  // </DialogActions>
+                )}
                 {/* <DialogActions> */}
-                <Button variant="contained" color="primary">
-                  Pesanan
-                </Button>
+                {activeStep !== steps.length - 1 ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSimpan}
+                    disabled={isSubmitting}
+                    className={classes.button}
+                  >
+                    Pesan sekarang
+                  </Button>
+                )}
                 {/* </DialogActions> */}
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep === 0 && (
-                    // <DialogActions>
-                    <Button onClick={history.goBack} className={classes.button}>
-                      Back
-                    </Button>
-                    // </DialogActions>
-                  )}
-                  {activeStep !== 0 && (
-                    // <DialogActions>
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                    // </DialogActions>
-                  )}
-                  {/* <DialogActions> */}
-                  {activeStep !== steps.length - 1 ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      Next
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleSimpan}
-                      disabled={isSubmitting}
-                      className={classes.button}
-                    >
-                      Pesan sekarang
-                    </Button>
-                  )}
-                  {/* </DialogActions> */}
-                </div>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-          {/* </DialogContent> */}
-          {/* </Dialog> */}
-        </Paper>
-      </CSSTransition>
+              </div>
+            </React.Fragment>
+          )}
+        </React.Fragment>
+        {/* </DialogContent> */}
+        {/* </Dialog> */}
+      </Paper>
     </div>
   );
 };
