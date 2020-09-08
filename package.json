@@ -1,6 +1,6 @@
 {
-  "name": "aplikasi-penjualan",
-  "version": "0.1.0",
+  "name": "maunginap.com",
+  "version": "2.1.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
