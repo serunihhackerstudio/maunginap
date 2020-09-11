@@ -42,15 +42,15 @@ function History({ match, history, location }) {
 
   setJumlahPesanan(state.length);
 
-  function sleep(milliseconds) {
-    setSubmitting(true);
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-    setSubmitting(false);
-  }
+  // function sleep(milliseconds) {
+  //   setSubmitting(true);
+  //   const date = Date.now();
+  //   let currentDate = null;
+  //   do {
+  //     currentDate = Date.now();
+  //   } while (currentDate - date < milliseconds);
+  //   setSubmitting(false);
+  // }
 
   if (loading) {
     return <AppLoading message="Checkout" />;
@@ -87,7 +87,7 @@ function History({ match, history, location }) {
               return (
                 <TableRow>
                   <TableCell align="center">
-                    <img src={dataProduk.foto} width={150} />
+                    <img src={dataProduk.foto} width={150} alt="image" />
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Typography variant="body1">

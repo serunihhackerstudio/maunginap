@@ -13,7 +13,7 @@ function AddDialog({ history, open, handleClose }) {
 
   const [error, setError] = useState("");
 
-  const { firestore, user } = useFirebase();
+  const { firestore } = useFirebase();
 
   const [isSubmitting, setSubmitting] = useState(false);
 
