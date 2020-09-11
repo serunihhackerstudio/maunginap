@@ -1,22 +1,11 @@
 import React, { useState } from "react";
-import { withRouter, Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import TextField from "@material-ui/core/TextField";
-import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { makeStyles } from "@material-ui/core/styles";
-
-// transition
-import { CSSTransition } from "react-transition-group";
 
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -30,12 +19,10 @@ import { useSnackbar } from "notistack";
 import ID from "../../../../utils/idgenerator";
 
 // react fragment
-import AddressForm from "./fragment/AddressForm";
 import PaymentForm from "./fragment/PaymentForm";
 import FormPemesan from "./fragment/FormPemesan";
 import Review from "./fragment/Review";
 import { Typography } from "@material-ui/core";
-import { currency } from "../../../../utils/formatter";
 // import context
 
 const DialogBooking = ({
@@ -71,14 +58,13 @@ const DialogBooking = ({
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { firestore, user } = useFirebase();
-  const { needLogin, setNeedLogin, formPesanan } = usePesanan();
+  const { setNeedLogin, formPesanan } = usePesanan();
   // const [pilihBank, setPilihBank] = useState(false);
 
   let pesanProduk;
 
   try {
-    const userUid = user.uid;
-    console.log("Ini dialog");
+    console.log(user.uid);
   } catch (e) {
     setNeedLogin(true);
     return (

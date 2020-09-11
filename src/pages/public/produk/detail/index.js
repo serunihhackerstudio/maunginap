@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import useStyles from "./styles";
@@ -7,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useDocument } from "react-firebase-hooks/firestore";
 import SendIcon from "@material-ui/icons/Send";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -22,26 +21,24 @@ import { currency } from "../../../../utils/formatter";
 import { useSnackbar } from "notistack";
 
 // import dialog booking
-import DialogBooking from "../dialog";
 
 // import context
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 
 function DetailProduk({ match, history }) {
-  const { firestore, user } = useFirebase();
+  const { firestore } = useFirebase();
   const produkDoc = firestore
     .collection("penginapan")
     .doc("data")
     .collection("produk")
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(produkDoc);
-  const [aktivasiDialog, setAktivasiDialog] = React.useState(false);
   const [state, setstate] = React.useState({});
   const [jenisIuran, setJenisIuran] = React.useState("");
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { setJumlahPesanan, setFormPesanan } = usePesanan();
+  const { setFormPesanan } = usePesanan();
 
   React.useEffect(() => {
     if (snapshot) {
@@ -59,17 +56,6 @@ function DetailProduk({ match, history }) {
         variant: "error",
       });
     } else {
-      {
-        /* <DialogBooking
-        open={aktivasiDialog}
-        handleClose={handleCloseDialog}
-        jenisIuran={jenisIuran}
-        namaPenginapan={state.namaPenginapan}
-        harga={jenisIuran === "Tahunan" ? state.harga * 12 : state.harga}
-        jenisIursan={jenisIuran}
-        foto={state.foto}
-      /> */
-      }
       const harga = jenisIuran === "Tahunan" ? state.harga * 12 : state.harga;
       setFormPesanan({
         jenisIuran,
@@ -79,10 +65,6 @@ function DetailProduk({ match, history }) {
       });
       history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
     }
-  };
-
-  const handleCloseDialog = () => {
-    setAktivasiDialog(false);
   };
 
   const handleChange = (e) => {

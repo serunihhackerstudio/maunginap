@@ -42,8 +42,6 @@ import { Divider } from "@material-ui/core";
 
 // pages
 import DetailProduk from "./produk/detail";
-import Checkout from "./produk/checkout";
-import Bayar from "./produk/bayar";
 import HomeProduk from "./produk";
 import Proses from "./produk/bayar/proses";
 import History from "./produk/history";

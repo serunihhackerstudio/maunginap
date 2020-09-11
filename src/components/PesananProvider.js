@@ -60,6 +60,7 @@ const PesananProvider = (props) => {
         setFormBank,
         formPesanan,
         setFormPesanan,
+        setAkunBank,
       }}
     >
       {props.children}

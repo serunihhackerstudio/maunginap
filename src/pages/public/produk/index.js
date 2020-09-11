@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
-
-import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -16,24 +14,19 @@ import { currency } from "../../../utils/formatter";
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 
-// icon
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 
-import { usePesanan } from "../../../components/PesananProvider";
-
 function HomeProduk() {
   const classes = useStyles();
-  const { firestore, user } = useFirebase();
+  const { firestore } = useFirebase();
   const dataDoc = firestore
     .collection(`penginapan`)
     .doc("data")
     .collection("produk");
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
-  const { jumlahPesanan, setJumlahPesanan } = usePesanan(0);
+
   // const { jumlahPesanan2, setJumlahPesanan2 } = useState();
 
   useEffect(() => {
@@ -66,6 +59,7 @@ function HomeProduk() {
                     className={classes.media}
                     image={produkData.foto}
                     title="Contemplative Reptile"
+                    alt="testing"
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">

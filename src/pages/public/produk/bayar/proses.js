@@ -14,7 +14,6 @@ import StepLabel from "@material-ui/core/StepLabel";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Grid from "@material-ui/core/Grid";
 import { currency } from "../../../../utils/formatter";
 
 const Proses = ({ match }) => {
