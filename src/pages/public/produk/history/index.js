@@ -88,6 +88,7 @@ function History({ match, history, location }) {
                 <TableRow>
                   <TableCell align="center">
                     <img
+                      aria-hidden
                       alt={`image${dataProduk.namaPenginapan}`}
                       src={dataProduk.foto}
                       width={150}
