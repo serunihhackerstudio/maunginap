@@ -87,7 +87,11 @@ function History({ match, history, location }) {
               return (
                 <TableRow>
                   <TableCell align="center">
-                    <img src={dataProduk.foto} width={150} />
+                    <img
+                      alt={`image${dataProduk.namaPenginapan}`}
+                      src={dataProduk.foto}
+                      width={150}
+                    />
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Typography variant="body1">
