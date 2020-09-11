@@ -9,7 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
 import { useFirebase } from "../../../../components/FirebaseProvider";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { usePesanan } from "../../../../components/PesananProvider";
 // react-router
 
@@ -17,7 +17,6 @@ import AppLoading from "../../../../components/AppLoading";
 
 // styles
 import useStyles from "./styles";
-import { Redirect } from "react-router";
 import { currency } from "../../../../utils/formatter";
 
 function History({ match, history, location }) {
@@ -56,13 +55,13 @@ function History({ match, history, location }) {
   if (loading) {
     return <AppLoading message="Checkout" />;
   }
-  const handleCheckout = async (e) => {
-    e.preventDefault();
+  // const handleCheckout = async (e) => {
+  //   e.preventDefault();
 
-    await sleep(2000);
+  //   await sleep(2000);
 
-    history.push(`/view/penginapan/${user.uid}/checkout/bayar`);
-  };
+  //   history.push(`/view/penginapan/${user.uid}/checkout/bayar`);
+  // };
 
   console.log(isSubmitting);
 
