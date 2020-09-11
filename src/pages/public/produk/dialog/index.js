@@ -156,10 +156,12 @@ const DialogBooking = ({
         else {
           setActiveStep(activeStep + 1);
         }
+        break;
       default:
         if (form.pilihBank) {
           setActiveStep(activeStep + 1);
         }
+        break;
     }
   };
 
