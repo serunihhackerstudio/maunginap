@@ -56,9 +56,7 @@ function DetailProduk({ match, history, location }) {
     }
     if (snapshotSuka) {
       try {
-        if (snapshotSuka.id === match.params.penginapanId) {
-          setSuka(snapshotSuka.data().suka);
-        }
+        setSuka(snapshotSuka.data().suka);
       } catch (e) {}
     }
   }, [snapshot, snapshotSuka]);
