@@ -25,7 +25,7 @@ import { CardMedia, CardActionArea, Card } from "@material-ui/core";
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 
-function DetailProduk({ match, history }) {
+function DetailProduk({ match, history, location }) {
   const { firestore } = useFirebase();
   const produkDoc = firestore
     .collection("penginapan")
@@ -39,11 +39,32 @@ function DetailProduk({ match, history }) {
   const { enqueueSnackbar } = useSnackbar();
   const { setFormPesanan } = usePesanan();
 
-  React.useEffect(() => {
-    if (snapshot) {
-      setstate(snapshot.data());
-    }
-  }, [snapshot]);
+  // variable untuk membuat logic tombol suka
+  const [isSuka, setSuka] = React.useState(false);
+  const { user } = useFirebase();
+  const dataLikePath = firestore
+    .collection("user")
+    .doc(`${user.uid}`)
+    .collection("suka")
+    .doc(`${match.params.penginapanId}`);
+  const [snapshotSuka, loadingSuka] = useDocument(dataLikePath);
+  //
+  console.log(loadingSuka);
+  React.useEffect(
+    (match) => {
+      if (snapshot) {
+        setstate(snapshot.data());
+      }
+      if (snapshotSuka) {
+        try {
+          if (snapshotSuka.id === match.params.penginapanId) {
+            setSuka(snapshotSuka.data().suka);
+          }
+        } catch (e) {}
+      }
+    },
+    [snapshot, snapshotSuka]
+  );
 
   if (loading) {
     return <AppLoading message="Memuat Data..." />;
@@ -69,6 +90,29 @@ function DetailProduk({ match, history }) {
   const handleChange = (e) => {
     setJenisIuran(e.target.value);
   };
+
+  // handling untuk tombol like
+
+  const handleLikeButton = async (e) => {
+    // fungsi untuk menambah data suka pada produk
+
+    try {
+      await dataLikePath.set({ suka: true });
+    } catch (e) {
+      enqueueSnackbar(e.message, { variant: "error" });
+    }
+  };
+
+  const handleDisLikeButton = async (e) => {
+    // fungsi untuk menambah data suka pada produk
+    try {
+      await dataLikePath.set({ suka: false });
+    } catch (e) {
+      enqueueSnackbar(e.message, { variant: "error" });
+    }
+  };
+
+  console.log(isSuka);
 
   return (
     <div>
@@ -137,9 +181,23 @@ function DetailProduk({ match, history }) {
             </Grid>
             <Grid item>
               <Typography variant="subtitle1">
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
-                </IconButton>
+                {!isSuka && (
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={handleLikeButton}
+                  >
+                    <FavoriteIcon color="disable" />
+                  </IconButton>
+                )}
+                {isSuka && (
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={handleDisLikeButton}
+                  >
+                    <FavoriteIcon color="secondary" />
+                  </IconButton>
+                )}
+
                 <IconButton aria-label="add to favorites">
                   <ShareIcon />
                 </IconButton>
