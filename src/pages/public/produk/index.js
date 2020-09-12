@@ -62,8 +62,11 @@ function HomeProduk() {
                     alt="testing"
                   />
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography variant="h5" component="h2">
                       {produkData.namaPenginapan}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom color="primary">
+                      {currency(produkData.harga)}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -71,13 +74,6 @@ function HomeProduk() {
                       component="p"
                     >
                       {produkData.lokasi}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {currency(produkData.harga)}
                     </Typography>
                   </CardContent>
                 </CardActionArea>

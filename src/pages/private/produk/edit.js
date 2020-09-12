@@ -149,10 +149,10 @@ function EditProduk({ match }) {
         ...error,
         foto: `Tipe file tidak didukung ${file.type}`,
       }));
-    } else if (file.size >= 512000) {
+    } else if (file.size >= 1000000) {
       setError((error) => ({
         ...error,
-        foto: `Ukuran file terlalu besar > 512kb`,
+        foto: `Ukuran file terlalu besar > 1MB`,
       }));
     } else {
       const reader = new FileReader();
