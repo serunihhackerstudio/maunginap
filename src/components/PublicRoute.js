@@ -1,18 +1,28 @@
-import React from 'react'
-import {Route} from 'react-router-dom'
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import { useFirebase } from "./FirebaseProvider";
 
-function PublicRoute({component:Component, ...resProps}){
-
-    return (
-        <Route 
-            {...resProps}
-            render={() => {
-                return <Component {...resProps} />
+function PublicRoute({ component: Component, ...restProps }) {
+  const { user } = useFirebase();
+  return (
+    <Route
+      {...restProps}
+      render={(props) => {
+        return user ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/user/login",
+              state: {
+                from: props.location,
+              },
             }}
-        />
-    )
-
-
+          />
+        );
+      }}
+    />
+  );
 }
 
 export default PublicRoute;

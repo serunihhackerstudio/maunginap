@@ -43,10 +43,10 @@ function App() {
 
                   {/* <Route path="/view" component={Home} /> */}
                   {/* <Route path="/user/login" component={LoginUser} /> */}
-                  <PublicRoute path="/registrasi" component={Registrasi} />
-                  <PublicRoute path="/login" component={Login} />
-                  <PublicRoute path="/lupa-password" component={LupaPassword} />
-                  <PublicRoute path="/user" component={User} />
+                  <Route path="/registrasi" component={Registrasi} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/lupa-password" component={LupaPassword} />
+                  <Route path="/user" component={User} />
                   <PublicRoute path="/" component={Home} />
 
                   <Route component={NotFound} />
