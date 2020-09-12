@@ -39,7 +39,7 @@ function History({ match, history, location }) {
       console.log("datanya history = " + snapshot.docs);
     }
   }, [snapshot]);
-
+  console.log(setSubmitting);
   setJumlahPesanan(state.length);
 
   // function sleep(milliseconds) {

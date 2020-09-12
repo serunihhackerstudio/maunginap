@@ -36,6 +36,8 @@ const Proses = ({ match }) => {
     return <AppLoading message="Memproses pesanan..." />;
   }
 
+  console.log(setActiveStep);
+
   if (!formBank.pilihBank) {
     return <Redirect to="/history" />;
   }
