@@ -1,6 +1,5 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import useStyles from "./styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -21,7 +20,7 @@ import { currency } from "../../../../utils/formatter";
 import { useSnackbar } from "notistack";
 
 // import dialog booking
-
+import { CardMedia, CardActionArea, Card } from "@material-ui/core";
 // import context
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
@@ -73,11 +72,19 @@ function DetailProduk({ match, history }) {
 
   return (
     <div>
-      <Paper className={classes.paper}>
+      <Card className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src={state.foto} />
+              <CardMedia image={state.foto} />
+
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  className={classes.media}
+                  src={state.foto}
+                />
+              </CardActionArea>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
@@ -140,7 +147,7 @@ function DetailProduk({ match, history }) {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </Card>
 
       {/* <DialogBooking
         open={aktivasiDialog}
