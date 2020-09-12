@@ -205,7 +205,7 @@ function LoginUser(props) {
                 type="submit"
                 variant="contained"
                 size="large"
-                to="/registrasi"
+                to="/user/registrasi"
               >
                 Daftar
               </Button>
