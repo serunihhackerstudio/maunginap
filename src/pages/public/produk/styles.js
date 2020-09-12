@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 140,
-    width: "auto",
   },
 }));
 
