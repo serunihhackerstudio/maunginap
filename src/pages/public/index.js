@@ -187,7 +187,7 @@ function DetailBooking({ history, location }) {
             }}
           />
 
-          <Route
+          {/* <Route
             path="#"
             children={(props) => {
               return (
@@ -205,7 +205,7 @@ function DetailBooking({ history, location }) {
                 </ListItem>
               );
             }}
-          />
+          /> */}
         </List>
       </Drawer>
 
