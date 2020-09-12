@@ -50,21 +50,18 @@ function DetailProduk({ match, history, location }) {
   const [snapshotSuka, loadingSuka] = useDocument(dataLikePath);
   //
   console.log(loadingSuka);
-  React.useEffect(
-    (match) => {
-      if (snapshot) {
-        setstate(snapshot.data());
-      }
-      if (snapshotSuka) {
-        try {
-          if (snapshotSuka.id === match.params.penginapanId) {
-            setSuka(snapshotSuka.data().suka);
-          }
-        } catch (e) {}
-      }
-    },
-    [snapshot, snapshotSuka]
-  );
+  React.useEffect(() => {
+    if (snapshot) {
+      setstate(snapshot.data());
+    }
+    if (snapshotSuka) {
+      try {
+        if (snapshotSuka.id === match.params.penginapanId) {
+          setSuka(snapshotSuka.data().suka);
+        }
+      } catch (e) {}
+    }
+  }, [snapshot, snapshotSuka]);
 
   if (loading) {
     return <AppLoading message="Memuat Data..." />;
