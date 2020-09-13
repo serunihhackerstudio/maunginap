@@ -46,6 +46,8 @@ const DialogBooking = ({
     nomorKTP: "",
     jumlahKamar: "",
     jenisIuran: jenisIuran,
+    tanggalPesan: new Date(),
+    reserved: false,
   });
 
   const [error, setError] = useState({
@@ -53,12 +55,13 @@ const DialogBooking = ({
     nomorKTP: "",
     jumlahKamar: "",
     pilihBank: "",
+    tanggalPesan: "",
   });
 
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { firestore, user } = useFirebase();
-  const { setNeedLogin, formPesanan } = usePesanan();
+  const { setNeedLogin, formPesanan, setFormPesanan } = usePesanan();
   // const [pilihBank, setPilihBank] = useState(false);
 
   let pesanProduk;
@@ -84,7 +87,7 @@ const DialogBooking = ({
     .collection("user")
     .doc(`${user.uid}`)
     .collection("pesanan")
-    .doc(`${idGenerator}`);
+    .doc(`${match.params.penginapanId}`);
 
   // memasukan data tambahan ke form
   console.log(formPesanan);
@@ -93,6 +96,7 @@ const DialogBooking = ({
   form.harga = formPesanan.harga;
   form.kodeBooking = idGenerator;
   form.foto = formPesanan.foto;
+  form.reserved = true;
 
   const handleChange = (e) => {
     setError({
@@ -121,6 +125,9 @@ const DialogBooking = ({
 
     if (!form.jumlahKamar) {
       newError.jumlahKamar = "Jumlah kamar harus diisi";
+    }
+    if (!form.tanggalPesan) {
+      newError.tanggalPesan = "Tanggal pesan harus diisi";
     }
 
     return newError;

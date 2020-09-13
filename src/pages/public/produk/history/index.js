@@ -115,14 +115,6 @@ function History({ match, history, location }) {
                 </TableRow>
               );
             })}
-
-            <TableRow>
-              <TableCell component="th" scope="row"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-              <TableCell align="center"></TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

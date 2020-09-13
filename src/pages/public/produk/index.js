@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -17,6 +17,10 @@ import useStyles from "./styles";
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 
+// icon
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import IconButton from "@material-ui/core/IconButton";
+
 function HomeProduk() {
   const classes = useStyles();
   const { firestore } = useFirebase();
@@ -27,6 +31,15 @@ function HomeProduk() {
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
 
+  // STATUS SUKA
+  // const [isSuka, setSuka] = React.useState(false);
+  // const { user } = useFirebase();
+  // const dataLikePath = firestore
+  //   .collection("user")
+  //   .doc(`${user.uid}`)
+  //   .collection("suka");
+  // const [snapshotSuka, loadingSuka] = useCollection(dataLikePath);
+  //
   // const { jumlahPesanan2, setJumlahPesanan2 } = useState();
 
   useEffect(() => {
@@ -34,6 +47,8 @@ function HomeProduk() {
       setProdukItems(snapshot.docs);
     }
   }, [snapshot]);
+
+  // gabungkan produkItems dan isSuka
 
   if (loading) {
     return <AppPageLoading />;
@@ -78,14 +93,10 @@ function HomeProduk() {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button
-                    size="medium"
-                    color="primary"
-                    component={Link}
-                    to={`/view/penginapan/${produkDoc.id}`}
-                  >
-                    Lihat
-                  </Button>
+                  <IconButton color="disabled">
+                    <FavoriteIcon />
+                  </IconButton>
+                  100
                 </CardActions>
               </Card>
             </Grid>

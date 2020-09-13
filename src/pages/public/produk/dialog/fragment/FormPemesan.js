@@ -1,13 +1,27 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  DatePicker,
+  TimePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+
+import MomentUtils from "@date-io/moment";
 
 function FormPemesan({ form, error, isSubmitting, handleChange }) {
+  const [selectedDate, setSelectDate] = React.useState(new Date());
+  const handleDateChange = (e) => {
+    setSelectDate(e);
+  };
+  console.log(selectedDate);
   return (
     <React.Fragment>
       <TextField
         id="namaKTP"
         name="namaKTP"
-        label="Nama Lengkap (Sesuai KTP)"
+        label="Nama Lengkap"
         fullWidth
         required
         margin="normal"
@@ -44,6 +58,17 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
         error={error.jumlahKamar ? true : false}
         disabled={isSubmitting}
       />
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <DatePicker
+          value={selectedDate}
+          onChange={handleDateChange}
+          format="DD/MM/YYYY"
+          margin="normal"
+          label="Kapan ?"
+          helperText={error.tanggalPesan}
+          error={error.tanggalPesan ? true : false}
+        />
+      </MuiPickersUtilsProvider>
     </React.Fragment>
   );
 }

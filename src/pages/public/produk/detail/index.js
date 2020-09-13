@@ -49,6 +49,17 @@ function DetailProduk({ match, history, location }) {
     .doc(`${match.params.penginapanId}`);
   const [snapshotSuka, loadingSuka] = useDocument(dataLikePath);
   //
+
+  // status reserveed
+  const [isReserved, setReserved] = React.useState(false);
+  const dataReserved = firestore
+    .collection("user")
+    .doc(`${user.uid}`)
+    .collection("pesanan")
+    .doc(`${match.params.penginapanId}`);
+  const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
+  //
+
   console.log(loadingSuka);
   React.useEffect(() => {
     if (snapshot) {
@@ -59,7 +70,10 @@ function DetailProduk({ match, history, location }) {
         setSuka(snapshotSuka.data().suka);
       } catch (e) {}
     }
-  }, [snapshot, snapshotSuka]);
+    if (snapshotReserved) {
+      setReserved(snapshotReserved.data());
+    }
+  }, [snapshot, snapshotSuka, snapshotReserved]);
 
   if (loading) {
     return <AppLoading message="Memuat Data..." />;
@@ -145,8 +159,9 @@ function DetailProduk({ match, history, location }) {
                   className={classes.btn}
                   variant="contained"
                   color="primary"
+                  disabled={isReserved ? true : false}
                 >
-                  Pesan
+                  {isReserved ? "Soldout" : "Pesan"}
                 </Button>
                 <ButtonBase>
                   <FormControl className={classes.formControl} required>
