@@ -1,12 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import MomentUtils from "@date-io/moment";
 

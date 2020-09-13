@@ -48,6 +48,7 @@ function DetailProduk({ match, history, location }) {
     .collection("suka")
     .doc(`${match.params.penginapanId}`);
   const [snapshotSuka, loadingSuka] = useDocument(dataLikePath);
+  // const likeDb = firestore.collection("datastore").doc("suka");
   //
 
   // status reserveed
@@ -60,7 +61,7 @@ function DetailProduk({ match, history, location }) {
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
   //
 
-  console.log(loadingSuka);
+  console.log(loadingSuka, loadingReserved);
   React.useEffect(() => {
     if (snapshot) {
       setstate(snapshot.data());
@@ -101,12 +102,14 @@ function DetailProduk({ match, history, location }) {
   };
 
   // handling untuk tombol like
-
   const handleLikeButton = async (e) => {
     // fungsi untuk menambah data suka pada produk
 
     try {
-      await dataLikePath.set({ suka: true });
+      await dataLikePath.set({
+        suka: true,
+        penginapanId: match.params.penginapanId,
+      });
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
     }

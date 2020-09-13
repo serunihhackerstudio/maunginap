@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import Button from "@material-ui/core/Button";
 import { currency } from "../../../utils/formatter";
 // React router
 import { Link } from "react-router-dom";
@@ -18,8 +18,7 @@ import useStyles from "./styles";
 import AppPageLoading from "../../../components/AppPageLoading";
 
 // icon
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import IconButton from "@material-ui/core/IconButton";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 function HomeProduk() {
   const classes = useStyles();
@@ -32,13 +31,7 @@ function HomeProduk() {
   const [produkItems, setProdukItems] = useState([]);
 
   // STATUS SUKA
-  // const [isSuka, setSuka] = React.useState(false);
-  // const { user } = useFirebase();
-  // const dataLikePath = firestore
-  //   .collection("user")
-  //   .doc(`${user.uid}`)
-  //   .collection("suka");
-  // const [snapshotSuka, loadingSuka] = useCollection(dataLikePath);
+
   //
   // const { jumlahPesanan2, setJumlahPesanan2 } = useState();
 
@@ -47,8 +40,6 @@ function HomeProduk() {
       setProdukItems(snapshot.docs);
     }
   }, [snapshot]);
-
-  // gabungkan produkItems dan isSuka
 
   if (loading) {
     return <AppPageLoading />;
@@ -93,10 +84,14 @@ function HomeProduk() {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <IconButton color="disabled">
-                    <FavoriteIcon />
-                  </IconButton>
-                  100
+                  <Button
+                    startIcon={<ExpandMoreIcon />}
+                    color="primary"
+                    component={Link}
+                    to={`/view/penginapan/${produkDoc.id}`}
+                  >
+                    More
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>
