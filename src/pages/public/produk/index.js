@@ -38,6 +38,7 @@ function HomeProduk() {
   useEffect(() => {
     if (snapshot) {
       setProdukItems(snapshot.docs);
+      console.log(snapshot.docs);
     }
   }, [snapshot]);
 

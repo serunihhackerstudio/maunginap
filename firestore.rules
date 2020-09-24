@@ -25,6 +25,10 @@ service cloud.firestore {
     match /session/{uid} {
       allow read, write: if request.auth.uid == uid;
     }
-  
+
+    match /user {
+      allow read, write: if true;
+    }
+
   }
 }

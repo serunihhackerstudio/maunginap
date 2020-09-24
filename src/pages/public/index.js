@@ -14,7 +14,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-// import FilterListIcon from "@material-ui/icons/FilterList";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import Badge from "@material-ui/core/Badge";
 
 // dialog/modal
@@ -46,6 +46,7 @@ import HomeProduk from "./produk";
 import Proses from "./produk/bayar/proses";
 import History from "./produk/history";
 import DialogBooking from "./produk/dialog/index";
+import Testing from "./testing";
 
 function DetailBooking({ history, location }) {
   const classes = useStyles();
@@ -187,14 +188,14 @@ function DetailBooking({ history, location }) {
             }}
           />
 
-          {/* <Route
-            path="#"
+          <Route
+            path="/testing"
             children={(props) => {
               return (
                 <ListItem
                   selected={props.match ? true : false}
                   onClick={() => {
-                    props.history.push("#");
+                    props.history.push("/testing");
                   }}
                   button
                 >
@@ -205,7 +206,7 @@ function DetailBooking({ history, location }) {
                 </ListItem>
               );
             }}
-          /> */}
+          />
         </List>
       </Drawer>
 
@@ -231,6 +232,8 @@ function DetailBooking({ history, location }) {
               component={DetailProduk}
             />
             <Route path="/history" component={History} />
+
+            <Route path="/testing" component={Testing} />
 
             {/* <Route
               path="/view/penginapan/:checkoutId/proses/:prosesId"

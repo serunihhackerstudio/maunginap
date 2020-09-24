@@ -41,17 +41,15 @@ function App() {
                   <PrivateRoute path="/pengaturan" component={Private} />
                   {/* halaman public */}
                   <Route path="/testing/checkout" component={Checkout} />
-
                   {/* <Route path="/view" component={Home} /> */}
                   {/* <Route path="/user/login" component={LoginUser} /> */}
-
                   <Route path="/admin2020/registrasi" component={Registrasi} />
                   <Route path="/admin2020/login" component={Login} />
                   <Route path="/user/registrasi" component={RegistrasiUser} />
                   <Route path="/lupa-password" component={LupaPassword} />
                   <Route path="/user" component={User} />
                   <PublicRoute path="/" component={Home} />
-                  <Route component={NotFound} />
+                  <Route component={NotFound} />k
                 </Switch>
               </Router>
             </PesananProvider>
