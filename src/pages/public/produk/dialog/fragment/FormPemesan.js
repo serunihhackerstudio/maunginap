@@ -39,17 +39,17 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
         disabled={isSubmitting}
       />
       <TextField
-        id="jumlahKamar"
-        name="jumlahKamar"
-        label="Berapa Kamar ?"
+        id="kamarNo"
+        name="kamarNo"
+        label="Nomor Kamar "
         type="number"
         required
         fullWidth
         margin="normal"
-        value={form.jumlahKamar}
+        value={form.kamarNo}
         onChange={handleChange}
-        helperText={error.jumlahKamar}
-        error={error.jumlahKamar ? true : false}
+        helperText={error.kamarNo}
+        error={error.kamarNo ? true : false}
         disabled={isSubmitting}
       />
       <MuiPickersUtilsProvider utils={MomentUtils}>

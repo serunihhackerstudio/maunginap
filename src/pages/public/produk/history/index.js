@@ -23,9 +23,8 @@ function History({ match, history, location }) {
   const { firestore, user } = useFirebase();
 
   const produkDoc = firestore
-    .collection("user")
-    .doc(`${user.uid}`)
-    .collection("pesanan");
+    .collection("pesanan")
+    .where("userId", "==", user.uid);
 
   const [snapshot, loading] = useCollection(produkDoc);
   const classes = useStyles();

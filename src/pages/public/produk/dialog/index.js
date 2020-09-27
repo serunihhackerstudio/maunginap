@@ -44,7 +44,7 @@ const DialogBooking = ({
   const [form, setForm] = useState({
     namaKTP: "",
     nomorKTP: "",
-    jumlahKamar: "",
+    kamarNo: "",
     jenisIuran: jenisIuran,
     tanggalPesan: new Date(),
     reserved: false,
@@ -53,7 +53,7 @@ const DialogBooking = ({
   const [error, setError] = useState({
     namaKTP: "",
     nomorKTP: "",
-    jumlahKamar: "",
+    kamarNo: "",
     pilihBank: "",
     tanggalPesan: "",
   });
@@ -83,12 +83,9 @@ const DialogBooking = ({
   }
 
   // pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
-  pesanProduk = firestore
-    .collection("pesanan")
-    .doc(`${match.params.penginapanId}`);
+  pesanProduk = firestore.collection("pesanan").doc(`${idGenerator}`);
 
   // memasukan data tambahan ke form
-  console.log(formPesanan);
   form.namaPenginapan = formPesanan.namaPenginapan;
   form.jenisIuran = formPesanan.jenisIuran;
   form.harga = formPesanan.harga;
@@ -123,8 +120,8 @@ const DialogBooking = ({
       newError.nomorKTP = "Nomor KTP wajib diisi";
     }
 
-    if (!form.jumlahKamar) {
-      newError.jumlahKamar = "Jumlah kamar harus diisi";
+    if (!form.kamarNo) {
+      newError.kamarNo = "Jumlah kamar harus diisi";
     }
     if (!form.tanggalPesan) {
       newError.tanggalPesan = "Tanggal pesan harus diisi";
