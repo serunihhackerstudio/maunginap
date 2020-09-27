@@ -18,9 +18,10 @@ service cloud.firestore {
       allow read, write: if request.auth.uid == uid;
       
     }
-    match /pesanan/{uid} {
-        allow read, write: if request.auth.uid == uid;
-      }
+
+    match /pesanan/{penginapanId} {
+      allow read, write: if true;
+    }
     
     match /session/{uid} {
       allow read, write: if request.auth.uid == uid;
@@ -29,6 +30,9 @@ service cloud.firestore {
     match /user {
       allow read, write: if true;
     }
+     match /user/{penginapanId} {
+       allow read, write: if true;
+     }
 
   }
 }

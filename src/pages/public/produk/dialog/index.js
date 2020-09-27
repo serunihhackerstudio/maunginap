@@ -84,8 +84,6 @@ const DialogBooking = ({
 
   // pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
   pesanProduk = firestore
-    .collection("user")
-    .doc(`${user.uid}`)
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
 
@@ -97,6 +95,8 @@ const DialogBooking = ({
   form.kodeBooking = idGenerator;
   form.foto = formPesanan.foto;
   form.reserved = true;
+  form.userId = user.uid;
+  form.penginapanId = match.params.penginapanId;
 
   const handleChange = (e) => {
     setError({

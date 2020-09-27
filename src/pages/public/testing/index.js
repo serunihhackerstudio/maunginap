@@ -6,21 +6,19 @@ import AppPageLoading from "../../../components/AppPageLoading";
 
 function Testing() {
   const { user, firestore } = useFirebase();
-  // const [snapshot, loading] = useCollection(query);
+  const query = firestore.collection("pesanan").where("userId", "==", user.uid);
+  const [snapshot, loading] = useCollection(query);
   const [state, setState] = React.useState([]);
 
-  firestore
-    .collection("user")
-    .get()
-    .then((snap) => {
-      snap.map((data) => {
-        console.log(data);
-      });
-    });
+  React.useEffect(() => {
+    if (snapshot) {
+      console.log(snapshot.docs);
+    }
+  }, [snapshot]);
 
-  // if (loading) {
-  //   return <AppPageLoading />;
-  // }
+  if (loading) {
+    return <AppPageLoading />;
+  }
 
   return (
     <div>
