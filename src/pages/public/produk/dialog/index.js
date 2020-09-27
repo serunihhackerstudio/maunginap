@@ -94,6 +94,7 @@ const DialogBooking = ({
   form.reserved = true;
   form.userId = user.uid;
   form.penginapanId = match.params.penginapanId;
+  form.approvalStatus = false;
 
   const handleChange = (e) => {
     setError({

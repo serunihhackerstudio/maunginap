@@ -5,8 +5,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -109,7 +111,23 @@ function History({ match, history, location }) {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Typography variant="body1">Menunggu pembayaran</Typography>
+                    <Typography variant="body1">
+                      {dataProduk.approvalStatus ? (
+                        <Button color="primary" variant="outlined">
+                          Siap Ditempati
+                        </Button>
+                      ) : (
+                        <>
+                          <Typography
+                            color="textSecondary"
+                            className={classes.waiting}
+                          >
+                            Menunggu Pembayaran...
+                          </Typography>{" "}
+                          <br /> <CircularProgress color="primary" />
+                        </>
+                      )}
+                    </Typography>
                   </TableCell>
                 </TableRow>
               );

@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  waiting: {
+    fontSize: 12,
+  },
 }));
 
 export default useStyles;
