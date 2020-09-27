@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import { useFirebase } from "../../../components/FirebaseProvider";
 
 function Home() {
@@ -7,14 +8,7 @@ function Home() {
 
   return (
     <>
-      <h1>Halaman Home (Buat Transaksi)</h1>
-      <Button
-        onClick={(e) => {
-          auth.signOut();
-        }}
-      >
-        SignOut
-      </Button>
+      <Typography variant="h5">Dashboard</Typography>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { useFirebase } from "./FirebaseProvider";
 
 function PrivateRoute({ component: Component, ...restProps }) {
   const { user } = useFirebase();
+
   return (
     <Route
       {...restProps}
@@ -11,15 +12,6 @@ function PrivateRoute({ component: Component, ...restProps }) {
         return user ? (
           <Component {...props} />
         ) : (
-          // reirect to home
-          // <Redirect to={{
-          //     pathname:'/dashboard',
-          //     state:{
-          //         from:props.location
-          //     }
-          // }}  />
-
-          // reirect to login
           <Redirect
             to={{
               pathname: "/admin2020/login",

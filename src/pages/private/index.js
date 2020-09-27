@@ -81,9 +81,9 @@ export default function Private(props) {
           >
             {/* LOGO TITLE */}
             <Switch>
-              <Route path="/" exact children="Home" />
-              <Route path="/produk" children="Produk" />
-              <Route path="/transaksi" children="Transaksi & Pemesanan" />
+              <Route path="/dashboard" exact children="Dashboard" />
+              <Route path="/produk" children="Tambah Prodok" />
+              <Route path="/transaksi" children="Approve Transaksi" />
               <Route path="/pengaturan" children="Pengaturan" />
             </Switch>
             {/* LOGO TITLE */}
