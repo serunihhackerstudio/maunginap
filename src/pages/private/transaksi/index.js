@@ -21,7 +21,7 @@ import AppPageLoading from "../../../components/AppPageLoading";
 
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
-  const { firestore, user } = useFirebase();
+  const { firestore } = useFirebase();
   const query = firestore.collection("pesanan");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
