@@ -11,11 +11,13 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import Button from "@material-ui/core/Button";
 
 // styles
-import useStyles from "./styles";
 import { currency } from "../../../utils/formatter";
 import { useSnackbar } from "notistack";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
+
+// component
+import AppPageLoading from "../../../components/AppPageLoading";
 
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
@@ -38,8 +40,15 @@ function Transaksi() {
         .collection("pesanan")
         .doc(`${pesananId}`)
         .set({ approvalStatus: true }, { merge: true });
+      enqueueSnackbar(`Pesanan terkonfirmasi`, {
+        variant: "success",
+      });
     } catch (e) {}
   };
+
+  if (loading) {
+    return <AppPageLoading />;
+  }
 
   return (
     <>

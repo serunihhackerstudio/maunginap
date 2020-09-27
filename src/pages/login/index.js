@@ -110,7 +110,7 @@ function Login(props) {
   };
 
   if (loading) {
-    return <AppLoading />;
+    return <AppLoading message="Memuat data..." />;
   }
 
   if (user) {
