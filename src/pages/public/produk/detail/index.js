@@ -42,7 +42,6 @@ function DetailProduk({ match, history, location }) {
   // variable untuk membuat logic tombol suka
   const [isSuka, setSuka] = React.useState(false);
   const [idSuka, setIdSuka] = React.useState("");
-  const [userId, setUserId] = React.useState("");
   const { user } = useFirebase();
   const dataLikePath = firestore.collection("user");
 
