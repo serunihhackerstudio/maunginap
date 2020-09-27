@@ -54,8 +54,12 @@ export default function PaymentForm({ form, setForm, error, setError }) {
                 value={form.pilihBank}
                 onChange={handleChange}
               >
-                <MenuItem value={"Bank Mandiri"}>Bank Mandiri</MenuItem>
-                <MenuItem value={"Bank BCA"}>Bank BCA</MenuItem>
+                <MenuItem value={"Bank Mandiri"}>
+                  Bank Mandiri - 161-0000-454-3980 - Toufani Rizal Alfarisi{" "}
+                </MenuItem>
+                <MenuItem value={"Bank BCA"}>
+                  Bank BCA - 885-0000-9890-161 - Toufani Rizal Alfarisi
+                </MenuItem>
               </Select>
               {!form.pilihBank && (
                 <FormHelperText error={true} disabled={isSubmitting}>

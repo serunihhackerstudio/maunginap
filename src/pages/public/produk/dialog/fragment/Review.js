@@ -31,7 +31,7 @@ export default function Review({ form }) {
         <ListItem className={classes.listItem} key={form.namaPenginapan}>
           <ListItemText
             primary={form.namaPenginapan}
-            secondary={`${form.jenisIuran} - ${form.jumlahKamar} kamar`}
+            secondary={`${form.jenisIuran} - Kamar no. ${form.kamarNo}`}
           />
           <Typography variant="body2">
             {form.jenisIuran === "Tahunan"

@@ -9,7 +9,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Button from "@material-ui/core/Button";
-// MATERIAL UI
+
+// dialog/modal
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 // styles
 import useStyles from "./styles";
@@ -24,13 +30,23 @@ function Transaksi() {
   const query = firestore.collection("pesanan");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const classes = useState();
+
   useEffect(() => {
     if (snapshot) {
       console.log(snapshot.docs);
       setProdukItems(snapshot.docs);
     }
   }, [snapshot]);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   const approveCallback = (pesananId) => async () => {
     try {
@@ -90,7 +106,22 @@ function Transaksi() {
                       color="textSecondary"
                       component="p"
                     >
-                      {produkData.nomorKTP}
+                      KTP. {produkData.nomorKTP}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      HP/WA. {produkData.nomorHpWa}
+                    </Typography>
+
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      Transfer ke {produkData.pilihBank}
                     </Typography>
                     <Typography
                       variant="body1"
@@ -98,13 +129,6 @@ function Transaksi() {
                       component="p"
                     >
                       {produkData.noRek}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      Transfer ke {produkData.pilihBank}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -114,6 +138,7 @@ function Transaksi() {
                     size="small"
                     color="primary"
                     variant="contained"
+                    // onClick={}
                     onClick={approveCallback(produkDoc.id)}
                   >
                     Approve

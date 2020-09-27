@@ -63,6 +63,20 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
           error={error.tanggalPesan ? true : false}
         />
       </MuiPickersUtilsProvider>
+      <TextField
+        id="nomorHpWa"
+        name="nomorHpWa"
+        label="Nomor HP / WA"
+        type="number"
+        required
+        fullWidth
+        margin="normal"
+        value={form.nomorHpWa}
+        onChange={handleChange}
+        helperText={error.nomorHpWa}
+        error={error.nomorHpWa ? true : false}
+        disabled={isSubmitting}
+      />
     </React.Fragment>
   );
 }

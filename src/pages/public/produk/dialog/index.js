@@ -47,6 +47,7 @@ const DialogBooking = ({
     kamarNo: "",
     jenisIuran: jenisIuran,
     tanggalPesan: new Date(),
+    nomorHpWa: "",
     reserved: false,
   });
 
@@ -56,6 +57,7 @@ const DialogBooking = ({
     kamarNo: "",
     pilihBank: "",
     tanggalPesan: "",
+    nomorHpWa: "",
   });
 
   const { enqueueSnackbar } = useSnackbar();
@@ -126,6 +128,9 @@ const DialogBooking = ({
     }
     if (!form.tanggalPesan) {
       newError.tanggalPesan = "Tanggal pesan harus diisi";
+    }
+    if (!form.nomorHpWa) {
+      newError.nomorHpWa = "Tanggal pesan harus diisi";
     }
 
     return newError;
