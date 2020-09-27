@@ -10,13 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Button from "@material-ui/core/Button";
 
-// dialog/modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-
 // styles
 import useStyles from "./styles";
 import { currency } from "../../../utils/formatter";
@@ -30,7 +23,6 @@ function Transaksi() {
   const query = firestore.collection("pesanan");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
-  const [openDialog, setOpenDialog] = React.useState(false);
   const classes = useState();
 
   useEffect(() => {
@@ -39,14 +31,6 @@ function Transaksi() {
       setProdukItems(snapshot.docs);
     }
   }, [snapshot]);
-
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
 
   const approveCallback = (pesananId) => async () => {
     try {
