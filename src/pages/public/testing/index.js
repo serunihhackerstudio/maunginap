@@ -1,14 +1,13 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import AppPageLoading from "../../../components/AppPageLoading";
 
 function Testing() {
   const { user, firestore } = useFirebase();
   const query = firestore.collection("pesanan").where("userId", "==", user.uid);
   const [snapshot, loading] = useCollection(query);
-  const [state, setState] = React.useState([]);
 
   React.useEffect(() => {
     if (snapshot) {

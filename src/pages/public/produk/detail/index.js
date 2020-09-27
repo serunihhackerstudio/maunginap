@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useDocument } from "react-firebase-hooks/firestore";
 import SendIcon from "@material-ui/icons/Send";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -58,8 +58,7 @@ function DetailProduk({ match, history, location }) {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
-  //
-  const [userIdSuka, setUserIdSuka] = React.useState("");
+
   console.log(loadingSuka, loadingReserved);
   React.useEffect(() => {
     if (snapshot) {
@@ -68,9 +67,6 @@ function DetailProduk({ match, history, location }) {
     if (snapshotSuka) {
       try {
         setSuka(snapshotSuka.data().suka);
-        setUserIdSuka(snapshot.data().userId);
-        console.log("SUKA");
-        console.log(snapshotSuka.data().suka);
 
         // console.log(snapshotSuka.data());
       } catch (e) {}
@@ -112,7 +108,6 @@ function DetailProduk({ match, history, location }) {
       await dataLikePath.set({
         suka: true,
         penginapanId: match.params.penginapanId,
-        userId: user.uid,
       });
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
@@ -196,7 +191,7 @@ function DetailProduk({ match, history, location }) {
               </Grid>
             </Grid>
             <Grid item>
-              <h2>{JSON.stringify(isSuka)}</h2>
+              {/* <h2>{JSON.stringify(isSuka)}</h2> */}
               <Typography variant="subtitle1">
                 {!isSuka && (
                   <IconButton
