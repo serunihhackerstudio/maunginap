@@ -125,7 +125,9 @@ function Transaksi() {
                     // onClick={}
                     onClick={approveCallback(produkDoc.id)}
                   >
-                    Approve
+                    {produkData.approvalStatus
+                      ? "Siap ditempati"
+                      : "Konfirmasi"}
                   </Button>
                 </CardActions>
               </Card>
