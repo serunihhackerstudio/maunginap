@@ -3,8 +3,9 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
-
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useDocument } from "react-firebase-hooks/firestore";
 import SendIcon from "@material-ui/icons/Send";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -227,6 +228,15 @@ function DetailProduk({ match, history, location }) {
           </Grid>
         </Grid>
       </Card>
+      <Fab
+        color="primary"
+        className={classes.fab}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        <ArrowBackIcon />
+      </Fab>
 
       {/* <DialogBooking
         open={aktivasiDialog}

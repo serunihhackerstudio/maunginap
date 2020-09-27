@@ -22,10 +22,23 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
   },
   root: {
-    maxWidth: 345,
+    maxWidth: "full",
+    marginBottom: theme.spacing(3),
   },
+  mediaPromotion: {
+    height: 260,
+  },
+
   media: {
     height: 140,
+  },
+
+  gridContainer: {
+    marginTop: theme.spacing(4),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
   },
 }));
 

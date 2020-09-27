@@ -152,7 +152,7 @@ function DetailBooking({ history, location }) {
         </Toolbar>
       </AppBar>
       <Drawer
-        variant="permanent"
+        variant="temporary"
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}

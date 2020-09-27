@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import Container from "@material-ui/core/Container";
 import { currency } from "../../../utils/formatter";
 // React router
 import { Link } from "react-router-dom";
@@ -48,11 +51,65 @@ function HomeProduk() {
 
   return (
     <>
+      <Container>
+        <Card className={classes.root}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.mediaPromotion}
+              image={
+                "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2Fbenner%20baru%20kos.jpg?alt=media&token=6daab7ec-e6b1-4df1-a3b1-fadf32c2cb74"
+              }
+              title="Contemplative Reptile"
+              alt="testing"
+            />
+          </CardActionArea>
+        </Card>
+      </Container>
+      {/*  */}
+      {/*  */}
+      {/*  */}
+
+      <Container maxWidth="sm">
+        <Typography
+          component="h1"
+          variant="h2"
+          align="center"
+          color="textPrimary"
+          gutterBottom
+        >
+          Maunginap ?
+        </Typography>
+        <Typography
+          variant="body1"
+          align="center"
+          color="textSecondary"
+          paragraph
+        >
+          Di mana aja pasti bisa nginap dong dengan maunginap.com. Mau nginap di
+          kost-kotan, kontrakan, penginapan resmi ? mau yang bulanan, harian,
+          tahunan ? nggak perlu report dan ribet, pake aja maungingap.com.
+        </Typography>
+        <div className={classes.heroButtons}>
+          <Grid container spacing={2} justify="center">
+            <Grid item>
+              <Button variant="contained" color="primary">
+                Berkenalan
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" color="primary">
+                Keunggulan
+              </Button>
+            </Grid>
+          </Grid>
+        </div>
+      </Container>
+
       {produkItems.length <= 0 && (
         <Typography>Belum ada data Kost-kostan / peninapan</Typography>
       )}
 
-      <Grid container spacing={5}>
+      <Grid container spacing={5} className={classes.gridContainer}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           return (
@@ -76,7 +133,7 @@ function HomeProduk() {
                       {currency(produkData.harga)}
                     </Typography>
                     <Typography
-                      variant="body2"
+                      variant="body1"
                       color="textSecondary"
                       component="p"
                     >
@@ -99,9 +156,6 @@ function HomeProduk() {
           );
         })}
       </Grid>
-      {/* <Fab color="primary" className={classes.fab}>
-        <ShoppingCartIcon />
-      </Fab> */}
     </>
   );
 }
