@@ -41,10 +41,15 @@ function DetailProduk({ match, history, location }) {
 
   // variable untuk membuat logic tombol suka
   const [isSuka, setSuka] = React.useState(false);
+  const [idSuka, setIdSuka] = React.useState("");
+  const [userId, setUserId] = React.useState("");
   const { user } = useFirebase();
-  const dataLikePath = firestore.collection("user").doc(`${user.uid}`);
+  const dataLikePath = firestore.collection("user");
 
-  const isDataLikePath = firestore.collection("user").doc(`${user.uid}`);
+  const isDataLikePath = firestore
+    .collection("user")
+    .where("user", "==", user.uid)
+    .where("penginapanId", "==", match.params.penginapanId);
 
   const [snapshotSuka, loadingSuka] = useDocument(isDataLikePath);
   // const likeDb = firestore.collection("datastore").doc("suka");
@@ -66,10 +71,12 @@ function DetailProduk({ match, history, location }) {
     }
     if (snapshotSuka) {
       try {
-        setSuka(snapshotSuka.data().suka);
-
-        // console.log(snapshotSuka.data());
-      } catch (e) {}
+        setSuka(snapshotSuka.docs[0].data());
+        setIdSuka(snapshotSuka.docs[0].id);
+        console.log(snapshotSuka.docs[0]);
+      } catch (e) {
+        console.log(e.message);
+      }
     }
     if (snapshotReserved) {
       setReserved(snapshotReserved.data());
@@ -104,20 +111,23 @@ function DetailProduk({ match, history, location }) {
   // handling untuk tombol like
   const handleLikeButton = async (e) => {
     // fungsi untuk menambah data suka pada produk
-    try {
-      await dataLikePath.set({
-        suka: true,
-        penginapanId: match.params.penginapanId,
-      });
-    } catch (e) {
-      enqueueSnackbar(e.message, { variant: "error" });
-    }
+    if (user)
+      try {
+        await dataLikePath.add({
+          suka: true,
+          penginapanId: match.params.penginapanId,
+          user: user.uid,
+        });
+      } catch (e) {
+        enqueueSnackbar(e.message, { variant: "error" });
+      }
   };
 
   const handleDisLikeButton = async (e) => {
     // fungsi untuk menambah data suka pada produk
     try {
-      await dataLikePath.set({ suka: false });
+      await dataLikePath.doc(idSuka).delete();
+      setSuka(false);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
     }
@@ -191,7 +201,7 @@ function DetailProduk({ match, history, location }) {
               </Grid>
             </Grid>
             <Grid item>
-              {/* <h2>{JSON.stringify(isSuka)}</h2> */}
+              {/* <h2>{JSON.stringify(userId)}</h2> */}
               <Typography variant="subtitle1">
                 {!isSuka && (
                   <IconButton
