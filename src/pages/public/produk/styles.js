@@ -40,6 +40,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
   },
+  container: {
+    marginTop: theme.spacing(4),
+  },
+  rootGrid: {
+    flexGrow: 1,
+  },
+  btn: {
+    height: 55,
+  },
+  descPromotion: {
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 export default useStyles;

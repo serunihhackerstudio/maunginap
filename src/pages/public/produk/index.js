@@ -18,6 +18,8 @@ import useStyles from "./styles";
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 import SwipeableTextMobileStepper from "../../../components/Slider";
+import ComboBoxLokasi from "../../../components/ComboBox/ComboBoxLokasi";
+import ComboBoxJenis from "../../../components/ComboBox/ComboBoxJenis";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -87,21 +89,33 @@ function HomeProduk() {
           align="center"
           color="textSecondary"
           paragraph
+          className={classes.descPromotion}
         >
           Di mana aja pasti bisa nginap dong dengan maunginap.com. Mau nginap di
           kost-kotan, kontrakan, penginapan resmi ? mau yang bulanan, harian,
           tahunan ? nggak perlu report dan ribet, pake aja maungingap.com.
         </Typography>
         <div className={classes.heroButtons}>
-          <Grid container spacing={2} justify="center">
+          <Grid
+            container
+            spacing={2}
+            justify="center"
+            className={classes.rootGrid}
+          >
             <Grid item>
-              <Button variant="contained" color="primary">
-                Berkenalan
-              </Button>
+              <ComboBoxLokasi />
             </Grid>
             <Grid item>
-              <Button variant="outlined" color="primary">
-                Keunggulan
+              <ComboBoxJenis />
+            </Grid>
+            <Grid item>
+              <Button
+                size="large"
+                variant="outlined"
+                color="primary"
+                className={classes.btn}
+              >
+                Cari
               </Button>
             </Grid>
           </Grid>
