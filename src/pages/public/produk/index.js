@@ -122,9 +122,7 @@ function HomeProduk() {
         </div>
       </Container>
 
-      {produkItems.length <= 0 && (
-        <Typography>Belum ada data Kost-kostan / peninapan</Typography>
-      )}
+      {produkItems.length <= 0 && <Typography>Loading...</Typography>}
 
       <Grid container spacing={5} className={classes.gridContainer}>
         {produkItems.map((produkDoc) => {

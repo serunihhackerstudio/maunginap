@@ -42,14 +42,14 @@ const Proses = ({ match }) => {
     return <Redirect to="/history" />;
   }
 
-  const steps = ["Shipping address", "Payment details", "Review your order"];
+  const steps = ["Data", "Bayar", "Review"];
 
   return (
     <div>
       <Paper className={classes.paper}>
         <div className={classes.headingCenter}>
-          <Typography variant="h4" color="textSecondary">
-            Menunggu Pross Pembayaran
+          <Typography variant="h6" color="textSecondary">
+            Menunggu Pembayaran
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (

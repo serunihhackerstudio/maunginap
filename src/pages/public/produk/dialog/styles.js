@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   stepper: {
-    padding: theme.spacing(3, 0, 3),
+    padding: theme.spacing(2, 0, 2),
   },
   buttons: {
     display: "flex",

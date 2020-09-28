@@ -6,7 +6,6 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Card from "@material-ui/core/Card";
-
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
@@ -199,7 +198,7 @@ const DialogBooking = ({
     }
   }
 
-  const steps = ["Biodata", "Pembayaran", "Review"];
+  const steps = ["Data", "Bayar", "Review"];
 
   return (
     <div>
