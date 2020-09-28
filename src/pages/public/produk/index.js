@@ -17,6 +17,7 @@ import useStyles from "./styles";
 
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
+import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -51,6 +52,14 @@ function HomeProduk() {
       <Container>
         <Card className={classes.root}>
           <CardActionArea>
+            <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
+          </CardActionArea>
+        </Card>
+      </Container>
+
+      {/* <Container>
+        <Card className={classes.root}>
+          <CardActionArea>
             <CardMedia
               className={classes.mediaPromotion}
               image={
@@ -61,7 +70,7 @@ function HomeProduk() {
             />
           </CardActionArea>
         </Card>
-      </Container>
+      </Container> */}
 
       <Container maxWidth="sm">
         <Typography
