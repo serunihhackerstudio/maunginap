@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -34,7 +32,6 @@ function HomeProduk() {
   const [produkItems, setProdukItems] = useState([]);
 
   // STATUS SUKA
-
   //
   // const { jumlahPesanan2, setJumlahPesanan2 } = useState();
 
@@ -65,9 +62,6 @@ function HomeProduk() {
           </CardActionArea>
         </Card>
       </Container>
-      {/*  */}
-      {/*  */}
-      {/*  */}
 
       <Container maxWidth="sm">
         <Typography

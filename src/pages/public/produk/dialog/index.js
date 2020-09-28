@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import Card from "@material-ui/core/Card";
 
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -199,11 +199,11 @@ const DialogBooking = ({
     }
   }
 
-  const steps = ["Data pemesan", "Metode pembayaran", "Review pesanan"];
+  const steps = ["Biodata", "Pembayaran", "Review"];
 
   return (
     <div>
-      <Paper className={classes.papper}>
+      <Card className={classes.papper}>
         <Stepper activeStep={activeStep} className={classes.stepper}>
           {steps.map((label) => (
             <Step key={label}>
@@ -272,9 +272,7 @@ const DialogBooking = ({
             </React.Fragment>
           )}
         </React.Fragment>
-        {/* </DialogContent> */}
-        {/* </Dialog> */}
-      </Paper>
+      </Card>
     </div>
   );
 };
