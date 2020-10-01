@@ -6,8 +6,16 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import { useFirebase } from "../../../components/FirebaseProvider";
+import { usePesanan } from "../../../components/PesananProvider";
+
 import { useDocument } from "react-firebase-hooks/firestore";
 import AppPageLoading from "../../../components/AppPageLoading";
 import { useSnackbar } from "notistack";
@@ -19,6 +27,7 @@ import SaveIcon from "@material-ui/icons/Save";
 
 // component
 import { Prompt } from "react-router-dom";
+import ComboBoxLokasi from "../../../components/ComboBox/ComboBoxLokasi";
 
 function EditProduk({ match }) {
   // stylesheet
@@ -42,6 +51,8 @@ function EditProduk({ match }) {
     jumlahKamar: "",
     fasilitas: "",
     deskripsi: "",
+    kota: "",
+    jenisPenginapan: "",
   });
 
   const [error, setError] = useState({
@@ -51,8 +62,13 @@ function EditProduk({ match }) {
     jumlahKamar: "",
     fasilitas: "",
     deskripsi: "",
+    kota: "",
+    jenisPenginapan: "",
   });
+  const { jenisPenginapanOpt, kotaOpt } = usePesanan();
 
+  const [valueKota, setKota] = React.useState("");
+  const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [isSubmitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -135,6 +151,12 @@ function EditProduk({ match }) {
     if (!form.deskripsi) {
       newError.deskripsi = "Deskripsi wajib diisi";
     }
+    if (!form.kota) {
+      newError.kota = "kota wajib diisi";
+    }
+    // if (!form.jenisPenginapan) {
+    //   newError.jenisPenginapan = "Jenis penginapan wajib diisi";
+    // }
 
     return newError;
   };
@@ -261,6 +283,60 @@ function EditProduk({ match }) {
               disabled={isSubmitting}
             />
 
+            <Autocomplete
+              className={classes.comboLokasi}
+              value={form.kota}
+              onChange={(event, newValue) => {
+                form.kota = newValue;
+              }}
+              inputValue={valueKota}
+              onInputChange={(event, newInputValue) => {
+                setKota(newInputValue);
+                setSomethingChange(true);
+              }}
+              name="kota"
+              options={kotaOpt}
+              disabled={isSubmitting}
+              style={{ width: 300 }}
+              renderInput={(params) => {
+                console.log(error.kota);
+                return (
+                  <TextField
+                    {...params}
+                    name="kota"
+                    label="Kota"
+                    variant="outlined"
+                    disabled={isSubmitting}
+                  />
+                );
+              }}
+            />
+
+            <Autocomplete
+              className={classes.comboLokasi}
+              value={form.jenisPenginapan}
+              onChange={(event, newValue) => {
+                form.jenisPenginapan = newValue;
+              }}
+              inputValue={valueJenisPenginapan}
+              onInputChange={(event, newInputValue) => {
+                setJenisPenginapan(newInputValue);
+                setSomethingChange(true);
+              }}
+              name="jenisPenginapan"
+              options={jenisPenginapanOpt}
+              disabled={isSubmitting}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Jenis Penginapan"
+                  variant="outlined"
+                  disabled={isSubmitting}
+                />
+              )}
+            />
+
             <TextField
               id="fasilitas"
               name="fasilitas"
@@ -287,6 +363,7 @@ function EditProduk({ match }) {
               helperText={error.deskripsi}
               disabled={isSubmitting}
             />
+
             <div className={classes.actionButton}>
               <Button
                 form="produk-form"

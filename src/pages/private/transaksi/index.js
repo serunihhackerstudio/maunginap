@@ -36,13 +36,15 @@ function Transaksi() {
 
   const approveCallback = (pesananId) => async () => {
     try {
-      await firestore
-        .collection("pesanan")
-        .doc(`${pesananId}`)
-        .set({ approvalStatus: true }, { merge: true });
-      enqueueSnackbar(`Pesanan terkonfirmasi`, {
-        variant: "success",
-      });
+      if (window.confirm("Apakah pesanan ini telah terkonfirmasi ? ")) {
+        await firestore
+          .collection("pesanan")
+          .doc(`${pesananId}`)
+          .set({ approvalStatus: true }, { merge: true });
+        enqueueSnackbar(`Pesanan terkonfirmasi`, {
+          variant: "success",
+        });
+      }
     } catch (e) {}
   };
 

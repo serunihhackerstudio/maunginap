@@ -33,6 +33,16 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(4),
     right: theme.spacing(4),
   },
+  formControl: {
+    minWidth: 250,
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  comboLokasi: {
+    maxWidth: 300,
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
 }));
 
 export default useStyles;
