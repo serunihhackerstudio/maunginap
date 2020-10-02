@@ -25,6 +25,8 @@ function Transaksi() {
   const query = firestore.collection("pesanan");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
+  const [jumlahKamar, setJumlahKamar] = useState(0);
+  const [penginapanId, setPenginapanId] = useState("");
   const classes = useState();
 
   useEffect(() => {
@@ -34,14 +36,49 @@ function Transaksi() {
     }
   }, [snapshot]);
 
-  const approveCallback = (pesananId) => async () => {
+  const approveCallback = (produkdocId) => async () => {
     try {
       if (window.confirm("Apakah pesanan ini telah terkonfirmasi ? ")) {
         await firestore
           .collection("pesanan")
-          .doc(`${pesananId}`)
+          .doc(`${produkdocId}`)
           .set({ approvalStatus: true }, { merge: true });
         enqueueSnackbar(`Pesanan terkonfirmasi`, {
+          variant: "success",
+        });
+      }
+    } catch (e) {}
+  };
+
+  const quitApproval = (produkdocId) => async () => {
+    try {
+      if (window.confirm("Konfirmasi pemesan meninggalkan penginapan ? ")) {
+        await firestore
+          .collection("pesanan")
+          .doc(`${produkdocId}`)
+          .get()
+          .then((res) => {
+            firestore
+              .collection("penginapan")
+              .doc("data")
+              .collection("produk")
+              .doc(res.data().penginapanId)
+              .get()
+              .then((child) => {
+                firestore
+                  .collection("penginapan")
+                  .doc("data")
+                  .collection("produk")
+                  .doc(`${res.data().penginapanId}`)
+                  .set(
+                    { jumlahKamar: child.data().jumlahKamar + 1 },
+                    { merge: true }
+                  );
+              });
+          });
+
+        await firestore.collection("pesanan").doc(`${produkdocId}`).delete();
+        enqueueSnackbar(`Berhasil`, {
           variant: "success",
         });
       }
@@ -61,7 +98,6 @@ function Transaksi() {
       <Grid container spacing={5}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
-          console.log(produkData);
           return (
             <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
               <Card className={classes.root}>
@@ -139,6 +175,17 @@ function Transaksi() {
                     {produkData.approvalStatus
                       ? "Siap ditempati"
                       : "Konfirmasi"}
+                  </Button>
+
+                  <Button
+                    disabled={!produkData.approvalStatus ? true : false}
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                    // onClick={}
+                    onClick={quitApproval(produkDoc.id)}
+                  >
+                    {!produkData.approvalStatus ? "Keluar" : "Keluar"}
                   </Button>
                 </CardActions>
               </Card>
