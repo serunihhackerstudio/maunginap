@@ -164,9 +164,9 @@ function DetailProduk({ match, history, location }) {
                   </Typography>
                 </Typography>
                 <Typography variant="body2" color="error">
-                  {state.jenisPenginapan === "kontrakan"
+                  {state.jenisPenginapan === "Kontrakan"
                     ? ""
-                    : `Sisa ${state.jumlahKamar} kamar lagi`}
+                    : `Sisa ${state.jumlahKamar} kamar`}
                 </Typography>
 
                 <Button
@@ -175,7 +175,7 @@ function DetailProduk({ match, history, location }) {
                   className={classes.btn}
                   variant="contained"
                   color="primary"
-                  disabled={isReserved ? true : false}
+                  disabled={state.jumlahKamar === 0 ? true : false}
                 >
                   {isReserved ? "Soldout" : "Pesan"}
                 </Button>
