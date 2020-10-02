@@ -6,13 +6,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { Typography } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { usePesanan } from "../../../components/PesananProvider";
 
@@ -27,7 +21,6 @@ import SaveIcon from "@material-ui/icons/Save";
 
 // component
 import { Prompt } from "react-router-dom";
-import ComboBoxLokasi from "../../../components/ComboBox/ComboBoxLokasi";
 
 function EditProduk({ match }) {
   // stylesheet

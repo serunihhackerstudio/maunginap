@@ -1,23 +1,27 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { useCollection } from "react-firebase-hooks/firestore";
-import AppPageLoading from "../../../components/AppPageLoading";
+// import { useCollection } from "react-firebase-hooks/firestore";
 
 function Testing() {
-  const { user, firestore } = useFirebase();
-  const query = firestore.collection("pesanan").where("userId", "==", user.uid);
-  const [snapshot, loading] = useCollection(query);
+  const { firestore } = useFirebase();
+  const query = firestore
+    .collection("penginapan")
+    .doc("data")
+    .collection("produk")
+    .where("kota", "==", "Surabaya");
 
-  React.useEffect(() => {
-    if (snapshot) {
-      console.log(snapshot.docs);
-    }
-  }, [snapshot]);
+  // React.useEffect(() => {
+  //   if (snapshot) {
+  //     console.log(snapshot.docs);
+  //   }
+  // }, [snapshot]);
 
-  if (loading) {
-    return <AppPageLoading />;
-  }
+  // if (loading) {
+  //   return <AppPageLoading />;
+  // }
+
+  query.get().then((data) => console.log(data));
 
   return (
     <div>

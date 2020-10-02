@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
+import { usePesanan } from "../../../components/PesananProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -10,6 +11,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Container from "@material-ui/core/Container";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 import { currency } from "../../../utils/formatter";
 // React router
 import { Link } from "react-router-dom";
@@ -17,9 +20,7 @@ import useStyles from "./styles";
 
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
-import SwipeableTextMobileStepper from "../../../components/Slider";
-import ComboBoxLokasi from "../../../components/ComboBox/ComboBoxLokasi";
-import ComboBoxJenis from "../../../components/ComboBox/ComboBoxJenis";
+// import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -33,10 +34,19 @@ function HomeProduk() {
     .collection("produk");
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
+  const [valueKota, setKota] = React.useState("");
+  const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
+  const { jenisPenginapanOpt, kotaOpt } = usePesanan();
 
   // STATUS SUKA
   //
   // const { jumlahPesanan2, setJumlahPesanan2 } = useState();
+
+  const [form, setForm] = useState({
+    kota: "",
+    jenisPenginapan: "",
+  });
+  console.log(setForm);
 
   useEffect(() => {
     if (snapshot) {
@@ -49,27 +59,57 @@ function HomeProduk() {
     return <AppPageLoading />;
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      produkItems !== "" ||
+      (valueKota !== "" && valueJenisPenginapan !== "")
+    ) {
+      await firestore
+        .collection(`penginapan`)
+        .doc("data")
+        .collection("produk")
+        .where("kota", "==", `${valueKota}`)
+        .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
+        .get()
+        .then((data) => setProdukItems(data.docs));
+    }
+    if (valueKota === "" && valueJenisPenginapan === "") {
+      await firestore
+        .collection(`penginapan`)
+        .doc("data")
+        .collection("produk")
+        .get()
+        .then((data) => setProdukItems(data.docs));
+    }
+
+    if (valueKota !== "" && valueJenisPenginapan === "") {
+      await firestore
+        .collection(`penginapan`)
+        .doc("data")
+        .collection("produk")
+        .where("kota", "==", `${valueKota}`)
+        .get()
+        .then((data) => setProdukItems(data.docs));
+    }
+    if (valueKota === "" && valueJenisPenginapan !== "") {
+      await firestore
+        .collection(`penginapan`)
+        .doc("data")
+        .collection("produk")
+        .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
+        .get()
+        .then((data) => setProdukItems(data.docs));
+    }
+  };
+
   return (
     <>
-      <Container>
-        <Card className={classes.root}>
-          <CardActionArea>
-            <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
-          </CardActionArea>
-        </Card>
-      </Container>
-
+      {/* SLIDER */}
       {/* <Container>
         <Card className={classes.root}>
           <CardActionArea>
-            <CardMedia
-              className={classes.mediaPromotion}
-              image={
-                "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2Fbenner%20baru%20kos.jpg?alt=media&token=6daab7ec-e6b1-4df1-a3b1-fadf32c2cb74"
-              }
-              title="Contemplative Reptile"
-              alt="testing"
-            />
+            <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
           </CardActionArea>
         </Card>
       </Container> */}
@@ -95,34 +135,73 @@ function HomeProduk() {
           kost-kotan, kontrakan, penginapan resmi ? mau yang bulanan, harian,
           tahunan ? nggak perlu report dan ribet, pake aja maungingap.com.
         </Typography>
-        <div className={classes.heroButtons}>
-          <Grid
-            container
-            spacing={2}
-            justify="center"
-            className={classes.rootGrid}
-          >
-            <Grid item>
-              <ComboBoxLokasi />
+        <form id="produk-form" onSubmit={handleSubmit} noValidate>
+          <div className={classes.heroButtons}>
+            <Grid
+              container
+              spacing={2}
+              justify="center"
+              className={classes.rootGrid}
+            >
+              <Grid item>
+                <Autocomplete
+                  className={classes.comboLokasi}
+                  value={form.kota}
+                  onChange={(event, newValue) => {
+                    form.kota = newValue;
+                  }}
+                  inputValue={valueKota}
+                  onInputChange={(event, newInputValue) => {
+                    setKota(newInputValue);
+                  }}
+                  name="kota"
+                  options={kotaOpt}
+                  style={{ width: 200 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Kota" variant="outlined" />
+                  )}
+                />
+              </Grid>
+              <Grid item>
+                <Autocomplete
+                  className={classes.comboLokasi}
+                  value={form.jenisPenginapan}
+                  onChange={(event, newValue) => {
+                    form.jenisPenginapan = newValue;
+                  }}
+                  inputValue={valueJenisPenginapan}
+                  onInputChange={(event, newInputValue) => {
+                    setJenisPenginapan(newInputValue);
+                  }}
+                  name="jenisPenginapan"
+                  options={jenisPenginapanOpt}
+                  style={{ width: 200 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Jenis Penginapan"
+                      variant="outlined"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  size="large"
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                  className={classes.btn}
+                >
+                  Cari
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item>
-              <ComboBoxJenis />
-            </Grid>
-            <Grid item>
-              <Button
-                size="large"
-                variant="outlined"
-                color="primary"
-                className={classes.btn}
-              >
-                Cari
-              </Button>
-            </Grid>
-          </Grid>
-        </div>
+          </div>
+        </form>
       </Container>
 
-      {produkItems.length <= 0 && <Typography>Loading...</Typography>}
+      {produkItems.length <= 0 && <AppPageLoading />}
 
       <Grid container spacing={5} className={classes.gridContainer}>
         {produkItems.map((produkDoc) => {
