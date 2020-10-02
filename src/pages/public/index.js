@@ -124,6 +124,8 @@ function DetailBooking({ history, location }) {
                 exact
                 children="Progress Pembayaran"
               />
+
+              <Route path="/history" exact children="History Pesanan" />
             </Switch>
             {/* LOGO TITLE */}
           </Typography>
