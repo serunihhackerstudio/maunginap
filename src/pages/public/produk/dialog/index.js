@@ -43,7 +43,6 @@ const DialogBooking = ({
   const [form, setForm] = useState({
     namaKTP: "",
     nomorKTP: "",
-    kamarNo: "",
     jenisIuran: jenisIuran,
     tanggalPesan: new Date(),
     nomorHpWa: "",
@@ -53,11 +52,12 @@ const DialogBooking = ({
   const [error, setError] = useState({
     namaKTP: "",
     nomorKTP: "",
-    kamarNo: "",
     pilihBank: "",
     tanggalPesan: "",
     nomorHpWa: "",
   });
+
+  const [jumlahKamar, setJumlahKamar] = useState(0);
 
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
@@ -85,6 +85,14 @@ const DialogBooking = ({
 
   // pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
   pesanProduk = firestore.collection("pesanan").doc(`${idGenerator}`);
+
+  const produk = firestore
+    .collection("penginapan")
+    .doc("data")
+    .collection("produk")
+    .doc(`${match.params.penginapanId}`);
+  console.log("JUMLAH PENGINAPAN");
+  produk.get().then((res) => setJumlahKamar(res.data().jumlahKamar));
 
   // memasukan data tambahan ke form
   form.namaPenginapan = formPesanan.namaPenginapan;
@@ -121,10 +129,6 @@ const DialogBooking = ({
     if (!form.nomorKTP) {
       newError.nomorKTP = "Nomor KTP wajib diisi";
     }
-
-    if (!form.kamarNo) {
-      newError.kamarNo = "Jumlah kamar harus diisi";
-    }
     if (!form.tanggalPesan) {
       newError.tanggalPesan = "Tanggal pesan harus diisi";
     }
@@ -144,6 +148,7 @@ const DialogBooking = ({
         setError(findError);
       } else {
         await pesanProduk.set({ ...form }, { merge: false });
+        await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
         history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }
     } catch (e) {

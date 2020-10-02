@@ -38,20 +38,7 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
         error={error.nomorKTP ? true : false}
         disabled={isSubmitting}
       />
-      <TextField
-        id="kamarNo"
-        name="kamarNo"
-        label="Nomor Kamar "
-        type="number"
-        required
-        fullWidth
-        margin="normal"
-        value={form.kamarNo}
-        onChange={handleChange}
-        helperText={error.kamarNo}
-        error={error.kamarNo ? true : false}
-        disabled={isSubmitting}
-      />
+
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <DatePicker
           value={selectedDate}

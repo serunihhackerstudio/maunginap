@@ -163,6 +163,11 @@ function DetailProduk({ match, history, location }) {
                     / bulan
                   </Typography>
                 </Typography>
+                <Typography variant="body2" color="error">
+                  {state.jenisPenginapan === "kontrakan"
+                    ? ""
+                    : `Sisa ${state.jumlahKamar} kamar lagi`}
+                </Typography>
 
                 <Button
                   onClick={handleOpenDialog}
