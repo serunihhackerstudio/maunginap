@@ -20,11 +20,14 @@ import useStyles from "./styles";
 
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 // import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import datanotfound from "../../../assets/datanotfound.png";
+import clsx from "clsx";
 
 function HomeProduk() {
   const classes = useStyles();
@@ -38,6 +41,14 @@ function HomeProduk() {
   const [valueKota, setKota] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const { jenisPenginapanOpt, kotaOpt } = usePesanan();
+
+  const [success, setSuccess] = React.useState(false);
+  const [loadingBtn, setLoading] = React.useState(false);
+
+  const timer = React.useRef();
+  const buttonClassname = clsx({
+    [classes.buttonSuccess]: success,
+  });
 
   // STATUS SUKA
   //
@@ -56,12 +67,26 @@ function HomeProduk() {
     }
   }, [snapshot]);
 
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
   if (loading) {
     return <AppPageLoading />;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!loadingBtn) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 1500);
+    }
     if (
       produkItems !== "" ||
       (valueKota !== "" && valueJenisPenginapan !== "")
@@ -101,6 +126,17 @@ function HomeProduk() {
         .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
         .get()
         .then((data) => setProdukItems(data.docs));
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (!loadingBtn) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 2000);
     }
   };
 
@@ -193,8 +229,16 @@ function HomeProduk() {
                   variant="outlined"
                   color="primary"
                   className={classes.btn}
+                  disabled={loadingBtn}
                 >
-                  Cari
+                  {loadingBtn ? (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  ) : (
+                    "Cari"
+                  )}
                 </Button>
               </Grid>
             </Grid>

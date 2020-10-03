@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     height: 55,
+    width: 100,
   },
   descPromotion: {
     marginBottom: theme.spacing(4),
