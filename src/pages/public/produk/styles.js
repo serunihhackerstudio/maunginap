@@ -52,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
   descPromotion: {
     marginBottom: theme.spacing(4),
   },
+  textNoFound: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: theme.spacing(8),
+  },
 }));
 
 export default useStyles;

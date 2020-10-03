@@ -24,6 +24,7 @@ import AppPageLoading from "../../../components/AppPageLoading";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import datanotfound from "../../../assets/datanotfound.png";
 
 function HomeProduk() {
   const classes = useStyles();
@@ -201,6 +202,18 @@ function HomeProduk() {
         </form>
       </Container>
 
+      {produkItems.length === 0 && (
+        <div className={classes.textNoFound}>
+          <img src={datanotfound} width={350} />
+        </div>
+        // <Typography
+        //   variant="h5"
+        //   color="primary"
+        //   className={classes.textNoFound}
+        // >
+        //   Data tidak ditemukan
+        // </Typography>
+      )}
       {produkItems.length <= 0 && <AppPageLoading />}
 
       <Grid container spacing={5} className={classes.gridContainer}>
