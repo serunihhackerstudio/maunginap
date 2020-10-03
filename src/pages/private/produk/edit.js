@@ -58,7 +58,7 @@ function EditProduk({ match }) {
     kota: "",
     jenisPenginapan: "",
   });
-  const { jenisPenginapanOpt, kotaOpt } = usePesanan();
+  const { jenisPenginapanOpt } = usePesanan();
 
   const [valueKota, setKota] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
@@ -66,16 +66,29 @@ function EditProduk({ match }) {
 
   useEffect(() => {
     if (snapshot) {
-      // setForm( {
-      //     ...form,
-      //     ...snapshot.data()
-      // })
       setForm((currentForm) => ({
         ...currentForm,
         ...snapshot.data(),
       }));
     }
   }, [snapshot]);
+
+  // QUERY DATA KOTA
+  // const [kotaOpt, setataKota] = React.useState([]);
+  let dataKota = new Set([]);
+  const kotaOptStore = [];
+  const kotaOpt = [];
+  firestore
+    .collection("kota")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        kotaOpt.push(doc.data().kota);
+      });
+    });
+
+  // filter duplicate data
+  kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
 
   const handleChange = (e) => {
     setForm({

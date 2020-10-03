@@ -261,11 +261,11 @@ function DetailBooking({ history, location }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Konfirmasi Sign Out !"}
+          {"Konfirmasi sign out"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Apakah Anda yakin ingin keluar / sign out dari akun Anda ?
+            Apakah Anda yakin ingin keluar dari akun Anda ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -192,9 +192,10 @@ function RegistrasiUser({ match }) {
                 disabled={isSubmitting}
                 component={Link}
                 type="submit"
-                variant="contained"
+                variant="outlined"
                 size="large"
                 to="/login"
+                color="primary"
               >
                 Login
               </Button>

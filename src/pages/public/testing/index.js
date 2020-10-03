@@ -5,11 +5,16 @@ import { useFirebase } from "../../../components/FirebaseProvider";
 
 function Testing() {
   const { firestore } = useFirebase();
-  const query = firestore
-    .collection("penginapan")
-    .doc("data")
-    .collection("produk")
-    .where("kota", "==", "Surabaya");
+  const [dataKota, setataKota] = React.useState([]);
+  firestore
+    .collection("kota")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        dataKota.push(doc.data());
+      });
+    });
+  console.log(dataKota);
 
   // React.useEffect(() => {
   //   if (snapshot) {
@@ -20,8 +25,6 @@ function Testing() {
   // if (loading) {
   //   return <AppPageLoading />;
   // }
-
-  query.get().then((data) => console.log(data));
 
   return (
     <div>

@@ -6,7 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles.js";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import HomeIcon from "@material-ui/icons/Home";
 import { useSnackbar } from "notistack";
+import fingerprint from "../../assets/fingerprint.png";
 
 // import react router dom
 import { Link, Redirect } from "react-router-dom";
@@ -18,6 +20,9 @@ import { useFirebase } from "../../components/FirebaseProvider";
 
 // app component
 import AppLoading from "../../components/AppLoading";
+
+// icon
+import FingerprintIcon from "@material-ui/icons/Fingerprint";
 
 function Login(props) {
   const { location } = props;
@@ -92,14 +97,7 @@ function Login(props) {
           setAdminPass(form.password);
         } else {
           enqueueSnackbar("User atau password salah", { variant: "error" });
-          // if (
-          //   window.confirm(
-          //     "Password Anda Salah, silahkan hubungi owner maunginap.com"
-          //   )
-          // ) {
-          // }
         }
-        // await auth.signInWithEmailAndPassword(form.email, form.password);
       } catch (e) {
         const newError = {};
         switch (e.code) {
@@ -116,10 +114,6 @@ function Login(props) {
     }
   };
 
-  // if (loading) {
-  //   return <AppLoading message="Memuat data..." />;
-  // }
-
   if (adminUser) {
     const redirectTo =
       location.state && location.state.from && location.state.from.pathname
@@ -131,8 +125,16 @@ function Login(props) {
   return (
     <Container maxWidth="xs">
       <Paper className={classes.paper}>
-        <Typography variant="h5" component="h1" className={classes.title}>
-          Login
+        <div className={classes.title}>
+          <img src={fingerprint} alt="super-admin-login" width={100} />
+        </div>
+        <Typography
+          variant="body1"
+          component="h1"
+          className={classes.title}
+          color="textSecondary"
+        >
+          Super Admin Login
         </Typography>
 
         <form onSubmit={handleSubmit} noValidate>
@@ -178,22 +180,19 @@ function Login(props) {
             </Grid>
             <Grid item>
               <Button
+                startIcon={<HomeIcon />}
                 disabled={isSubmitting}
                 component={Link}
                 type="submit"
-                variant="contained"
+                variant="outlined"
+                color="primary"
+                to="/"
                 size="large"
-                to="/registrasi"
               >
-                Daftar
+                Home
               </Button>
             </Grid>
           </Grid>
-          <div className={classes.forgotPassword}>
-            <Typography component={Link} to="/lupa-password">
-              Lupa Password
-            </Typography>
-          </div>
         </form>
       </Paper>
     </Container>

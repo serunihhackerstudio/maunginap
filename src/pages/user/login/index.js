@@ -23,6 +23,9 @@ import { usePesanan } from "../../../components/PesananProvider";
 // app component
 import AppLoading from "../../../components/AppLoading";
 
+// asset
+import userLogo from "../../../assets/user.png";
+
 function LoginUser(props) {
   // ambil state openAlert
   const { needLogin, setNeedLogin } = usePesanan();
@@ -154,8 +157,16 @@ function LoginUser(props) {
       )}
 
       <Paper className={classes.paper}>
-        <Typography variant="h5" component="h1" className={classes.title}>
-          Login User
+        <div className={classes.title}>
+          <img src={userLogo} alt="user-login" width={100} />
+        </div>
+        <Typography
+          variant="body1"
+          component="h1"
+          className={classes.title}
+          color="textSecondary"
+        >
+          User Login
         </Typography>
         <form onSubmit={handleSubmit} noValidate>
           <TextField
@@ -203,9 +214,10 @@ function LoginUser(props) {
                 disabled={isSubmitting}
                 component={Link}
                 type="submit"
-                variant="contained"
+                variant="outlined"
                 size="large"
                 to="/user/registrasi"
+                color="primary"
               >
                 Daftar
               </Button>
