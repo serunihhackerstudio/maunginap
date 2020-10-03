@@ -1,10 +1,11 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
+import AppLoading from "../../../components/AppLoading";
 
 function Home() {
   return (
     <>
-      <Typography variant="h5">Dashboard</Typography>
+      <AppLoading message={"Wellcome to Super Admin Page"} />
     </>
   );
 }

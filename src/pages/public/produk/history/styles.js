@@ -37,6 +37,11 @@ const useStyles = makeStyles((theme) => ({
   waiting: {
     fontSize: 12,
   },
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing(4),
+    right: theme.spacing(4),
+  },
 }));
 
 export default useStyles;

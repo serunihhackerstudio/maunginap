@@ -87,6 +87,10 @@ function Transaksi() {
     return <AppPageLoading />;
   }
 
+  // produkItems.forEach((data) =>
+  //   console.log(new Date(data.data().tanggalPesan["seconds"] * 1000))
+  // );
+
   return (
     <>
       {produkItems.length <= 0 && (
@@ -96,6 +100,9 @@ function Transaksi() {
       <Grid container spacing={5}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
+          const dateBooking = new Date(
+            produkDoc.data().tanggalPesan["seconds"] * 1000
+          );
           return (
             <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
               <Card className={classes.root}>
@@ -120,7 +127,20 @@ function Transaksi() {
                       {produkData.kodeBooking}
                     </Typography>
                     <Typography variant="body1" color="primary" component="p">
-                      <strong>informasi tambahan :</strong>
+                      <strong>Tanggal booking :</strong>
+                    </Typography>
+
+                    <Typography variant="body1" component="p">
+                      {JSON.stringify(dateBooking.toLocaleString())}
+                    </Typography>
+
+                    <Typography
+                      variant="body1"
+                      color="primary"
+                      component="p"
+                      color="textSecondary"
+                    >
+                      <strong>Informasi tambahan :</strong>
                     </Typography>
 
                     <Typography

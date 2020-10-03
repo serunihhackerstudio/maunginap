@@ -10,10 +10,17 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+// react-hook
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { usePesanan } from "../../../../components/PesananProvider";
+
+// button
+import Fab from "@material-ui/core/Fab";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 // react-router
+import { Link } from "react-router-dom";
 
 import AppLoading from "../../../../components/AppLoading";
 
@@ -77,7 +84,7 @@ function History({ match, history, location }) {
             <TableRow>
               <TableCell align="center">#</TableCell>
               <TableCell>Penginapan</TableCell>
-              <TableCell align="center">Jenis Iuran</TableCell>
+              <TableCell align="center">Tanggal Pesan</TableCell>
               <TableCell align="center">Total</TableCell>
               <TableCell align="center">Status Pembayaran</TableCell>
             </TableRow>
@@ -85,29 +92,38 @@ function History({ match, history, location }) {
           <TableBody>
             {state.map((produk) => {
               const dataProduk = produk.data();
+              const dateBooking = new Date(
+                produk.data().tanggalPesan["seconds"] * 1000
+              );
               return (
                 <TableRow>
                   <TableCell align="center">
-                    <img
-                      aria-hidden
-                      alt={`image${dataProduk.namaPenginapan}`}
-                      src={dataProduk.foto}
-                      width={150}
-                    />
+                    <a href={`${dataProduk.foto}`}>
+                      <img
+                        aria-hidden
+                        alt={`image${dataProduk.namaPenginapan}`}
+                        src={dataProduk.foto}
+                        width={150}
+                      />
+                    </a>
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    <Typography variant="body1">
+                    <Typography
+                      variant="body1"
+                      component={Link}
+                      to={`/view/penginapan/${produk.data().penginapanId}`}
+                    >
                       {dataProduk.namaPenginapan}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="body1">
-                      {dataProduk.jenisIuran}
+                      {JSON.stringify(dateBooking.toLocaleString())}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="body1">
-                      {currency(dataProduk.harga)}
+                      {currency(dataProduk.harga)} / {dataProduk.jenisIuran}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
@@ -135,6 +151,15 @@ function History({ match, history, location }) {
           </TableBody>
         </Table>
       </TableContainer>
+      <Fab
+        color="primary"
+        className={classes.fab}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        <ArrowBackIcon />
+      </Fab>
     </div>
   );
 }
