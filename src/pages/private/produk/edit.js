@@ -250,19 +250,6 @@ function EditProduk({ match }) {
             />
 
             <TextField
-              id="jumlahKamar"
-              name="jumlahKamar"
-              label="Jumlah Kamar"
-              margin="normal"
-              type="number"
-              fullWidth
-              value={form.jumlahKamar}
-              onChange={handleChange}
-              error={error.jumlahKamar ? true : false}
-              helperText={error.jumlahKamar}
-              disabled={isSubmitting}
-            />
-            <TextField
               id="lokasi"
               name="lokasi"
               label="Lokasi Penginapan"
@@ -328,6 +315,30 @@ function EditProduk({ match }) {
                   disabled={isSubmitting}
                 />
               )}
+            />
+
+            <TextField
+              id="jumlahKamar"
+              name="jumlahKamar"
+              label={
+                form.jenisPenginapan === "Kontrakan"
+                  ? "Jumlah Rumah Kontrakan"
+                  : "Jumlah Kamar"
+              }
+              margin="normal"
+              type="number"
+              fullWidth
+              value={
+                form.jenisPenginapan === "Kontrakan"
+                  ? (form.jumlahKamar = 1)
+                  : form.jumlahKamar
+              }
+              onChange={handleChange}
+              error={error.jumlahKamar ? true : false}
+              helperText={error.jumlahKamar}
+              disabled={
+                form.jenisPenginapan === "Kontrakan" ? true : isSubmitting
+              }
             />
 
             <TextField
