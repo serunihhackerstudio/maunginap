@@ -18,6 +18,9 @@ import { useFirebase } from "../../../components/FirebaseProvider";
 // app component
 import AppLoading from "../../../components/AppLoading";
 
+// asset
+import userLogo from "../../../assets/user.png";
+
 function RegistrasiUser({ match }) {
   // untuk keperluan styling
   const classes = useStyles();
@@ -128,8 +131,16 @@ function RegistrasiUser({ match }) {
   return (
     <Container maxWidth="xs">
       <Paper className={classes.paper}>
-        <Typography variant="h5" component="h1" className={classes.title}>
-          Buat Akun User Baru
+        <div className={classes.title}>
+          <img src={userLogo} alt="user-regist" width={100} />
+        </div>
+        <Typography
+          variant="body1"
+          component="h1"
+          className={classes.title}
+          color="textSecondary"
+        >
+          Buat Akun Baru
         </Typography>
 
         <form onSubmit={handleSubmit} noValidate>
