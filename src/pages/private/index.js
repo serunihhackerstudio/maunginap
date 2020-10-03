@@ -39,7 +39,7 @@ import { Divider } from "@material-ui/core";
 export default function Private(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { auth } = useFirebase();
+  const { setAdminUser, setAdminPass } = useFirebase();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -49,8 +49,13 @@ export default function Private(props) {
   };
 
   const handleSignOut = (e) => {
-    if (window.confirm("Apakah Anda yakin ingin keluar ? ")) auth.signOut();
-    props.history.push("/");
+    if (window.confirm("Apakah Anda yakin ingin keluar ? ")) {
+      setAdminUser("");
+      setAdminPass("");
+    }
+    props.history.push(
+      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/admin/login"
+    );
   };
 
   return (

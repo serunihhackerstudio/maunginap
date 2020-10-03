@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles.js";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import { useSnackbar } from "notistack";
 
 // import react router dom
 import { Link, Redirect } from "react-router-dom";
@@ -22,6 +23,7 @@ function Login(props) {
   const { location } = props;
   // untuk keperluan styling
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   // untuk form form nya
   const [form, setForm] = useState({
@@ -40,7 +42,7 @@ function Login(props) {
   const [isSubmitting, setSubmitting] = useState(false);
 
   // untk keperluan authentikasi
-  const { auth, user, loading } = useFirebase();
+  const { adminUser, adminPass, setAdminUser, setAdminPass } = useFirebase();
 
   const handleChange = (e) => {
     // teknik tercepat untuk perubahan value/nilai di form input
@@ -81,23 +83,28 @@ function Login(props) {
       setError(findErrors);
     } else {
       try {
-        setSubmitting(true);
-        await auth.signInWithEmailAndPassword(form.email, form.password);
+        if (
+          form.email === "admin@maunginap.com" &&
+          form.password === "wecanmakeit"
+        ) {
+          setSubmitting(true);
+          setAdminUser(form.email);
+          setAdminPass(form.password);
+        } else {
+          enqueueSnackbar("User atau password salah", { variant: "error" });
+          // if (
+          //   window.confirm(
+          //     "Password Anda Salah, silahkan hubungi owner maunginap.com"
+          //   )
+          // ) {
+          // }
+        }
+        // await auth.signInWithEmailAndPassword(form.email, form.password);
       } catch (e) {
         const newError = {};
-
         switch (e.code) {
-          case "auth/user-not-found":
-            newError.email = "Email tidak terdaftar";
-            break;
           case "auth/invalid-email":
             newError.email = "Email tidak valid";
-            break;
-          case "auth/wrong-password":
-            newError.password = "Password salah";
-            break;
-          case "auth/user-disabled":
-            newError.email = "Pengguna diblokir";
             break;
           default:
             newError.email = "Terjadi kesalahan. Silahkan dicoba lagi";
@@ -109,11 +116,11 @@ function Login(props) {
     }
   };
 
-  if (loading) {
-    return <AppLoading message="Memuat data..." />;
-  }
+  // if (loading) {
+  //   return <AppLoading message="Memuat data..." />;
+  // }
 
-  if (user) {
+  if (adminUser) {
     const redirectTo =
       location.state && location.state.from && location.state.from.pathname
         ? location.state.from.pathname

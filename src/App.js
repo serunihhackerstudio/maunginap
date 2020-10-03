@@ -43,8 +43,14 @@ function App() {
                   <Route path="/testing/checkout" component={Checkout} />
                   {/* <Route path="/view" component={Home} /> */}
                   {/* <Route path="/user/login" component={LoginUser} /> */}
-                  <Route path="/admin2020/registrasi" component={Registrasi} />
-                  <Route path="/admin2020/login" component={Login} />
+                  <Route
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/registrasi"
+                    component={Registrasi}
+                  />
+                  <Route
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/admin/login"
+                    component={Login}
+                  />
                   <Route path="/user/registrasi" component={RegistrasiUser} />
                   <Route path="/lupa-password" component={LupaPassword} />
                   <Route path="/user" component={User} />

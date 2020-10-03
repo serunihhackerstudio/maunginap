@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -20,10 +20,15 @@ function FirebaseProvider(props) {
   const firestore = firebase.firestore();
   const storage = firebase.storage();
   const [user, loading, error] = useAuthState(auth);
-
+  const [adminUser, setAdminUser] = useState("");
+  const [amdinPass, setAdminPass] = useState("");
   return (
     <FirebaseContext.Provider
       value={{
+        adminUser,
+        amdinPass,
+        setAdminUser,
+        setAdminPass,
         auth,
         firestore,
         storage,

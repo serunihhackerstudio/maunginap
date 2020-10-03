@@ -6,8 +6,8 @@ import Tab from "@material-ui/core/Tab";
 import Paper from "@material-ui/core/Paper";
 
 import { Switch, Route, Redirect } from "react-router-dom";
-import Admin from "./admin";
-import Identitas from "./identitas";
+import SuperAdmin from "./superAdmin";
+import IdentitasAdmin from "./identitasAdmin";
 import Kota from "./kota";
 import useStyles from "./styles";
 
@@ -32,8 +32,8 @@ function Pengaturan(props) {
       </Tabs>
       <div className={classes.tabContent}>
         <Switch>
-          <Route path="/pengaturan/admin" component={Admin} />
-          <Route path="/pengaturan/identitas" component={Identitas} />
+          <Route path="/pengaturan/admin" component={SuperAdmin} />
+          <Route path="/pengaturan/identitas" component={IdentitasAdmin} />
           <Route path="/pengaturan/kota" component={Kota} />
           <Redirect to="/pengaturan/admin" />
         </Switch>
