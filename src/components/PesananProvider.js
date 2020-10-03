@@ -44,7 +44,7 @@ const PesananProvider = (props) => {
   const progressPembayaran =
     "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini : ";
   const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan", "Hostel"];
-  const kotaOpt = ["Surabaya", "Jakarta", "Bandung", "Mataram"];
+  const kotaOpt = ["Surabaya", "Mataram"];
   const [formPesanan, setFormPesanan] = React.useState({});
   return (
     <PesananContext.Provider
