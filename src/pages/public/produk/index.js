@@ -204,7 +204,7 @@ function HomeProduk() {
 
       {produkItems.length === 0 && (
         <div className={classes.textNoFound}>
-          <img src={datanotfound} width={350} />
+          <img src={datanotfound} width={350} alt="Data not found" />
         </div>
         // <Typography
         //   variant="h5"
@@ -230,7 +230,7 @@ function HomeProduk() {
                     className={classes.media}
                     image={produkData.foto}
                     title="Contemplative Reptile"
-                    alt="testing"
+                    alt={`gambar-${produkDoc.id}`}
                   />
                   <CardContent>
                     <Typography variant="h5" component="h2">
