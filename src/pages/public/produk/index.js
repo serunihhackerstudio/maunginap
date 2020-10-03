@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { usePesanan } from "../../../components/PesananProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -23,18 +23,38 @@ import useStyles from "./styles";
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
-// import SwipeableTextMobileStepper from "../../../components/Slider";
+import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import datanotfound from "../../../assets/datanotfound.png";
-import clsx from "clsx";
+// import datanotfound from "../../../assets/datanotfound.png";
+
+/*
+Fitur untuk autoscroll view
+@function body
+const el = useRef(null);
+
+@useEffect
+el.current.scrollIntoView({ block: "end", behavior: "smooth" });
+
+@HTML
+  id={"el"}
+  ref={el}
+*/
 
 function HomeProduk() {
   const classes = useStyles();
   const { firestore } = useFirebase();
+  const defaultNumPage = 5;
+  const [numPage, setNumPage] = useState(defaultNumPage);
   const dataDoc = firestore
+    .collection(`penginapan`)
+    .doc("data")
+    .collection("produk")
+    .orderBy("namaPenginapan")
+    .limit(numPage);
+
+  const dataDocMax = firestore
     .collection(`penginapan`)
     .doc("data")
     .collection("produk");
@@ -47,6 +67,9 @@ function HomeProduk() {
   const [success, setSuccess] = React.useState(false);
   const [loadingBtn, setLoading] = React.useState(false);
 
+  // hilangkan fab ketika tombol search diaktifkan
+  const [searchingActivate, setSearchingActivate] = useState(false);
+
   const timer = React.useRef();
 
   const [form, setForm] = useState({
@@ -54,21 +77,24 @@ function HomeProduk() {
     jenisPenginapan: "",
   });
 
-  // useEffect(() => {
-  //   if (snapshot) {
-  //     setProdukItems(snapshot.docs);
-  //     console.log(snapshot.docs);
-  //   }
-  // }, [snapshot]);
-  const defaultNumPage = 5;
-  const [numPage, setNumPage] = useState(defaultNumPage);
-  dataDoc
-    .orderBy("namaPenginapan")
-    .limit(numPage)
-    .get()
-    .then((data) => setProdukItems(data.docs));
+  const el = useRef(null);
+  const [isNextClicked, setNextClicked] = useState(false);
 
-  const loadNextData = () => {
+  useEffect(() => {
+    if (snapshot) {
+      setProdukItems(snapshot.docs);
+      if (isNextClicked) {
+        el.current.scrollIntoView({ block: "end", behavior: "smooth" });
+      }
+    }
+  }, [snapshot, isNextClicked]);
+
+  const [maxData, setMaxData] = useState(0);
+  dataDocMax.get().then((data) => setMaxData(data.docs.length));
+
+  const loadNextData = (e) => {
+    e.preventDefault();
+    setNextClicked(true);
     setNumPage(numPage + defaultNumPage);
   };
 
@@ -83,6 +109,7 @@ function HomeProduk() {
   }
 
   const handleSubmit = async (e) => {
+    setSearchingActivate(true);
     e.preventDefault();
     if (!loadingBtn) {
       setSuccess(false);
@@ -110,8 +137,11 @@ function HomeProduk() {
         .collection(`penginapan`)
         .doc("data")
         .collection("produk")
+        .orderBy("namaPenginapan")
+        .limit(numPage)
         .get()
         .then((data) => setProdukItems(data.docs));
+      setSearchingActivate(false);
     }
 
     if (valueKota !== "" && valueJenisPenginapan === "") {
@@ -137,13 +167,13 @@ function HomeProduk() {
   return (
     <>
       {/* SLIDER */}
-      {/* <Container>
+      <Container>
         <Card className={classes.root}>
           <CardActionArea>
             <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
           </CardActionArea>
         </Card>
-      </Container> */}
+      </Container>
 
       <Container maxWidth="sm">
         <Typography
@@ -240,18 +270,11 @@ function HomeProduk() {
         </form>
       </Container>
 
-      {produkItems.length === 0 && (
+      {/* {produkItems.length === 0 && (
         <div className={classes.textNoFound}>
           <img src={datanotfound} width={350} alt="Data not found" />
         </div>
-        // <Typography
-        //   variant="h5"
-        //   color="primary"
-        //   className={classes.textNoFound}
-        // >
-        //   Data tidak ditemukan
-        // </Typography>
-      )}
+      )} */}
       {produkItems.length <= 0 && <AppPageLoading />}
 
       <Grid container spacing={5} className={classes.gridContainer}>
@@ -300,10 +323,15 @@ function HomeProduk() {
             </Grid>
           );
         })}
-        <Grid className={classes.fabGrid}>
-          <Fab color="primary" className={classes.fab} onClick={loadNextData}>
-            <ArrowForwardIcon />
-          </Fab>
+        <Grid className={classes.fabGrid} id={"el"} ref={el}>
+          {produkItems.length !== maxData && !searchingActivate ? (
+            <Fab color="primary" className={classes.fab} onClick={loadNextData}>
+              <ArrowForwardIcon />
+            </Fab>
+          ) : (
+            <></>
+          )}
+          {/* {searchingActivate && <></>} */}
         </Grid>
       </Grid>
     </>

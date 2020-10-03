@@ -118,7 +118,7 @@ function LoginUser(props) {
   };
 
   if (loading) {
-    return <AppLoading />;
+    return <AppLoading message="Loading..." />;
   }
 
   if (user) {

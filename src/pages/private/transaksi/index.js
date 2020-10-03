@@ -25,8 +25,6 @@ function Transaksi() {
   const query = firestore.collection("pesanan");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
-  const [jumlahKamar, setJumlahKamar] = useState(0);
-  const [penginapanId, setPenginapanId] = useState("");
   const classes = useState();
 
   useEffect(() => {

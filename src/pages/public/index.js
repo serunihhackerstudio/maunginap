@@ -37,7 +37,6 @@ import useStyles from "./styles";
 
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
-import { usePesanan } from "../../components/PesananProvider";
 import { Divider } from "@material-ui/core";
 
 // pages
@@ -47,7 +46,6 @@ import Proses from "./produk/bayar/proses";
 import History from "./produk/history";
 import DialogBooking from "./produk/dialog/index";
 import Testing from "./testing";
-import { useCollection } from "react-firebase-hooks/firestore";
 
 function DetailBooking({ history, location }) {
   const classes = useStyles();
