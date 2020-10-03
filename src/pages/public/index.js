@@ -47,13 +47,20 @@ import Proses from "./produk/bayar/proses";
 import History from "./produk/history";
 import DialogBooking from "./produk/dialog/index";
 import Testing from "./testing";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 function DetailBooking({ history, location }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { auth, user } = useFirebase();
+  const { auth, user, firestore } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
-  const { jumlahPesanan } = usePesanan();
+  const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
+
+  firestore
+    .collection("pesanan")
+    .where("userId", "==", user.uid)
+    .get()
+    .then((data) => setJumlahPesanan(data.docs.length));
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
