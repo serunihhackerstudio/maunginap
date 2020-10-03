@@ -75,8 +75,6 @@ function EditProduk({ match }) {
 
   // QUERY DATA KOTA
   // const [kotaOpt, setataKota] = React.useState([]);
-  let dataKota = new Set([]);
-  const kotaOptStore = [];
   const kotaOpt = [];
   firestore
     .collection("kota")

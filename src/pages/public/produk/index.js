@@ -62,7 +62,7 @@ function HomeProduk() {
   const [produkItems, setProdukItems] = useState([]);
   const [valueKota, setKota] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
-  const { jenisPenginapanOpt, kotaOpt } = usePesanan();
+  const { jenisPenginapanOpt } = usePesanan();
 
   const [success, setSuccess] = React.useState(false);
   const [loadingBtn, setLoading] = React.useState(false);
@@ -88,6 +88,20 @@ function HomeProduk() {
       }
     }
   }, [snapshot, isNextClicked]);
+
+  // Options item for search feature
+  const kotaOpt = [];
+  firestore
+    .collection("kota")
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        kotaOpt.push(doc.data().kota);
+      });
+    });
+
+  // filter duplicate data
+  kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
 
   const [maxData, setMaxData] = useState(0);
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
