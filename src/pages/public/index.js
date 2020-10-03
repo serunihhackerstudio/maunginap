@@ -209,7 +209,7 @@ function DetailBooking({ history, location }) {
                   <ListItemIcon>
                     <FilterListIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Filter" />
+                  <ListItemText primary="Testing" />
                 </ListItem>
               );
             }}
