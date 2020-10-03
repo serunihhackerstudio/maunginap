@@ -2,9 +2,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
-    position: "absolute",
-    bottom: theme.spacing(4),
-    right: theme.spacing(4),
+    marginLeft: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  fabGrid: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   card: {
     display: "flex",

@@ -3,7 +3,9 @@ import { useFirebase } from "../../../components/FirebaseProvider";
 import { usePesanan } from "../../../components/PesananProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -46,26 +48,29 @@ function HomeProduk() {
   const [loadingBtn, setLoading] = React.useState(false);
 
   const timer = React.useRef();
-  const buttonClassname = clsx({
-    [classes.buttonSuccess]: success,
-  });
-
-  // STATUS SUKA
-  //
-  // const { jumlahPesanan2, setJumlahPesanan2 } = useState();
 
   const [form, setForm] = useState({
     kota: "",
     jenisPenginapan: "",
   });
-  console.log(setForm);
 
-  useEffect(() => {
-    if (snapshot) {
-      setProdukItems(snapshot.docs);
-      console.log(snapshot.docs);
-    }
-  }, [snapshot]);
+  // useEffect(() => {
+  //   if (snapshot) {
+  //     setProdukItems(snapshot.docs);
+  //     console.log(snapshot.docs);
+  //   }
+  // }, [snapshot]);
+  const defaultNumPage = 5;
+  const [numPage, setNumPage] = useState(defaultNumPage);
+  dataDoc
+    .orderBy("namaPenginapan")
+    .limit(numPage)
+    .get()
+    .then((data) => setProdukItems(data.docs));
+
+  const loadNextData = () => {
+    setNumPage(numPage + defaultNumPage);
+  };
 
   React.useEffect(() => {
     return () => {
@@ -126,17 +131,6 @@ function HomeProduk() {
         .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
         .get()
         .then((data) => setProdukItems(data.docs));
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (!loadingBtn) {
-      setSuccess(false);
-      setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
     }
   };
 
@@ -306,6 +300,11 @@ function HomeProduk() {
             </Grid>
           );
         })}
+        <Grid className={classes.fabGrid}>
+          <Fab color="primary" className={classes.fab} onClick={loadNextData}>
+            <ArrowForwardIcon />
+          </Fab>
+        </Grid>
       </Grid>
     </>
   );
