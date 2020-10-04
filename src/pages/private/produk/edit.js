@@ -64,13 +64,35 @@ function EditProduk({ match }) {
     kota: "",
     jenisPenginapan: "",
   });
+
   const { jenisPenginapanOpt } = usePesanan();
 
   const [valueKota, setKota] = React.useState("");
+
+  const kotaOpt = [];
+  const [options, setOptions] = React.useState([]);
+  const [value, setValue] = React.useState(options[0]);
+  const [inputValue, setInputValue] = React.useState("");
+  // form.kota = value;
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [isSubmitting, setSubmitting] = useState(false);
   const [fotoHandler, setFotoHandler] = useState("");
 
+  // firestore
+  //   .collection("kota")
+  //   .get()
+  //   .then(function (querySnapshot) {
+  //     querySnapshot.forEach(function (doc) {
+  //       kotaOpt.push(doc.data().kota);
+  //     });
+  //   });
+
+  const kotaQuery = firestore.collection("kota");
+  const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
+
+  // filter duplicate data
+  // kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
+  const kotaData = [];
   useEffect(() => {
     if (snapshot) {
       setForm((currentForm) => ({
@@ -81,22 +103,21 @@ function EditProduk({ match }) {
     if (imgSnapshot) {
       setListImage(imgSnapshot.docs);
     }
-  }, [snapshot, imgSnapshot]);
+
+    if (kotaSnapshot) {
+      // setOptions(kotaSnapshot.docs);
+      // console.log(kotaSnapshot.docs);
+      kotaSnapshot.docs.forEach((data) => {
+        kotaData.push(data.data().kota);
+        console.log(data.data().kota);
+      });
+      setOptions(kotaData);
+    }
+  }, [snapshot, imgSnapshot, kotaSnapshot]);
 
   // QUERY DATA KOTA
   // const [kotaOpt, setataKota] = React.useState([]);
-  const kotaOpt = [];
-  firestore
-    .collection("kota")
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        kotaOpt.push(doc.data().kota);
-      });
-    });
 
-  // filter duplicate data
-  kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
   const imgThumbStore = [];
   queryImgThumbnail.get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
@@ -234,6 +255,8 @@ function EditProduk({ match }) {
     setSubmitting(false);
   };
 
+  console.log(options);
+
   return (
     <Paper className={classes.papperPadding}>
       <Typography variant="h5" component="h1">
@@ -282,20 +305,23 @@ function EditProduk({ match }) {
               helperText={error.lokasi}
               disabled={isSubmitting}
             />
-
+            {JSON.stringify(value)}
             <Autocomplete
               className={classes.comboLokasi}
               value={form.kota}
               onChange={(event, newValue) => {
+                setValue(newValue);
                 form.kota = newValue;
               }}
-              inputValue={valueKota}
+              inputValue={inputValue}
               onInputChange={(event, newInputValue) => {
-                setKota(newInputValue);
+                setInputValue(newInputValue);
+                form.kota = newInputValue;
                 setSomethingChange(true);
               }}
               name="kota"
-              options={kotaOpt}
+              options={options}
+              getOptionLabel={(option) => option}
               disabled={isSubmitting}
               style={{ width: 300 }}
               renderInput={(params) => {

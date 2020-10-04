@@ -43,8 +43,16 @@ el.current.scrollIntoView({ block: "end", behavior: "smooth" });
 */
 
 function HomeProduk() {
-  const classes = useStyles();
   const { firestore } = useFirebase();
+  const kotaOpt = [];
+  const kotaData = [];
+  const [options, setOptions] = React.useState([]);
+  const [value, setValue] = React.useState(options[0]);
+  const [inputValue, setInputValue] = React.useState("");
+  const kotaQuery = firestore.collection("kota");
+  const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
+
+  const classes = useStyles();
   const defaultNumPage = 5;
   const [numPage, setNumPage] = useState(defaultNumPage);
   const dataDoc = firestore
@@ -87,21 +95,32 @@ function HomeProduk() {
         el.current.scrollIntoView({ block: "end", behavior: "smooth" });
       }
     }
-  }, [snapshot, isNextClicked]);
+
+    if (kotaSnapshot) {
+      // setOptions(kotaSnapshot.docs);
+      // console.log(kotaSnapshot.docs);
+      kotaSnapshot.docs.forEach((data) => {
+        kotaData.push(data.data().kota);
+        console.log(data.data().kota);
+      });
+      setOptions(kotaData);
+    }
+    clearTimeout(timer.current);
+  }, [snapshot, isNextClicked, kotaSnapshot]);
 
   // Options item for search feature
-  const kotaOpt = [];
-  firestore
-    .collection("kota")
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        kotaOpt.push(doc.data().kota);
-      });
-    });
+  // const kotaOpt = [];
+  // firestore
+  //   .collection("kota")
+  //   .get()
+  //   .then(function (querySnapshot) {
+  //     querySnapshot.forEach(function (doc) {
+  //       kotaOpt.push(doc.data().kota);
+  //     });
+  //   });
 
   // filter duplicate data
-  kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
+  // kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
 
   const [maxData, setMaxData] = useState(0);
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
@@ -112,11 +131,11 @@ function HomeProduk() {
     setNumPage(numPage + defaultNumPage);
   };
 
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
+  // React.useEffect(() => {
+  //   return () => {
+  //     clearTimeout(timer.current);
+  //   };
+  // }, []);
 
   if (loading) {
     return <AppPageLoading />;
@@ -133,20 +152,17 @@ function HomeProduk() {
         setLoading(false);
       }, 1500);
     }
-    if (
-      produkItems !== "" ||
-      (valueKota !== "" && valueJenisPenginapan !== "")
-    ) {
+    if (produkItems !== "" || (value !== "" && valueJenisPenginapan !== "")) {
       await firestore
         .collection(`penginapan`)
         .doc("data")
         .collection("produk")
-        .where("kota", "==", `${valueKota}`)
+        .where("kota", "==", `${value}`)
         .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
         .get()
         .then((data) => setProdukItems(data.docs));
     }
-    if (valueKota === "" && valueJenisPenginapan === "") {
+    if (value === "" && valueJenisPenginapan === "") {
       await firestore
         .collection(`penginapan`)
         .doc("data")
@@ -158,16 +174,16 @@ function HomeProduk() {
       setSearchingActivate(false);
     }
 
-    if (valueKota !== "" && valueJenisPenginapan === "") {
+    if (value !== "" && valueJenisPenginapan === "") {
       await firestore
         .collection(`penginapan`)
         .doc("data")
         .collection("produk")
-        .where("kota", "==", `${valueKota}`)
+        .where("kota", "==", `${value}`)
         .get()
         .then((data) => setProdukItems(data.docs));
     }
-    if (valueKota === "" && valueJenisPenginapan !== "") {
+    if (value === "" && valueJenisPenginapan !== "") {
       await firestore
         .collection(`penginapan`)
         .doc("data")
@@ -223,18 +239,28 @@ function HomeProduk() {
                   className={classes.comboLokasi}
                   value={form.kota}
                   onChange={(event, newValue) => {
-                    form.kota = newValue;
+                    setValue(newValue);
+                    setForm({ kota: newValue });
                   }}
-                  inputValue={valueKota}
+                  inputValue={inputValue}
                   onInputChange={(event, newInputValue) => {
-                    setKota(newInputValue);
+                    setInputValue(newInputValue);
+                    setForm({ kota: newInputValue });
                   }}
                   name="kota"
-                  options={kotaOpt}
-                  style={{ width: 200 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Kota" variant="outlined" />
-                  )}
+                  options={options}
+                  getOptionLabel={(option) => option}
+                  style={{ width: 300 }}
+                  renderInput={(params) => {
+                    return (
+                      <TextField
+                        {...params}
+                        name="kota"
+                        label="Kota"
+                        variant="outlined"
+                      />
+                    );
+                  }}
                 />
               </Grid>
               <Grid item>
