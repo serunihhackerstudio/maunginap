@@ -14,6 +14,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
 import { currency } from "../../../../utils/formatter";
 
 const Proses = ({ match }) => {
@@ -66,6 +67,8 @@ const Proses = ({ match }) => {
                 {progressPembayaran}
               </Typography>
             </ListItem>
+
+            <Divider variant="middle" />
 
             <ListItem className={classes.listItem}>
               <ListItemText primary="Bank" />
