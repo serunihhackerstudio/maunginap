@@ -162,7 +162,8 @@ function HomeProduk() {
         .get()
         .then((data) => setProdukItems(data.docs));
     }
-    if (value === "" && valueJenisPenginapan === "") {
+    if (form.kota === "" && valueJenisPenginapan === "") {
+      console.log("TANPA KOTA DAN JENIS");
       await firestore
         .collection(`penginapan`)
         .doc("data")
@@ -174,16 +175,17 @@ function HomeProduk() {
       setSearchingActivate(false);
     }
 
-    if (value !== "" && valueJenisPenginapan === "") {
+    if (form.kota !== "" && valueJenisPenginapan === "") {
       await firestore
         .collection(`penginapan`)
         .doc("data")
         .collection("produk")
-        .where("kota", "==", `${value}`)
+        .where("kota", "==", `${form.kota}`)
         .get()
         .then((data) => setProdukItems(data.docs));
+      form.kota = "";
     }
-    if (value === "" && valueJenisPenginapan !== "") {
+    if (form.kota === "" && valueJenisPenginapan !== "") {
       await firestore
         .collection(`penginapan`)
         .doc("data")
@@ -193,6 +195,8 @@ function HomeProduk() {
         .then((data) => setProdukItems(data.docs));
     }
   };
+  console.log(form.kota);
+  console.log(produkItems);
 
   return (
     <>
