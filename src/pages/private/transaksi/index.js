@@ -18,6 +18,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
+import AppLoading from "../../../components/AppLoading";
 
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
@@ -94,7 +95,7 @@ function Transaksi() {
   return (
     <>
       {produkItems.length <= 0 && (
-        <Typography>Belum ada data Kost-kostan / peninapan</Typography>
+        <AppLoading message="Tidak ada data ditemukan..." />
       )}
 
       <Grid container spacing={5}>

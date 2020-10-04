@@ -86,10 +86,23 @@ export default function Private(props) {
           >
             {/* LOGO TITLE */}
             <Switch>
-              <Route path="/dashboard" exact children="Dashboard" />
-              <Route path="/produk" children="Tambah Prodok" />
-              <Route path="/transaksi" children="Approve Transaksi" />
-              <Route path="/pengaturan" children="Pengaturan" />
+              <Route
+                path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/dashboard"
+                exact
+                children="Dashboard"
+              />
+              <Route
+                path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk"
+                children="Tambah Prodok"
+              />
+              <Route
+                path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/transaksi"
+                children="Approve Transaksi"
+              />
+              <Route
+                path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan"
+                children="Pengaturan"
+              />
             </Switch>
             {/* LOGO TITLE */}
           </Typography>
@@ -122,7 +135,9 @@ export default function Private(props) {
                 <ListItem
                   selected={props.match ? true : false}
                   onClick={() => {
-                    props.history.push("/dashboard");
+                    props.history.push(
+                      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/dashboard"
+                    );
                   }}
                   button
                 >
@@ -142,7 +157,9 @@ export default function Private(props) {
                 <ListItem
                   selected={props.match ? true : false}
                   onClick={() => {
-                    props.history.push("/produk");
+                    props.history.push(
+                      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk"
+                    );
                   }}
                   button
                 >
@@ -162,7 +179,9 @@ export default function Private(props) {
                 <ListItem
                   selected={props.match ? true : false}
                   onClick={() => {
-                    props.history.push("/transaksi");
+                    props.history.push(
+                      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/transaksi"
+                    );
                   }}
                   button
                 >
@@ -182,7 +201,9 @@ export default function Private(props) {
                 <ListItem
                   selected={props.match ? true : false}
                   onClick={() => {
-                    props.history.push("/pengaturan");
+                    props.history.push(
+                      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan"
+                    );
                   }}
                   button
                 >
@@ -200,10 +221,22 @@ export default function Private(props) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
-            <Route path="/pengaturan" component={Pengaturan} />
-            <Route path="/produk" component={Produk} />
-            <Route path="/transaksi" component={Transaksi} />
-            <Route path="/dashboard" component={Home} />
+            <Route
+              path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan"
+              component={Pengaturan}
+            />
+            <Route
+              path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk"
+              component={Produk}
+            />
+            <Route
+              path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/transaksi"
+              component={Transaksi}
+            />
+            <Route
+              path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/dashboard"
+              component={Home}
+            />
           </Switch>
         </Container>
       </main>

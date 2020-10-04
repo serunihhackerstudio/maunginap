@@ -118,7 +118,7 @@ function Login(props) {
     const redirectTo =
       location.state && location.state.from && location.state.from.pathname
         ? location.state.from.pathname
-        : "/dashboard";
+        : "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/dashboard";
     return <Redirect to={redirectTo} />;
   }
 

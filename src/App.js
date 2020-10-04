@@ -35,10 +35,23 @@ function App() {
               <Router>
                 <Switch>
                   {/* halaman private */}
-                  <PrivateRoute path="/produk" component={Private} />
-                  <PrivateRoute path="/transaksi" component={Private} />
-                  <PrivateRoute path="/dashboard" exact component={Private} />
-                  <PrivateRoute path="/pengaturan" component={Private} />
+                  <PrivateRoute
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk"
+                    component={Private}
+                  />
+                  <PrivateRoute
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/transaksi"
+                    component={Private}
+                  />
+                  <PrivateRoute
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/dashboard"
+                    exact
+                    component={Private}
+                  />
+                  <PrivateRoute
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan"
+                    component={Private}
+                  />
                   {/* halaman public */}
                   <Route path="/testing/checkout" component={Checkout} />
                   {/* <Route path="/view" component={Home} /> */}
@@ -54,7 +67,7 @@ function App() {
                   <Route path="/user/registrasi" component={RegistrasiUser} />
                   <Route path="/lupa-password" component={LupaPassword} />
                   <Route path="/user" component={User} />
-                  <PublicRoute path="/" component={Home} />
+                  <PublicRoute exact path="/" component={Home} />
                   <Route component={NotFound} />k
                 </Switch>
               </Router>

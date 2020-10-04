@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
   visible: {
     color: "#FFFFFF",
   },
+  center: {
+    textAlign: "center",
+    justifyContent: "center",
+  },
 }));
 
 export default useStyles;

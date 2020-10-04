@@ -189,34 +189,22 @@ function DetailProduk({ match, history, location }) {
                 />
               </CardActionArea>
             </ButtonBase>
-            <p className={classes.visible}>HALO TOUFAN</p>
 
-            {listImage.map((data) => {
-              const imgFile = data.data().url;
-              return (
-                <a href={"#"} onClick={handleClickOpen(imgFile)}>
-                  <img
-                    src={imgFile}
-                    width={100}
-                    height={60}
-                    className={classes.imgThumb}
-                  />
-                </a>
-              );
-            })}
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">{"Preview"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  <img src={dialogImg} className={classes.imgThumb} />
-                </DialogContentText>
-              </DialogContent>
-            </Dialog>
+            <Grid className={classes.center} direction="row">
+              {listImage.slice(0, 4).map((data) => {
+                const imgFile = data.data().url;
+                return (
+                  <a href={"#"} onClick={handleClickOpen(imgFile)}>
+                    <img
+                      src={imgFile}
+                      width={69}
+                      height={40}
+                      className={classes.imgThumb}
+                    />
+                  </a>
+                );
+              })}
+            </Grid>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
@@ -314,16 +302,19 @@ function DetailProduk({ match, history, location }) {
       >
         <ArrowBackIcon />
       </Fab>
-
-      {/* <DialogBooking
-        open={aktivasiDialog}
-        handleClose={handleCloseDialog}
-        jenisIuran={jenisIuran}
-        namaPenginapan={state.namaPenginapan}
-        harga={jenisIuran === "Tahunan" ? state.harga * 12 : state.harga}
-        jenisIursan={jenisIuran}
-        foto={state.foto}
-      /> */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Preview"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <img src={dialogImg} className={classes.imgThumb} />
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

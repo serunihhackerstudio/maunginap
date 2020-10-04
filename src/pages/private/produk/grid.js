@@ -25,6 +25,7 @@ import AddDialog from "./add";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { usePesanan } from "../../../components/PesananProvider";
 import AppPageLoading from "../../../components/AppPageLoading";
+import AppLoading from "../../../components/AppLoading";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 // utils mata uang ke rupiah
@@ -79,7 +80,7 @@ function GridProduk() {
   return (
     <>
       {produkItems.length <= 0 && (
-        <Typography>Belum ada data Kost-kostan / peninapan</Typography>
+        <AppLoading message="Tidak ada data ditemukan..." />
       )}
 
       <Grid container spacing={5}>
@@ -120,7 +121,7 @@ function GridProduk() {
                     size="small"
                     color="primary"
                     component={Link}
-                    to={`produk/edit/${produkDoc.id}`}
+                    to={`/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk/edit/${produkDoc.id}`}
                   >
                     Edit
                   </Button>

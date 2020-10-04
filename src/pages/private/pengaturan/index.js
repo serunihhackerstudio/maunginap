@@ -26,16 +26,34 @@ function Pengaturan(props) {
         textColor="primary"
         onChange={handleChangeTab}
       >
-        <Tab label="Admin" value="/pengaturan/admin" />
-        <Tab label="Identias" value="/pengaturan/identitas" />
-        <Tab label="Kota" value="/pengaturan/kota" />
+        <Tab
+          label="Admin"
+          value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/admin"
+        />
+        <Tab
+          label="Identias"
+          value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/identitas"
+        />
+        <Tab
+          label="Kota"
+          value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/kota"
+        />
       </Tabs>
       <div className={classes.tabContent}>
         <Switch>
-          <Route path="/pengaturan/admin" component={SuperAdmin} />
-          <Route path="/pengaturan/identitas" component={IdentitasAdmin} />
-          <Route path="/pengaturan/kota" component={Kota} />
-          <Redirect to="/pengaturan/admin" />
+          <Route
+            path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/admin"
+            component={SuperAdmin}
+          />
+          <Route
+            path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/identitas"
+            component={IdentitasAdmin}
+          />
+          <Route
+            path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/kota"
+            component={Kota}
+          />
+          <Redirect to="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/admin" />
         </Switch>
       </div>
     </Paper>

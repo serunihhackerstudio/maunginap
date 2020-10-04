@@ -194,8 +194,8 @@ function DetailBooking({ history, location }) {
               );
             }}
           />
-
-          <Route
+          {/* TESTING SEMENTARA DI-HIDE */}
+          {/* <Route
             path="/testing"
             children={(props) => {
               return (
@@ -213,7 +213,7 @@ function DetailBooking({ history, location }) {
                 </ListItem>
               );
             }}
-          />
+          /> */}
         </List>
       </Drawer>
 

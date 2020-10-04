@@ -96,7 +96,7 @@ function Kota() {
           type="submit"
           color="primary"
         >
-          Simpan
+          Tambah
         </Button>
       </form>
     </div>

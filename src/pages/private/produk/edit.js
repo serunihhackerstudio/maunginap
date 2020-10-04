@@ -228,6 +228,9 @@ function EditProduk({ match }) {
       };
       reader.readAsDataURL(file);
     }
+    enqueueSnackbar("Upload berhasil", {
+      variant: "success",
+    });
     setSubmitting(false);
   };
 

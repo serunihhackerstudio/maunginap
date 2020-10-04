@@ -6,7 +6,10 @@ import GridProduk from "./grid";
 function Produk() {
   return (
     <Switch>
-      <Route path="/produk/edit/:produkId" component={EditProduk} />
+      <Route
+        path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk/edit/:produkId"
+        component={EditProduk}
+      />
       <Route component={GridProduk} />
     </Switch>
   );

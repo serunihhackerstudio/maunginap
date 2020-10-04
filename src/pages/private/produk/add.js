@@ -39,7 +39,9 @@ function AddDialog({ history, open, handleClose }) {
 
       const produkBaru = await produkCol.add({ namaPenginapan });
 
-      history.push(`produk/edit/${produkBaru.id}`);
+      history.push(
+        `/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk/edit/${produkBaru.id}`
+      );
     } catch (e) {
       setError(e.message);
     }
