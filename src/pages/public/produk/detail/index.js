@@ -209,9 +209,8 @@ function DetailProduk({ match, history, location }) {
                   </Typography>
                 </Typography>
                 <Typography variant="body2" color="error">
-                  {state.jenisPenginapan === "Kontrakan" ||
-                  state.jumlahKamar === 0
-                    ? "*Penuh / reserved"
+                  {state.jenisPenginapan === "Kontrakan"
+                    ? ""
                     : `Sisa ${state.jumlahKamar} kamar`}
                 </Typography>
 

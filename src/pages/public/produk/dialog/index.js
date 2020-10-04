@@ -58,12 +58,11 @@ const DialogBooking = ({
   });
 
   const [jumlahKamar, setJumlahKamar] = useState(0);
-
+  const [jenisPenginapan, setJenisPenginapan] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { firestore, user } = useFirebase();
   const { setNeedLogin, formPesanan } = usePesanan();
-  // const [pilihBank, setPilihBank] = useState(false);
 
   let pesanProduk;
 
@@ -92,7 +91,10 @@ const DialogBooking = ({
     .collection("produk")
     .doc(`${match.params.penginapanId}`);
   console.log("JUMLAH PENGINAPAN");
-  produk.get().then((res) => setJumlahKamar(res.data().jumlahKamar));
+  produk.get().then((res) => {
+    setJumlahKamar(res.data().jumlahKamar);
+    setJenisPenginapan(res.data().jenisPenginapan);
+  });
 
   // memasukan data tambahan ke form
   form.namaPenginapan = formPesanan.namaPenginapan;
@@ -104,6 +106,7 @@ const DialogBooking = ({
   form.userId = user.uid;
   form.penginapanId = match.params.penginapanId;
   form.approvalStatus = false;
+  form.jenisPenginapan = jenisPenginapan;
 
   const handleChange = (e) => {
     setError({

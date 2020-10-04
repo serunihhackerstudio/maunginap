@@ -125,7 +125,7 @@ function Transaksi() {
                       color="textSecondary"
                       component="p"
                     >
-                      {produkData.kodeBooking}
+                      {produkData.kodeBooking} ({produkData.jenisPenginapan})
                     </Typography>
                     <Typography variant="body1" color="primary" component="p">
                       <strong>Tanggal booking :</strong>
@@ -135,12 +135,7 @@ function Transaksi() {
                       {JSON.stringify(dateBooking.toLocaleString())}
                     </Typography>
 
-                    <Typography
-                      variant="body1"
-                      color="primary"
-                      component="p"
-                      color="textSecondary"
-                    >
+                    <Typography variant="body1" color="primary" component="p">
                       <strong>Informasi tambahan :</strong>
                     </Typography>
 
