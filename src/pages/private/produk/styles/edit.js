@@ -43,6 +43,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
+  imgThumb: {
+    margin: theme.spacing(1),
+  },
+  center: {
+    textAlign: "center",
+    justifyContent: "center",
+  },
 }));
 
 export default useStyles;

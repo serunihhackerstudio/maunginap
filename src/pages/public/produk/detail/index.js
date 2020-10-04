@@ -195,7 +195,12 @@ function DetailProduk({ match, history, location }) {
               const imgFile = data.data().url;
               return (
                 <a href={"#"} onClick={handleClickOpen(imgFile)}>
-                  <img src={imgFile} width={100} className={classes.imgThumb} />
+                  <img
+                    src={imgFile}
+                    width={100}
+                    height={60}
+                    className={classes.imgThumb}
+                  />
                 </a>
               );
             })}

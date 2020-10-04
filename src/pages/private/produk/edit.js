@@ -10,7 +10,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import { usePesanan } from "../../../components/PesananProvider";
 
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import AppPageLoading from "../../../components/AppPageLoading";
 import { useSnackbar } from "notistack";
 import useStyles from "./styles/edit";
@@ -37,6 +37,8 @@ function EditProduk({ match }) {
   const queryImgThumbnail = firestore
     .collection("imgthumbnail")
     .where("penginapanId", "==", `${match.params.produkId}`);
+  const [imgSnapshot, imgLoading] = useCollection(queryImgThumbnail);
+  const [listImage, setListImage] = React.useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [snapshot, loading] = useDocument(produkDoc);
   const produkStorageRef = storage.ref(`penginapan/data/produk`);
@@ -76,7 +78,10 @@ function EditProduk({ match }) {
         ...snapshot.data(),
       }));
     }
-  }, [snapshot]);
+    if (imgSnapshot) {
+      setListImage(imgSnapshot.docs);
+    }
+  }, [snapshot, imgSnapshot]);
 
   // QUERY DATA KOTA
   // const [kotaOpt, setataKota] = React.useState([]);
@@ -180,12 +185,26 @@ function EditProduk({ match }) {
 
   // console.log(form.namaPenginapan);
   const storageStore = [];
+
   const handleUploadFile = (e) => {
     const fotos = e.target.files;
     setSubmitting(true);
     for (let file of fotos) {
       const idImg = ID();
       const reader = new FileReader();
+      if (!["image/png", "image/jpeg", "image/jpg"]) {
+        setError((error) => ({
+          ...error,
+          foto: `Tipe file tidak didukung ${file.type}`,
+        }));
+
+        reader.onabort = () => {
+          setError((error) => ({
+            ...error,
+            foto: "File tidak bisa dibaca",
+          }));
+        };
+      }
       reader.onload = async () => {
         const fotoExt = file.name.substring(file.name.lastIndexOf("."));
         const fotoRef = await produkStorageRef.child(`${idImg}${fotoExt}`);
@@ -210,60 +229,6 @@ function EditProduk({ match }) {
       reader.readAsDataURL(file);
     }
     setSubmitting(false);
-
-    // if (!["image/png", "image/jpeg", "image/jpg"]) {
-    //   setError((error) => ({
-    //     ...error,
-    //     foto: `Tipe file tidak didukung ${file.type}`,
-    //   }));
-    // } else if (file.size >= 1000000) {
-    //   setError((error) => ({
-    //     ...error,
-    //     foto: `Ukuran file terlalu besar > 1MB`,
-    //   }));
-    // } else {
-    //   const reader = new FileReader();
-    //   reader.onabort = () => {
-    //     setError((error) => ({
-    //       ...error,
-    //       foto: "File tidak bisa dibaca",
-    //     }));
-    //   };
-    //   reader.onload = async () => {
-    //     setError((error) => ({
-    //       ...error,
-    //       foto: "",
-    //     }));
-
-    //     setSubmitting(true);
-    //     try {
-    //       const fotoExt = file.name.substring(file.name.lastIndexOf("."));
-
-    //       const fotoRef = produkStorageRef.child(
-    //         `${match.params.produkId}${fotoExt}`
-    //       );
-
-    //       const fotoSnapshot = await fotoRef.putString(
-    //         reader.result,
-    //         "data_url"
-    //       );
-    //       const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
-    //       setForm((currentForm) => ({
-    //         ...currentForm,
-    //         foto: fotoUrl,
-    //       }));
-    //       setSomethingChange(true);
-    //     } catch (e) {
-    //       setError((error) => ({
-    //         ...error,
-    //         foto: e.message,
-    //       }));
-    //     }
-    //     setSubmitting(false);
-    //   };
-
-    //   reader.readAsDataURL(file);
-    // }
   };
 
   return (
@@ -433,16 +398,24 @@ function EditProduk({ match }) {
             </div>
           </form>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          {form.foto && (
-            <div className={classes.uploadFotoProduk}>
-              <img
-                src={form.foto}
-                className={classes.previewFotoProduk}
-                alt="foto produk"
-              />
-            </div>
-          )}
+
+        <Grid item xs={6} sm={6}>
+          <Grid className={classes.center}>
+            {listImage.map((data) => {
+              const imgFile = data.data().url;
+              return (
+                <a href={"#"}>
+                  <img
+                    src={imgFile}
+                    width={150}
+                    height={100}
+                    className={classes.imgThumb}
+                  />
+                </a>
+              );
+            })}
+            {imgLoading && <AppPageLoading />}
+          </Grid>
           <div className={classes.uploadFotoProduk}>
             <input
               className={classes.hideInputFile}
@@ -465,19 +438,6 @@ function EditProduk({ match }) {
             {error.foto && <Typography color="error">{error.foto}</Typography>}
           </div>
         </Grid>
-
-        {/* <Grid item xs={12}>
-                    <div className={classes.actionButton}>
-                    <Button 
-                        form="produk-form"
-                        type="submit"
-                        color="primary" 
-                        disabled={isSubmitting || !isSomethingChange}
-                        variant="contained">
-                        <SaveIcon className={classes.iconLeft}/> Simpan
-                    </Button>
-                    </div>
-                </Grid> */}
       </Grid>
       <Prompt
         when={isSomethingChange}
@@ -488,3 +448,57 @@ function EditProduk({ match }) {
   );
 }
 export default EditProduk;
+
+// if (!["image/png", "image/jpeg", "image/jpg"]) {
+//   setError((error) => ({
+//     ...error,
+//     foto: `Tipe file tidak didukung ${file.type}`,
+//   }));
+// } else if (file.size >= 1000000) {
+//   setError((error) => ({
+//     ...error,
+//     foto: `Ukuran file terlalu besar > 1MB`,
+//   }));
+// } else {
+//   const reader = new FileReader();
+//   reader.onabort = () => {
+//     setError((error) => ({
+//       ...error,
+//       foto: "File tidak bisa dibaca",
+//     }));
+//   };
+//   reader.onload = async () => {
+//     setError((error) => ({
+//       ...error,
+//       foto: "",
+//     }));
+
+//     setSubmitting(true);
+//     try {
+//       const fotoExt = file.name.substring(file.name.lastIndexOf("."));
+
+//       const fotoRef = produkStorageRef.child(
+//         `${match.params.produkId}${fotoExt}`
+//       );
+
+//       const fotoSnapshot = await fotoRef.putString(
+//         reader.result,
+//         "data_url"
+//       );
+//       const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
+//       setForm((currentForm) => ({
+//         ...currentForm,
+//         foto: fotoUrl,
+//       }));
+//       setSomethingChange(true);
+//     } catch (e) {
+//       setError((error) => ({
+//         ...error,
+//         foto: e.message,
+//       }));
+//     }
+//     setSubmitting(false);
+//   };
+
+//   reader.readAsDataURL(file);
+// }
