@@ -21,6 +21,7 @@ import SaveIcon from "@material-ui/icons/Save";
 
 // component
 import { Prompt } from "react-router-dom";
+import ID from "../../../utils/idgenerator";
 
 function EditProduk({ match }) {
   // stylesheet
@@ -33,6 +34,9 @@ function EditProduk({ match }) {
   const produkDoc = firestore.doc(
     `penginapan/data/produk/${match.params.produkId}`
   );
+  const queryImgThumbnail = firestore
+    .collection("imgthumbnail")
+    .where("penginapanId", "==", `${match.params.produkId}`);
   const { enqueueSnackbar } = useSnackbar();
   const [snapshot, loading] = useDocument(produkDoc);
   const produkStorageRef = storage.ref(`penginapan/data/produk`);
@@ -63,6 +67,7 @@ function EditProduk({ match }) {
   const [valueKota, setKota] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [isSubmitting, setSubmitting] = useState(false);
+  const [fotoHandler, setFotoHandler] = useState("");
 
   useEffect(() => {
     if (snapshot) {
@@ -87,6 +92,14 @@ function EditProduk({ match }) {
 
   // filter duplicate data
   kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
+  const imgThumbStore = [];
+  queryImgThumbnail.get().then(function (querySnapshot) {
+    querySnapshot.forEach(function (doc) {
+      imgThumbStore.push(doc.data().url);
+    });
+  });
+  imgThumbStore.filter((a, b) => imgThumbStore.indexOf(a) === b);
+  console.log(imgThumbStore);
 
   const handleChange = (e) => {
     setForm({
@@ -165,64 +178,92 @@ function EditProduk({ match }) {
     return newError;
   };
 
-  console.log(form.namaPenginapan);
-
+  // console.log(form.namaPenginapan);
+  const storageStore = [];
   const handleUploadFile = (e) => {
-    const file = e.target.files[0];
-
-    if (!["image/png", "image/jpeg", "image/jpg"]) {
-      setError((error) => ({
-        ...error,
-        foto: `Tipe file tidak didukung ${file.type}`,
-      }));
-    } else if (file.size >= 1000000) {
-      setError((error) => ({
-        ...error,
-        foto: `Ukuran file terlalu besar > 1MB`,
-      }));
-    } else {
+    const fotos = e.target.files;
+    setSubmitting(true);
+    for (let file of fotos) {
+      const idImg = ID();
       const reader = new FileReader();
-      reader.onabort = () => {
-        setError((error) => ({
-          ...error,
-          foto: "File tidak bisa dibaca",
-        }));
-      };
       reader.onload = async () => {
-        setError((error) => ({
-          ...error,
-          foto: "",
+        const fotoExt = file.name.substring(file.name.lastIndexOf("."));
+        const fotoRef = await produkStorageRef.child(`${idImg}${fotoExt}`);
+        const fotoSnapshot = await fotoRef.putString(reader.result, "data_url");
+        await fotoSnapshot.ref.getDownloadURL().then((url) => {
+          firestore.collection("imgthumbnail").doc(`${idImg}`).set(
+            {
+              penginapanId: match.params.produkId,
+              idImgThumbnail: idImg,
+              url: url,
+            },
+            { merge: true }
+          );
+        });
+
+        const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
+        setForm((currentForm) => ({
+          ...currentForm,
+          foto: fotoUrl,
         }));
-
-        setSubmitting(true);
-        try {
-          const fotoExt = file.name.substring(file.name.lastIndexOf("."));
-
-          const fotoRef = produkStorageRef.child(
-            `${match.params.produkId}${fotoExt}`
-          );
-
-          const fotoSnapshot = await fotoRef.putString(
-            reader.result,
-            "data_url"
-          );
-          const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
-          setForm((currentForm) => ({
-            ...currentForm,
-            foto: fotoUrl,
-          }));
-          setSomethingChange(true);
-        } catch (e) {
-          setError((error) => ({
-            ...error,
-            foto: e.message,
-          }));
-        }
-        setSubmitting(false);
       };
-
       reader.readAsDataURL(file);
     }
+    setSubmitting(false);
+
+    // if (!["image/png", "image/jpeg", "image/jpg"]) {
+    //   setError((error) => ({
+    //     ...error,
+    //     foto: `Tipe file tidak didukung ${file.type}`,
+    //   }));
+    // } else if (file.size >= 1000000) {
+    //   setError((error) => ({
+    //     ...error,
+    //     foto: `Ukuran file terlalu besar > 1MB`,
+    //   }));
+    // } else {
+    //   const reader = new FileReader();
+    //   reader.onabort = () => {
+    //     setError((error) => ({
+    //       ...error,
+    //       foto: "File tidak bisa dibaca",
+    //     }));
+    //   };
+    //   reader.onload = async () => {
+    //     setError((error) => ({
+    //       ...error,
+    //       foto: "",
+    //     }));
+
+    //     setSubmitting(true);
+    //     try {
+    //       const fotoExt = file.name.substring(file.name.lastIndexOf("."));
+
+    //       const fotoRef = produkStorageRef.child(
+    //         `${match.params.produkId}${fotoExt}`
+    //       );
+
+    //       const fotoSnapshot = await fotoRef.putString(
+    //         reader.result,
+    //         "data_url"
+    //       );
+    //       const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
+    //       setForm((currentForm) => ({
+    //         ...currentForm,
+    //         foto: fotoUrl,
+    //       }));
+    //       setSomethingChange(true);
+    //     } catch (e) {
+    //       setError((error) => ({
+    //         ...error,
+    //         foto: e.message,
+    //       }));
+    //     }
+    //     setSubmitting(false);
+    //   };
+
+    //   reader.readAsDataURL(file);
+    // }
   };
 
   return (
@@ -409,6 +450,7 @@ function EditProduk({ match }) {
               id="upload-foto-produk"
               accept="image/jpeg, image/jpeg, image/png"
               onChange={handleUploadFile}
+              multiple
             />
             <label htmlFor="upload-foto-produk">
               <Button

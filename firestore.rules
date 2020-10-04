@@ -42,5 +42,9 @@ service cloud.firestore {
        allow read: if true;
      }
 
+     match /imgthumbnail/{idImg} {
+       allow read, write: if true;
+     }
+
   }
 }

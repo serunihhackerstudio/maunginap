@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import SendIcon from "@material-ui/icons/Send";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -26,7 +26,15 @@ import { CardMedia, CardActionArea, Card } from "@material-ui/core";
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 
+// dialog;
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 function DetailProduk({ match, history, location }) {
+  const [open, setOpen] = React.useState(false);
   const { firestore } = useFirebase();
   const produkDoc = firestore
     .collection("penginapan")
@@ -51,6 +59,12 @@ function DetailProduk({ match, history, location }) {
     .where("user", "==", user.uid)
     .where("penginapanId", "==", match.params.penginapanId);
 
+  const queryImages = firestore
+    .collection("imgthumbnail")
+    .where("penginapanId", "==", `${match.params.penginapanId}`);
+  const [listImage, setListImage] = React.useState([]);
+  const [dialogImg, setDialogImg] = React.useState("");
+  const [imgSnapshot, imgLoading] = useCollection(queryImages);
   const [snapshotSuka, loadingSuka] = useDocument(isDataLikePath);
   // const likeDb = firestore.collection("datastore").doc("suka");
   //
@@ -81,7 +95,12 @@ function DetailProduk({ match, history, location }) {
     if (snapshotReserved) {
       setReserved(snapshotReserved.data());
     }
-  }, [snapshot, snapshotSuka, snapshotReserved]);
+
+    if (imgSnapshot) {
+      setListImage(imgSnapshot.docs);
+      // console.log(imgSnapshot.docs);
+    }
+  }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot]);
 
   if (loading) {
     return <AppLoading message="Memuat Data..." />;
@@ -133,14 +152,34 @@ function DetailProduk({ match, history, location }) {
     }
   };
 
-  console.log(isSuka);
+  // queryImages.get().then(function (querySnapshot) {
+  //   querySnapshot.forEach(function (doc) {
+  //     console.log(doc.data().url);
+  //     setListImage(doc.data().url);
+  //   });
+  // });
+  // console.log(listImage);
+  // listImage.filter((a, b) => listImage.indexOf(a) === b);
 
+  const handleClickOpen = (file) => (e) => {
+    e.preventDefault();
+    setOpen(true);
+    setDialogImg(file);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div>
+      {/* <h2>{JSON.stringify(listImage[0])}</h2> */}
       <Card className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item>
-            <ButtonBase className={classes.image}>
+            <ButtonBase
+              className={classes.image}
+              onClick={handleClickOpen(state.foto)}
+            >
               <CardMedia image={state.foto} />
               <CardActionArea>
                 <CardMedia
@@ -150,6 +189,29 @@ function DetailProduk({ match, history, location }) {
                 />
               </CardActionArea>
             </ButtonBase>
+            <p className={classes.visible}>HALO TOUFAN</p>
+
+            {listImage.map((data) => {
+              const imgFile = data.data().url;
+              return (
+                <a href={"#"} onClick={handleClickOpen(imgFile)}>
+                  <img src={imgFile} width={100} className={classes.imgThumb} />
+                </a>
+              );
+            })}
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{"Preview"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  <img src={dialogImg} className={classes.imgThumb} />
+                </DialogContentText>
+              </DialogContent>
+            </Dialog>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
@@ -231,6 +293,11 @@ function DetailProduk({ match, history, location }) {
               </Typography>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid container>
+          {/* {dataStore.map((img) => (
+            <img src={img} width={50} />
+          ))} */}
         </Grid>
       </Card>
       <Fab

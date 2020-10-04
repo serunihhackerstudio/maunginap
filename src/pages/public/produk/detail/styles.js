@@ -39,6 +39,13 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  imgThumb: {
+    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(1),
+  },
+  visible: {
+    color: "#FFFFFF",
+  },
 }));
 
 export default useStyles;
