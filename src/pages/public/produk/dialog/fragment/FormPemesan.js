@@ -29,6 +29,7 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
         id="nomorKTP"
         name="nomorKTP"
         label="Nomor KTP"
+        type="number"
         fullWidth
         required
         margin="normal"

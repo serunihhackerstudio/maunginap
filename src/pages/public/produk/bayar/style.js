@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   cekPesanan: {
     marginTop: theme.spacing(2),
   },
+  progressPembayaran: {
+    justifyContent: "center",
+  },
 }));
 
 export default useStyles;

@@ -62,7 +62,9 @@ const Proses = ({ match }) => {
         <div>
           <List disablePadding>
             <ListItem className={classes.listItem}>
-              <ListItemText primary={progressPembayaran} />
+              <Typography variant="body1" align="justify">
+                {progressPembayaran}
+              </Typography>
             </ListItem>
 
             <ListItem className={classes.listItem}>

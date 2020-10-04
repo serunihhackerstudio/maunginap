@@ -279,7 +279,6 @@ function EditProduk({ match }) {
               helperText={error.lokasi}
               disabled={isSubmitting}
             />
-            {JSON.stringify(value)}
             <Autocomplete
               className={classes.comboLokasi}
               value={form.kota}
