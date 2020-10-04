@@ -66,33 +66,18 @@ function EditProduk({ match }) {
   });
 
   const { jenisPenginapanOpt } = usePesanan();
-
   const [valueKota, setKota] = React.useState("");
-
   const kotaOpt = [];
   const [options, setOptions] = React.useState([]);
   const [value, setValue] = React.useState(options[0]);
   const [inputValue, setInputValue] = React.useState("");
-  // form.kota = value;
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [isSubmitting, setSubmitting] = useState(false);
-  const [fotoHandler, setFotoHandler] = useState("");
-
-  // firestore
-  //   .collection("kota")
-  //   .get()
-  //   .then(function (querySnapshot) {
-  //     querySnapshot.forEach(function (doc) {
-  //       kotaOpt.push(doc.data().kota);
-  //     });
-  //   });
 
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-
-  // filter duplicate data
-  // kotaOpt.filter((a, b) => kotaOpt.indexOf(a) === b);
   const kotaData = [];
+
   useEffect(() => {
     if (snapshot) {
       setForm((currentForm) => ({
@@ -105,8 +90,6 @@ function EditProduk({ match }) {
     }
 
     if (kotaSnapshot) {
-      // setOptions(kotaSnapshot.docs);
-      // console.log(kotaSnapshot.docs);
       kotaSnapshot.docs.forEach((data) => {
         kotaData.push(data.data().kota);
         console.log(data.data().kota);
@@ -114,18 +97,6 @@ function EditProduk({ match }) {
       setOptions(kotaData);
     }
   }, [snapshot, imgSnapshot, kotaSnapshot]);
-
-  // QUERY DATA KOTA
-  // const [kotaOpt, setataKota] = React.useState([]);
-
-  const imgThumbStore = [];
-  queryImgThumbnail.get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      imgThumbStore.push(doc.data().url);
-    });
-  });
-  imgThumbStore.filter((a, b) => imgThumbStore.indexOf(a) === b);
-  console.log(imgThumbStore);
 
   const handleChange = (e) => {
     setForm({
@@ -147,7 +118,7 @@ function EditProduk({ match }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const idKota = ID();
     const findErrors = validate();
 
     if (Object.values(findErrors).some((err) => err !== "")) {
@@ -156,6 +127,9 @@ function EditProduk({ match }) {
       setSubmitting(true);
 
       try {
+        if (options.length === 0) {
+          kotaQuery.doc(`${idKota}`).set({ kota: form.kota }, { merge: true });
+        }
         await produkDoc.set(form, { merge: true });
         enqueueSnackbar("Data penginapan berhasil ditambahkan", {
           variant: "success",

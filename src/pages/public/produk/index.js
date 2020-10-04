@@ -254,7 +254,7 @@ function HomeProduk() {
                   name="kota"
                   options={options}
                   getOptionLabel={(option) => option}
-                  style={{ width: 300 }}
+                  style={{ width: 200 }}
                   renderInput={(params) => {
                     return (
                       <TextField
