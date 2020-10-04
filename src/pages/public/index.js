@@ -238,7 +238,7 @@ function DetailBooking({ history, location }) {
               exact
               component={DetailProduk}
             />
-            <Route path="/history" component={History} />
+            <Route exact path="/history" component={History} />
 
             <Route path="/testing" component={Testing} />
 

@@ -67,8 +67,8 @@ function App() {
                   <Route path="/user/registrasi" component={RegistrasiUser} />
                   <Route path="/lupa-password" component={LupaPassword} />
                   <Route path="/user" component={User} />
-                  <PublicRoute exact path="/" component={Home} />
-                  <Route component={NotFound} />k
+                  <PublicRoute path="/" component={Home} />
+                  <Route component={NotFound} />
                 </Switch>
               </Router>
             </PesananProvider>
