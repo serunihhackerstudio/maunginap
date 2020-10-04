@@ -152,15 +152,6 @@ function DetailProduk({ match, history, location }) {
     }
   };
 
-  // queryImages.get().then(function (querySnapshot) {
-  //   querySnapshot.forEach(function (doc) {
-  //     console.log(doc.data().url);
-  //     setListImage(doc.data().url);
-  //   });
-  // });
-  // console.log(listImage);
-  // listImage.filter((a, b) => listImage.indexOf(a) === b);
-
   const handleClickOpen = (file) => (e) => {
     e.preventDefault();
     setOpen(true);
@@ -172,7 +163,6 @@ function DetailProduk({ match, history, location }) {
   };
   return (
     <div>
-      {/* <h2>{JSON.stringify(listImage[0])}</h2> */}
       <Card className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item>
@@ -219,8 +209,9 @@ function DetailProduk({ match, history, location }) {
                   </Typography>
                 </Typography>
                 <Typography variant="body2" color="error">
-                  {state.jenisPenginapan === "Kontrakan"
-                    ? ""
+                  {state.jenisPenginapan === "Kontrakan" ||
+                  state.jumlahKamar === 0
+                    ? "*Penuh / reserved"
                     : `Sisa ${state.jumlahKamar} kamar`}
                 </Typography>
 
@@ -308,7 +299,6 @@ function DetailProduk({ match, history, location }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Preview"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <img src={dialogImg} className={classes.imgThumb} />
