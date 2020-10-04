@@ -39,6 +39,8 @@ function GridProduk() {
 
   const { firestore, storage } = useFirebase();
 
+  const productStorage = storage.ref(`penginapan/data/produk`);
+
   const [openAddDialog, setOpenAddDialog] = useState(false);
 
   const produkCol = firestore.collection(`penginapan/data/produk`);
@@ -62,15 +64,25 @@ function GridProduk() {
   };
 
   const handleDelete = (produkDoc) => async (e) => {
-    // produkDoc itu adalah sebuah data bukan list
-    // e.preventDefault()
-    // const konfirmasi = ;
     try {
       if (window.confirm("Apakah Anda yakin ingin menghapus item ini ? ")) {
         await produkDoc.ref.delete();
-        const fotoUrl = produkDoc.data().foto();
+        const fotoUrl = produkDoc.data().foto;
+        await firestore
+          .collection("imgthumbnail")
+          .where("penginapanId", "==", `${produkDoc.id}`)
+          .get()
+          .then((item) => {
+            item.docs.forEach((doc) => {
+              doc.ref.delete();
+              storage.refFromURL(doc.data().url).delete();
+            });
+            console.log("delete image thumbnail berhasil");
+          });
+
         if (fotoUrl) {
-          await storage.setFromUrl(fotoUrl).delete();
+          await storage.Storage.refFromUrl(fotoUrl).delete();
+          console.log("delete berhasil");
         }
       }
     } catch (e) {
