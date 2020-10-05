@@ -8,13 +8,13 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Badge from "@material-ui/core/Badge";
 
 // dialog/modal
@@ -47,7 +47,7 @@ import History from "./produk/history";
 import DialogBooking from "./produk/dialog/index";
 import Testing from "./testing";
 
-function DetailBooking({ history, location }) {
+function Home({ history, location }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { auth, user, firestore } = useFirebase();
@@ -167,7 +167,7 @@ function DetailBooking({ history, location }) {
       >
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
+            <ArrowBackIcon />
           </IconButton>
         </div>
         <Divider />
@@ -284,4 +284,4 @@ function DetailBooking({ history, location }) {
   );
 }
 
-export default DetailBooking;
+export default Home;
