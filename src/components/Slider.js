@@ -15,12 +15,12 @@ const tutorialSteps = [
   {
     label: "Banner 1",
     imgPath:
-      "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2Fbenner%20baru.jpg?alt=media&token=54617058-3c87-4674-af44-f9a1654d545a",
+      "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2FBenner%20Baru%20di%20web.jpg?alt=media&token=dc3af46d-5fd6-434a-9c48-c29091737a39",
   },
   {
     label: "Banner 2",
     imgPath:
-      "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2Fbenner%20baru%20kos.jpg?alt=media&token=6daab7ec-e6b1-4df1-a3b1-fadf32c2cb74",
+      "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2FBanner%20Maunginap%20Keunggulan%20dan%20Jaminan%20Kemudahan%20mahasiswa%20baru.jpg?alt=media&token=f913126a-75e1-4206-ac62-b351e7ea243e",
   },
 ];
 
