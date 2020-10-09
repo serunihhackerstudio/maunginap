@@ -12,9 +12,10 @@ import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import TuneIcon from "@material-ui/icons/Tune";
 import Badge from "@material-ui/core/Badge";
 
 // dialog/modal
@@ -46,6 +47,7 @@ import Proses from "./produk/bayar/proses";
 import History from "./produk/history";
 import DialogBooking from "./produk/dialog/index";
 import Testing from "./testing";
+import UserProfile from "../user/profile";
 
 function Home({ history, location }) {
   const classes = useStyles();
@@ -195,25 +197,45 @@ function Home({ history, location }) {
             }}
           />
           {/* TESTING SEMENTARA DI-HIDE */}
-          {/* <Route
-            path="/testing"
+          <Route
+            path="/profile/user"
             children={(props) => {
               return (
                 <ListItem
                   selected={props.match ? true : false}
                   onClick={() => {
-                    props.history.push("/testing");
+                    props.history.push("/profile/user");
                   }}
                   button
                 >
                   <ListItemIcon>
-                    <FilterListIcon />
+                    <AccountCircleIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Testing" />
+                  <ListItemText primary="User" />
                 </ListItem>
               );
             }}
-          /> */}
+          />
+
+          <Route
+            path="/manage"
+            children={(props) => {
+              return (
+                <ListItem
+                  selected={props.match ? true : false}
+                  onClick={() => {
+                    props.history.push("/manage");
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    <TuneIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Manage" />
+                </ListItem>
+              );
+            }}
+          />
         </List>
       </Drawer>
 
@@ -240,13 +262,7 @@ function Home({ history, location }) {
             />
             <Route exact path="/history" component={History} />
 
-            <Route path="/testing" component={Testing} />
-
-            {/* <Route
-              path="/view/penginapan/:checkoutId/proses/:prosesId"
-              exact
-              component={Proses}
-            /> */}
+            <Route path="/profile/user" component={UserProfile} />
 
             <Route component={HomeProduk} />
           </Switch>
