@@ -27,6 +27,8 @@ import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Skeleton from "@material-ui/lab/Skeleton";
+
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -137,9 +139,9 @@ function HomeProduk() {
   //   };
   // }, []);
 
-  if (loading) {
-    return <AppPageLoading />;
-  }
+  // if (loading) {
+  //   return <AppPageLoading />;
+  // }
 
   const handleSubmit = async (e) => {
     setSearchingActivate(true);
@@ -201,117 +203,156 @@ function HomeProduk() {
   return (
     <>
       {/* SLIDER */}
-      <Container>
-        <Card className={classes.root}>
-          <CardActionArea>
-            <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
-          </CardActionArea>
-        </Card>
-      </Container>
+      {loading ? (
+        <Container className={classes.root}>
+          <Skeleton animation="wave" height={260} width="100%" variant="rect" />
+        </Container>
+      ) : (
+        <Container>
+          <Card className={classes.root}>
+            <CardActionArea>
+              <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
+            </CardActionArea>
+          </Card>
+        </Container>
+      )}
 
       <Container maxWidth="sm">
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
-        >
-          Maunginap ?
-        </Typography>
-        <Typography
-          variant="body1"
-          align="center"
-          color="textSecondary"
-          paragraph
-          className={classes.descPromotion}
-        >
-          Di mana aja pasti bisa nginap dong dengan maunginap.com. Mau nginap di
-          kost-kotan, kontrakan, penginapan resmi ? mau yang bulanan, harian,
-          tahunan ? nggak perlu report dan ribet, pake aja maungingap.com.
-        </Typography>
-        <form id="produk-form" onSubmit={handleSubmit} noValidate>
-          <div className={classes.heroButtons}>
-            <Grid
-              container
-              spacing={2}
-              justify="center"
-              className={classes.rootGrid}
-            >
-              <Grid item>
-                <Autocomplete
-                  className={classes.comboLokasi}
-                  value={form.kota}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                    setForm({ kota: newValue });
-                  }}
-                  inputValue={inputValue}
-                  onInputChange={(event, newInputValue) => {
-                    setInputValue(newInputValue);
-                    setForm({ kota: newInputValue });
-                  }}
-                  name="kota"
-                  options={options}
-                  getOptionLabel={(option) => option}
-                  style={{ width: 200 }}
-                  renderInput={(params) => {
-                    return (
+        {loading ? (
+          <Skeleton animation="wave" height={100} width="100%" variant="text" />
+        ) : (
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="textPrimary"
+            gutterBottom
+          >
+            Maunginap ?
+          </Typography>
+        )}
+
+        {loading ? (
+          <>
+            <Skeleton
+              animation="wave"
+              height={20}
+              width="100%"
+              variant="text"
+            />
+            <Skeleton
+              animation="wave"
+              height={20}
+              width="100%"
+              variant="text"
+            />
+            <Skeleton
+              animation="wave"
+              height={20}
+              width="100%"
+              variant="text"
+            />
+          </>
+        ) : (
+          <Typography
+            variant="body1"
+            align="center"
+            color="textSecondary"
+            paragraph
+            className={classes.descPromotion}
+          >
+            Di mana aja pasti bisa nginap dong dengan maunginap.com. Mau nginap
+            di kost-kotan, kontrakan, penginapan resmi ? mau yang bulanan,
+            harian, tahunan ? nggak perlu report dan ribet, pake aja
+            maungingap.com.
+          </Typography>
+        )}
+        {loading ? (
+          <Skeleton animation="wave" height={80} width="100%" />
+        ) : (
+          <form id="produk-form" onSubmit={handleSubmit} noValidate>
+            <div className={classes.heroButtons}>
+              <Grid
+                container
+                spacing={2}
+                justify="center"
+                className={classes.rootGrid}
+              >
+                <Grid item>
+                  <Autocomplete
+                    className={classes.comboLokasi}
+                    value={form.kota}
+                    onChange={(event, newValue) => {
+                      setValue(newValue);
+                      setForm({ kota: newValue });
+                    }}
+                    inputValue={inputValue}
+                    onInputChange={(event, newInputValue) => {
+                      setInputValue(newInputValue);
+                      setForm({ kota: newInputValue });
+                    }}
+                    name="kota"
+                    options={options}
+                    getOptionLabel={(option) => option}
+                    style={{ width: 200 }}
+                    renderInput={(params) => {
+                      return (
+                        <TextField
+                          {...params}
+                          name="kota"
+                          label="Kota"
+                          variant="outlined"
+                        />
+                      );
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <Autocomplete
+                    className={classes.comboLokasi}
+                    value={form.jenisPenginapan}
+                    onChange={(event, newValue) => {
+                      form.jenisPenginapan = newValue;
+                    }}
+                    inputValue={valueJenisPenginapan}
+                    onInputChange={(event, newInputValue) => {
+                      setJenisPenginapan(newInputValue);
+                    }}
+                    name="jenisPenginapan"
+                    options={jenisPenginapanOpt}
+                    style={{ width: 200 }}
+                    renderInput={(params) => (
                       <TextField
                         {...params}
-                        name="kota"
-                        label="Kota"
+                        label="Jenis Penginapan"
                         variant="outlined"
                       />
-                    );
-                  }}
-                />
+                    )}
+                  />
+                </Grid>
+                <Grid item>
+                  <Button
+                    size="large"
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                    className={classes.btn}
+                    disabled={loadingBtn}
+                  >
+                    {loadingBtn ? (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    ) : (
+                      "Cari"
+                    )}
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Autocomplete
-                  className={classes.comboLokasi}
-                  value={form.jenisPenginapan}
-                  onChange={(event, newValue) => {
-                    form.jenisPenginapan = newValue;
-                  }}
-                  inputValue={valueJenisPenginapan}
-                  onInputChange={(event, newInputValue) => {
-                    setJenisPenginapan(newInputValue);
-                  }}
-                  name="jenisPenginapan"
-                  options={jenisPenginapanOpt}
-                  style={{ width: 200 }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Jenis Penginapan"
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item>
-                <Button
-                  size="large"
-                  type="submit"
-                  variant="outlined"
-                  color="primary"
-                  className={classes.btn}
-                  disabled={loadingBtn}
-                >
-                  {loadingBtn ? (
-                    <CircularProgress
-                      size={24}
-                      className={classes.buttonProgress}
-                    />
-                  ) : (
-                    "Cari"
-                  )}
-                </Button>
-              </Grid>
-            </Grid>
-          </div>
-        </form>
+            </div>
+          </form>
+        )}
       </Container>
 
       {/* {produkItems.length === 0 && (
@@ -319,7 +360,76 @@ function HomeProduk() {
           <img src={datanotfound} width={350} alt="Data not found" />
         </div>
       )} */}
-      {produkItems.length <= 0 && <AppPageLoading />}
+      {produkItems.length <= 0 && (
+        <Grid container spacing={5} className={classes.gridContainer}>
+          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+        </Grid>
+      )}
 
       <Grid container spacing={5} className={classes.gridContainer}>
         {produkItems.map((produkDoc) => {
@@ -337,13 +447,16 @@ function HomeProduk() {
                     title="Contemplative Reptile"
                     alt={`gambar-${produkDoc.id}`}
                   />
+
                   <CardContent>
                     <Typography variant="h5" component="h2">
                       {produkData.namaPenginapan}
                     </Typography>
+
                     <Typography variant="h6" gutterBottom color="primary">
                       {currency(produkData.harga)}
                     </Typography>
+
                     <Typography
                       variant="body1"
                       color="textSecondary"

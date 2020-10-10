@@ -33,7 +33,23 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import clsx from "clsx";
+import Tooltip from "@material-ui/core/Tooltip";
+
+// shimmer
+// import {DetailShimmer} from "../../../../components/Skeleton"
+import Skeleton from "@material-ui/lab/Skeleton";
+
 function DetailProduk({ match, history, location }) {
+  const [expanded, setExpanded] = React.useState(false);
+
   const [open, setOpen] = React.useState(false);
   const { firestore } = useFirebase();
   const produkDoc = firestore
@@ -102,10 +118,6 @@ function DetailProduk({ match, history, location }) {
     }
   }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot]);
 
-  if (loading) {
-    return <AppLoading message="Memuat Data..." />;
-  }
-
   const handleOpenDialog = () => {
     if (jenisIuran === "") {
       enqueueSnackbar("'Jenis iuran' tidak boleh kosong ", {
@@ -161,59 +173,142 @@ function DetailProduk({ match, history, location }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   return (
     <div>
-      <Card className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <ButtonBase
-              className={classes.image}
-              onClick={handleClickOpen(state.foto)}
-            >
-              <CardMedia image={state.foto} />
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  className={classes.media}
-                  src={state.foto}
-                />
-              </CardActionArea>
-            </ButtonBase>
+      <Card className={classes.root}>
+        <CardHeader
+          className={classes.header}
+          avatar={
+            loading ? (
+              <Skeleton
+                animation="wave"
+                variant="circle"
+                width={40}
+                height={40}
+              />
+            ) : (
+              <Tooltip title="Kembali" aria-label="kembali">
+                <IconButton
+                  aria-label="Back icon"
+                  onClick={() => {
+                    history.goBack();
+                  }}
+                >
+                  <ArrowBackIcon />
+                </IconButton>
+              </Tooltip>
+            )
+          }
+          action={
+            loading ? null : (
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            )
+          }
+          title={
+            loading ? (
+              <Skeleton
+                animation="wave"
+                height={10}
+                width="80%"
+                style={{ marginBottom: 6 }}
+              />
+            ) : (
+              state.namaPenginapan
+            )
+          }
+          subheader={
+            loading ? (
+              <Skeleton animation="wave" height={10} width="40%" />
+            ) : (
+              `(IDR) ${currency(state.harga)}`
+            )
+          }
+        />
 
-            <Grid className={classes.center} direction="row">
-              {listImage.slice(0, 4).map((data) => {
-                const imgFile = data.data().url;
-                return (
-                  <a href={"#"} onClick={handleClickOpen(imgFile)}>
-                    <img
-                      src={imgFile}
-                      width={69}
-                      height={40}
-                      className={classes.imgThumb}
-                    />
-                  </a>
-                );
-              })}
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography variant="h5" color="primary">
-                  {state.namaPenginapan}
-                </Typography>
-                <Typography variant="h4" gutterBottom>
-                  {currency(state.harga)}
-                  <Typography variant="body1" color="textSecondary">
-                    / bulan
-                  </Typography>
-                </Typography>
-                <Typography variant="body2" color="error">
-                  {state.jenisPenginapan === "Kontrakan"
-                    ? ""
-                    : `Sisa ${state.jumlahKamar} kamar`}
-                </Typography>
+        {loading ? (
+          <Skeleton animation="wave" variant="rect" className={classes.media} />
+        ) : (
+          <CardMedia
+            className={classes.media}
+            image={state.foto}
+            title="Foto Utama"
+          />
+        )}
 
+        <CardContent>
+          {/* {loading ? (
+            <React.Fragment>
+              <Skeleton
+                animation="wave"
+                height={10}
+                style={{ marginBottom: 6 }}
+              />
+              <Skeleton animation="wave" height={10} width="80%" />
+            </React.Fragment>
+          ) : (
+            <Typography variant="h6" color="inherit" component="p">
+              {
+                "Loading"
+              }
+            </Typography>
+          )} */}
+          {loading ? (
+            <Skeleton animation="wave" height={20} width="20%" />
+          ) : (
+            <Typography variant="h6" color="inherit" component="p">
+              Lokasi
+            </Typography>
+          )}
+          {loading ? (
+            <Skeleton animation="wave" height={20} width="80%" />
+          ) : (
+            <Typography variant="subtitle1" color="textSecondary" component="p">
+              {state.lokasi}
+            </Typography>
+          )}
+
+          {loading ? (
+            <Skeleton animation="wave" height={20} width="30%" />
+          ) : (
+            <Typography variant="subtitle1" color="error">
+              {state.jenisPenginapan === "Kontrakan"
+                ? ""
+                : `Sisa ${state.jumlahKamar} kamar`}
+            </Typography>
+          )}
+        </CardContent>
+
+        {loading ? (
+          <div className={classes.contentSkeleton}>
+            <Skeleton animation="wave" height={25} width="100%" />
+          </div>
+        ) : (
+          <div>
+            <CardActions disableSpacing>
+              {!isSuka && (
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={handleLikeButton}
+                >
+                  <FavoriteIcon color="disable" />
+                </IconButton>
+              )}
+              {isSuka && (
+                <IconButton
+                  aria-label="add to favorites"
+                  onClick={handleDisLikeButton}
+                >
+                  <FavoriteIcon color="secondary" />
+                </IconButton>
+              )}
+
+              <Tooltip title="Pesan sekarang" aria-label="booking">
                 <Button
                   onClick={handleOpenDialog}
                   startIcon={<SendIcon />}
@@ -224,6 +319,8 @@ function DetailProduk({ match, history, location }) {
                 >
                   {isReserved ? "Soldout" : "Pesan"}
                 </Button>
+              </Tooltip>
+              <Tooltip title="Bulanan / tahunan" aria-label="jenisIuran">
                 <ButtonBase>
                   <FormControl className={classes.formControl} required>
                     <InputLabel id="demo-simple-select-label">
@@ -241,69 +338,34 @@ function DetailProduk({ match, history, location }) {
                     </Select>
                   </FormControl>
                 </ButtonBase>
-                <Typography variant="body2" gutterBottom color="textSecondary">
-                  {state.lokasi}
-                </Typography>
-                <Typography variant="body2">Deskripsi : </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {state.deskripsi}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item>
-              {/* <h2>{JSON.stringify(userId)}</h2> */}
-              <Typography variant="subtitle1">
-                {!isSuka && (
-                  <IconButton
-                    aria-label="add to favorites"
-                    onClick={handleLikeButton}
-                  >
-                    <FavoriteIcon color="disable" />
-                  </IconButton>
-                )}
-                {isSuka && (
-                  <IconButton
-                    aria-label="add to favorites"
-                    onClick={handleDisLikeButton}
-                  >
-                    <FavoriteIcon color="secondary" />
-                  </IconButton>
-                )}
-
-                <IconButton aria-label="add to favorites">
-                  <ShareIcon />
+              </Tooltip>
+              <Tooltip title="Info lebih detail" aria-label="detail">
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
                 </IconButton>
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid container>
-          {/* {dataStore.map((img) => (
-            <img src={img} width={50} />
-          ))} */}
-        </Grid>
+              </Tooltip>
+            </CardActions>
+          </div>
+        )}
+
+        {/* LIKE BUTTON */}
+
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography variant="h6">Fasilitas</Typography>
+            <Typography paragraph align="justify" color="textSecondary">
+              {state.deskripsi}
+            </Typography>
+          </CardContent>
+        </Collapse>
       </Card>
-      <Fab
-        color="primary"
-        className={classes.fab}
-        onClick={() => {
-          history.goBack();
-        }}
-      >
-        <ArrowBackIcon />
-      </Fab>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <img src={dialogImg} className={classes.imgThumb} />
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

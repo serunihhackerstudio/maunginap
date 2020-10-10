@@ -1,54 +1,43 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  fab: {
-    position: "absolute",
-    bottom: theme.spacing(4),
-    right: theme.spacing(4),
-  },
-  papperPage: {
-    padding: theme.spacing(2),
-  },
   root: {
-    flexGrow: 1,
+    maxWidth: 800,
+    margin: "auto",
+  },
+  media: {
+    height: 250,
+    paddingTop: "56.25%", // 16:9
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+  },
+  avatar: {
+    backgroundColor: "primary",
   },
   paper: {
     padding: theme.spacing(2),
     margin: "auto",
-    maxWidth: 800,
-  },
-  image: {
-    width: 300,
-    height: "auto",
-  },
-  img: {
-    margin: "auto",
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
-  },
-  btn: {
-    marginBottom: theme.spacing(2),
-    marginRight: theme.spacing(1),
+    maxWidth: 300,
   },
   formControl: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(2),
     minWidth: 120,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  imgThumb: {
+  btn: {
+    marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    marginTop: theme.spacing(1),
   },
-  visible: {
-    color: "#FFFFFF",
-  },
-  center: {
-    textAlign: "center",
-    justifyContent: "center",
+  contentSkeleton: {
+    margin: theme.spacing(2),
   },
 }));
 

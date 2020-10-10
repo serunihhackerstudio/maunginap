@@ -32,6 +32,7 @@ import AppLoading from "../../../../components/AppLoading";
 // styles
 import useStyles from "./styles";
 import { currency } from "../../../../utils/formatter";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 function History({ match, history, location }) {
   const { firestore, user } = useFirebase();

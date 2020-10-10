@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   mediaPromotion: {
     height: 260,
   },
+  heading: {
+    textAlign: "center",
+  },
 
   media: {
     height: 140,
