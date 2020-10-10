@@ -46,13 +46,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   totalBayar: {
-    textAlign: "center",
+    textAlign: "left",
   },
   actionBtn: {
     marginLeft: theme.spacing(2),
   },
   status: {
-    marginLeft: theme.spacing(2),
+    textAlign: "center",
   },
   dateDivider: {
     marginBottom: theme.spacing(2),

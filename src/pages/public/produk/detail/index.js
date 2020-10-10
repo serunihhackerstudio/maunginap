@@ -95,9 +95,12 @@ function DetailProduk({ match, history, location }) {
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
 
   console.log(loadingSuka, loadingReserved);
+  const el = React.useRef(null);
+
   React.useEffect(() => {
     if (snapshot) {
       setstate(snapshot.data());
+      el.current.scrollIntoView({ block: "end", behavior: "smooth" });
     }
     if (snapshotSuka) {
       try {
@@ -181,6 +184,7 @@ function DetailProduk({ match, history, location }) {
     <div>
       <Card className={classes.root}>
         <CardHeader
+          ref={el}
           className={classes.header}
           avatar={
             loading ? (
@@ -359,7 +363,7 @@ function DetailProduk({ match, history, location }) {
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography variant="h6">Fasilitas</Typography>
+            <Typography variant="h6">Deskripsi</Typography>
             <Typography paragraph align="justify" color="textSecondary">
               {state.deskripsi}
             </Typography>

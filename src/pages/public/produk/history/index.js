@@ -64,12 +64,9 @@ function History({ match, history, location }) {
     <div>
       {state.map((produk) => {
         const dataProduk = produk.data();
-        const dateBooking = new Date(
-          produk.data().tanggalPesan["seconds"] * 1000
-        );
         return (
           <Card className={classes.paper}>
-            <Grid container className={classes.rowDivider}>
+            <Grid container className={classes.rowDivider} spacing={2}>
               <Grid item xs>
                 <Typography variant="body2" color="primary">
                   <strong>{dataProduk.jenisPenginapan}</strong>
@@ -78,17 +75,12 @@ function History({ match, history, location }) {
                   ({dataProduk.kodeBooking})
                 </Typography>
               </Grid>
-              <Grid item>
-                <font color="white">
-                  <span className={classes.emptyCol}>#################</span>
-                </font>
-              </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} alignContent="center">
                 <Typography variant="body2" color="textSecondary">
-                  Booking date
+                  Waktu ditempati
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  12 Oktober 2020, 18:30:00
+                <Typography variant="body2" color="primary">
+                  {dataProduk.tanggalPesan}
                 </Typography>
               </Grid>
               <Grid item xs className={classes.totalBayar}>
@@ -115,7 +107,7 @@ function History({ match, history, location }) {
                   </CardActionArea>
                 </ButtonBase>
               </Grid>
-              <Grid item xs={12} sm container>
+              <Grid item sm container>
                 <Grid item xs>
                   <Grid item xs>
                     <Typography variant="body1" color="primary">
@@ -132,7 +124,7 @@ function History({ match, history, location }) {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid item xs={6} className={classes.status}>
+                <Grid item xs={6}>
                   <Typography
                     variant="body2"
                     gutterBottom
@@ -142,9 +134,14 @@ function History({ match, history, location }) {
                   </Typography>
                   <Typography variant="body1">
                     {dataProduk.approvalStatus ? (
-                      <font color="#016660">
-                        <strong>Siap ditempati</strong>
-                      </font>
+                      <>
+                        <font color="#016660">
+                          <strong>Siap ditempati</strong>
+                        </font>
+                        <Typography variant="body2" color="error">
+                          s/d. {dataProduk.tanggalBerakhir}
+                        </Typography>
+                      </>
                     ) : (
                       <>
                         <Typography variant="body2" color="textSecondary">

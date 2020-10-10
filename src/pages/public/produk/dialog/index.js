@@ -44,9 +44,11 @@ const DialogBooking = ({
     namaKTP: "",
     nomorKTP: "",
     jenisIuran: jenisIuran,
-    tanggalPesan: new Date(),
+    tanggalPesan: "",
+    tanggalBerakhir: "",
     nomorHpWa: "",
     reserved: false,
+    created: new Date(),
   });
 
   const [error, setError] = useState({
@@ -113,6 +115,7 @@ const DialogBooking = ({
       ...error,
       [e.target.name]: "",
     });
+
     setForm({
       ...form,
       [e.target.id]: e.target.value,

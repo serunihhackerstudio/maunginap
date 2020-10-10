@@ -5,13 +5,24 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 
 function FormPemesan({ form, error, isSubmitting, handleChange }) {
-  const [selectedDate, setSelectDate] = React.useState(new Date());
-  const handleDateChange = (e) => {
-    setSelectDate(e);
-  };
-  console.log(selectedDate);
+  const [selectedDate, handleDateChange] = React.useState(new Date());
+  form.tanggalPesan = new Date(selectedDate).toLocaleDateString();
+  if (form.jenisIuran === "Bulanan") {
+    const daysInOneMonth = 30;
+    const bulanan =
+      new Date(selectedDate).getTime() + daysInOneMonth * 24 * 60 * 60 * 1000;
+    const outBulanan = new Date(bulanan).toLocaleDateString();
+    form.tanggalBerakhir = outBulanan;
+  } else {
+    const daysInOneYear = 365;
+    const tahunan =
+      new Date(selectedDate).getTime() + daysInOneYear * 24 * 60 * 60 * 1000;
+    const outTahunan = new Date(tahunan).toLocaleDateString();
+    form.tanggalBerakhir = outTahunan;
+  }
   return (
     <React.Fragment>
+      {JSON.stringify(selectedDate)}
       <TextField
         id="namaKTP"
         name="namaKTP"
