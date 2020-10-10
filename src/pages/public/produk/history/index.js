@@ -9,6 +9,11 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
+import { CardMedia, CardActionArea, Card } from "@material-ui/core";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import Divider from "@material-ui/core/Divider";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // react-hook
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -50,31 +55,156 @@ function History({ match, history, location }) {
   console.log(setSubmitting);
   setJumlahPesanan(state.length);
 
-  // function sleep(milliseconds) {
-  //   setSubmitting(true);
-  //   const date = Date.now();
-  //   let currentDate = null;
-  //   do {
-  //     currentDate = Date.now();
-  //   } while (currentDate - date < milliseconds);
-  //   setSubmitting(false);
-  // }
-
   if (loading) {
     return <AppLoading message="Checkout" />;
   }
-  // const handleCheckout = async (e) => {
-  //   e.preventDefault();
-
-  //   await sleep(2000);
-
-  //   history.push(`/view/penginapan/${user.uid}/checkout/bayar`);
-  // };
-
-  console.log(isSubmitting);
 
   return (
     <div>
+      {state.map((produk) => {
+        const dataProduk = produk.data();
+        const dateBooking = new Date(
+          produk.data().tanggalPesan["seconds"] * 1000
+        );
+        return (
+          <Card className={classes.paper}>
+            <Grid container className={classes.rowDivider}>
+              <Grid item xs>
+                <Typography variant="body2" color="primary">
+                  <strong>{dataProduk.jenisPenginapan}</strong>
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  ({dataProduk.kodeBooking})
+                </Typography>
+              </Grid>
+              <Grid item>
+                <font color="white">
+                  <span className={classes.emptyCol}>#################</span>
+                </font>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2" color="textSecondary">
+                  Booking date
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  12 Oktober 2020, 18:30:00
+                </Typography>
+              </Grid>
+              <Grid item xs className={classes.totalBayar}>
+                <Typography variant="body2" color="textSecondary">
+                  Total Pembayaran
+                </Typography>
+                <Typography variant="body2" color="primary">
+                  <strong>(IDR) {currency(dataProduk.harga)}</strong>
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid className={classes.rowDivider}>
+              <Divider />
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid item>
+                <ButtonBase className={classes.image}>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      className={classes.media}
+                      src={dataProduk.foto}
+                    />
+                  </CardActionArea>
+                </ButtonBase>
+              </Grid>
+              <Grid item xs={12} sm container>
+                <Grid item xs>
+                  <Grid item xs>
+                    <Typography variant="body1" color="primary">
+                      <strong>{dataProduk.namaPenginapan}</strong>
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                      (IDR) {currency(dataProduk.harga)}
+                      <Typography variant="body2" color="textSecondary">
+                        / {dataProduk.jenisIuran}
+                      </Typography>
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {state.deskripsi}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid item xs={6} className={classes.status}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    color="textSecondary"
+                  >
+                    Status
+                  </Typography>
+                  <Typography variant="body1">
+                    {dataProduk.approvalStatus ? (
+                      <font color="#016660">
+                        <strong>Siap ditempati</strong>
+                      </font>
+                    ) : (
+                      <>
+                        <Typography variant="body2" color="textSecondary">
+                          <Grid container spacing={2}>
+                            <Grid item>
+                              <CircularProgress color="primary" size={15} />
+                            </Grid>
+                            <Grid item>
+                              <strong>Menunggu pembayaran...</strong>
+                            </Grid>
+                            <Grid item></Grid>
+                          </Grid>
+                        </Typography>
+                      </>
+                    )}
+                  </Typography>
+                </Grid>
+                <Grid item xs className={classes.actionBtn}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    color="textSecondary"
+                  >
+                    Action
+                  </Typography>
+                  <Tooltip title="Perpanjang pesanan" aria-label="perpanjang">
+                    <Button
+                      className={classes.btn}
+                      variant="contained"
+                      color="primary"
+                    >
+                      Perpanjang
+                    </Button>
+                  </Tooltip>
+                </Grid>
+              </Grid>
+
+              <Grid item></Grid>
+            </Grid>
+          </Card>
+        );
+      })}
+      <Tooltip title="Kembali" aria-label="kembali">
+        <Fab
+          color="primary"
+          className={classes.fab}
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          <ArrowBackIcon />
+        </Fab>
+      </Tooltip>
+    </div>
+  );
+}
+
+export default History;
+
+/*
+<div>
       <TableContainer component={Paper} className={classes.paper}>
         <Typography variant="h5" color="textSecondary">
           History Pesanan
@@ -118,7 +248,7 @@ function History({ match, history, location }) {
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="body1">
-                      {JSON.stringify(dateBooking.toLocaleString())}
+                      {dateBooking.toLocaleString().toString()}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
@@ -161,7 +291,4 @@ function History({ match, history, location }) {
         <ArrowBackIcon />
       </Fab>
     </div>
-  );
-}
-
-export default History;
+*/

@@ -32,7 +32,7 @@ function UserProfile(props) {
         <Switch>
           <Route path="/profile/user/info" component={UserInfo} />
           <Route path="/profile/user/biodata" component={UserBio} />
-          <Redirect to="/profile/user" />
+          <Redirect to="/profile/user/info" />
         </Switch>
       </div>
     </Paper>

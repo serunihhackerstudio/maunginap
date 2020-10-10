@@ -11,9 +11,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     margin: "auto",
     maxWidth: 950,
+    marginBottom: theme.spacing(2),
   },
   image: {
-    width: 300,
+    width: 90,
     height: "auto",
   },
   img: {
@@ -24,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
   btn: {
     marginBottom: theme.spacing(2),
-    marginRight: theme.spacing(1),
   },
   formControl: {
     marginBottom: theme.spacing(3),
@@ -41,6 +41,27 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     bottom: theme.spacing(4),
     right: theme.spacing(4),
+  },
+  rowDivider: {
+    marginBottom: theme.spacing(2),
+  },
+  totalBayar: {
+    textAlign: "center",
+  },
+  actionBtn: {
+    marginLeft: theme.spacing(2),
+  },
+  status: {
+    marginLeft: theme.spacing(2),
+  },
+  dateDivider: {
+    marginBottom: theme.spacing(2),
+  },
+  emptyCol: {
+    width: 700,
+  },
+  orderDate: {
+    textAlign: "center",
   },
 }));
 
