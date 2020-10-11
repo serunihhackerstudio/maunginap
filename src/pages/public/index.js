@@ -45,6 +45,8 @@ import DetailProduk from "./produk/detail";
 import HomeProduk from "./produk";
 import Proses from "./produk/bayar/proses";
 import History from "./produk/history";
+import Perpanjang from "./produk/perpanjang";
+import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
 import Testing from "./testing";
 import UserProfile from "../user/profile";
@@ -260,10 +262,18 @@ function Home({ history, location }) {
               exact
               component={DetailProduk}
             />
-            <Route exact path="/history" component={History} />
-
+            <Route path="/history" component={History} />
+            <Route
+              exact
+              path="/perpanjang/:penginapanId"
+              component={Perpanjang}
+            />
+            <Route
+              exact
+              path="/perpanjang/:penginapanId/proses"
+              component={ProsesPerpanjang}
+            />
             <Route path="/profile/user" component={UserProfile} />
-
             <Route component={HomeProduk} />
           </Switch>
         </Container>

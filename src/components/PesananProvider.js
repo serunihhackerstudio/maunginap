@@ -41,14 +41,21 @@ const PesananProvider = (props) => {
     },
   ]);
 
+  // form Perpanjangan
+  const [pesananId, setPesananId] = React.useState("");
+
   const progressPembayaran =
-    "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini. Tim kami akan segera menghubungi nomor Anda melalui WA/telpon untuk konfirmasi lebih lanjut mengenai pesanan Anda. Jika Anda telah menyelesaikan transaksi, harap struk pembayarannya disimpan dan akan kami minta saat tim kami menghubungi Anda. Kepuasan Anda adalah prioritas utama kami";
-  const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan", "Hostel"];
+    "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini. Setelah Anda transfer, silahkan kirim foto bukti transfer ke nomor WhatsApp kami.";
+  const nomorWA = "085-123-456-789"
+    const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan", "Hostel"];
   const kotaOpt = ["Surabaya", "Mataram"];
   const [formPesanan, setFormPesanan] = React.useState({});
   return (
     <PesananContext.Provider
       value={{
+        nomorWA,
+        pesananId,
+        setPesananId,
         jenisPenginapanOpt,
         kotaOpt,
         formBooking,

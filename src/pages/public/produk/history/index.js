@@ -25,7 +25,7 @@ import Fab from "@material-ui/core/Fab";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 // react-router
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import AppLoading from "../../../../components/AppLoading";
 
@@ -41,11 +41,13 @@ function History({ match, history, location }) {
     .collection("pesanan")
     .where("userId", "==", user.uid);
 
+  
+
   const [snapshot, loading] = useCollection(produkDoc);
   const classes = useStyles();
   const [state, setState] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
-  const { setJumlahPesanan } = usePesanan();
+  const { setJumlahPesanan, setPesananId } = usePesanan();
 
   useEffect(() => {
     if (snapshot) {
@@ -56,14 +58,36 @@ function History({ match, history, location }) {
   console.log(setSubmitting);
   setJumlahPesanan(state.length);
 
+  const perpanjangCallback = (data) => (e) => {
+    setPesananId(data);
+    history.push(`/perpanjang/${data}`);
+  };
+
   if (loading) {
-    return <AppLoading message="Checkout" />;
+    return <AppLoading message="History Pesanan" />;
   }
 
   return (
     <div>
       {state.map((produk) => {
         const dataProduk = produk.data();
+        const dateNow = new Date().toLocaleDateString()
+        if (dataProduk.tanggalBerakhir === dateNow){
+          const produkDocId = firestore
+          .collection("pesanan")
+          .where("userId", "==", user.uid).where("kodeBooking", "==",produk.id);
+          dataProduk.approvalStatus = false
+          dataProduk.statusPerpanjang = false
+          produkDocId.set(
+            {
+              statusPerpanjang:dataProduk.statusPerpanjang
+            },
+            {
+              merge:true
+            }
+          )
+          
+        }
         return (
           <Card className={classes.paper}>
             <Grid container className={classes.rowDivider} spacing={2}>
@@ -172,6 +196,8 @@ function History({ match, history, location }) {
                       className={classes.btn}
                       variant="contained"
                       color="primary"
+                      disabled={dataProduk.approvalStatus && (dataProduk.tanggalBerakhir === dateNow) ? false : true}
+                      onClick={perpanjangCallback(produk.id)}
                     >
                       Perpanjang
                     </Button>

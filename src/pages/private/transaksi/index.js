@@ -23,7 +23,7 @@ import AppLoading from "../../../components/AppLoading";
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
   const { firestore } = useFirebase();
-  const query = firestore.collection("pesanan");
+  const query = firestore.collection("pesanan").orderBy("created", "desc");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
   const classes = useState();
@@ -46,8 +46,30 @@ function Transaksi() {
           variant: "success",
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      enqueueSnackbar(e.message, {
+        variant: "error",
+      });
+    }
   };
+
+  const perpanjangCallback = (produkdocId) => async () => {
+    try {
+      if (window.confirm("Apakah pesanan ini telah dikonfirmasi untuk perpanjangan ? ")) {
+        await firestore
+          .collection("pesanan")
+          .doc(`${produkdocId}`)
+          .set({ statusPerpanjang: true }, { merge: true });
+        enqueueSnackbar(`Pesanan diperpanjang`, {
+          variant: "success",
+        });
+      }
+    } catch (e) {
+      enqueueSnackbar(e.message, {
+        variant: "error",
+      });
+  }
+}
 
   const quitApproval = (produkdocId) => async () => {
     try {
@@ -88,10 +110,6 @@ function Transaksi() {
     return <AppPageLoading />;
   }
 
-  // produkItems.forEach((data) =>
-  //   console.log(new Date(data.data().tanggalPesan["seconds"] * 1000))
-  // );
-
   return (
     <>
       {produkItems.length <= 0 && (
@@ -101,9 +119,7 @@ function Transaksi() {
       <Grid container spacing={5}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
-          const dateBooking = new Date(
-            produkDoc.data().tanggalPesan["seconds"] * 1000
-          );
+          const dateBooking = produkData.tanggalPesan
           return (
             <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
               <Card className={classes.root}>
@@ -178,18 +194,28 @@ function Transaksi() {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button
-                    disabled={produkData.approvalStatus ? true : false}
+                  {produkData.approvalStatus ? (
+                    <Button
+                    disabled={produkData.statusPerpanjang ? true : false}
                     size="small"
                     color="primary"
                     variant="contained"
-                    // onClick={}
+                    onClick={perpanjangCallback(produkDoc.id)}
+                  >
+                    Perpanjang
+                  </Button>
+                  ) : (
+                    <Button
+                    disabled={false}
+                    size="small"
+                    color="primary"
+                    variant="contained"
                     onClick={approveCallback(produkDoc.id)}
                   >
-                    {produkData.approvalStatus
-                      ? "Siap ditempati"
-                      : "Konfirmasi"}
+                    Konfirmasi
                   </Button>
+                  )}
+                  
 
                   <Button
                     disabled={!produkData.approvalStatus ? true : false}

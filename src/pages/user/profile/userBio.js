@@ -22,11 +22,11 @@ function UserBio() {
 
   const { firestore, user } = useFirebase();
 
-  const tokoDoc = firestore.doc(`/userbio/${user.uid}`);
+  const userBio = firestore.doc(`/userbio/${user.uid}`);
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [snapshot, loading] = useDocument(tokoDoc);
+  const [snapshot, loading] = useDocument(userBio);
 
   const [form, setForm] = useState({
     alamat: "",
@@ -42,10 +42,15 @@ function UserBio() {
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [isSomethingChange, setSomethingChange] = useState(false);
+  
+
+
   useEffect(() => {
     if (snapshot) {
+      // console.log(snapshot.data())
       setForm(snapshot.data());
     }
+   
   }, [snapshot]);
 
   const handleChange = (e) => {
@@ -87,7 +92,7 @@ function UserBio() {
     } else {
       setSubmitting(true);
       try {
-        await tokoDoc.set(form, { merge: true });
+        await userBio.set(form, { merge: true });
         setSomethingChange(false);
         enqueueSnackbar("Data berhasil disimpan", { variant: "success" });
       } catch (e) {
@@ -97,10 +102,11 @@ function UserBio() {
     }
   };
 
-  console.log(form);
   if (loading) {
     return <AppPageLoading />;
   }
+
+  console.log(form)
 
   return (
     <div className={classes.pengaturanBio}>

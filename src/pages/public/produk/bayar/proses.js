@@ -24,7 +24,7 @@ const Proses = ({ match }) => {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(dataQuery);
-  const { progressPembayaran, formBank } = usePesanan();
+  const { progressPembayaran, formBank, nomorWA } = usePesanan();
   const [activeStep, setActiveStep] = React.useState(3);
 
   React.useEffect(() => {
@@ -68,6 +68,16 @@ const Proses = ({ match }) => {
               </Typography>
             </ListItem>
 
+            <ListItem className={classes.listItem}>
+              <ListItemText primary="Nomor WA" />
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                className={classes.total}
+              >
+                <strong>{nomorWA}</strong>
+              </Typography>
+            </ListItem>
             <Divider variant="middle" />
 
             <ListItem className={classes.listItem}>

@@ -108,6 +108,7 @@ const DialogBooking = ({
   form.userId = user.uid;
   form.penginapanId = match.params.penginapanId;
   form.approvalStatus = false;
+  form.statusPerpanjang = false;
   form.jenisPenginapan = jenisPenginapan;
 
   const handleChange = (e) => {
