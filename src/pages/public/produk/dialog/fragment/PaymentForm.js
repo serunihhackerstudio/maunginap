@@ -55,10 +55,10 @@ export default function PaymentForm({ form, setForm, error, setError }) {
                 onChange={handleChange}
               >
                 <MenuItem value={"Bank Mandiri"}>
-                  Bank Mandiri - 161-0000-454-3980
+                  <img width={120} src={"https://1.bp.blogspot.com/-epxOcwo446g/Vxw_q2mS5VI/AAAAAAAAXCs/md15WqOgYdMNg5zK0sYoe91Q9EYlSJySQCLcB/s1600/Bank%2BMandiri%2BLogo.png"}/>
                 </MenuItem>
                 <MenuItem value={"Bank BCA"}>
-                  Bank BCA - 885-0000-9890-161
+                  <img width={120} src={"https://i.pinimg.com/originals/fc/cb/47/fccb47aa81d86e25433c93d24147896d.png"} />
                 </MenuItem>
               </Select>
               {!form.pilihBank && (

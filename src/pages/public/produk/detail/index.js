@@ -259,7 +259,7 @@ function DetailProduk({ match, history, location }) {
                 return (
                   <a href={"#"} onClick={handleClickOpen(imgFile)} >
                     <img
-                      src={imgFile}
+                    src={imgFile}
                       width={70}
                       height={50}
                       className={classes.imgThumb}
@@ -319,7 +319,6 @@ function DetailProduk({ match, history, location }) {
               <Tooltip title="Pesan sekarang" aria-label="booking">
                 <Button
                   onClick={handleOpenDialog}
-                  startIcon={<SendIcon />}
                   className={classes.btn}
                   variant="contained"
                   color="primary"
