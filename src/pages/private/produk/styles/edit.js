@@ -50,6 +50,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     justifyContent: "center",
   },
+  rootImg: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+  listAlign:{
+    textAlign:"center"
+  }
 }));
 
 export default useStyles;

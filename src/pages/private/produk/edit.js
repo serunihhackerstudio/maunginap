@@ -23,6 +23,18 @@ import SaveIcon from "@material-ui/icons/Save";
 import { Prompt } from "react-router-dom";
 import ID from "../../../utils/idgenerator";
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
+import { CardMedia} from "@material-ui/core";
+
+
 function EditProduk({ match }) {
   // stylesheet
   const classes = useStyles();
@@ -92,7 +104,6 @@ function EditProduk({ match }) {
     if (kotaSnapshot) {
       kotaSnapshot.docs.forEach((data) => {
         kotaData.push(data.data().kota);
-        console.log(data.data().kota);
       });
       setOptions(kotaData);
     }
@@ -172,14 +183,10 @@ function EditProduk({ match }) {
     if (!form.kota) {
       newError.kota = "kota wajib diisi";
     }
-    // if (!form.jenisPenginapan) {
-    //   newError.jenisPenginapan = "Jenis penginapan wajib diisi";
-    // }
 
     return newError;
   };
 
-  // console.log(form.namaPenginapan);
   const storageStore = [];
 
   const handleUploadFile = (e) => {
@@ -230,14 +237,26 @@ function EditProduk({ match }) {
     setSubmitting(false);
   };
 
-  console.log(options);
+  const deleteImgCallback = (data) => async (e) => {
+    await firestore
+          .collection("imgthumbnail")
+          .doc(`${data.id}`)
+          .get()
+          .then((doc) => {
+            storage.refFromURL(doc.data().url).delete();
+            doc.ref.delete();
+          });
+          enqueueSnackbar("Gambar terhapus", {
+            variant: "success",
+          });
+  }
 
   return (
     <Paper className={classes.papperPadding}>
       <Typography variant="h5" component="h1">
         Edit Informasi Penignapan : {form.namaPenginapan}
       </Typography>
-      <Grid container alignItems="center" justify="center">
+      <Grid container alignItems="center" justify="center" spacing={2}>
         <Grid item xs={12} sm={6}>
           <form id="produk-form" onSubmit={handleSubmit} noValidate>
             <TextField
@@ -299,7 +318,7 @@ function EditProduk({ match }) {
               disabled={isSubmitting}
               style={{ width: 300 }}
               renderInput={(params) => {
-                console.log(error.kota);
+                
                 return (
                   <TextField
                     {...params}
@@ -404,19 +423,37 @@ function EditProduk({ match }) {
 
         <Grid item xs={6} sm={6}>
           <Grid className={classes.center}>
-            {listImage.map((data) => {
+
+          <List className={classes.rootImg}>
+          {listImage.map((data,index) => {
               const imgFile = data.data().url;
               return (
+                <>
+                <ListItem key={data.id} role={undefined} dense button>
                 <a href={"#"}>
                   <img
                     src={imgFile}
-                    width={150}
-                    height={100}
+                    width={80}
+                    height={80}
                     className={classes.imgThumb}
                   />
                 </a>
-              );
+                <ListItemText className={classes.listAlign}>
+                  <Typography color="primary" variant="subtitle1">
+                    <strong>Foto {index === 0 ? "utama": "ke-"+index}</strong>
+                  </Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete" onClick={deleteImgCallback(data)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
+              </>
+              )
             })}
+          </List>
             {imgLoading && <AppPageLoading />}
           </Grid>
           <div className={classes.uploadFotoProduk}>

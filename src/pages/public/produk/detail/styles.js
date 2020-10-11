@@ -39,6 +39,12 @@ const useStyles = makeStyles((theme) => ({
   contentSkeleton: {
     margin: theme.spacing(2),
   },
+  center:{
+    textAlign:"center",
+  },
+  imgThumb:{
+    marginRight:theme.spacing(2)
+  }
 }));
 
 export default useStyles;

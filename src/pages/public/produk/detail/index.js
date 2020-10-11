@@ -246,28 +246,30 @@ function DetailProduk({ match, history, location }) {
         )}
 
         <CardContent>
-          {/* {loading ? (
-            <React.Fragment>
-              <Skeleton
-                animation="wave"
-                height={10}
-                style={{ marginBottom: 6 }}
-              />
-              <Skeleton animation="wave" height={10} width="80%" />
-            </React.Fragment>
-          ) : (
-            <Typography variant="h6" color="inherit" component="p">
-              {
-                "Loading"
-              }
-            </Typography>
-          )} */}
+
           {loading ? (
-            <Skeleton animation="wave" height={20} width="20%" />
+            <Skeleton animation="wave" height={50} className={classes.imgThumb}/>
           ) : (
+            <>
+            <Grid className={classes.center} direction="row">
+              {listImage.slice(0, 4).map((data) => {
+                const imgFile = data.data().url;
+                return (
+                  <a href={"#"} onClick={handleClickOpen(imgFile)} >
+                    <img
+                      src={imgFile}
+                      width={70}
+                      height={50}
+                      className={classes.imgThumb}
+                    />
+                  </a>
+                );
+              })}
+            </Grid>
             <Typography variant="h6" color="inherit" component="p">
               Lokasi
             </Typography>
+            </>
           )}
           {loading ? (
             <Skeleton animation="wave" height={20} width="80%" />
@@ -370,6 +372,20 @@ function DetailProduk({ match, history, location }) {
           </CardContent>
         </Collapse>
       </Card>
+      <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <img src={dialogImg} className={classes.imgThumb} width={800} />
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+      </>
     </div>
   );
 }
