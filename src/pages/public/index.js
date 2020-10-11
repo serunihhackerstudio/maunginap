@@ -50,6 +50,7 @@ import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
 import Testing from "./testing";
 import UserProfile from "../user/profile";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function Home({ history, location }) {
   const classes = useStyles();
@@ -148,17 +149,21 @@ function Home({ history, location }) {
           )}
 
           {user && (
+            <Tooltip title="Pesanan">
             <IconButton color="inherit" component={Link} to={"/history"}>
               <Badge badgeContent={jumlahPesanan} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+            </Tooltip>
           )}
 
           {user && (
+            <Tooltip title="Sign out">
             <IconButton color="inherit" onClick={handleOpenDialog}>
               <SignOutIcon />
             </IconButton>
+            </Tooltip>
           )}
         </Toolbar>
       </AppBar>
