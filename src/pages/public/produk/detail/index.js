@@ -94,13 +94,14 @@ function DetailProduk({ match, history, location }) {
     .doc(`${match.params.penginapanId}`);
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
 
-  console.log(loadingSuka, loadingReserved);
-  const el = React.useRef(null);
+  // like button handler
+  const [likeNum, setLikeNum] = React.useState(0)
 
   React.useEffect(() => {
     if (snapshot) {
-      setstate(snapshot.data());
-      el.current.scrollIntoView({ block: "end", behavior: "smooth" });
+      const data = snapshot.data()
+      setstate(data);
+      setLikeNum(data.likes)
     }
     if (snapshotSuka) {
       try {
@@ -152,6 +153,7 @@ function DetailProduk({ match, history, location }) {
           penginapanId: match.params.penginapanId,
           user: user.uid,
         });
+        await produkDoc.set({likes:likeNum + 1}, {merge:true})
       } catch (e) {
         enqueueSnackbar(e.message, { variant: "error" });
       }
@@ -161,6 +163,7 @@ function DetailProduk({ match, history, location }) {
     // fungsi untuk menambah data suka pada produk
     try {
       await dataLikePath.doc(idSuka).delete();
+      await produkDoc.set({likes:likeNum - 1}, {merge:true})
       setSuka(false);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
@@ -184,7 +187,6 @@ function DetailProduk({ match, history, location }) {
     <div>
       <Card className={classes.root}>
         <CardHeader
-          ref={el}
           className={classes.header}
           avatar={
             loading ? (
