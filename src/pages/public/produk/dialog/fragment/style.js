@@ -49,11 +49,14 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     marginBottom: theme.spacing(3),
     marginLeft: theme.spacing(1),
-    minWidth: 200,
+    minWidth: 130,
   },
   paymentTitle: {
     marginBottom: theme.spacing(2),
   },
+  listAlign:{
+    textAlign:"center"
+  }
 }));
 
 export default useStyles;

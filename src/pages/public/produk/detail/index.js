@@ -201,7 +201,7 @@ function DetailProduk({ match, history, location }) {
                 <IconButton
                   aria-label="Back icon"
                   onClick={() => {
-                    history.goBack();
+                    history.push("/")
                   }}
                 >
                   <ArrowBackIcon />

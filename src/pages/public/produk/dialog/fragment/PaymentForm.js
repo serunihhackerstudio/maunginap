@@ -8,6 +8,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Divider from '@material-ui/core/Divider';
+
 export default function PaymentForm({ form, setForm, error, setError }) {
   const { setFormBank } = usePesanan();
   const [isSubmitting, setSubmitting] = useState(false);
@@ -45,7 +47,7 @@ export default function PaymentForm({ form, setForm, error, setError }) {
           <Grid item>
             <FormControl className={classes.formControl} required>
               <InputLabel id="demo-simple-select-label">
-                Pilih Bank Tujuan
+                Bank Tujuan
               </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -55,10 +57,11 @@ export default function PaymentForm({ form, setForm, error, setError }) {
                 onChange={handleChange}
               >
                 <MenuItem value={"Bank Mandiri"}>
-                  <img width={120} src={"https://1.bp.blogspot.com/-epxOcwo446g/Vxw_q2mS5VI/AAAAAAAAXCs/md15WqOgYdMNg5zK0sYoe91Q9EYlSJySQCLcB/s1600/Bank%2BMandiri%2BLogo.png"}/>
+                  <img width={85} src={"https://1.bp.blogspot.com/-epxOcwo446g/Vxw_q2mS5VI/AAAAAAAAXCs/md15WqOgYdMNg5zK0sYoe91Q9EYlSJySQCLcB/s1600/Bank%2BMandiri%2BLogo.png"}/>
                 </MenuItem>
+                <Divider />
                 <MenuItem value={"Bank BCA"}>
-                  <img width={120} src={"https://i.pinimg.com/originals/fc/cb/47/fccb47aa81d86e25433c93d24147896d.png"} />
+                  <img width={85} src={"https://i.pinimg.com/originals/fc/cb/47/fccb47aa81d86e25433c93d24147896d.png"} />
                 </MenuItem>
               </Select>
               {!form.pilihBank && (
