@@ -89,7 +89,7 @@ export default function Perpanjang({ history, match }) {
 
   const handlePerpanjang = async () => {
     try {
-      await query.set(form, { merge: false });
+      await query.set(form, { merge: true });
       history.push(`/perpanjang/${match.params.penginapanId}/proses`);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });

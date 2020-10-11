@@ -196,7 +196,7 @@ function Transaksi() {
                 <CardActions>
                   {produkData.approvalStatus ? (
                     <Button
-                    disabled={produkData.statusPerpanjang ? true : false}
+                    disabled={!produkData.statusPerpanjang ? true : false}
                     size="small"
                     color="primary"
                     variant="contained"
