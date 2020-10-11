@@ -61,7 +61,7 @@ function HomeProduk() {
     .collection(`penginapan`)
     .doc("data")
     .collection("produk")
-    .orderBy("namaPenginapan")
+    .orderBy("created", "desc")
     .limit(numPage);
 
   const dataDocMax = firestore
@@ -154,7 +154,7 @@ function HomeProduk() {
         .collection(`penginapan`)
         .doc("data")
         .collection("produk")
-        .orderBy("namaPenginapan")
+        .orderBy("created", "desc")
         .limit(numPage)
         .get()
         .then((data) => setProdukItems(data.docs));

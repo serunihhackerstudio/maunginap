@@ -4,10 +4,15 @@ const useStyles = makeStyles((theme) => ({
   pengaturanIdentitas: {
     display: "flex",
     flexDirection: "column",
-    width: 300,
+    width: 600,
   },
   tombolSimpan: {
     marginTop: theme.spacing(2),
+  },
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 

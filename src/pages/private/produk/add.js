@@ -37,7 +37,7 @@ function AddDialog({ history, open, handleClose }) {
         throw new Error("Nama produk wajib diisi");
       }
 
-      const produkBaru = await produkCol.add({ namaPenginapan });
+      const produkBaru = await produkCol.add({ namaPenginapan, created:new Date() });
 
       history.push(
         `/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk/edit/${produkBaru.id}`

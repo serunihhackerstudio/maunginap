@@ -218,26 +218,6 @@ function Home({ history, location }) {
               );
             }}
           />
-
-          <Route
-            path="/manage"
-            children={(props) => {
-              return (
-                <ListItem
-                  selected={props.match ? true : false}
-                  onClick={() => {
-                    props.history.push("/manage");
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    <TuneIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Manage" />
-                </ListItem>
-              );
-            }}
-          />
         </List>
       </Drawer>
 

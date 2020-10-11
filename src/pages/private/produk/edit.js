@@ -103,6 +103,7 @@ function EditProduk({ match }) {
       ...form,
       [e.target.name]: e.target.value,
     });
+    form.kota = form.kota.toUpperCase()
 
     setError({
       ...error,
@@ -127,7 +128,7 @@ function EditProduk({ match }) {
       setSubmitting(true);
 
       try {
-        if (options.length === 0) {
+        if (!options.includes(form.kota)) {
           kotaQuery.doc(`${idKota}`).set({ kota: form.kota }, { merge: true });
         }
         await produkDoc.set(form, { merge: true });

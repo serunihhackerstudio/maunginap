@@ -75,11 +75,11 @@ function UserBio() {
     if (!form.telepon) {
       newError.telepon = "Telepon wajib diisi";
     }
-    if (!form.website) {
-      newError.website = "Website wajib diisi";
-    } else if (!isUrl(form.website)) {
-      newError.website = "Website tidak valid";
-    }
+    // if (!form.website) {
+    //   newError.website = "Website wajib diisi";
+    // } else if (!isUrl(form.website)) {
+    //   newError.website = "Website tidak valid";
+    // }
 
     return newError;
   };
@@ -129,7 +129,7 @@ function UserBio() {
         <TextField
           name="telepon"
           id="telepon"
-          label="Nomor Telepon"
+          label="Nomor Telepon / WA"
           margin="normal"
           fullWidth
           required
@@ -145,7 +145,6 @@ function UserBio() {
           label="Website"
           margin="normal"
           fullWidth
-          required
           onChange={handleChange}
           value={form.website}
           disabled={isSubmitting}
