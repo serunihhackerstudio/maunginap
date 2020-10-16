@@ -17,6 +17,24 @@ const useStyles = makeStyles((theme) => ({
   tombolSimpan: {
     marginTop: theme.spacing(2),
   },
+  hideInputFile: {
+      display: "none",
+  },
+  uploadFotoProduk: {
+    textAlign: "center",
+    padding: theme.spacing(3),
+  },
+  formEditBox: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  previewFotoProduk: {
+    width: 400,
+    height: "auto",
+  },
+  profilePict:{
+    borderRadius:"20%",
+  }
 }));
 
 export default useStyles;

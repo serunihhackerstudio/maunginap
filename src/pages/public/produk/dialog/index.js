@@ -1,3 +1,6 @@
+
+
+
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -145,6 +148,18 @@ const DialogBooking = ({
 
     return newError;
   };
+  const request = require('request');
+  const sendPesananToTelegram = async (msg) => {
+    const endp = "https://api.telegram.org/bot1291851346:AAHuNYhhWGXwv4t14xbe7KWRJ_YW3Qx4TG0/sendMessage"
+    const chatId = -488410249;
+    await request({
+      url: endp,
+      method: 'POST',
+      json: {chat_id: chatId, text:msg}
+    }, function(error, response, body){
+      console.log(body);
+    });
+}
 
   const handleSimpan = async (e) => {
     e.preventDefault();
@@ -156,6 +171,15 @@ const DialogBooking = ({
       } else {
         await pesanProduk.set({ ...form }, { merge: false });
         await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
+        sendPesananToTelegram(
+        `Pesanan baru untuk ${form.namaPenginapan}
+        kode : ${form.kodeBooking} 
+        jenis : ${form.jenisIuran} 
+        pemesan : ${form.namaKTP} 
+        nomor KTP : ${form.nomorKTP} 
+        nomor WA : ${form.nomorHpWa} ` 
+
+        );
         history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }
     } catch (e) {
@@ -209,6 +233,8 @@ const DialogBooking = ({
         throw new Error("Unknown step");
     }
   }
+
+  
 
   const steps = ["Data", "Bayar", "Review"];
 

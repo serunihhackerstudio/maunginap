@@ -3,5 +3,8 @@ service firebase.storage {
     match /penginapan/data/produk/{filename} {
       allow read, write: if true;
     }
+    match /penginapan/data/user/profile_pict/{userId}/{filename} {
+      allow read, write: if true;
+    }
   }
 }

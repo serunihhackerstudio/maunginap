@@ -17,18 +17,27 @@ import AppPageLoading from "../../../components/AppPageLoading";
 // react router
 import { Prompt } from "react-router-dom";
 
+import { Typography } from "@material-ui/core";
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+import ID from "../../../utils/idgenerator";
+
 function UserBio() {
   const classes = useStyles();
 
-  const { firestore, user } = useFirebase();
+  const { firestore, user, storage } = useFirebase();
 
   const userBio = firestore.doc(`/userbio/${user.uid}`);
 
   const { enqueueSnackbar } = useSnackbar();
 
+  const produkStorageRef = storage.ref(`penginapan/data/user/profile_pict/${user.uid}`);
+
   const [snapshot, loading] = useDocument(userBio);
 
   const [form, setForm] = useState({
+    foto:"",
     alamat: "",
     telepon: "",
     website: "",
@@ -106,11 +115,76 @@ function UserBio() {
     return <AppPageLoading />;
   }
 
-  console.log(form)
+  const handleUploadFile = async (e) => {
+    if (form.foto){
+      userBio.get().then(doc => {
+        storage.refFromURL(doc.data().foto).delete()
+      })
+    }
+    setSomethingChange(true)
+    const file = e.target.files[0]
+    const idImg = ID();
+      const reader = new FileReader();
+      if (!["image/png", "image/jpeg", "image/jpg"]) {
+        setError((error) => ({
+          ...error,
+          foto: `Tipe file tidak didukung ${file.type}`,
+        }));
+
+        reader.onabort = () => {
+          setError((error) => ({
+            ...error,
+            foto: "File tidak bisa dibaca",
+          }));
+        };
+        
+      }
+      reader.onload = async () => {
+        const fotoExt = file.name.substring(file.name.lastIndexOf("."));
+        const fotoRef = await produkStorageRef.child(`${idImg}${fotoExt}`);
+        const fotoSnapshot = await fotoRef.putString(reader.result, "data_url");
+        const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
+        setForm((currentForm) => ({
+          ...currentForm,
+          foto: fotoUrl,
+        }));
+      };
+      reader.readAsDataURL(file);
+      enqueueSnackbar("Foto berhasil diupload", {
+        variant: "info",
+      });
+  }
+
+
 
   return (
     <div className={classes.pengaturanBio}>
+      
       <form onSubmit={handleSubmit} noValidate>
+      <div className={classes.uploadFotoProduk}>
+        {form.foto ? (
+          <img src={form.foto} width={150} className={classes.profilePict}/>
+        ) : ("")}
+      
+            <input
+              className={classes.hideInputFile}
+              type="file"
+              id="upload-foto-produk"
+              accept="image/jpeg, image/jpeg, image/png"
+              onChange={handleUploadFile}
+            />
+            <label htmlFor="upload-foto-produk">
+            <Button
+            disabled={isSubmitting}
+            variant="outlined"
+            margin="normal"
+            component="span"
+            startIcon={<AccountCircleIcon />}
+          >Profile
+          </Button>
+            </label>
+            {error.foto && <Typography color="error">{error.foto}</Typography>}
+          </div>
         <TextField
           name="alamat"
           id="alamat"

@@ -148,7 +148,7 @@ function Transaksi() {
                     </Typography>
 
                     <Typography variant="body1" component="p">
-                      {JSON.stringify(dateBooking.toLocaleString())}
+                      {dateBooking.toLocaleString()}
                     </Typography>
 
                     <Typography variant="body1" color="primary" component="p">

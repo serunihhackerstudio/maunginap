@@ -54,7 +54,7 @@ function LoginUser(props) {
   const { auth, user, loading, firestore } = useFirebase();
   if (user){
     const userIdQuery = firestore.collection("userbio").doc(user.uid)
-    userIdQuery.set({userUid:user.uid}, {merge:true})
+    userIdQuery.set({userUid:user.uid, foto:""}, {merge:true})
   }
 
   const handleChange = (e) => {
