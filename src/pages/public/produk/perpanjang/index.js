@@ -36,8 +36,11 @@ import { useFirebase } from "../../../../components/FirebaseProvider";
 import { useSnackbar } from "notistack";
 import useStyles from "./styles"
 import Skeleton from "@material-ui/lab/Skeleton";
+import { Prompt } from "react-router-dom";
 
 export default function Perpanjang({ history, match }) {
+  const [isSomethingChange, setSomethingChange] = React.useState(false);
+  const [isSubmitting, setSubmitting] = React.useState(false)
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [selectedDate, handleDateChange] = React.useState(new Date());
@@ -73,6 +76,7 @@ export default function Perpanjang({ history, match }) {
   const [checked, setChecked] = React.useState(false);
 
   const handleChange = (event) => {
+    setSomethingChange(true)
     setChecked(event.target.checked);
     if (form.jenisIuran === "Bulanan") {
       const daysInOneMonth = 30;
@@ -87,8 +91,13 @@ export default function Perpanjang({ history, match }) {
     }
   };
 
+
   const handlePerpanjang = async () => {
     try {
+      form.statusPerpanjang = true
+      form.approvalStatus = false
+      setSomethingChange(false)
+      setSubmitting(true)
       await query.set(form, { merge: true });
       history.push(`/perpanjang/${match.params.penginapanId}/proses`);
     } catch (e) {
@@ -171,6 +180,7 @@ export default function Perpanjang({ history, match }) {
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
               value={form.pilihBank}
+              required
               onChange={handleChangeBank}
               label="Age"
             >
@@ -212,13 +222,18 @@ export default function Perpanjang({ history, match }) {
             color="primary"
             className={classes.btnLeft}
             type="submit"
-            disabled={!checked}
+            disabled={!checked || isSubmitting}
             onClick={handlePerpanjang}
           >
             Perpanjang
           </Button>
         </CardActions>
       </Card>
+      <Prompt
+        when={isSomethingChange}
+        message="Anda belum melakukan perpanjangan, 
+                apakah Anda yakin ingin meninggalkan proses ini ?"
+      />
     </>
   );
 }

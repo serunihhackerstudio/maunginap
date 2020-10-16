@@ -41,7 +41,7 @@ function Transaksi() {
         await firestore
           .collection("pesanan")
           .doc(`${produkdocId}`)
-          .set({ approvalStatus: true }, { merge: true });
+          .set({ approvalStatus: true, statusPerpanjang: false }, { merge: true });
         enqueueSnackbar(`Pesanan terkonfirmasi`, {
           variant: "success",
         });
@@ -194,7 +194,8 @@ function Transaksi() {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  {produkData.approvalStatus ? (
+
+                {produkData.approvalStatus ? (
                     <Button
                     disabled={!produkData.statusPerpanjang ? true : false}
                     size="small"
@@ -206,17 +207,17 @@ function Transaksi() {
                   </Button>
                   ) : (
                     <Button
-                    disabled={false}
-                    size="small"
-                    color="primary"
-                    variant="contained"
-                    onClick={approveCallback(produkDoc.id)}
-                  >
-                    Konfirmasi
-                  </Button>
-                  )}
-                  
-
+                      disabled={false}
+                      size="small"
+                      color="primary"
+                      variant="contained"
+                      onClick={approveCallback(produkDoc.id)}
+                    >
+                      {produkData.statusPerpanjang ? "Perpanjang" : "Konfirmasi "}
+                    </Button>
+                  )
+        }
+                
                   <Button
                     disabled={!produkData.approvalStatus ? true : false}
                     size="small"

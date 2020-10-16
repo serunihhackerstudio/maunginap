@@ -8,7 +8,7 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
   const [selectedDate, handleDateChange] = React.useState(new Date());
   form.tanggalPesan = new Date(selectedDate).toLocaleDateString();
   if (form.jenisIuran === "Bulanan") {
-    const daysInOneMonth = 1;
+    const daysInOneMonth = 30;
     const bulanan =
       new Date(selectedDate).getTime() + daysInOneMonth * 24 * 60 * 60 * 1000;
     const outBulanan = new Date(bulanan).toLocaleDateString();

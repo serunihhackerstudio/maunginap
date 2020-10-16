@@ -63,6 +63,20 @@ function History({ match, history, location }) {
     history.push(`/perpanjang/${data}`);
   };
 
+  const dataProdukIdCallback = (produk) => async (e) => {
+    await firestore
+          .collection("pesanan")
+          .where("userId", "==", user.uid).where("kodeBooking", "==",produk.id).set(
+            {
+              statusPerpanjang:produk.data().statusPerpanjang
+            },
+            {
+              merge:true
+            }
+          )
+  }
+  
+
   if (loading) {
     return <AppLoading message="History Pesanan" />;
   }
@@ -72,22 +86,11 @@ function History({ match, history, location }) {
       {state.map((produk) => {
         const dataProduk = produk.data();
         const dateNow = new Date().toLocaleDateString()
-        if (dataProduk.tanggalBerakhir === dateNow){
-          const produkDocId = firestore
-          .collection("pesanan")
-          .where("userId", "==", user.uid).where("kodeBooking", "==",produk.id);
-          dataProduk.approvalStatus = false
-          dataProduk.statusPerpanjang = false
-          produkDocId.set(
-            {
-              statusPerpanjang:dataProduk.statusPerpanjang
-            },
-            {
-              merge:true
-            }
-          )
-          
-        }
+        // if (dataProduk.tanggalBerakhir === dateNow){
+        //   dataProduk.approvalStatus = false
+        //   dataProduk.statusPerpanjang = false
+        //   dataProdukIdCallback(produk)
+        // }
         return (
           <Card className={classes.paper}>
             <Grid container className={classes.rowDivider} spacing={2}>
@@ -215,7 +218,8 @@ function History({ match, history, location }) {
           color="primary"
           className={classes.fab}
           onClick={() => {
-            history.goBack();
+            // history.goBack();
+            history.push("/")
           }}
         >
           <ArrowBackIcon />
