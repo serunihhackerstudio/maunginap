@@ -47,6 +47,15 @@ import Tooltip from "@material-ui/core/Tooltip";
 // import {DetailShimmer} from "../../../../components/Skeleton"
 import Skeleton from "@material-ui/lab/Skeleton";
 
+
+// CHECKBOX UNTUK FASILITAS UMUM
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from "@material-ui/core/TextField";
+
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -97,11 +106,35 @@ function DetailProduk({ match, history, location }) {
   // like button handler
   const [likeNum, setLikeNum] = React.useState(0)
 
+
+  // Fitur fasilitas umum
+  const [fasilitas, setFasilitas] = React.useState({
+    kamarMandiDalam:false,
+    wifi:false,
+    listrikSendiri:false,
+    ac:false,
+    meja:false,
+    lemari:false,
+    kasur:false,
+    tempatJemur:false,
+  })
+  const {kamarMandiDalam,wifi,listrikSendiri,ac,meja,lemari,kasur,tempatJemur} = fasilitas
+
   React.useEffect(() => {
     if (snapshot) {
       const data = snapshot.data()
       setstate(data);
       setLikeNum(data.likes)
+      setFasilitas({
+        kamarMandiDalam:data.fasilitasUmum.kamarMandiDalam,
+        wifi:data.fasilitasUmum.wifi,
+        listrikSendiri:data.fasilitasUmum.listrikSendiri,
+        ac:data.fasilitasUmum.ac,
+        meja:data.fasilitasUmum.meja,
+        lemari:data.fasilitasUmum.lemari,
+        kasur:data.fasilitasUmum.kasur,
+        tempatJemur:data.fasilitasUmum.tempatJemur,
+      })
     }
     if (snapshotSuka) {
       try {
@@ -121,6 +154,13 @@ function DetailProduk({ match, history, location }) {
       // console.log(imgSnapshot.docs);
     }
   }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot]);
+
+
+  
+
+  // // const handleFasilitas = (event) => {
+  // //   setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
+  // // };
 
   const handleOpenDialog = () => {
     if (jenisIuran === "") {
@@ -183,6 +223,9 @@ function DetailProduk({ match, history, location }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  console.log("FASILITAS UMUM")
+  console.log(state.fasilitasUmum)
   return (
     <div>
       <Card className={classes.root}>
@@ -366,6 +409,83 @@ function DetailProduk({ match, history, location }) {
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
+            <Typography variant="h6">Fasilitas</Typography>
+            <Typography paragraph align="justify" color="textSecondary">
+              {/* GRID FASILIAS */}
+              <Grid container direction="column">
+              <Grid item xs>
+                <FormControl component="fieldset" className={classes.formControl}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.kamarMandiDalam} 
+                        name="kamarMandiDalam"
+                        color="primary" 
+                        />}
+                        label="Kamar mandi dalam"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.wifi} 
+                        name="wifi"
+                        color="primary" />}
+                        label="WIFI"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.listrikSendiri} 
+                        name="listrikSendiri"
+                        color="primary" />}
+                      label="Listrik sendiri (prabayar)"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.ac} 
+                        name="ac"
+                        color="primary" />}
+                      label="AC"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.meja} 
+                        name="meja"
+                        color="primary" 
+                        />}
+                        label="Meja"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.lemari} 
+                        name="lemari"
+                        color="primary" />}
+                        label="Lemari"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.kasur} 
+                        name="kasur"
+                        color="primary" />}
+                        label="Kasur"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox 
+                        checked={fasilitas.tempatJemur} 
+                        name="tempatJemur"
+                        color="primary" />}
+                      label="Tempat Jemur"
+                    />
+                  </FormGroup>
+                </FormControl>
+                </Grid>
+                <Grid item xs className={classes.fasilitas}>
+                <Typography variant="h6">Lainnya</Typography>
+                  <Typography paragraph align="justify" color="textSecondary">
+                    {state.fasilitas}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+            </Typography>
             <Typography variant="h6">Deskripsi</Typography>
             <Typography paragraph align="justify" color="textSecondary">
               {state.deskripsi}

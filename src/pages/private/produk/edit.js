@@ -34,6 +34,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import { CardMedia} from "@material-ui/core";
 
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 function EditProduk({ match }) {
   // stylesheet
@@ -54,6 +59,21 @@ function EditProduk({ match }) {
   const { enqueueSnackbar } = useSnackbar();
   const [snapshot, loading] = useDocument(produkDoc);
   const produkStorageRef = storage.ref(`penginapan/data/produk`);
+  const [fasilitas, setFasilitas] = React.useState({
+    kamarMandiDalam:false,
+    wifi:false,
+    listrikSendiri:false,
+    ac:false,
+    meja:false,
+    lemari:false,
+    kasur:false,
+    tempatJemur:false,
+  })
+  const {kamarMandiDalam,wifi,listrikSendiri,ac,meja,lemari,kasur,tempatJemur} = fasilitas
+
+  const handleFasilitas = (event) => {
+    setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
+  };
 
   const [form, setForm] = useState({
     namaPenginapan: "",
@@ -64,7 +84,10 @@ function EditProduk({ match }) {
     deskripsi: "",
     kota: "",
     jenisPenginapan: "",
+    likes:0,
   });
+
+  form.fasilitasUmum = fasilitas
 
   const [error, setError] = useState({
     namaPenginapan: "",
@@ -92,10 +115,21 @@ function EditProduk({ match }) {
 
   useEffect(() => {
     if (snapshot) {
+      const data = snapshot.data()
       setForm((currentForm) => ({
         ...currentForm,
         ...snapshot.data(),
       }));
+      setFasilitas({
+        kamarMandiDalam:data.fasilitasUmum.kamarMandiDalam,
+        wifi:data.fasilitasUmum.wifi,
+        listrikSendiri:data.fasilitasUmum.listrikSendiri,
+        ac:data.fasilitasUmum.ac,
+        meja:data.fasilitasUmum.meja,
+        lemari:data.fasilitasUmum.lemari,
+        kasur:data.fasilitasUmum.kasur,
+        tempatJemur:data.fasilitasUmum.tempatJemur,
+      })
     }
     if (imgSnapshot) {
       setListImage(imgSnapshot.docs);
@@ -271,6 +305,7 @@ function EditProduk({ match }) {
               error={error.namaPenginapan ? true : false}
               helperText={error.namaPenginapan}
               disabled={isSubmitting}
+              variant="outlined"
             />
             <TextField
               id="harga"
@@ -284,6 +319,7 @@ function EditProduk({ match }) {
               error={error.harga ? true : false}
               helperText={error.harga}
               disabled={isSubmitting}
+              variant="outlined"
             />
 
             <TextField
@@ -298,6 +334,7 @@ function EditProduk({ match }) {
               error={error.lokasi ? true : false}
               helperText={error.lokasi}
               disabled={isSubmitting}
+              variant="outlined"
             />
             <Autocomplete
               className={classes.comboLokasi}
@@ -378,21 +415,94 @@ function EditProduk({ match }) {
               disabled={
                 form.jenisPenginapan === "Kontrakan" ? true : isSubmitting
               }
+              variant="outlined"
             />
 
+            {/* FASILITAS */}
+            <Grid container direction="column">
+              <Grid item xs>
+            <FormControl component="fieldset" className={classes.formControl}>
+              <FormLabel component="legend">Fasilitas Secara Umum</FormLabel>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={kamarMandiDalam} 
+                    onChange={handleFasilitas} 
+                    name="kamarMandiDalam" 
+                    />}
+                    label="Kamar mandi dalam"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={wifi} 
+                    onChange={handleFasilitas} 
+                    name="wifi" />}
+                    label="WIFI"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={listrikSendiri} 
+                    onChange={handleFasilitas} 
+                    name="listrikSendiri" />}
+                  label="Listrik sendiri (prabayar)"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={ac} 
+                    onChange={handleFasilitas} 
+                    name="ac" />}
+                  label="AC"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={meja} 
+                    onChange={handleFasilitas} 
+                    name="meja" 
+                    />}
+                    label="Meja"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={lemari} 
+                    onChange={handleFasilitas} 
+                    name="lemari" />}
+                    label="Lemari"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={kasur} 
+                    onChange={handleFasilitas} 
+                    name="kasur" />}
+                    label="Kasur"
+                />
+                <FormControlLabel
+                  control={<Checkbox 
+                    checked={tempatJemur} 
+                    onChange={handleFasilitas} 
+                    name="tempatJemur" />}
+                  label="Tempat Jemur"
+                />
+              </FormGroup>
+            </FormControl>
+            </Grid>
+            <Grid item xs>
             <TextField
               id="fasilitas"
               name="fasilitas"
-              label="Fasilitas Penginapan"
-              margin="normal"
+              label="Fasilitas Lainnya"
               fullWidth
-              required
               value={form.fasilitas}
               onChange={handleChange}
               error={error.fasilitas ? true : false}
               helperText={error.fasilitas}
               disabled={isSubmitting}
+              className={classes.fasilitas}
             />
+            </Grid>
+          </Grid>
+
+          
+          
             <TextField
               id="deskripsi"
               name="deskripsi"
@@ -405,6 +515,7 @@ function EditProduk({ match }) {
               error={error.deskripsi ? true : false}
               helperText={error.deskripsi}
               disabled={isSubmitting}
+              variant="outlined"
             />
 
             <div className={classes.actionButton}>
@@ -428,7 +539,7 @@ function EditProduk({ match }) {
           {listImage.map((data,index) => {
               const imgFile = data.data().url;
               return (
-                <>
+                <div>
                 <ListItem key={data.id} role={undefined} dense button>
                 <a href={"#"}>
                   <img
@@ -450,7 +561,7 @@ function EditProduk({ match }) {
                 </ListItemSecondaryAction>
               </ListItem>
               <Divider />
-              </>
+              </div>
               )
             })}
           </List>

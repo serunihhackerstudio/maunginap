@@ -57,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
   },
   listAlign:{
     textAlign:"center"
+  },
+  fasilitas:{
+    marginTop:theme.spacing(-1),
+    marginBottom:theme.spacing(3)
   }
 }));
 

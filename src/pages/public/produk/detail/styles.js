@@ -44,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
   },
   imgThumb:{
     marginRight:theme.spacing(2)
+  },
+  fasilitas:{
+    marginTop:theme.spacing(-1),
+    marginBottom:theme.spacing(2),
+    marginLeft:theme.spacing(2),
+    width:"70%"
   }
 }));
 

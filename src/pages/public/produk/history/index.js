@@ -177,7 +177,7 @@ function History({ match, history, location }) {
                               <CircularProgress color="primary" size={15} />
                             </Grid>
                             <Grid item>
-                              <strong>Menunggu pembayaran...</strong>
+                              <strong>Menunggu pembayaran {dataProduk.statusPerpanjang? "perpanjangan" : ""}...</strong>
                             </Grid>
                             <Grid item></Grid>
                           </Grid>
