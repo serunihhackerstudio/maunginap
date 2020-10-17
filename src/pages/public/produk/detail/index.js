@@ -47,14 +47,17 @@ import Tooltip from "@material-ui/core/Tooltip";
 // import {DetailShimmer} from "../../../../components/Skeleton"
 import Skeleton from "@material-ui/lab/Skeleton";
 
-
 // CHECKBOX UNTUK FASILITAS UMUM
-import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormLabel from "@material-ui/core/FormLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
+
+// rating
+import Rating from "@material-ui/lab/Rating";
+import Box from "@material-ui/core/Box";
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -104,43 +107,66 @@ function DetailProduk({ match, history, location }) {
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
 
   // like button handler
-  const [likeNum, setLikeNum] = React.useState(0)
-
+  const [likeNum, setLikeNum] = React.useState(0);
 
   // Fitur fasilitas umum
   const [fasilitas, setFasilitas] = React.useState({
-    kamarMandiDalam:false,
-    wifi:false,
-    listrikSendiri:false,
-    ac:false,
-    meja:false,
-    lemari:false,
-    kasur:false,
-    tempatJemur:false,
-  })
-  const {kamarMandiDalam,wifi,listrikSendiri,ac,meja,lemari,kasur,tempatJemur} = fasilitas
+    kamarMandiDalam: false,
+    wifi: false,
+    listrikSendiri: false,
+    ac: false,
+    meja: false,
+    lemari: false,
+    kasur: false,
+    tempatJemur: false,
+  });
+  const {
+    kamarMandiDalam,
+    wifi,
+    listrikSendiri,
+    ac,
+    meja,
+    lemari,
+    kasur,
+    tempatJemur,
+  } = fasilitas;
 
+  // rating
+  const queryRating = firestore
+    .collection("rating")
+    .where("penginapanId", "==", `${match.params.penginapanId}`);
+  const [snapshotRating, loadingRating] = useCollection(queryRating);
+  const [ratingItems, setRatingItems] = React.useState([]);
+  const [ratingValue, setRatingValue] = React.useState(0);
   React.useEffect(() => {
+    const items = [];
+    if (snapshotRating) {
+      setRatingItems(snapshotRating.docs);
+      snapshotRating.docs.forEach((item) => {
+        items.push(item.data().rating);
+      });
+      setRatingValue(items.reduce((a, b) => a + b, 0) / items.length);
+    }
+
     if (snapshot) {
-      const data = snapshot.data()
+      const data = snapshot.data();
       setstate(data);
-      setLikeNum(data.likes)
+      setLikeNum(data.likes);
       setFasilitas({
-        kamarMandiDalam:data.fasilitasUmum.kamarMandiDalam,
-        wifi:data.fasilitasUmum.wifi,
-        listrikSendiri:data.fasilitasUmum.listrikSendiri,
-        ac:data.fasilitasUmum.ac,
-        meja:data.fasilitasUmum.meja,
-        lemari:data.fasilitasUmum.lemari,
-        kasur:data.fasilitasUmum.kasur,
-        tempatJemur:data.fasilitasUmum.tempatJemur,
-      })
+        kamarMandiDalam: data.fasilitasUmum.kamarMandiDalam,
+        wifi: data.fasilitasUmum.wifi,
+        listrikSendiri: data.fasilitasUmum.listrikSendiri,
+        ac: data.fasilitasUmum.ac,
+        meja: data.fasilitasUmum.meja,
+        lemari: data.fasilitasUmum.lemari,
+        kasur: data.fasilitasUmum.kasur,
+        tempatJemur: data.fasilitasUmum.tempatJemur,
+      });
     }
     if (snapshotSuka) {
       try {
         setSuka(snapshotSuka.docs[0].data());
         setIdSuka(snapshotSuka.docs[0].id);
-        console.log(snapshotSuka.docs[0]);
       } catch (e) {
         console.log(e.message);
       }
@@ -151,12 +177,8 @@ function DetailProduk({ match, history, location }) {
 
     if (imgSnapshot) {
       setListImage(imgSnapshot.docs);
-      // console.log(imgSnapshot.docs);
     }
-  }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot]);
-
-
-  
+  }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot, snapshotRating]);
 
   // // const handleFasilitas = (event) => {
   // //   setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
@@ -173,7 +195,7 @@ function DetailProduk({ match, history, location }) {
         jenisIuran,
         namaPenginapan: state.namaPenginapan,
         harga,
-        codeHarga:Math.floor(Math.random() * 1000),
+        codeHarga: Math.floor(Math.random() * 1000),
         foto: state.foto,
       });
       history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
@@ -194,7 +216,7 @@ function DetailProduk({ match, history, location }) {
           penginapanId: match.params.penginapanId,
           user: user.uid,
         });
-        await produkDoc.set({likes:likeNum + 1}, {merge:true})
+        await produkDoc.set({ likes: likeNum + 1 }, { merge: true });
       } catch (e) {
         enqueueSnackbar(e.message, { variant: "error" });
       }
@@ -204,7 +226,7 @@ function DetailProduk({ match, history, location }) {
     // fungsi untuk menambah data suka pada produk
     try {
       await dataLikePath.doc(idSuka).delete();
-      await produkDoc.set({likes:likeNum - 1}, {merge:true})
+      await produkDoc.set({ likes: likeNum - 1 }, { merge: true });
       setSuka(false);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
@@ -225,8 +247,7 @@ function DetailProduk({ match, history, location }) {
     setExpanded(!expanded);
   };
 
-  console.log("FASILITAS UMUM")
-  console.log(state.fasilitasUmum)
+  const value = ratingValue.toFixed(1);
   return (
     <div>
       <Card className={classes.root}>
@@ -245,7 +266,7 @@ function DetailProduk({ match, history, location }) {
                 <IconButton
                   aria-label="Back icon"
                   onClick={() => {
-                    history.push("/")
+                    history.push("/");
                   }}
                 >
                   <ArrowBackIcon />
@@ -292,29 +313,51 @@ function DetailProduk({ match, history, location }) {
         )}
 
         <CardContent>
-
           {loading ? (
-            <Skeleton animation="wave" height={50} className={classes.imgThumb}/>
+            <Skeleton
+              animation="wave"
+              height={50}
+              className={classes.imgThumb}
+            />
           ) : (
             <>
-            <Grid className={classes.center} direction="row">
-              {listImage.slice(0, 4).map((data) => {
-                const imgFile = data.data().url;
-                return (
-                  <a href={"#"} onClick={handleClickOpen(imgFile)} >
-                    <img
-                    src={imgFile}
-                      width={70}
-                      height={50}
-                      className={classes.imgThumb}
+              <Grid className={classes.center} direction="row">
+                {listImage.slice(0, 4).map((data) => {
+                  const imgFile = data.data().url;
+                  return (
+                    <a href={"#"} onClick={handleClickOpen(imgFile)}>
+                      <img
+                        src={imgFile}
+                        width={70}
+                        height={50}
+                        className={classes.imgThumb}
+                      />
+                    </a>
+                  );
+                })}
+              </Grid>
+              {/* <Typography variant="h6" color="inherit" component="p">
+                Rating
+              </Typography> */}
+              {loading ? (
+                <Skeleton animation="wave" height={20} width="30%" />
+              ) : (
+                <Tooltip title="Rating" aria-label="rating">
+                <div className={classes.ratingRoot}>
+                    <Rating
+                      className={classes.ratingDiv}
+                      name="rating-produk"
+                      value={value}
+                      precision={0.5}
+                      readOnly
                     />
-                  </a>
-                );
-              })}
-            </Grid>
-            <Typography variant="h6" color="inherit" component="p">
-              Lokasi
-            </Typography>
+                  ({value})
+                </div>
+                </Tooltip>
+              )}
+              <Typography variant="h6" color="inherit" component="p">
+                Lokasi
+              </Typography>
             </>
           )}
           {loading ? (
@@ -344,20 +387,24 @@ function DetailProduk({ match, history, location }) {
           <div>
             <CardActions disableSpacing>
               {!isSuka && (
-                <IconButton
-                  aria-label="add to favorites"
-                  onClick={handleLikeButton}
-                >
-                  <FavoriteIcon color="disable" />
-                </IconButton>
+                <Tooltip title="Like" aria-label="like">
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={handleLikeButton}
+                  >
+                    <FavoriteIcon color="disable" />
+                  </IconButton>
+                </Tooltip>
               )}
               {isSuka && (
-                <IconButton
-                  aria-label="add to favorites"
-                  onClick={handleDisLikeButton}
-                >
-                  <FavoriteIcon color="secondary" />
-                </IconButton>
+                <Tooltip title="Dislike" aria-label="dislike">
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={handleDisLikeButton}
+                  >
+                    <FavoriteIcon color="secondary" />
+                  </IconButton>
+                </Tooltip>
               )}
 
               <Tooltip title="Pesan sekarang" aria-label="booking">
@@ -410,82 +457,108 @@ function DetailProduk({ match, history, location }) {
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
+            <Typography variant="h6">Rating</Typography>
+
             <Typography variant="h6">Fasilitas</Typography>
             <Typography paragraph align="justify" color="textSecondary">
               {/* GRID FASILIAS */}
               <Grid container direction="column">
-              <Grid item xs>
-                <FormControl component="fieldset" className={classes.formControl}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.kamarMandiDalam} 
-                        name="kamarMandiDalam"
-                        color="primary" 
-                        />}
+                <Grid item xs>
+                  <FormControl
+                    component="fieldset"
+                    className={classes.formControl}
+                  >
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.kamarMandiDalam}
+                            name="kamarMandiDalam"
+                            color="primary"
+                          />
+                        }
                         label="Kamar mandi dalam"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.wifi} 
-                        name="wifi"
-                        color="primary" />}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.wifi}
+                            name="wifi"
+                            color="primary"
+                          />
+                        }
                         label="WIFI"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.listrikSendiri} 
-                        name="listrikSendiri"
-                        color="primary" />}
-                      label="Listrik sendiri (prabayar)"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.ac} 
-                        name="ac"
-                        color="primary" />}
-                      label="AC"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.meja} 
-                        name="meja"
-                        color="primary" 
-                        />}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.listrikSendiri}
+                            name="listrikSendiri"
+                            color="primary"
+                          />
+                        }
+                        label="Listrik sendiri (prabayar)"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.ac}
+                            name="ac"
+                            color="primary"
+                          />
+                        }
+                        label="AC"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.meja}
+                            name="meja"
+                            color="primary"
+                          />
+                        }
                         label="Meja"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.lemari} 
-                        name="lemari"
-                        color="primary" />}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.lemari}
+                            name="lemari"
+                            color="primary"
+                          />
+                        }
                         label="Lemari"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.kasur} 
-                        name="kasur"
-                        color="primary" />}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.kasur}
+                            name="kasur"
+                            color="primary"
+                          />
+                        }
                         label="Kasur"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox 
-                        checked={fasilitas.tempatJemur} 
-                        name="tempatJemur"
-                        color="primary" />}
-                      label="Tempat Jemur"
-                    />
-                  </FormGroup>
-                </FormControl>
+                      />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={fasilitas.tempatJemur}
+                            name="tempatJemur"
+                            color="primary"
+                          />
+                        }
+                        label="Tempat Jemur"
+                      />
+                    </FormGroup>
+                  </FormControl>
                 </Grid>
                 <Grid item xs className={classes.fasilitas}>
-                <Typography variant="h6">Lainnya</Typography>
+                  <Typography variant="h6">Lainnya</Typography>
                   <Typography paragraph align="justify" color="textSecondary">
                     {state.fasilitas}
                   </Typography>
                 </Grid>
               </Grid>
-
             </Typography>
             <Typography variant="h6">Deskripsi</Typography>
             <Typography paragraph align="justify" color="textSecondary">
@@ -495,18 +568,18 @@ function DetailProduk({ match, history, location }) {
         </Collapse>
       </Card>
       <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <img src={dialogImg} className={classes.imgThumb} width={800} />
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <img src={dialogImg} className={classes.imgThumb} width={800} />
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </>
     </div>
   );

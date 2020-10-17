@@ -116,6 +116,7 @@ const DialogBooking = ({
   form.approvalStatus = false;
   form.statusPerpanjang = false;
   form.jenisPenginapan = jenisPenginapan;
+  form.rating = 0;
 
   const handleChange = (e) => {
     setError({

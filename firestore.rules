@@ -50,5 +50,9 @@ service cloud.firestore {
        allow read, write: if true;
      }
 
+     match /rating/{ratingId} {
+       allow read, write: if true;
+     }
+
   }
 }

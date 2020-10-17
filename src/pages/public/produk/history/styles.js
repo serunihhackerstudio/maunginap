@@ -63,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
   orderDate: {
     textAlign: "center",
   },
+  rating:{
+    textAlign: "center",
+  }
 }));
 
 export default useStyles;

@@ -28,8 +28,9 @@ import SwipeableTextMobileStepper from "../../../components/Slider";
 // icon
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Skeleton from "@material-ui/lab/Skeleton";
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import Chip from '@material-ui/core/Chip';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import Chip from "@material-ui/core/Chip";
+
 
 
 // import datanotfound from "../../../assets/datanotfound.png";
@@ -99,8 +100,6 @@ function HomeProduk() {
       if (isNextClicked) {
         el.current.scrollIntoView({ block: "end", behavior: "smooth" });
       }
-
-    
     }
 
     if (kotaSnapshot) {
@@ -186,7 +185,6 @@ function HomeProduk() {
         .then((data) => setProdukItems(data.docs));
     }
   };
-
 
   return (
     <>
@@ -456,11 +454,10 @@ function HomeProduk() {
                 </CardActionArea>
                 <CardActions>
                   <Chip
-                      icon={<FavoriteIcon />}
-                      label={`${produkData.likes} likes`}
-                    
-                      variant="outlined"
-                    />
+                    icon={<FavoriteIcon />}
+                    label={`${produkData.likes} likes`}
+                    variant="outlined"
+                  />
                 </CardActions>
               </Card>
             </Grid>

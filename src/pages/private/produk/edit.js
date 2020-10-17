@@ -96,6 +96,7 @@ function EditProduk({ match }) {
     jenisPenginapan: "",
     likes: 0,
     diskon: 0,
+    rating:0
   });
 
   form.fasilitasUmum = fasilitas;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -33,10 +33,31 @@ import AppLoading from "../../../../components/AppLoading";
 // styles
 import useStyles from "./styles";
 import { currency } from "../../../../utils/formatter";
+import ID from "../../../../utils/idgenerator";
 import Skeleton from "@material-ui/lab/Skeleton";
 
+// rating
+import Rating from "@material-ui/lab/Rating";
+import Box from "@material-ui/core/Box";
+
+// snackbar
+import { useSnackbar } from "notistack";
+
+// dialog
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 function History({ match, history, location }) {
+  const ratingRef = useRef();
+
+  const ratingId = ID()
+
   const { firestore, user } = useFirebase();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const produkDoc = firestore
     .collection("pesanan")
@@ -47,15 +68,28 @@ function History({ match, history, location }) {
   const [state, setState] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
   const { setJumlahPesanan, setPesananId } = usePesanan();
+  const [form, setForm] = useState({
+    rating: "",
+  });
+
+  // const [querySnapshot, queryLoading] = useCollection(queryAll);
 
   useEffect(() => {
     if (snapshot) {
       setState(snapshot.docs);
-      console.log("datanya history = " + snapshot.docs);
     }
   }, [snapshot]);
-  console.log(setSubmitting);
   setJumlahPesanan(state.length);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const perpanjangCallback = (data) => (e) => {
     setPesananId(data);
@@ -76,6 +110,46 @@ function History({ match, history, location }) {
         }
       );
   };
+  const ratingArray = []
+  const [ratingArrayLs, setRatingArrayLs] = useState(0);
+  const [ratingCount, setRatingCount] = useState(0)
+  const ratingHandling = (data) => async (e) => {
+    await firestore
+      .collection("pesanan")
+      .doc(`${data.id}`)
+      .set({ ...form }, { merge: true });
+    setOpen(false);
+
+    // get data ratingA
+    await firestore.collection("rating").doc(`${ratingId}`).set({
+      rating:form.rating,
+      penginapanId:data.data().penginapanId,
+      id:ratingId
+    })
+
+    // .doc(`${data.data().penginapanId}`)
+    // .get().then(data => {
+    //   setRatingArrayLs(data.data().rating)
+    //   setRatingCount(data.data().ratingCount)
+    // })
+
+    // // update data ratingA
+    // await firestore.collection("penginapan").doc("data").collection("produk")
+    // .doc(`${data.data().penginapanId}`)
+    // .set({rating:form.rating + ratingArrayLs, ratingCount:ratingCount+1}, {merge:true})
+    
+
+    enqueueSnackbar("Berhasil memberikan rating", { variant: "success" });
+
+  };
+
+  // const queryRating = (pesananId) => async (e) => {
+  //   await firestore
+  //     .collection("pesanan")
+  //     .doc(`${pesananId}`)
+  //     .get()
+  //     .then((data) => setForm({ rating: data.data().rating }));
+  // };
 
   if (loading) {
     return <AppLoading message="History Pesanan" />;
@@ -86,7 +160,9 @@ function History({ match, history, location }) {
       {state.map((produk) => {
         const dataProduk = produk.data();
         const dateNow = new Date().toLocaleDateString();
-        const diskon = dataProduk.harga - dataProduk.harga * (dataProduk.diskon / 100)
+        const diskon =
+          dataProduk.harga - dataProduk.harga * (dataProduk.diskon / 100);
+
         // if (dataProduk.tanggalBerakhir === dateNow){
         //   dataProduk.approvalStatus = false
         //   dataProduk.statusPerpanjang = false
@@ -115,18 +191,22 @@ function History({ match, history, location }) {
                 <Typography variant="body2" color="textSecondary">
                   Total Pembayaran
                 </Typography>
-                {dataProduk.statusPerpanjang ?  (
-                    <Typography variant="body2" color="primary">
-                      <strong>(IDR) {currency(diskon + dataProduk.codeHarga)}
-                      </strong>
+                {dataProduk.statusPerpanjang ? (
+                  <Typography variant="body2" color="primary">
+                    <strong>
+                      (IDR) {currency(diskon + dataProduk.codeHarga)}
+                    </strong>
                   </Typography>
                 ) : (
                   <Typography variant="body2" color="primary">
-                    <strong>(IDR) {currency(parseInt(dataProduk.harga) + dataProduk.codeHarga)}</strong>
+                    <strong>
+                      (IDR){" "}
+                      {currency(
+                        parseInt(dataProduk.harga) + dataProduk.codeHarga
+                      )}
+                    </strong>
                   </Typography>
                 )}
-                
-                
               </Grid>
             </Grid>
             <Grid className={classes.rowDivider}>
@@ -153,7 +233,10 @@ function History({ match, history, location }) {
                     {/* {currency(dataProduk.harga - (dataProduk.harga * (dataProduk.diskon / 100)))} */}
                     {!dataProduk.statusPerpanjang ? (
                       <Typography variant="body2" gutterBottom>
-                        (IDR) {currency(parseInt(dataProduk.harga) + dataProduk.codeHarga)}
+                        (IDR){" "}
+                        {currency(
+                          parseInt(dataProduk.harga) + dataProduk.codeHarga
+                        )}
                         <Typography variant="body2" color="textSecondary">
                           / {dataProduk.jenisIuran}
                         </Typography>
@@ -165,11 +248,20 @@ function History({ match, history, location }) {
                         gutterBottom
                       >
                         <Tooltip title={`Diskon ${dataProduk.diskon}%`}>
-                          <del>(IDR) {currency(parseInt(dataProduk.harga) + dataProduk.codeHarga)}</del>
+                          <del>
+                            (IDR){" "}
+                            {currency(
+                              parseInt(dataProduk.harga) + dataProduk.codeHarga
+                            )}
+                          </del>
                         </Tooltip>
-                        
+
                         <Typography variant="body2">
-                          <Chip label={`disc. ${dataProduk.diskon}%`} color="primary" size="small"/>
+                          <Chip
+                            label={`disc. ${dataProduk.diskon}%`}
+                            color="primary"
+                            size="small"
+                          />
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                           / {dataProduk.jenisIuran}
@@ -182,7 +274,7 @@ function History({ match, history, location }) {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item>
                   <Typography
                     variant="body2"
                     gutterBottom
@@ -223,6 +315,72 @@ function History({ match, history, location }) {
                     )}
                   </Typography>
                 </Grid>
+                <Grid item xs className={classes.rating}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    color="textSecondary"
+                  >
+                    Berikan rating
+                  </Typography>
+                  {dataProduk.rating === 0 ? (
+                    <>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={handleClickOpen}
+                      >
+                        Rate !
+                      </Button>
+                      <Dialog
+                        // disableBackdropClick={isSubmitting}
+                        // disableEscapeKeyDown={isSubmitting}
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Berikan Rating"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <Box
+                            component="fieldset"
+                            mb={2}
+                            borderColor="transparent"
+                          >
+                            <Rating
+                              name="rating-produk"
+                              value={form.rating}
+                              onChange={(event, newValue) => {
+                                setForm({ ...form, rating: newValue });
+                              }}
+                              // onCl
+                            />
+                          </Box>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={ratingHandling(produk)}
+                            color="primary"
+                            autoFocus
+                          >
+                            Berikan rating
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </>
+                  ) : (
+                    <Box component="fieldset" mb={2} borderColor="transparent">
+                      <Rating
+                        name="rating-produk"
+                        value={dataProduk.rating}
+                        readOnly
+                      />
+                    </Box>
+                  )}
+                  <div className={classes.rating}>{/* dialog */}</div>
+                </Grid>
                 <Grid item xs className={classes.actionBtn}>
                   <Typography
                     variant="body2"
@@ -249,8 +407,6 @@ function History({ match, history, location }) {
                   </Tooltip>
                 </Grid>
               </Grid>
-
-              <Grid item></Grid>
             </Grid>
           </Card>
         );
