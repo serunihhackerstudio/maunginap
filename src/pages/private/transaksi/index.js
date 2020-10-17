@@ -120,6 +120,8 @@ function Transaksi() {
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           const dateBooking = produkData.tanggalPesan
+          const hargaMula = parseInt(produkData.harga) + produkData.codeHarga
+          const diskon = produkData.harga - produkData.harga * (produkData.diskon / 100)
           return (
             <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
               <Card className={classes.root}>
@@ -131,7 +133,7 @@ function Transaksi() {
 
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {produkData.namaPenginapan} ({currency(parseInt(produkData.harga) + produkData.codeHarga)})
+                      {produkData.namaPenginapan} ({!produkData.statusPerpanjang ? currency(parseInt(produkData.harga) + produkData.codeHarga) : currency(diskon+produkData.codeHarga)})
                     </Typography>
                     <Typography variant="body1" color="primary" component="p">
                       <strong>Kode boking :</strong>
