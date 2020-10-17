@@ -14,6 +14,7 @@ import { CardMedia, CardActionArea, Card } from "@material-ui/core";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Divider from "@material-ui/core/Divider";
 import Tooltip from "@material-ui/core/Tooltip";
+import Chip from "@material-ui/core/Chip";
 
 // react-hook
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -41,8 +42,6 @@ function History({ match, history, location }) {
     .collection("pesanan")
     .where("userId", "==", user.uid);
 
-  
-
   const [snapshot, loading] = useCollection(produkDoc);
   const classes = useStyles();
   const [state, setState] = useState([]);
@@ -65,17 +64,18 @@ function History({ match, history, location }) {
 
   const dataProdukIdCallback = (produk) => async (e) => {
     await firestore
-          .collection("pesanan")
-          .where("userId", "==", user.uid).where("kodeBooking", "==",produk.id).set(
-            {
-              statusPerpanjang:produk.data().statusPerpanjang
-            },
-            {
-              merge:true
-            }
-          )
-  }
-  
+      .collection("pesanan")
+      .where("userId", "==", user.uid)
+      .where("kodeBooking", "==", produk.id)
+      .set(
+        {
+          statusPerpanjang: produk.data().statusPerpanjang,
+        },
+        {
+          merge: true,
+        }
+      );
+  };
 
   if (loading) {
     return <AppLoading message="History Pesanan" />;
@@ -85,7 +85,7 @@ function History({ match, history, location }) {
     <div>
       {state.map((produk) => {
         const dataProduk = produk.data();
-        const dateNow = new Date().toLocaleDateString()
+        const dateNow = new Date().toLocaleDateString();
         // if (dataProduk.tanggalBerakhir === dateNow){
         //   dataProduk.approvalStatus = false
         //   dataProduk.statusPerpanjang = false
@@ -114,9 +114,21 @@ function History({ match, history, location }) {
                 <Typography variant="body2" color="textSecondary">
                   Total Pembayaran
                 </Typography>
-                <Typography variant="body2" color="primary">
-                  <strong>(IDR) {currency(dataProduk.harga)}</strong>
-                </Typography>
+                {dataProduk.statusPerpanjang ?  (
+                    <Typography variant="body2" color="primary">
+                      <strong>(IDR) {currency(
+                              dataProduk.harga -
+                                dataProduk.harga * (dataProduk.diskon / 100)
+                            )}
+                      </strong>
+                  </Typography>
+                ) : (
+                  <Typography variant="body2" color="primary">
+                    <strong>(IDR) {currency(dataProduk.harga)}</strong>
+                  </Typography>
+                )}
+                
+                
               </Grid>
             </Grid>
             <Grid className={classes.rowDivider}>
@@ -140,12 +152,33 @@ function History({ match, history, location }) {
                     <Typography variant="body1" color="primary">
                       <strong>{dataProduk.namaPenginapan}</strong>
                     </Typography>
-                    <Typography variant="body2" gutterBottom>
-                      (IDR) {currency(dataProduk.harga)}
-                      <Typography variant="body2" color="textSecondary">
-                        / {dataProduk.jenisIuran}
+                    {/* {currency(dataProduk.harga - (dataProduk.harga * (dataProduk.diskon / 100)))} */}
+                    {!dataProduk.statusPerpanjang ? (
+                      <Typography variant="body2" gutterBottom>
+                        (IDR) {currency(dataProduk.harga)}
+                        <Typography variant="body2" color="textSecondary">
+                          / {dataProduk.jenisIuran}
+                        </Typography>
                       </Typography>
-                    </Typography>
+                    ) : (
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        gutterBottom
+                      >
+                        <Tooltip title={`Diskon ${dataProduk.diskon}%`}>
+                          <del>(IDR) {currency(dataProduk.harga)}</del>
+                        </Tooltip>
+                        
+                        <Typography variant="body2">
+                          <Chip label={`disc. ${dataProduk.diskon}%`} color="primary" size="small"/>
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          / {dataProduk.jenisIuran}
+                        </Typography>
+                      </Typography>
+                    )}
+
                     <Typography variant="body2" color="textSecondary">
                       {state.deskripsi}
                     </Typography>
@@ -177,7 +210,13 @@ function History({ match, history, location }) {
                               <CircularProgress color="primary" size={15} />
                             </Grid>
                             <Grid item>
-                              <strong>Menunggu pembayaran {dataProduk.statusPerpanjang? "perpanjangan" : ""}...</strong>
+                              <strong>
+                                Menunggu pembayaran{" "}
+                                {dataProduk.statusPerpanjang
+                                  ? "perpanjangan"
+                                  : ""}
+                                ...
+                              </strong>
                             </Grid>
                             <Grid item></Grid>
                           </Grid>
@@ -199,7 +238,12 @@ function History({ match, history, location }) {
                       className={classes.btn}
                       variant="contained"
                       color="primary"
-                      disabled={dataProduk.approvalStatus && (dataProduk.tanggalBerakhir === dateNow) ? false : true}
+                      disabled={
+                        dataProduk.approvalStatus &&
+                        dataProduk.tanggalBerakhir === dateNow
+                          ? false
+                          : true
+                      }
                       onClick={perpanjangCallback(produk.id)}
                     >
                       Perpanjang
@@ -219,7 +263,7 @@ function History({ match, history, location }) {
           className={classes.fab}
           onClick={() => {
             // history.goBack();
-            history.push("/")
+            history.push("/");
           }}
         >
           <ArrowBackIcon />

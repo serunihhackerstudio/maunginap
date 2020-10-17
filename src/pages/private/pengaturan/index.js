@@ -9,6 +9,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SuperAdmin from "./superAdmin";
 import IdentitasAdmin from "./identitasAdmin";
 import Kota from "./kota";
+import Diskon from "./diskon"
 import useStyles from "./styles";
 
 function Pengaturan(props) {
@@ -38,6 +39,10 @@ function Pengaturan(props) {
           label="Kota"
           value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/kota"
         />
+        <Tab
+          label="Diskon"
+          value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/diskon"
+        />
       </Tabs>
       <div className={classes.tabContent}>
         <Switch>
@@ -52,6 +57,10 @@ function Pengaturan(props) {
           <Route
             path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/kota"
             component={Kota}
+          />
+          <Route
+            path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/diskon"
+            component={Diskon}
           />
           <Redirect to="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/admin" />
         </Switch>

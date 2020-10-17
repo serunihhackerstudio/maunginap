@@ -31,7 +31,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 import { usePesanan } from "../../../../components/PesananProvider";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { useSnackbar } from "notistack";
 import useStyles from "./styles"
@@ -63,11 +63,20 @@ export default function Perpanjang({ history, match }) {
     updated: new Date(),
   });
 
+  // diskon
+  const [diskon, setDiskon] = React.useState(0)
+  const queryDiskon =   firestore.collection(`penginapan`).doc("data").collection("produk");
+  const [snapshotDiskon, loadingDiskon] = useCollection(queryDiskon)
   React.useEffect(() => {
     if (snapshot) {
       setForm(snapshot.data());
     }
-  }, [snapshot]);
+    if (snapshotDiskon){
+      setDiskon(snapshotDiskon.docs[0].data().diskon)
+    }
+
+
+  }, [snapshot, snapshotDiskon]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -96,6 +105,7 @@ export default function Perpanjang({ history, match }) {
     try {
       form.statusPerpanjang = true
       form.approvalStatus = false
+      form.diskon = diskon
       setSomethingChange(false)
       setSubmitting(true)
       await query.set(form, { merge: true });

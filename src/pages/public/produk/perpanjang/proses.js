@@ -55,6 +55,7 @@ export default function ProsesPerpanjang({ history, match }) {
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(query);
   const [form, setForm] = React.useState({})
+  
   React.useEffect(() => {
     if (snapshot) {
       setForm(snapshot.data());
@@ -155,13 +156,26 @@ export default function ProsesPerpanjang({ history, match }) {
             </ListItem>
 
             <ListItem className={classes.listItem}>
+              <ListItemText primary="" />
+              <Typography
+                variant="subtitle1"
+                className={classes.total}
+                color="textSecondary"
+              >
+                <del>{currency(form.harga)}</del> (disc.{form.diskon}%) 
+              </Typography>
+ 
+              
+            </ListItem>
+
+            <ListItem className={classes.listItem}>
               <ListItemText primary="Total" />
               <Typography
                 variant="h6"
                 className={classes.total}
                 color="primary"
               >
-                {currency(form.harga)}
+                {currency(form.harga - (form.harga * (form.diskon / 100)))}
               </Typography>
             </ListItem>
           </List>

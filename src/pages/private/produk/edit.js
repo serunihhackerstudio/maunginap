@@ -23,22 +23,22 @@ import SaveIcon from "@material-ui/icons/Save";
 import { Prompt } from "react-router-dom";
 import ID from "../../../utils/idgenerator";
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
-import Divider from '@material-ui/core/Divider';
-import { CardMedia} from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import Checkbox from "@material-ui/core/Checkbox";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import Divider from "@material-ui/core/Divider";
+import { CardMedia } from "@material-ui/core";
 
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 function EditProduk({ match }) {
   // stylesheet
@@ -60,16 +60,25 @@ function EditProduk({ match }) {
   const [snapshot, loading] = useDocument(produkDoc);
   const produkStorageRef = storage.ref(`penginapan/data/produk`);
   const [fasilitas, setFasilitas] = React.useState({
-    kamarMandiDalam:false,
-    wifi:false,
-    listrikSendiri:false,
-    ac:false,
-    meja:false,
-    lemari:false,
-    kasur:false,
-    tempatJemur:false,
-  })
-  const {kamarMandiDalam,wifi,listrikSendiri,ac,meja,lemari,kasur,tempatJemur} = fasilitas
+    kamarMandiDalam: false,
+    wifi: false,
+    listrikSendiri: false,
+    ac: false,
+    meja: false,
+    lemari: false,
+    kasur: false,
+    tempatJemur: false,
+  });
+  const {
+    kamarMandiDalam,
+    wifi,
+    listrikSendiri,
+    ac,
+    meja,
+    lemari,
+    kasur,
+    tempatJemur,
+  } = fasilitas;
 
   const handleFasilitas = (event) => {
     setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
@@ -77,6 +86,7 @@ function EditProduk({ match }) {
 
   const [form, setForm] = useState({
     namaPenginapan: "",
+    namaPemilik: "",
     harga: "",
     lokasi: "",
     jumlahKamar: "",
@@ -84,13 +94,15 @@ function EditProduk({ match }) {
     deskripsi: "",
     kota: "",
     jenisPenginapan: "",
-    likes:0,
+    likes: 0,
+    diskon: 0,
   });
 
-  form.fasilitasUmum = fasilitas
+  form.fasilitasUmum = fasilitas;
 
   const [error, setError] = useState({
     namaPenginapan: "",
+    namaPemilik: "",
     harga: "",
     lokasi: "",
     jumlahKamar: "",
@@ -115,21 +127,21 @@ function EditProduk({ match }) {
 
   useEffect(() => {
     if (snapshot) {
-      const data = snapshot.data()
+      const data = snapshot.data();
       setForm((currentForm) => ({
         ...currentForm,
         ...snapshot.data(),
       }));
       setFasilitas({
-        kamarMandiDalam:data.fasilitasUmum.kamarMandiDalam,
-        wifi:data.fasilitasUmum.wifi,
-        listrikSendiri:data.fasilitasUmum.listrikSendiri,
-        ac:data.fasilitasUmum.ac,
-        meja:data.fasilitasUmum.meja,
-        lemari:data.fasilitasUmum.lemari,
-        kasur:data.fasilitasUmum.kasur,
-        tempatJemur:data.fasilitasUmum.tempatJemur,
-      })
+        kamarMandiDalam: data.fasilitasUmum.kamarMandiDalam,
+        wifi: data.fasilitasUmum.wifi,
+        listrikSendiri: data.fasilitasUmum.listrikSendiri,
+        ac: data.fasilitasUmum.ac,
+        meja: data.fasilitasUmum.meja,
+        lemari: data.fasilitasUmum.lemari,
+        kasur: data.fasilitasUmum.kasur,
+        tempatJemur: data.fasilitasUmum.tempatJemur,
+      });
     }
     if (imgSnapshot) {
       setListImage(imgSnapshot.docs);
@@ -148,7 +160,7 @@ function EditProduk({ match }) {
       ...form,
       [e.target.name]: e.target.value,
     });
-    form.kota = form.kota.toUpperCase()
+    form.kota = form.kota.toUpperCase();
 
     setError({
       ...error,
@@ -193,6 +205,10 @@ function EditProduk({ match }) {
 
     if (!form.namaPenginapan) {
       newError.namaPenginapan = "Nama penginapan wajib diisi!";
+    }
+
+    if (!form.namaPemilik) {
+      newError.namaPemilik = "Nama pemilik wajib diisi!";
     }
 
     if (!form.harga) {
@@ -273,17 +289,17 @@ function EditProduk({ match }) {
 
   const deleteImgCallback = (data) => async (e) => {
     await firestore
-          .collection("imgthumbnail")
-          .doc(`${data.id}`)
-          .get()
-          .then((doc) => {
-            storage.refFromURL(doc.data().url).delete();
-            doc.ref.delete();
-          });
-          enqueueSnackbar("Gambar terhapus", {
-            variant: "success",
-          });
-  }
+      .collection("imgthumbnail")
+      .doc(`${data.id}`)
+      .get()
+      .then((doc) => {
+        storage.refFromURL(doc.data().url).delete();
+        doc.ref.delete();
+      });
+    enqueueSnackbar("Gambar terhapus", {
+      variant: "success",
+    });
+  };
 
   return (
     <Paper className={classes.papperPadding}>
@@ -307,6 +323,22 @@ function EditProduk({ match }) {
               disabled={isSubmitting}
               variant="outlined"
             />
+
+            <TextField
+              id="namaPemilik"
+              name="namaPemilik"
+              label="Nama Pemilik"
+              margin="normal"
+              fullWidth
+              required
+              value={form.namaPemilik}
+              onChange={handleChange}
+              error={error.namaPemilik ? true : false}
+              helperText={error.namaPemilik}
+              disabled={isSubmitting}
+              variant="outlined"
+            />
+
             <TextField
               id="harga"
               name="harga"
@@ -355,7 +387,6 @@ function EditProduk({ match }) {
               disabled={isSubmitting}
               style={{ width: 300 }}
               renderInput={(params) => {
-                
                 return (
                   <TextField
                     {...params}
@@ -421,88 +452,113 @@ function EditProduk({ match }) {
             {/* FASILITAS */}
             <Grid container direction="column">
               <Grid item xs>
-            <FormControl component="fieldset" className={classes.formControl}>
-              <FormLabel component="legend">Fasilitas Secara Umum</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={kamarMandiDalam} 
-                    onChange={handleFasilitas} 
-                    name="kamarMandiDalam" 
-                    />}
-                    label="Kamar mandi dalam"
+                <FormControl
+                  component="fieldset"
+                  className={classes.formControl}
+                >
+                  <FormLabel component="legend">
+                    Fasilitas Secara Umum
+                  </FormLabel>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={kamarMandiDalam}
+                          onChange={handleFasilitas}
+                          name="kamarMandiDalam"
+                        />
+                      }
+                      label="Kamar mandi dalam"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={wifi}
+                          onChange={handleFasilitas}
+                          name="wifi"
+                        />
+                      }
+                      label="WIFI"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={listrikSendiri}
+                          onChange={handleFasilitas}
+                          name="listrikSendiri"
+                        />
+                      }
+                      label="Listrik sendiri (prabayar)"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={ac}
+                          onChange={handleFasilitas}
+                          name="ac"
+                        />
+                      }
+                      label="AC"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={meja}
+                          onChange={handleFasilitas}
+                          name="meja"
+                        />
+                      }
+                      label="Meja"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={lemari}
+                          onChange={handleFasilitas}
+                          name="lemari"
+                        />
+                      }
+                      label="Lemari"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={kasur}
+                          onChange={handleFasilitas}
+                          name="kasur"
+                        />
+                      }
+                      label="Kasur"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={tempatJemur}
+                          onChange={handleFasilitas}
+                          name="tempatJemur"
+                        />
+                      }
+                      label="Tempat Jemur"
+                    />
+                  </FormGroup>
+                </FormControl>
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  id="fasilitas"
+                  name="fasilitas"
+                  label="Fasilitas Lainnya"
+                  fullWidth
+                  value={form.fasilitas}
+                  onChange={handleChange}
+                  error={error.fasilitas ? true : false}
+                  helperText={error.fasilitas}
+                  disabled={isSubmitting}
+                  className={classes.fasilitas}
                 />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={wifi} 
-                    onChange={handleFasilitas} 
-                    name="wifi" />}
-                    label="WIFI"
-                />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={listrikSendiri} 
-                    onChange={handleFasilitas} 
-                    name="listrikSendiri" />}
-                  label="Listrik sendiri (prabayar)"
-                />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={ac} 
-                    onChange={handleFasilitas} 
-                    name="ac" />}
-                  label="AC"
-                />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={meja} 
-                    onChange={handleFasilitas} 
-                    name="meja" 
-                    />}
-                    label="Meja"
-                />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={lemari} 
-                    onChange={handleFasilitas} 
-                    name="lemari" />}
-                    label="Lemari"
-                />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={kasur} 
-                    onChange={handleFasilitas} 
-                    name="kasur" />}
-                    label="Kasur"
-                />
-                <FormControlLabel
-                  control={<Checkbox 
-                    checked={tempatJemur} 
-                    onChange={handleFasilitas} 
-                    name="tempatJemur" />}
-                  label="Tempat Jemur"
-                />
-              </FormGroup>
-            </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs>
-            <TextField
-              id="fasilitas"
-              name="fasilitas"
-              label="Fasilitas Lainnya"
-              fullWidth
-              value={form.fasilitas}
-              onChange={handleChange}
-              error={error.fasilitas ? true : false}
-              helperText={error.fasilitas}
-              disabled={isSubmitting}
-              className={classes.fasilitas}
-            />
-            </Grid>
-          </Grid>
 
-          
-          
             <TextField
               id="deskripsi"
               name="deskripsi"
@@ -534,37 +590,41 @@ function EditProduk({ match }) {
 
         <Grid item xs={6} sm={6}>
           <Grid className={classes.center}>
-
-          <List className={classes.rootImg}>
-          {listImage.map((data,index) => {
-              const imgFile = data.data().url;
-              return (
-                <div>
-                <ListItem key={data.id} role={undefined} dense button>
-                <a href={"#"}>
-                  <img
-                    src={imgFile}
-                    width={80}
-                    height={80}
-                    className={classes.imgThumb}
-                  />
-                </a>
-                <ListItemText className={classes.listAlign}>
-                  <Typography color="primary" variant="subtitle1">
-                    <strong>Foto {index === 0 ? "utama": "ke-"+index}</strong>
-                  </Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete" onClick={deleteImgCallback(data)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Divider />
-              </div>
-              )
-            })}
-          </List>
+            <List className={classes.rootImg}>
+              {listImage.map((data, index) => {
+                const counting = index + 1;
+                const imgFile = data.data().url;
+                return (
+                  <div>
+                    <ListItem key={data.id} role={undefined} dense button>
+                      <a href={"#"}>
+                        <img
+                          src={imgFile}
+                          width={80}
+                          height={80}
+                          className={classes.imgThumb}
+                        />
+                      </a>
+                      <ListItemText className={classes.listAlign}>
+                        <Typography color="primary" variant="subtitle1">
+                          <strong>Foto {"ke-" + counting}</strong>
+                        </Typography>
+                      </ListItemText>
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={deleteImgCallback(data)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider />
+                  </div>
+                );
+              })}
+            </List>
             {imgLoading && <AppPageLoading />}
           </Grid>
           <div className={classes.uploadFotoProduk}>
