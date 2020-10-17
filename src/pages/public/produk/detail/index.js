@@ -351,7 +351,8 @@ function DetailProduk({ match, history, location }) {
                       precision={0.5}
                       readOnly
                     />
-                  ({value})
+                    {value === "NaN" ? "" : (value) }
+                  
                 </div>
                 </Tooltip>
               )}
