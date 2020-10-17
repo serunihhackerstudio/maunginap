@@ -74,11 +74,15 @@ function History({ match, history, location }) {
 
   // const [querySnapshot, queryLoading] = useCollection(queryAll);
 
-  useEffect(() => {
-    if (snapshot) {
-      setState(snapshot.docs);
-    }
-  }, [snapshot]);
+  // useEffect(() => {
+  //   if (snapshot) {
+  //     setState(snapshot.docs);
+  //   }
+  // }, [snapshot]);
+  firestore
+    .collection("pesanan")
+    .where("userId", "==", user.uid).get().then(data => setState(data.docs));
+
   setJumlahPesanan(state.length);
 
   const [open, setOpen] = React.useState(false);
@@ -416,8 +420,7 @@ function History({ match, history, location }) {
           color="primary"
           className={classes.fab}
           onClick={() => {
-            // history.goBack();
-            history.push("/");
+            history.goBack();
           }}
         >
           <ArrowBackIcon />

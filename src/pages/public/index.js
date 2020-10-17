@@ -12,10 +12,7 @@ import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import TuneIcon from "@material-ui/icons/Tune";
 import Badge from "@material-ui/core/Badge";
 
 // dialog/modal
@@ -38,7 +35,6 @@ import useStyles from "./styles";
 
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
-import { Divider } from "@material-ui/core";
 
 // pages
 import DetailProduk from "./produk/detail";
@@ -48,9 +44,14 @@ import History from "./produk/history";
 import Perpanjang from "./produk/perpanjang";
 import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
-import Testing from "./testing";
 import UserProfile from "../user/profile";
 import Tooltip from "@material-ui/core/Tooltip";
+
+// mobile detector
+import {isBrowser} from 'react-device-detect';
+
+import {useCollection} from "react-firebase-hooks/firestore"
+
 
 function Home({ history, location }) {
   const classes = useStyles();
@@ -58,12 +59,17 @@ function Home({ history, location }) {
   const { auth, user, firestore } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
-
-  firestore
+  const historyQuery = firestore
     .collection("pesanan")
-    .where("userId", "==", user.uid)
-    .get()
-    .then((data) => setJumlahPesanan(data.docs.length));
+    .where("userId", "==", user.uid);
+
+  const [snapshot, loading] = useCollection(historyQuery)
+
+  React.useEffect(() => {
+    if (snapshot){
+      setJumlahPesanan(snapshot.docs.length)
+    }
+  }, [snapshot])
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -73,20 +79,85 @@ function Home({ history, location }) {
     setOpenDialog(false);
   };
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   const handleSignOut = (e) => {
     auth.signOut();
     window.location.reload();
   };
 
+  const [drawer, setDrawer] = React.useState({
+    left:false
+  })
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setDrawer({left:open});
+  };
+
+  const list = (anchor) => (
+    <div
+      className={!isBrowser ? clsx(classes.fullList) : clsx(classes.list)}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+       <List>
+          <Route
+            path="/"
+            exact
+            children={(props) => {
+              return (
+                <ListItem
+                  // selected={props.match ? true : false}
+                  onClick={() => {
+                    props.history.push("/");
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Home" />
+                </ListItem>
+              );
+            }}
+          />
+          {/* TESTING SEMENTARA DI-HIDE */}
+          <Route
+            path="/profile/user"
+            children={(props) => {
+              return (
+                <ListItem
+                  // selected={props.match ? true : false}
+                  onClick={() => {
+                    props.history.push("/profile/user");
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="User" />
+                </ListItem>
+              );
+            }}
+          />
+        </List>
+    </div>
+  );
+
+  const anchor = "left"
+  let posisiMenu = "left"
+  if (!isBrowser){
+    posisiMenu = "bottom"
+  }
+  
+
   return (
     <div className={classes.root}>
+      
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -96,7 +167,7 @@ function Home({ history, location }) {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={toggleDrawer(anchor, true)}
             className={clsx(
               classes.menuButton,
               open && classes.menuButtonHidden
@@ -135,6 +206,17 @@ function Home({ history, location }) {
                 children="Progress Pembayaran"
               />
 
+              <Route 
+              path="/profile/user/info"
+              exact
+              children="User"
+              />
+              <Route 
+              path="/profile/user/biodata"
+              exact
+              children="Biodata"
+              />
+
               <Route path="/history" exact children="History Pesanan" />
             </Switch>
             {/* LOGO TITLE */}
@@ -167,64 +249,16 @@ function Home({ history, location }) {
           )}
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="temporary"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ArrowBackIcon />
-          </IconButton>
-        </div>
-        <Divider />
 
-        {/* MENU MENU APLIKASI */}
-        <List>
-          <Route
-            path="/"
-            exact
-            children={(props) => {
-              return (
-                <ListItem
-                  selected={props.match ? true : false}
-                  onClick={() => {
-                    props.history.push("/");
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" />
-                </ListItem>
-              );
-            }}
-          />
-          {/* TESTING SEMENTARA DI-HIDE */}
-          <Route
-            path="/profile/user"
-            children={(props) => {
-              return (
-                <ListItem
-                  selected={props.match ? true : false}
-                  onClick={() => {
-                    props.history.push("/profile/user");
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    <AccountCircleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="User" />
-                </ListItem>
-              );
-            }}
-          />
-        </List>
-      </Drawer>
+      <div>
+      <React.Fragment key={anchor}>
+          {/* <Button onClick={}>{"left"}</Button> */}
+          <Drawer anchor={posisiMenu} open={drawer[anchor]} onClose={toggleDrawer(anchor, false)}>
+            {list(anchor)}
+          </Drawer>
+        </React.Fragment>
+      </div>
+      
 
       {/* ROUTING ADDRESS */}
 
