@@ -61,7 +61,7 @@ export default function ProsesPerpanjang({ history, match }) {
       setForm(snapshot.data());
     }
   }, [snapshot]);
-
+  const diskon = form.harga - (form.harga * (form.diskon / 100))
   return (
     <>
       <Card className={classes.rootProses}>
@@ -175,7 +175,7 @@ export default function ProsesPerpanjang({ history, match }) {
                 className={classes.total}
                 color="primary"
               >
-                {currency(form.harga - (form.harga * (form.diskon / 100)))}
+                {currency(diskon + form.codeHarga)}
               </Typography>
             </ListItem>
           </List>

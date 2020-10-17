@@ -119,7 +119,7 @@ const Proses = ({ match }) => {
                 className={classes.total}
                 color="primary"
               >
-                {currency(formBank.harga)}
+                {currency(parseInt(formBank.harga) + formBank.codeHarga)}
               </Typography>
             </ListItem>
           </List>

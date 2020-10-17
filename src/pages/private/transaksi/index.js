@@ -100,7 +100,7 @@ function Transaksi() {
 
         await firestore.collection("pesanan").doc(`${produkdocId}`).delete();
         enqueueSnackbar(`Berhasil`, {
-          variant: "success",
+          variant: "info",
         });
       }
     } catch (e) {}
@@ -131,7 +131,7 @@ function Transaksi() {
 
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {produkData.namaPenginapan} ({currency(produkData.harga)})
+                      {produkData.namaPenginapan} ({currency(parseInt(produkData.harga) + produkData.codeHarga)})
                     </Typography>
                     <Typography variant="body1" color="primary" component="p">
                       <strong>Kode boking :</strong>

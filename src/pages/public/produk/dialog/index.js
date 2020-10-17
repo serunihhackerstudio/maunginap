@@ -19,6 +19,7 @@ import { useSnackbar } from "notistack";
 
 // util
 import ID from "../../../../utils/idgenerator";
+import BookingCode from "../../../../utils/bookingCode";
 
 // react fragment
 import PaymentForm from "./fragment/PaymentForm";
@@ -102,10 +103,12 @@ const DialogBooking = ({
   });
 
   // memasukan data tambahan ke form
+  const kodeBooking = BookingCode()
   form.namaPenginapan = formPesanan.namaPenginapan;
   form.jenisIuran = formPesanan.jenisIuran;
   form.harga = formPesanan.harga;
-  form.kodeBooking = idGenerator;
+  form.codeHarga = formPesanan.codeHarga;
+  form.kodeBooking = kodeBooking;
   form.foto = formPesanan.foto;
   form.reserved = true;
   form.userId = user.uid;
@@ -169,8 +172,6 @@ const DialogBooking = ({
       if (Object.values(findError).some((err) => err !== "")) {
         setError(findError);
       } else {
-        await pesanProduk.set({ ...form }, { merge: false });
-        await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
         sendPesananToTelegram(
         `Pesanan baru untuk ${form.namaPenginapan}
         kode : ${form.kodeBooking} 
@@ -178,8 +179,11 @@ const DialogBooking = ({
         pemesan : ${form.namaKTP} 
         nomor KTP : ${form.nomorKTP} 
         nomor WA : ${form.nomorHpWa} ` 
-
         );
+
+        await pesanProduk.set({ ...form }, { merge: false });
+        await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
+        
         history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }
     } catch (e) {

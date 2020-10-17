@@ -173,6 +173,7 @@ function DetailProduk({ match, history, location }) {
         jenisIuran,
         namaPenginapan: state.namaPenginapan,
         harga,
+        codeHarga:Math.floor(Math.random() * 1000),
         foto: state.foto,
       });
       history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);

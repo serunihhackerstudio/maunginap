@@ -86,6 +86,7 @@ function History({ match, history, location }) {
       {state.map((produk) => {
         const dataProduk = produk.data();
         const dateNow = new Date().toLocaleDateString();
+        const diskon = dataProduk.harga - dataProduk.harga * (dataProduk.diskon / 100)
         // if (dataProduk.tanggalBerakhir === dateNow){
         //   dataProduk.approvalStatus = false
         //   dataProduk.statusPerpanjang = false
@@ -116,15 +117,12 @@ function History({ match, history, location }) {
                 </Typography>
                 {dataProduk.statusPerpanjang ?  (
                     <Typography variant="body2" color="primary">
-                      <strong>(IDR) {currency(
-                              dataProduk.harga -
-                                dataProduk.harga * (dataProduk.diskon / 100)
-                            )}
+                      <strong>(IDR) {currency(diskon + dataProduk.codeHarga)}
                       </strong>
                   </Typography>
                 ) : (
                   <Typography variant="body2" color="primary">
-                    <strong>(IDR) {currency(dataProduk.harga)}</strong>
+                    <strong>(IDR) {currency(parseInt(dataProduk.harga) + dataProduk.codeHarga)}</strong>
                   </Typography>
                 )}
                 
@@ -155,7 +153,7 @@ function History({ match, history, location }) {
                     {/* {currency(dataProduk.harga - (dataProduk.harga * (dataProduk.diskon / 100)))} */}
                     {!dataProduk.statusPerpanjang ? (
                       <Typography variant="body2" gutterBottom>
-                        (IDR) {currency(dataProduk.harga)}
+                        (IDR) {currency(parseInt(dataProduk.harga) + dataProduk.codeHarga)}
                         <Typography variant="body2" color="textSecondary">
                           / {dataProduk.jenisIuran}
                         </Typography>
@@ -167,7 +165,7 @@ function History({ match, history, location }) {
                         gutterBottom
                       >
                         <Tooltip title={`Diskon ${dataProduk.diskon}%`}>
-                          <del>(IDR) {currency(dataProduk.harga)}</del>
+                          <del>(IDR) {currency(parseInt(dataProduk.harga) + dataProduk.codeHarga)}</del>
                         </Tooltip>
                         
                         <Typography variant="body2">
