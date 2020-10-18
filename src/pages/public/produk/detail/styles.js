@@ -55,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     display: 'flex',
     alignItems: 'center',
-    marginBottom:theme.spacing(2)
+    marginBottom:theme.spacing(2),
+    marginTop:theme.spacing(2)
   },
   ratingDiv:{
     marginRight:theme.spacing(1),

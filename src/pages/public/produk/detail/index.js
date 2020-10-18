@@ -458,8 +458,6 @@ function DetailProduk({ match, history, location }) {
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography variant="h6">Rating</Typography>
-
             <Typography variant="h6">Fasilitas</Typography>
             <Typography paragraph align="justify" color="textSecondary">
               {/* GRID FASILIAS */}
