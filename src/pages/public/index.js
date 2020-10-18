@@ -48,10 +48,9 @@ import UserProfile from "../user/profile";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // mobile detector
-import {isBrowser} from 'react-device-detect';
+import { isBrowser } from "react-device-detect";
 
-import {useCollection} from "react-firebase-hooks/firestore"
-
+import { useCollection } from "react-firebase-hooks/firestore";
 
 function Home({ history, location }) {
   const classes = useStyles();
@@ -63,13 +62,13 @@ function Home({ history, location }) {
     .collection("pesanan")
     .where("userId", "==", user.uid);
 
-  const [snapshot, loading] = useCollection(historyQuery)
+  const [snapshot, loading] = useCollection(historyQuery);
 
   React.useEffect(() => {
-    if (snapshot){
-      setJumlahPesanan(snapshot.docs.length)
+    if (snapshot) {
+      setJumlahPesanan(snapshot.docs.length);
     }
-  }, [snapshot])
+  }, [snapshot]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -85,15 +84,18 @@ function Home({ history, location }) {
   };
 
   const [drawer, setDrawer] = React.useState({
-    left:false
-  })
+    left: false,
+  });
 
   const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
       return;
     }
 
-    setDrawer({left:open});
+    setDrawer({ left: open });
   };
 
   const list = (anchor) => (
@@ -103,61 +105,59 @@ function Home({ history, location }) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-       <List>
-          <Route
-            path="/"
-            exact
-            children={(props) => {
-              return (
-                <ListItem
-                  // selected={props.match ? true : false}
-                  onClick={() => {
-                    props.history.push("/");
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Home" />
-                </ListItem>
-              );
-            }}
-          />
-          {/* TESTING SEMENTARA DI-HIDE */}
-          <Route
-            path="/profile/user"
-            children={(props) => {
-              return (
-                <ListItem
-                  // selected={props.match ? true : false}
-                  onClick={() => {
-                    props.history.push("/profile/user");
-                  }}
-                  button
-                >
-                  <ListItemIcon>
-                    <AccountCircleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="User" />
-                </ListItem>
-              );
-            }}
-          />
-        </List>
+      <List>
+        <Route
+          path="/"
+          exact
+          children={(props) => {
+            return (
+              <ListItem
+                // selected={props.match ? true : false}
+                onClick={() => {
+                  props.history.push("/");
+                }}
+                button
+              >
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+            );
+          }}
+        />
+        {/* TESTING SEMENTARA DI-HIDE */}
+        <Route
+          path="/profile/user"
+          children={(props) => {
+            return (
+              <ListItem
+                // selected={props.match ? true : false}
+                onClick={() => {
+                  props.history.push("/profile/user");
+                }}
+                button
+              >
+                <ListItemIcon>
+                  <AccountCircleIcon />
+                </ListItemIcon>
+                <ListItemText primary="User" />
+              </ListItem>
+            );
+          }}
+        />
+      </List>
     </div>
   );
 
-  const anchor = "left"
-  let posisiMenu = "left"
-  if (!isBrowser){
-    posisiMenu = "bottom"
+  const anchor = "left";
+  let posisiMenu = "left";
+  if (!isBrowser) {
+    posisiMenu = "bottom";
   }
-  
 
   return (
     <div className={classes.root}>
-      
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -206,15 +206,18 @@ function Home({ history, location }) {
                 children="Progress Pembayaran"
               />
 
-              <Route 
-              path="/profile/user/info"
-              exact
-              children="User"
+              <Route path="/profile/user/info" exact children="User" />
+              <Route path="/profile/user/biodata" exact children="Biodata" />
+
+              <Route
+                exact
+                path="/perpanjang/:penginapanId"
+                children="Perpanjang"
               />
-              <Route 
-              path="/profile/user/biodata"
-              exact
-              children="Biodata"
+              <Route
+                exact
+                path="/perpanjang/:penginapanId/proses"
+                children="Checkout"
               />
 
               <Route path="/history" exact children="History Pesanan" />
@@ -232,33 +235,36 @@ function Home({ history, location }) {
 
           {user && (
             <Tooltip title="Pesanan">
-            <IconButton color="inherit" component={Link} to={"/history"}>
-              <Badge badgeContent={jumlahPesanan} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+              <IconButton color="inherit" component={Link} to={"/history"}>
+                <Badge badgeContent={jumlahPesanan} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
             </Tooltip>
           )}
 
           {user && (
             <Tooltip title="Sign out">
-            <IconButton color="inherit" onClick={handleOpenDialog}>
-              <SignOutIcon />
-            </IconButton>
+              <IconButton color="inherit" onClick={handleOpenDialog}>
+                <SignOutIcon />
+              </IconButton>
             </Tooltip>
           )}
         </Toolbar>
       </AppBar>
 
       <div>
-      <React.Fragment key={anchor}>
+        <React.Fragment key={anchor}>
           {/* <Button onClick={}>{"left"}</Button> */}
-          <Drawer anchor={posisiMenu} open={drawer[anchor]} onClose={toggleDrawer(anchor, false)}>
+          <Drawer
+            anchor={posisiMenu}
+            open={drawer[anchor]}
+            onClose={toggleDrawer(anchor, false)}
+          >
             {list(anchor)}
           </Drawer>
         </React.Fragment>
       </div>
-      
 
       {/* ROUTING ADDRESS */}
 

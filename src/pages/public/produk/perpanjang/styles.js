@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     },
     headingCenter:{
       textAlign:"center"
+    },
+    checkbox:{
+      margin:theme.spacing(2)
     }
   }));
 

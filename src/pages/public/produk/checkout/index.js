@@ -56,8 +56,6 @@ function Checkout({ match, history }) {
     history.push(`/view/penginapan/${user.uid}/checkout/bayar`);
   };
 
-  console.log(isSubmitting);
-
   return (
     <div>
       <TableContainer component={Paper} className={classes.paper}>

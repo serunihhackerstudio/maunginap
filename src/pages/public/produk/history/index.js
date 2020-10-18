@@ -71,17 +71,17 @@ function History({ match, history, location }) {
   const [form, setForm] = useState({
     rating: "",
   });
+  const queryAll = firestore .collection("pesanan")
+    .where("userId", "==", user.uid)
 
-  // const [querySnapshot, queryLoading] = useCollection(queryAll);
+  const [querySnapshot, queryLoading] = useCollection(queryAll);
 
-  // useEffect(() => {
-  //   if (snapshot) {
-  //     setState(snapshot.docs);
-  //   }
-  // }, [snapshot]);
-  firestore
-    .collection("pesanan")
-    .where("userId", "==", user.uid).get().then(data => setState(data.docs));
+  useEffect(() => {
+    if (snapshot) {
+      setState(snapshot.docs);
+    }
+  }, [snapshot]);
+  
 
   setJumlahPesanan(state.length);
 
@@ -99,25 +99,9 @@ function History({ match, history, location }) {
     setPesananId(data);
     history.push(`/perpanjang/${data}`);
   };
-
-  const dataProdukIdCallback = (produk) => async (e) => {
-    await firestore
-      .collection("pesanan")
-      .where("userId", "==", user.uid)
-      .where("kodeBooking", "==", produk.id)
-      .set(
-        {
-          statusPerpanjang: produk.data().statusPerpanjang,
-        },
-        {
-          merge: true,
-        }
-      );
-  };
-  const ratingArray = []
-  const [ratingArrayLs, setRatingArrayLs] = useState(0);
-  const [ratingCount, setRatingCount] = useState(0)
+  
   const ratingHandling = (data) => async (e) => {
+    setSubmitting(true)
     await firestore
       .collection("pesanan")
       .doc(`${data.id}`)
@@ -130,30 +114,9 @@ function History({ match, history, location }) {
       penginapanId:data.data().penginapanId,
       id:ratingId
     })
-
-    // .doc(`${data.data().penginapanId}`)
-    // .get().then(data => {
-    //   setRatingArrayLs(data.data().rating)
-    //   setRatingCount(data.data().ratingCount)
-    // })
-
-    // // update data ratingA
-    // await firestore.collection("penginapan").doc("data").collection("produk")
-    // .doc(`${data.data().penginapanId}`)
-    // .set({rating:form.rating + ratingArrayLs, ratingCount:ratingCount+1}, {merge:true})
-    
-
     enqueueSnackbar("Berhasil memberikan rating", { variant: "success" });
-
+    setSubmitting(false)
   };
-
-  // const queryRating = (pesananId) => async (e) => {
-  //   await firestore
-  //     .collection("pesanan")
-  //     .doc(`${pesananId}`)
-  //     .get()
-  //     .then((data) => setForm({ rating: data.data().rating }));
-  // };
 
   if (loading) {
     return <AppLoading message="History Pesanan" />;
@@ -166,12 +129,6 @@ function History({ match, history, location }) {
         const dateNow = new Date().toLocaleDateString();
         const diskon =
           dataProduk.harga - dataProduk.harga * (dataProduk.diskon / 100);
-
-        // if (dataProduk.tanggalBerakhir === dateNow){
-        //   dataProduk.approvalStatus = false
-        //   dataProduk.statusPerpanjang = false
-        //   dataProdukIdCallback(produk)
-        // }
         return (
           <Card className={classes.paper}>
             <Grid container className={classes.rowDivider} spacing={2}>
@@ -234,7 +191,6 @@ function History({ match, history, location }) {
                     <Typography variant="body1" color="primary">
                       <strong>{dataProduk.namaPenginapan}</strong>
                     </Typography>
-                    {/* {currency(dataProduk.harga - (dataProduk.harga * (dataProduk.diskon / 100)))} */}
                     {!dataProduk.statusPerpanjang ? (
                       <Typography variant="body2" gutterBottom>
                         (IDR){" "}
@@ -290,7 +246,13 @@ function History({ match, history, location }) {
                     {dataProduk.approvalStatus ? (
                       <>
                         <font color="#016660">
-                          <strong>Siap ditempati</strong>
+                          <strong>
+                            {dataProduk.approvalStatus &&
+                        dataProduk.tanggalBerakhir === dateNow
+                          ? "Jatuh tempo"
+                          : "Siap ditempati"}
+                            
+                            </strong>
                         </font>
                         <Typography variant="body2" color="error">
                           s/d. {dataProduk.tanggalBerakhir}
@@ -305,10 +267,9 @@ function History({ match, history, location }) {
                             </Grid>
                             <Grid item>
                               <strong>
-                                Menunggu pembayaran...{" "}
                                 {dataProduk.statusPerpanjang
-                                  ? "perpanjangan"
-                                  : ""}
+                                  ? "Menunggu perpanjangan..."
+                                  : "Menunggu pembayaran..."}
                                 
                               </strong>
                             </Grid>
@@ -337,8 +298,8 @@ function History({ match, history, location }) {
                         Rate !
                       </Button>
                       <Dialog
-                        // disableBackdropClick={isSubmitting}
-                        // disableEscapeKeyDown={isSubmitting}
+                        disableBackdropClick={isSubmitting}
+                        disableEscapeKeyDown={isSubmitting}
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="alert-dialog-title"
@@ -431,93 +392,3 @@ function History({ match, history, location }) {
 }
 
 export default History;
-
-/*
-<div>
-      <TableContainer component={Paper} className={classes.paper}>
-        <Typography variant="h5" color="textSecondary">
-          History Pesanan
-        </Typography>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">#</TableCell>
-              <TableCell>Penginapan</TableCell>
-              <TableCell align="center">Tanggal Pesan</TableCell>
-              <TableCell align="center">Total</TableCell>
-              <TableCell align="center">Status Pembayaran</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {state.map((produk) => {
-              const dataProduk = produk.data();
-              const dateBooking = new Date(
-                produk.data().tanggalPesan["seconds"] * 1000
-              );
-              return (
-                <TableRow>
-                  <TableCell align="center">
-                    <a href={`${dataProduk.foto}`}>
-                      <img
-                        aria-hidden
-                        alt={`image${dataProduk.namaPenginapan}`}
-                        src={dataProduk.foto}
-                        width={150}
-                      />
-                    </a>
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Typography
-                      variant="body1"
-                      component={Link}
-                      to={`/view/penginapan/${produk.data().penginapanId}`}
-                    >
-                      {dataProduk.namaPenginapan}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="body1">
-                      {dateBooking.toLocaleString().toString()}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="body1">
-                      {currency(dataProduk.harga)} / {dataProduk.jenisIuran}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography variant="body1">
-                      {dataProduk.approvalStatus ? (
-                        <Button color="primary" variant="outlined">
-                          Siap Ditempati
-                        </Button>
-                      ) : (
-                        <>
-                          <Typography
-                            color="textSecondary"
-                            className={classes.waiting}
-                          >
-                            Menunggu Pembayaran...
-                          </Typography>{" "}
-                          <br /> <CircularProgress color="primary" />
-                        </>
-                      )}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Fab
-        color="primary"
-        className={classes.fab}
-        onClick={() => {
-          history.goBack();
-        }}
-      >
-        <ArrowBackIcon />
-      </Fab>
-    </div>
-*/

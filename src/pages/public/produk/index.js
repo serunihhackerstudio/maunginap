@@ -105,7 +105,6 @@ function HomeProduk() {
     if (kotaSnapshot) {
       kotaSnapshot.docs.forEach((data) => {
         kotaData.push(data.data().kota);
-        console.log(data.data().kota);
       });
       setOptions(kotaData);
     }
@@ -153,7 +152,6 @@ function HomeProduk() {
         .then((data) => setProdukItems(data.docs));
     }
     if (form.kota === "" && valueJenisPenginapan === "") {
-      console.log("TANPA KOTA DAN JENIS");
       await firestore
         .collection(`penginapan`)
         .doc("data")

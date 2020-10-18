@@ -33,15 +33,13 @@ const Proses = ({ match }) => {
 
   React.useEffect(() => {
     if (snapshot) {
-      console.log(snapshot.data());
+      
     }
   }, [snapshot]);
 
   if (loading) {
     return <AppLoading message="Memproses pesanan..." />;
   }
-
-  console.log(setActiveStep);
 
   if (!formBank.pilihBank) {
     return <Redirect to="/history" />;

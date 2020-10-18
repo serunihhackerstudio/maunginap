@@ -71,7 +71,7 @@ const DialogBooking = ({
   let pesanProduk;
 
   try {
-    console.log(user.uid);
+    // console.log(user.uid);
   } catch (e) {
     setNeedLogin(true);
     return (
@@ -94,7 +94,7 @@ const DialogBooking = ({
     .doc("data")
     .collection("produk")
     .doc(`${match.params.penginapanId}`);
-  console.log("JUMLAH PENGINAPAN");
+
   produk.get().then((res) => {
     setJumlahKamar(res.data().jumlahKamar);
     setJenisPenginapan(res.data().jenisPenginapan);
@@ -162,7 +162,7 @@ const DialogBooking = ({
         json: { chat_id: chatId, text: msg },
       },
       function (error, response, body) {
-        console.log(body);
+
       }
     );
   };
@@ -191,7 +191,6 @@ const DialogBooking = ({
       }
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
-      console.log("gagal terkirim");
     }
     setSubmitting(false);
   };

@@ -187,12 +187,12 @@ export default function Perpanjang({ history, match }) {
               Bank Tujuan Transfer
             </InputLabel>
             <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
+              labelId="bank-select-outlined-label"
+              id="bank-select-outlined"
               value={form.pilihBank}
               required
               onChange={handleChangeBank}
-              label="Age"
+              label="Bank Tujuan"
             >
               <MenuItem value={"Mandiri"}>
                 Bank Mandiri (161-0000-454-3980)
@@ -202,15 +202,16 @@ export default function Perpanjang({ history, match }) {
           </FormControl>
 
           <Grid container>
-            <Grid item xs={1}>
+            <Grid item xs={2} >
               <Checkbox
+                className={classes.checkbox}
                 checked={checked}
                 onChange={handleChange}
                 color="primary"
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
             </Grid>
-            <Grid item xs={11}>
+            <Grid item xs={10}>
               <Typography
                 variant="subtitle1"
                 color="textSecondary"
