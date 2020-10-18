@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -9,6 +6,7 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Card from "@material-ui/core/Card";
+import Tooltip from "@material-ui/core/Tooltip";
 // firebase
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
@@ -103,7 +101,7 @@ const DialogBooking = ({
   });
 
   // memasukan data tambahan ke form
-  const kodeBooking = BookingCode()
+  const kodeBooking = BookingCode();
   form.namaPenginapan = formPesanan.namaPenginapan;
   form.jenisIuran = formPesanan.jenisIuran;
   form.harga = formPesanan.harga;
@@ -152,18 +150,22 @@ const DialogBooking = ({
 
     return newError;
   };
-  const request = require('request');
+  const request = require("request");
   const sendPesananToTelegram = async (msg) => {
-    const endp = "https://api.telegram.org/bot1291851346:AAHuNYhhWGXwv4t14xbe7KWRJ_YW3Qx4TG0/sendMessage"
+    const endp =
+      "https://api.telegram.org/bot1291851346:AAHuNYhhWGXwv4t14xbe7KWRJ_YW3Qx4TG0/sendMessage";
     const chatId = -488410249;
-    await request({
-      url: endp,
-      method: 'POST',
-      json: {chat_id: chatId, text:msg}
-    }, function(error, response, body){
-      console.log(body);
-    });
-}
+    await request(
+      {
+        url: endp,
+        method: "POST",
+        json: { chat_id: chatId, text: msg },
+      },
+      function (error, response, body) {
+        console.log(body);
+      }
+    );
+  };
 
   const handleSimpan = async (e) => {
     e.preventDefault();
@@ -174,17 +176,17 @@ const DialogBooking = ({
         setError(findError);
       } else {
         sendPesananToTelegram(
-        `Pesanan baru untuk ${form.namaPenginapan}
+          `Pesanan baru untuk ${form.namaPenginapan}
         kode : ${form.kodeBooking} 
         jenis : ${form.jenisIuran} 
         pemesan : ${form.namaKTP} 
         nomor KTP : ${form.nomorKTP} 
-        nomor WA : ${form.nomorHpWa} ` 
+        nomor WA : ${form.nomorHpWa} `
         );
 
         await pesanProduk.set({ ...form }, { merge: false });
         await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
-        
+
         history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }
     } catch (e) {
@@ -239,8 +241,6 @@ const DialogBooking = ({
     }
   }
 
-  
-
   const steps = ["Data", "Bayar", "Review"];
 
   return (
@@ -283,21 +283,25 @@ const DialogBooking = ({
                 )}
                 {activeStep !== 0 && (
                   // <DialogActions>
-                  <Button onClick={handleBack} className={classes.button}>
-                    Back
-                  </Button>
+                  <Tooltip title="Kembali">
+                    <Button onClick={handleBack} className={classes.button}>
+                      Back
+                    </Button>
+                  </Tooltip>
                   // </DialogActions>
                 )}
                 {/* <DialogActions> */}
                 {activeStep !== steps.length - 1 ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    Next
-                  </Button>
+                  <Tooltip title="Selanjutnya">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      Next
+                    </Button>
+                  </Tooltip>
                 ) : (
                   <Button
                     variant="contained"

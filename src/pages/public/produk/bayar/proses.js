@@ -15,8 +15,10 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
+import Tooltip from "@material-ui/core/Tooltip";
 import { currency } from "../../../../utils/formatter";
 import Pdf from "react-to-pdf";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 
 const Proses = ({ match }) => {
   const ref = React.createRef();
@@ -63,7 +65,7 @@ const Proses = ({ match }) => {
           </Stepper>
         </div>
         <div>
-          <List disablePadding ref={ref} style={{textAlign:"center"}}>
+          <List disablePadding ref={ref} style={{ textAlign: "center" }}>
             <ListItem className={classes.listItem}>
               <Typography variant="body1" align="justify">
                 {progressPembayaran}
@@ -126,7 +128,7 @@ const Proses = ({ match }) => {
             </ListItem>
           </List>
         </div>
-
+        <Tooltip title="Status pesanan">
         <Button
           variant="contained"
           color="primary"
@@ -136,10 +138,22 @@ const Proses = ({ match }) => {
         >
           Cek Pesanan
         </Button>
+        </Tooltip>
         <Pdf targetRef={ref} filename="tagihan-pesanan.pdf">
-        {({ toPdf }) => <Button className={classes.buttonGrid} variant="contained" color="secondary" onClick={toPdf}>Download Receipt</Button>}
-      </Pdf>
-
+          {({ toPdf }) => (
+            <Tooltip title="Download tagihan ini">
+            <Button
+              className={classes.buttonGrid}
+              variant="contained"
+              color="secondary"
+              onClick={toPdf}
+              startIcon={<CloudDownloadIcon />}
+            >
+              Tagihan
+            </Button>
+            </Tooltip>
+          )}
+        </Pdf>
       </Paper>
     </div>
   );
