@@ -305,11 +305,11 @@ function History({ match, history, location }) {
                             </Grid>
                             <Grid item>
                               <strong>
-                                Menunggu pembayaran{" "}
+                                Menunggu pembayaran...{" "}
                                 {dataProduk.statusPerpanjang
                                   ? "perpanjangan"
                                   : ""}
-                                ...
+                                
                               </strong>
                             </Grid>
                             <Grid item></Grid>
