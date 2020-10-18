@@ -276,9 +276,11 @@ const DialogBooking = ({
               <div className={classes.buttons}>
                 {activeStep === 0 && (
                   // <DialogActions>
+                  <Tooltip title="Kembali">
                   <Button onClick={history.goBack} className={classes.button}>
                     Back
                   </Button>
+                  </Tooltip>
                   // </DialogActions>
                 )}
                 {activeStep !== 0 && (

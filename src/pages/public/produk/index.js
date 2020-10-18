@@ -208,10 +208,9 @@ function HomeProduk() {
           <Skeleton animation="wave" height={100} width="100%" variant="text" />
         ) : (
           <Typography
-            component="h1"
-            variant="h2"
+            variant="h3"
             align="center"
-            color="textPrimary"
+            color="primary"
             gutterBottom
           >
             Maunginap ?
