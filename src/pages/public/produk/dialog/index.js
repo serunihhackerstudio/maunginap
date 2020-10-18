@@ -24,6 +24,7 @@ import PaymentForm from "./fragment/PaymentForm";
 import FormPemesan from "./fragment/FormPemesan";
 import Review from "./fragment/Review";
 import { Typography } from "@material-ui/core";
+import { currency } from "../../../../utils/formatter";
 // import context
 
 const DialogBooking = ({
@@ -175,13 +176,9 @@ const DialogBooking = ({
       if (Object.values(findError).some((err) => err !== "")) {
         setError(findError);
       } else {
+        const biaya = parseInt(form.harga) + form.codeHarga
         sendPesananToTelegram(
-          `Pesanan baru untuk ${form.namaPenginapan}
-        kode : ${form.kodeBooking} 
-        jenis : ${form.jenisIuran} 
-        pemesan : ${form.namaKTP} 
-        nomor KTP : ${form.nomorKTP} 
-        nomor WA : ${form.nomorHpWa} `
+        `Pesanan baru : ${form.namaPenginapan} (${form.kodeBooking}) ${form.jenisIuran} ${form.namaKTP} (${form.nomorKTP}) (${currency(biaya)}) ${form.pilihBank} HP : ${form.nomorHpWa} `
         );
 
         await pesanProduk.set({ ...form }, { merge: false });
