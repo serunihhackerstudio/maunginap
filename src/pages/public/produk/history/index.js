@@ -301,7 +301,7 @@ function History({ match, history, location }) {
                         <Typography variant="body2" color="textSecondary">
                           <Grid container spacing={2}>
                             <Grid item>
-                              <CircularProgress color="primary" size={15} />
+                              <CircularProgress disableShrink color="primary" size={15} />
                             </Grid>
                             <Grid item>
                               <strong>
