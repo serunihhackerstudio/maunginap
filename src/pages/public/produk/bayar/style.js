@@ -49,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
   progressPembayaran: {
     justifyContent: "center",
   },
+  buttonGrid:{
+    marginTop:theme.spacing(2),
+    marginLeft:theme.spacing(1)
+  }
 }));
 
 export default useStyles;

@@ -16,8 +16,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import { currency } from "../../../../utils/formatter";
+import Pdf from "react-to-pdf";
 
 const Proses = ({ match }) => {
+  const ref = React.createRef();
   const classes = useStyles();
   const { firestore } = useFirebase();
   const dataQuery = firestore
@@ -61,7 +63,7 @@ const Proses = ({ match }) => {
           </Stepper>
         </div>
         <div>
-          <List disablePadding>
+          <List disablePadding ref={ref} style={{textAlign:"center"}}>
             <ListItem className={classes.listItem}>
               <Typography variant="body1" align="justify">
                 {progressPembayaran}
@@ -134,6 +136,10 @@ const Proses = ({ match }) => {
         >
           Cek Pesanan
         </Button>
+        <Pdf targetRef={ref} filename="tagihan-pesanan.pdf">
+        {({ toPdf }) => <Button className={classes.buttonGrid} variant="contained" color="secondary" onClick={toPdf}>Download Receipt</Button>}
+      </Pdf>
+
       </Paper>
     </div>
   );

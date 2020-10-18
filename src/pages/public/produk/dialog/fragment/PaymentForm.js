@@ -57,11 +57,11 @@ export default function PaymentForm({ form, setForm, error, setError }) {
                 onChange={handleChange}
               >
                 <MenuItem value={"Bank Mandiri"}>
-                  <img width={85} src={"https://1.bp.blogspot.com/-epxOcwo446g/Vxw_q2mS5VI/AAAAAAAAXCs/md15WqOgYdMNg5zK0sYoe91Q9EYlSJySQCLcB/s1600/Bank%2BMandiri%2BLogo.png"}/>
+                  <img width={85} alt="Mandiri" src={"https://1.bp.blogspot.com/-epxOcwo446g/Vxw_q2mS5VI/AAAAAAAAXCs/md15WqOgYdMNg5zK0sYoe91Q9EYlSJySQCLcB/s1600/Bank%2BMandiri%2BLogo.png"}/>
                 </MenuItem>
                 <Divider />
                 <MenuItem value={"Bank BCA"}>
-                  <img width={85} src={"https://i.pinimg.com/originals/fc/cb/47/fccb47aa81d86e25433c93d24147896d.png"} />
+                  <img width={85} alt="BCA" src={"https://i.pinimg.com/originals/fc/cb/47/fccb47aa81d86e25433c93d24147896d.png"} />
                 </MenuItem>
               </Select>
               {!form.pilihBank && (

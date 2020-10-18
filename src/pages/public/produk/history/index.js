@@ -354,12 +354,12 @@ function History({ match, history, location }) {
                             borderColor="transparent"
                           >
                             <Rating
+                              size="large"
                               name="rating-produk"
                               value={form.rating}
                               onChange={(event, newValue) => {
                                 setForm({ ...form, rating: newValue });
                               }}
-                              // onCl
                             />
                           </Box>
                         </DialogContent>
@@ -369,7 +369,7 @@ function History({ match, history, location }) {
                             color="primary"
                             autoFocus
                           >
-                            Berikan rating
+                            Rating
                           </Button>
                         </DialogActions>
                       </Dialog>
