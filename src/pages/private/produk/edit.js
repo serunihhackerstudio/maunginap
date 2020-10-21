@@ -33,6 +33,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import { CardMedia } from "@material-ui/core";
+import Radio from "@material-ui/core/Radio";
 
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -91,13 +92,13 @@ function EditProduk({ match }) {
     lokasi: "",
     jumlahKamar: "",
     fasilitas: "",
-    fasilitasUmum:{},
+    fasilitasUmum: {},
     deskripsi: "",
     kota: "",
     jenisPenginapan: "",
     likes: 0,
     diskon: 0,
-    rating:0
+    rating: 0,
   });
 
   form.fasilitasUmum = fasilitas;
@@ -122,10 +123,15 @@ function EditProduk({ match }) {
   const [inputValue, setInputValue] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [isSubmitting, setSubmitting] = useState(false);
-
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
   const kotaData = [];
+  const listGambar = []
+
+  // radio button untuk pemilihan main image
+  const [selectedValue, setSelectedValue] = React.useState(0);
+  const [radioLabel, setRadioLabel] = React.useState("")
+
 
   useEffect(() => {
     if (snapshot) {
@@ -147,6 +153,7 @@ function EditProduk({ match }) {
     }
     if (imgSnapshot) {
       setListImage(imgSnapshot.docs);
+      listGambar.push(imgSnapshot.docs)
     }
 
     if (kotaSnapshot) {
@@ -301,6 +308,18 @@ function EditProduk({ match }) {
     enqueueSnackbar("Gambar terhapus", {
       variant: "success",
     });
+  };
+
+  const handleRadioChange = async (event) => {
+    const id = parseInt(event.target.value) -1
+    console.log(listImage[id].data().url)
+    setSelectedValue(event.target.value);
+    await produkDoc.set({foto:listImage[id].data().url},{merge:true})
+    setRadioLabel("Gambar Utama")
+    enqueueSnackbar("Gambar terpilih", {
+      variant: "info",
+    });
+          
   };
 
   return (
@@ -609,10 +628,16 @@ function EditProduk({ match }) {
                       </a>
                       <ListItemText className={classes.listAlign}>
                         <Typography color="primary" variant="subtitle1">
-                          <strong>Foto {"ke-" + counting}</strong>
+                            <strong>{selectedValue === `${counting}` ? ("Gambar Utama") : ("") }</strong>
                         </Typography>
                       </ListItemText>
                       <ListItemSecondaryAction>
+                        <Radio
+                          checked={selectedValue === `${counting}`}
+                          onChange={handleRadioChange}
+                          value={`${counting}`}
+                          name="radio-button-demo"
+                        />
                         <IconButton
                           edge="end"
                           aria-label="delete"

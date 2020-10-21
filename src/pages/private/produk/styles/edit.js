@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
   fasilitas:{
     marginTop:theme.spacing(-1),
     marginBottom:theme.spacing(3)
+  },
+  iconCenter:{
+    textAlign:"center"
   }
 }));
 
