@@ -11,6 +11,17 @@ import { withRouter } from "react-router-dom";
 function AddDialog({ history, open, handleClose }) {
   const [namaPenginapan, setNamaPenginapan] = useState("");
 
+  const [fasilitas, setFasilitas] = React.useState({
+    kamarMandiDalam: false,
+    wifi: false,
+    listrikSendiri: false,
+    ac: false,
+    meja: false,
+    lemari: false,
+    kasur: false,
+    tempatJemur: false,
+  });
+
   const [error, setError] = useState("");
 
   const { firestore } = useFirebase();
@@ -37,7 +48,7 @@ function AddDialog({ history, open, handleClose }) {
         throw new Error("Nama produk wajib diisi");
       }
 
-      const produkBaru = await produkCol.add({ namaPenginapan, created:new Date() });
+      const produkBaru = await produkCol.add({ namaPenginapan, fasilitasUmum:fasilitas, created:new Date() });
 
       history.push(
         `/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk/edit/${produkBaru.id}`
