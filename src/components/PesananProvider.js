@@ -1,6 +1,10 @@
 import React, { createContext, useContext } from "react";
 import ID from "../utils/idgenerator";
 
+// image assets
+import bank_mandiri from "../assets/bank_mandiri.jpg"
+import bank_bca from "../assets/bank_bca.jpg"
+
 export const PesananContext = createContext();
 
 export const usePesanan = () => {
@@ -22,8 +26,7 @@ const PesananProvider = (props) => {
   const [formBank, setFormBank] = React.useState({});
   const [akunBank, setAkunBank] = React.useState([
     {
-      fotoBank:
-        "https://statik.tempo.co/data/2018/02/06/id_682386/682386_720.jpg",
+      fotoBank:bank_mandiri,
       bank: "Mandiri",
       noRek: "164-0000-9823-94820",
       atasNama: "Toufani Rizal Alfarisi",
@@ -31,8 +34,7 @@ const PesananProvider = (props) => {
       button: "Pilih Mandiri",
     },
     {
-      fotoBank:
-        "https://bursadesain.com/wp-content/uploads/2016/08/VECTOR-LOGO-BANK-BCA.jpg",
+      fotoBank:bank_bca,
       bank: "BCA",
       noRek: "998-875-956-0989",
       atasNama: "Toufani Rizal Alfarisi",
