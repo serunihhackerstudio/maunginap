@@ -6,5 +6,9 @@ service firebase.storage {
     match /penginapan/data/user/profile_pict/{userId}/{filename} {
       allow read, write: if true;
     }
+
+    match /promosi/{filename} {
+      allow read, write: if true
+    }
   }
 }

@@ -8,21 +8,12 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
+import {useFirebase} from "../components/FirebaseProvider"
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const tutorialSteps = [
-  {
-    label: "Banner 1",
-    imgPath:
-      "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2FBenner%20Baru%20di%20web.jpg?alt=media&token=dc3af46d-5fd6-434a-9c48-c29091737a39",
-  },
-  {
-    label: "Banner 2",
-    imgPath:
-      "https://firebasestorage.googleapis.com/v0/b/maunginap-bc894.appspot.com/o/promosi%2FBanner%20Maunginap%20Keunggulan%20dan%20Jaminan%20Kemudahan%20mahasiswa%20baru.jpg?alt=media&token=f913126a-75e1-4206-ac62-b351e7ea243e",
-  },
-];
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +39,17 @@ function SwipeableTextMobileStepper({ classMedia }) {
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
+  const {firestore} = useFirebase()
+  const produkStorageItem = firestore.collection("promosi")
+  const [snapshot, loading] = useCollection(produkStorageItem)
+  const [tutorialSteps, setTutorialSteps] = React.useState([])
+
+  React.useEffect(() => {
+    if (snapshot){
+      setTutorialSteps(snapshot.docs)
+    }
+  }, [snapshot])
+
   const maxSteps = tutorialSteps.length;
 
   const handleNext = () => {
@@ -71,17 +73,20 @@ function SwipeableTextMobileStepper({ classMedia }) {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {tutorialSteps.map((step, index) => (
-          <div key={step.label}>
+        {tutorialSteps.map((step, index) => {
+          const img = step.data().url
+          return (
+          <div key={index}>
             {Math.abs(activeStep - index) <= 2 ? (
               <CardMedia
                 className={classes.img}
-                image={step.imgPath}
-                alt={step.label}
+                image={img}
+                alt={step.id}
               />
             ) : null}
           </div>
-        ))}
+        )}
+        )}
       </AutoPlaySwipeableViews>
       <MobileStepper
         steps={maxSteps}

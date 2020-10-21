@@ -669,8 +669,10 @@ function EditProduk({ match }) {
                 variant="outlined"
                 margin="normal"
                 component="span"
+                color="primary"
+                startIcon={<UploadIcon />}
               >
-                Upload Foto <UploadIcon className={classes.iconRight} />
+                Upload Foto 
               </Button>
             </label>
             {error.foto && <Typography color="error">{error.foto}</Typography>}

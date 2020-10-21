@@ -10,7 +10,9 @@ import SuperAdmin from "./superAdmin";
 import IdentitasAdmin from "./identitasAdmin";
 import Kota from "./kota";
 import Diskon from "./diskon"
+import ImageSlider from "./imageSlider"
 import useStyles from "./styles";
+
 
 function Pengaturan(props) {
   const handleChangeTab = (event, value) => {
@@ -43,6 +45,10 @@ function Pengaturan(props) {
           label="Diskon"
           value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/diskon"
         />
+        <Tab
+          label="Gambar Promosi"
+          value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/gambar-promosi"
+        />
       </Tabs>
       <div className={classes.tabContent}>
         <Switch>
@@ -61,6 +67,10 @@ function Pengaturan(props) {
           <Route
             path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/diskon"
             component={Diskon}
+          />
+          <Route
+            path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/gambar-promosi"
+            component={ImageSlider}
           />
           <Redirect to="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/admin" />
         </Switch>
