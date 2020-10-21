@@ -48,23 +48,6 @@ export default function ImageSlider({ match }) {
     }
   }, [snapshot])
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   setSubmitting(true)
-  //   for (let data of state){
-  //     await queryData.doc(`${data.id}`).set({...form}, {merge:true})
-      
-  //   }
-  //   enqueueSnackbar("Diskon diatur untuk semua produk", {variant:"success"})
-  //   setSubmitting(false)
-  // }
-
-  // const handleChange = (e) => {
-  //   setForm({
-  //       ...form, 
-  //       [e.target.name]:e.target.value
-  //     })
-  // }
 
   const deleteImgCallback = (data) => async (e) => {
     await produStorageItem
@@ -153,7 +136,8 @@ export default function ImageSlider({ match }) {
           Gambar promosi saat ini :
         </Typography>
         <List className={classes.rootImg}>
-              {state.map((data, index) => {
+          {loading ? (<AppPageLoading />) : (
+              state.map((data, index) => {
                 const counting = index + 1;
                 const imgFile = data.data().url;
                 return (
@@ -183,7 +167,9 @@ export default function ImageSlider({ match }) {
                     <Divider />
                   </div>
                 );
-              })}
+              })
+          )}
+              
             </List>
         </Grid>
         <Grid item xs></Grid>
