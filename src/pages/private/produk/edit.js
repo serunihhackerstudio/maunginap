@@ -91,6 +91,7 @@ function EditProduk({ match }) {
     lokasi: "",
     jumlahKamar: "",
     fasilitas: "",
+    fasilitasUmum:{},
     deskripsi: "",
     kota: "",
     jenisPenginapan: "",
@@ -464,7 +465,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={kamarMandiDalam}
+                          checked={form.fasilitasUmum["kamarMandiDalam"]}
                           onChange={handleFasilitas}
                           name="kamarMandiDalam"
                         />
@@ -484,7 +485,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={listrikSendiri}
+                          checked={form.fasilitasUmum["listrikSendiri"]}
                           onChange={handleFasilitas}
                           name="listrikSendiri"
                         />
@@ -494,7 +495,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={ac}
+                          checked={form.fasilitasUmum["ac"]}
                           onChange={handleFasilitas}
                           name="ac"
                         />
@@ -504,7 +505,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={meja}
+                          checked={form.fasilitasUmum["meja"]}
                           onChange={handleFasilitas}
                           name="meja"
                         />
@@ -514,7 +515,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={lemari}
+                          checked={form.fasilitasUmum["lemari"]}
                           onChange={handleFasilitas}
                           name="lemari"
                         />
@@ -524,7 +525,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={kasur}
+                          checked={form.fasilitasUmum["kasur"]}
                           onChange={handleFasilitas}
                           name="kasur"
                         />
@@ -534,7 +535,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={tempatJemur}
+                          checked={form.fasilitasUmum["tempatJemur"]}
                           onChange={handleFasilitas}
                           name="tempatJemur"
                         />
