@@ -475,7 +475,7 @@ function EditProduk({ match }) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={wifi}
+                          checked={form.fasilitasUmum["wifi"]}
                           onChange={handleFasilitas}
                           name="wifi"
                         />
