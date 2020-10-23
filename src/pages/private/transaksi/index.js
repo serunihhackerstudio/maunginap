@@ -19,14 +19,18 @@ import { useCollection } from "react-firebase-hooks/firestore";
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 import AppLoading from "../../../components/AppLoading";
+import ID from "../../../utils/idgenerator"
 
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
-  const { firestore } = useFirebase();
+  const idGenerator = ID();
+  const { firestore, user } = useFirebase();
   const query = firestore.collection("pesanan").orderBy("created", "desc");
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
   const classes = useState();
+  const notifData = firestore.collection("notification").doc(`${idGenerator}`)
+    // const [msgNotif, setMsgNotif] = React.useState([]);
 
   useEffect(() => {
     if (snapshot) {
@@ -35,17 +39,45 @@ function Transaksi() {
     }
   }, [snapshot]);
 
-  const approveCallback = (produkdocId) => async () => {
+  const approveCallback = (produk) => async () => {
     try {
       if (window.confirm("Apakah pesanan ini telah terkonfirmasi ? ")) {
-        await firestore
+        
+        if (produk.data().statusPerpanjang === true){
+          await firestore
           .collection("pesanan")
-          .doc(`${produkdocId}`)
-          .set({ approvalStatus: true, statusPerpanjang: false }, { merge: true });
-        enqueueSnackbar(`Pesanan terkonfirmasi`, {
-          variant: "success",
-        });
+          .doc(`${produk.id}`)
+          .set({ statusPerpanjang: true }, { merge: true });
+          await notifData.set({
+              userId : user.uid,
+              created: new Date(),
+              status:"Berhasil diperpanjang",
+              namaPenginapan:produk.data().namaPenginapan,
+              kodeBooking:produk.data().kodeBooking
+            })
+          enqueueSnackbar(`Pesanan diperpanjang`, {
+            variant: "success",
+          });
+
+        } else {
+          await notifData.set({
+            userId : user.uid,
+            created: new Date(),
+            status:"Siap ditempati",
+            namaPenginapan:produk.data().namaPenginapan,
+            kodeBooking:produk.data().kodeBooking
+          })
+        }
+          await firestore
+            .collection("pesanan")
+            .doc(`${produk.id}`)
+            .set({ approvalStatus: true, statusPerpanjang: false }, { merge: true });
       }
+
+      enqueueSnackbar(`Pesanan terkonfirmasi`, {
+        variant: "success",
+      });
+
     } catch (e) {
       enqueueSnackbar(e.message, {
         variant: "error",
@@ -53,13 +85,20 @@ function Transaksi() {
     }
   };
 
-  const perpanjangCallback = (produkdocId) => async () => {
+  const perpanjangCallback = (produkDoc) => async () => {
     try {
       if (window.confirm("Apakah pesanan ini telah dikonfirmasi untuk perpanjangan ? ")) {
         await firestore
           .collection("pesanan")
-          .doc(`${produkdocId}`)
+          .doc(`${produkDoc.id}`)
           .set({ statusPerpanjang: true }, { merge: true });
+        await notifData.set({
+            userId : user.uid,
+            created: new Date(),
+            status:"Berhasil diperpanjang",
+            namaPenginapan:produkDoc.data().namaPenginapan,
+            kodeBooking:produkDoc.data().kodeBooking
+          })
         enqueueSnackbar(`Pesanan diperpanjang`, {
           variant: "success",
         });
@@ -99,6 +138,7 @@ function Transaksi() {
           });
 
         await firestore.collection("pesanan").doc(`${produkdocId}`).delete();
+        // await firestore.collection("notification").doc(`${produkdocId}`).delete();
         enqueueSnackbar(`Berhasil`, {
           variant: "info",
         });
@@ -203,7 +243,7 @@ function Transaksi() {
                     size="small"
                     color="primary"
                     variant="contained"
-                    onClick={perpanjangCallback(produkDoc.id)}
+                    onClick={perpanjangCallback(produkDoc)}
                   >
                     Perpanjang
                   </Button>
@@ -213,7 +253,7 @@ function Transaksi() {
                       size="small"
                       color="primary"
                       variant="contained"
-                      onClick={approveCallback(produkDoc.id)}
+                      onClick={approveCallback(produkDoc)}
                     >
                       {produkData.statusPerpanjang ? "Perpanjang" : "Konfirmasi "}
                     </Button>

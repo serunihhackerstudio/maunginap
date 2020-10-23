@@ -52,7 +52,30 @@ import { isBrowser } from "react-device-detect";
 
 import { useCollection } from "react-firebase-hooks/firestore";
 
+// menu
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import ImageIcon from "@material-ui/icons/Image";
+import WorkIcon from "@material-ui/icons/Work";
+import BeachAccessIcon from "@material-ui/icons/BeachAccess";
+import { green, pink } from "@material-ui/core/colors";
+
 function Home({ history, location }) {
+  // menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { auth, user, firestore } = useFirebase();
@@ -64,11 +87,24 @@ function Home({ history, location }) {
 
   const [snapshot, loading] = useCollection(historyQuery);
 
+  const notifQuery = firestore
+    .collection("notification").orderBy("created", "desc")
+    // .where("userId", "==", user.uid);
+
+  const [snapshotNotif, loadingNotif] = useCollection(notifQuery);
+  const [jumlahNotif, setJumlahNotif] = React.useState(0);
+  const [msgNotif, setMsgNotif] = React.useState([]);
+
   React.useEffect(() => {
     if (snapshot) {
       setJumlahPesanan(snapshot.docs.length);
     }
-  }, [snapshot]);
+
+    if (snapshotNotif) {
+      setJumlahNotif(snapshotNotif.docs.length);
+      setMsgNotif(snapshotNotif.docs);
+    }
+  }, [snapshot, snapshotNotif]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -234,22 +270,78 @@ function Home({ history, location }) {
           )}
 
           {user && (
-            <Tooltip title="Pesanan">
-              <IconButton color="inherit" component={Link} to={"/history"}>
-                <Badge badgeContent={jumlahPesanan} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            </Tooltip>
+            <>
+              <Tooltip title="Pesanan">
+                <IconButton
+                  color="inherit"
+                  aria-controls="simple-menu"
+                  onClick={handleClick}
+                >
+                  <Badge badgeContent={jumlahNotif} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Pesanan">
+                <IconButton color="inherit" component={Link} to={"/history"}>
+                  <Badge badgeContent={jumlahPesanan} color="secondary">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
+            </>
           )}
 
-          {user && (
+          {/* {user && (
             <Tooltip title="Sign out">
               <IconButton color="inherit" onClick={handleOpenDialog}>
                 <SignOutIcon />
               </IconButton>
             </Tooltip>
-          )}
+          )} */}
+          <div>
+            <Menu
+              className={classes.menuItem}
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              PaperProps={{
+                style: {
+                  maxHeight: "full",
+                  width: 370,
+                },
+              }}
+            >
+              {msgNotif.map((data) => {
+                const item = data.data();
+                return (
+                  <MenuItem onClick={handleClose}>
+                    <List>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: green[500] }}>
+                            <NotificationsIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <Typography>
+                          #{item.kodeBooking}&nbsp;
+                        </Typography>
+                        <Typography color="secondary">
+                          {item.status}
+                        </Typography>
+                        {/* <ListItemText
+                          primary={`Pesanan #${item.kodeBooking} berstatus ${item.status}`}
+                          secondary={`${item.created}`}
+                        /> */}
+                      </ListItem>
+                    </List>
+                  </MenuItem>
+                );
+              })}
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
 

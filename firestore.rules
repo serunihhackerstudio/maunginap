@@ -55,7 +55,11 @@ service cloud.firestore {
      }
 
      match /promosi/{imgId} {
-       allow read, write: if true
+       allow read, write: if true;
+     }
+
+     match /notification/{notification}{
+       allow read, write: if true;
      }
 
   }

@@ -43,6 +43,9 @@ const DialogBooking = ({
 
   // REQUIREMENTS
   const idGenerator = ID();
+
+  // NOTIF
+
   const [form, setForm] = useState({
     namaKTP: "",
     nomorKTP: "",
@@ -68,7 +71,6 @@ const DialogBooking = ({
   const classes = useStyles();
   const { firestore, user } = useFirebase();
   const { setNeedLogin, formPesanan } = usePesanan();
-
   let pesanProduk;
 
   try {
@@ -89,6 +91,9 @@ const DialogBooking = ({
 
   // pesanProduk = firestore.collection("pesanan").doc(`${user.uid}`);
   pesanProduk = firestore.collection("pesanan").doc(`${idGenerator}`);
+
+  // notification
+  const notifData = firestore.collection("notification").doc(`${idGenerator}`)
 
   const produk = firestore
     .collection("penginapan")
@@ -177,12 +182,20 @@ const DialogBooking = ({
         setError(findError);
       } else {
         const biaya = parseInt(form.harga) + form.codeHarga
+        const kodeBooking = form.kodeBooking
         sendPesananToTelegram(
-        `Pesanan baru : ${form.namaPenginapan} (${form.kodeBooking}) ${form.jenisIuran} ${form.namaKTP} (${form.nomorKTP}) (${currency(biaya)}) ${form.pilihBank} HP : ${form.nomorHpWa} `
+        `Pesanan baru : ${form.namaPenginapan} (${kodeBooking}) ${form.jenisIuran} ${form.namaKTP} (${form.nomorKTP}) (${currency(biaya)}) ${form.pilihBank} HP : ${form.nomorHpWa} `
         );
 
         await pesanProduk.set({ ...form }, { merge: false });
         await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
+        await notifData.set({
+          userId : user.uid,
+          created: new Date(),
+          status:"Menunggu pembayaran",
+          namaPenginapan:form.namaPenginapan,
+          kodeBooking:kodeBooking
+        })
 
         history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
       }

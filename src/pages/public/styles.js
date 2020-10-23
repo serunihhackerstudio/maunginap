@@ -89,6 +89,17 @@ const useStyles = makeStyles((theme) => ({
   fullList: {
     width: 'auto',
   },
+  menuItem : {
+    width:600
+  },
+  rootList: {
+    width: '100%',
+    maxWidth: '36ch',
+    backgroundColor: theme.palette.background.paper,
+  },
+  inlineList: {
+    display: 'inline',
+  },
 }));
 
 export default useStyles;

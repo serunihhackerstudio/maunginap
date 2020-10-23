@@ -63,6 +63,9 @@ function History({ match, history, location }) {
     .collection("pesanan")
     .where("userId", "==", user.uid);
 
+  const idGenerator = ID();
+  const notifData = firestore.collection("notification").doc(`${idGenerator}`)
+
   const [snapshot, loading] = useCollection(produkDoc);
   const classes = useStyles();
   const [state, setState] = useState([]);
@@ -96,8 +99,20 @@ function History({ match, history, location }) {
   };
 
   const perpanjangCallback = (data) => (e) => {
-    setPesananId(data);
-    history.push(`/perpanjang/${data}`);
+    setPesananId(data.id);
+    const dataProduk = data.data();
+    const dateNow = new Date().toLocaleDateString();
+    history.push(`/perpanjang/${data.id}`);
+    if (dataProduk.approvalStatus && dataProduk.tanggalBerakhir === dateNow){
+      notifData.set({
+      userId : user.uid,
+      created: new Date(),
+      status:"Jatuh tempo pembayaran",
+      namaPenginapan:dataProduk.namaPenginapan,
+      kodeBooking:dataProduk.kodeBooking
+    }, {merge:false})
+  }
+    
   };
   
   const ratingHandling = (data) => async (e) => {
@@ -122,6 +137,9 @@ function History({ match, history, location }) {
     return <AppLoading message="History Pesanan" />;
   }
 
+
+  
+
   return (
     <div>
       {state.map((produk) => {
@@ -129,15 +147,16 @@ function History({ match, history, location }) {
         const dateNow = new Date().toLocaleDateString();
         const diskon =
           dataProduk.harga - dataProduk.harga * (dataProduk.diskon / 100);
+
         return (
           <Card className={classes.paper}>
             <Grid container className={classes.rowDivider} spacing={2}>
               <Grid item xs>
-                <Typography variant="body2" color="primary">
-                  <strong>{dataProduk.jenisPenginapan}</strong>
-                </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  ({dataProduk.kodeBooking})
+                  {dataProduk.jenisPenginapan}
+                </Typography>
+                <Typography variant="body2" color="primary">
+                  <strong>#{dataProduk.kodeBooking}</strong>
                 </Typography>
               </Grid>
               <Grid item xs={6} alignContent="center">
@@ -145,7 +164,7 @@ function History({ match, history, location }) {
                   Waktu ditempati
                 </Typography>
                 <Typography variant="body2" color="primary">
-                  {dataProduk.tanggalPesan}
+                  <strong>{dataProduk.tanggalPesan}</strong>
                 </Typography>
               </Grid>
               <Grid item xs className={classes.totalBayar}>
@@ -365,7 +384,7 @@ function History({ match, history, location }) {
                           ? false
                           : true
                       }
-                      onClick={perpanjangCallback(produk.id)}
+                      onClick={perpanjangCallback(produk)}
                     >
                       Perpanjang
                     </Button>

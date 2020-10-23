@@ -37,8 +37,10 @@ import { useSnackbar } from "notistack";
 import useStyles from "./styles"
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Prompt } from "react-router-dom";
+import ID from "../../../../utils/idgenerator";
 
 export default function Perpanjang({ history, match }) {
+  const idGenerator = ID()
   const [isSomethingChange, setSomethingChange] = React.useState(false);
   const [isSubmitting, setSubmitting] = React.useState(false)
   const classes = useStyles();
@@ -46,10 +48,14 @@ export default function Perpanjang({ history, match }) {
   const [selectedDate, handleDateChange] = React.useState(new Date());
   const [expanded, setExpanded] = React.useState(false);
   const { akunBank, pesananId } = usePesanan();
-  const { firestore } = useFirebase();
+  const { firestore, user } = useFirebase();
   const query = firestore
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
+
+  // notification
+  const notifData = firestore.collection("notification").doc(`${idGenerator}`)
+
   const [snapshot, loading] = useDocument(query);
   const [form, setForm] = React.useState({
     namaKTP: "",
@@ -109,6 +115,13 @@ export default function Perpanjang({ history, match }) {
       setSomethingChange(false)
       setSubmitting(true)
       await query.set(form, { merge: true });
+      await notifData.set({
+        userId : user.uid,
+        created: new Date(),
+        status:"Menunggu perpanjangan",
+        namaPenginapan:form.namaPenginapan,
+        kodeBooking:form.kodeBooking
+      })
       history.push(`/perpanjang/${match.params.penginapanId}/proses`);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
@@ -153,7 +166,7 @@ export default function Perpanjang({ history, match }) {
               <MoreVertIcon />
             </IconButton>
           }
-          title={loading ? (<Skeleton animation="wave" height={20} width="60%"/>) :form.namaPenginapan}
+          title={loading ? (<Skeleton animation="wave" height={20} width="60%"/>) : form.namaPenginapan}
           subheader={loading ? (<Skeleton animation="wave" height={20} width="40%"/>) : "s/d. " + form.tanggalBerakhir}
         />
         {loading ? (
