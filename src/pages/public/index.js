@@ -45,6 +45,7 @@ import Perpanjang from "./produk/perpanjang";
 import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
 import UserProfile from "../user/profile";
+import Notification from "./produk/notification/notification";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // mobile detector
@@ -63,9 +64,10 @@ import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import { green, red, blue, orange } from "@material-ui/core/colors";
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import TimerIcon from '@material-ui/icons/Timer';
-import DoneIcon from '@material-ui/icons/Done';
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import TimerIcon from "@material-ui/icons/Timer";
+import DoneIcon from "@material-ui/icons/Done";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 function Home({ history, location }) {
   // menu
@@ -85,11 +87,16 @@ function Home({ history, location }) {
   const notifQuery = firestore
     .collection("notification")
     .where("userId", "==", `${user.uid}`)
-    // .orderBy("created","desc")
-    ;
+    .limit(10);
 
+  const notifQueryAll = firestore
+    .collection("notification")
+    .where("userId", "==", `${user.uid}`);
+  // .orderBy("created","desc")
   const [snapshotNotif, loadingNotif] = useCollection(notifQuery);
+  const [snapshotNotifAll, loadingNotifAll] = useCollection(notifQueryAll);
   const [jumlahNotif, setJumlahNotif] = React.useState(0);
+  const [jumlahNotifAll, setJumlahNotifAll] = React.useState(0);
   const [msgNotif, setMsgNotif] = React.useState([]);
 
   React.useEffect(() => {
@@ -99,17 +106,20 @@ function Home({ history, location }) {
 
     if (snapshotNotif) {
       setJumlahNotif(snapshotNotif.docs.length);
-      const notifData = snapshotNotif.docs
-      notifData.sort((a,b)=> b.data().created - a.data().created);
+      const notifData = snapshotNotif.docs;
+      notifData.sort((a, b) => b.data().created - a.data().created);
       // notifData.sort((a,b) =>  new Date(a.date) - new Date(b.date))
       setMsgNotif(notifData);
     }
-  }, [snapshot, snapshotNotif]);
+    if (snapshotNotifAll) {
+      setJumlahNotifAll(snapshotNotifAll.docs.length);
+    }
+  }, [snapshot, snapshotNotif, snapshotNotifAll]);
 
   const historyPesananCallback = () => {
-    setJumlahPesanan(null)
-    history.push("/history")
-  }
+    setJumlahPesanan(null);
+    history.push("/history");
+  };
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -130,7 +140,7 @@ function Home({ history, location }) {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    setJumlahNotif(null)
+    setJumlahNotifAll(null);
   };
 
   const handleClose = () => {
@@ -139,7 +149,7 @@ function Home({ history, location }) {
 
   const handleItemClose = () => {
     setAnchorEl(null);
-    history.push("/history")
+    history.push("/history");
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -293,6 +303,7 @@ function Home({ history, location }) {
               />
 
               <Route path="/history" exact children="History Pesanan" />
+              <Route path="/notification" exact children="Notification" />
             </Switch>
             {/* LOGO TITLE */}
           </Typography>
@@ -313,7 +324,7 @@ function Home({ history, location }) {
                   aria-controls="simple-menu"
                   onClick={handleClick}
                 >
-                  <Badge badgeContent={jumlahNotif} color="secondary">
+                  <Badge badgeContent={jumlahNotifAll} color="secondary">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
@@ -346,14 +357,16 @@ function Home({ history, location }) {
               PaperProps={{
                 style: {
                   maxHeight: "full",
-                  width: 370,
+                  width: 340,
                 },
               }}
             >
               {msgNotif.map((data) => {
                 const item = data.data();
+                const date = new Date(
+                  item.created["seconds"] * 1000
+                ).toLocaleDateString();
                 return (
-                  
                   <MenuItem onClick={handleItemClose}>
                     <List>
                       <ListItem>
@@ -362,26 +375,53 @@ function Home({ history, location }) {
                             <Avatar style={{ backgroundColor: red[500] }}>
                               <AttachMoneyIcon />
                             </Avatar>
-                          ) : item.status === "Menunggu pembayaran" || item.status === "Menunggu perpanjangan" ? (
+                          ) : item.status === "Menunggu pembayaran" ||
+                            item.status === "Menunggu perpanjangan" ? (
                             <Avatar style={{ backgroundColor: orange[500] }}>
                               <TimerIcon />
                             </Avatar>
                           ) : (
-                            <Avatar style={{ backgroundColor: '#016660' }}>
+                            <Avatar style={{ backgroundColor: "#016660" }}>
                               <DoneIcon />
                             </Avatar>
                           )}
                         </ListItemAvatar>
-                        <Typography>#{item.kodeBooking}&nbsp;</Typography>
-                        <Typography color="primary">
-                          {item.status === "Jatuh tempo pembayaran" ? (
-                            <strong><font color="red">{item.status}</font></strong>
-                          ) : item.status === "Menunggu pembayaran" || item.status === "Menunggu perpanjangan" ? (
-                            <strong><font color="orange">{item.status}</font></strong>
-                          ): (
-                            <strong>{item.status}</strong>
-                          )}
-                        </Typography>
+                        <ListItemText
+                          primary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                className={classes.inline}
+                                color="textPrimary"
+                              >
+                                <Typography>
+                                  {item.namaPenginapan} #{item.kodeBooking}
+                                </Typography>
+                                <Typography color="primary">
+                                  {item.status === "Jatuh tempo pembayaran" ? (
+                                    <strong>
+                                      <font color="red">{item.status}</font>
+                                    </strong>
+                                  ) : item.status === "Menunggu pembayaran" ||
+                                    item.status === "Menunggu perpanjangan" ? (
+                                    <strong>
+                                      <font color="orange">{item.status}</font>
+                                    </strong>
+                                  ) : (
+                                    <strong>{item.status}</strong>
+                                  )}
+                                </Typography>
+                                <Typography
+                                  variant="subtitle2"
+                                  color="textSecondary"
+                                >
+                                  {date}
+                                </Typography>
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
                         {/* <ListItemText
                           primary={`Pesanan #${item.kodeBooking} berstatus ${item.status}`}
                           secondary={`${item.created}`}
@@ -391,6 +431,21 @@ function Home({ history, location }) {
                   </MenuItem>
                 );
               })}
+              <MenuItem onClick={() => {
+                setAnchorEl(null)
+                history.push("/notification")
+              }}>
+                <List>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <ExpandMoreIcon />
+                    </ListItemAvatar>
+                    <ListItemText>
+                      <Typography>Lihat semua</Typography>
+                    </ListItemText>
+                  </ListItem>
+                </List>
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -442,6 +497,8 @@ function Home({ history, location }) {
               component={ProsesPerpanjang}
             />
             <Route path="/profile/user" component={UserProfile} />
+            <Route path="/notification" component={Notification} />
+
             <Route component={HomeProduk} />
           </Switch>
         </Container>

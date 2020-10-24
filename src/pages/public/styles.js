@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inlineList: {
     display: 'inline',
-  },
+  }
 }));
 
 export default useStyles;
