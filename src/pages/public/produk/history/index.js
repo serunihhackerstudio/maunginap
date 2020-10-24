@@ -79,6 +79,8 @@ function History({ match, history, location }) {
 
   const [querySnapshot, queryLoading] = useCollection(queryAll);
 
+  const [isNow, setNow] = useState(true)
+
   useEffect(() => {
     if (snapshot) {
       setState(snapshot.docs);
@@ -103,15 +105,7 @@ function History({ match, history, location }) {
     const dataProduk = data.data();
     const dateNow = new Date().toLocaleDateString();
     history.push(`/perpanjang/${data.id}`);
-    if (dataProduk.approvalStatus && dataProduk.tanggalBerakhir === dateNow){
-      notifData.set({
-      userId : user.uid,
-      created: new Date(),
-      status:"Jatuh tempo pembayaran",
-      namaPenginapan:dataProduk.namaPenginapan,
-      kodeBooking:dataProduk.kodeBooking
-    }, {merge:false})
-  }
+    
     
   };
   
@@ -147,13 +141,23 @@ function History({ match, history, location }) {
         const dateNow = new Date().toLocaleDateString();
         const diskon =
           dataProduk.harga - dataProduk.harga * (dataProduk.diskon / 100);
+          if (dataProduk.approvalStatus && dataProduk.tanggalBerakhir === dateNow && isNow){
+            notifData.set({
+            userId : user.uid,
+            created: new Date(),
+            status:"Jatuh tempo pembayaran",
+            namaPenginapan:dataProduk.namaPenginapan,
+            kodeBooking:dataProduk.kodeBooking
+          }, {merge:false})
+          setNow(false)
+        }
 
         return (
           <Card className={classes.paper}>
             <Grid container className={classes.rowDivider} spacing={2}>
               <Grid item xs>
                 <Typography variant="body2" color="textSecondary">
-                  {dataProduk.jenisPenginapan}
+                  Kode booking
                 </Typography>
                 <Typography variant="body2" color="primary">
                   <strong>#{dataProduk.kodeBooking}</strong>

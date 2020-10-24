@@ -62,19 +62,14 @@ import Avatar from "@material-ui/core/Avatar";
 import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import { green, pink } from "@material-ui/core/colors";
+import { green, red, blue, orange } from "@material-ui/core/colors";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import TimerIcon from '@material-ui/icons/Timer';
+import DoneIcon from '@material-ui/icons/Done';
 
 function Home({ history, location }) {
   // menu
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -88,8 +83,10 @@ function Home({ history, location }) {
   const [snapshot, loading] = useCollection(historyQuery);
 
   const notifQuery = firestore
-    .collection("notification").orderBy("created", "desc")
-    // .where("userId", "==", user.uid);
+    .collection("notification")
+    .where("userId", "==", `${user.uid}`)
+    // .orderBy("created","desc")
+    ;
 
   const [snapshotNotif, loadingNotif] = useCollection(notifQuery);
   const [jumlahNotif, setJumlahNotif] = React.useState(0);
@@ -102,9 +99,17 @@ function Home({ history, location }) {
 
     if (snapshotNotif) {
       setJumlahNotif(snapshotNotif.docs.length);
-      setMsgNotif(snapshotNotif.docs);
+      const notifData = snapshotNotif.docs
+      notifData.sort((a,b)=> b.data().created - a.data().created);
+      // notifData.sort((a,b) =>  new Date(a.date) - new Date(b.date))
+      setMsgNotif(notifData);
     }
   }, [snapshot, snapshotNotif]);
+
+  const historyPesananCallback = () => {
+    setJumlahPesanan(null)
+    history.push("/history")
+  }
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -122,6 +127,20 @@ function Home({ history, location }) {
   const [drawer, setDrawer] = React.useState({
     left: false,
   });
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setJumlahNotif(null)
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleItemClose = () => {
+    setAnchorEl(null);
+    history.push("/history")
+  };
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -283,7 +302,7 @@ function Home({ history, location }) {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Pesanan">
-                <IconButton color="inherit" component={Link} to={"/history"}>
+                <IconButton color="inherit" onClick={historyPesananCallback}>
                   <Badge badgeContent={jumlahPesanan} color="secondary">
                     <ShoppingCartIcon />
                   </Badge>
@@ -317,19 +336,34 @@ function Home({ history, location }) {
               {msgNotif.map((data) => {
                 const item = data.data();
                 return (
-                  <MenuItem onClick={handleClose}>
+                  
+                  <MenuItem onClick={handleItemClose}>
                     <List>
                       <ListItem>
                         <ListItemAvatar>
-                          <Avatar style={{ backgroundColor: green[500] }}>
-                            <NotificationsIcon />
-                          </Avatar>
+                          {item.status === "Jatuh tempo pembayaran" ? (
+                            <Avatar style={{ backgroundColor: red[500] }}>
+                              <AttachMoneyIcon />
+                            </Avatar>
+                          ) : item.status === "Menunggu pembayaran" || item.status === "Menunggu perpanjangan" ? (
+                            <Avatar style={{ backgroundColor: orange[500] }}>
+                              <TimerIcon />
+                            </Avatar>
+                          ) : (
+                            <Avatar style={{ backgroundColor: '#016660' }}>
+                              <DoneIcon />
+                            </Avatar>
+                          )}
                         </ListItemAvatar>
-                        <Typography>
-                          #{item.kodeBooking}&nbsp;
-                        </Typography>
-                        <Typography color="secondary">
-                          {item.status}
+                        <Typography>#{item.kodeBooking}&nbsp;</Typography>
+                        <Typography color="primary">
+                          {item.status === "Jatuh tempo pembayaran" ? (
+                            <strong><font color="red">{item.status}</font></strong>
+                          ) : item.status === "Menunggu pembayaran" || item.status === "Menunggu perpanjangan" ? (
+                            <strong><font color="orange">{item.status}</font></strong>
+                          ): (
+                            <strong>{item.status}</strong>
+                          )}
                         </Typography>
                         {/* <ListItemText
                           primary={`Pesanan #${item.kodeBooking} berstatus ${item.status}`}
