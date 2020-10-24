@@ -319,7 +319,7 @@ function Home({ history, location }) {
 
           {user && (
             <>
-              <Tooltip title="Pesanan">
+              <Tooltip title="Notifikasi">
                 <IconButton
                   color="inherit"
                   aria-controls="simple-menu"
