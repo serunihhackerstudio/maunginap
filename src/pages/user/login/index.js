@@ -52,10 +52,10 @@ function LoginUser(props) {
 
   // untk keperluan authentikasi
   const { auth, user, loading, firestore } = useFirebase();
-  if (user){
-    const userIdQuery = firestore.collection("userbio").doc(user.uid)
-    userIdQuery.set({userUid:user.uid, foto:""}, {merge:true})
-  }
+  // if (user){
+  //   const userIdQuery = firestore.collection("userbio").doc(user.uid)
+  //   userIdQuery.set({userUid:user.uid, foto:""}, {merge:true})
+  // }
 
   const handleChange = (e) => {
     // teknik tercepat untuk perubahan value/nilai di form input

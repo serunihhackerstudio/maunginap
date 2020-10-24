@@ -125,7 +125,7 @@ function RegistrasiUser({ match }) {
   }
 
   if (user) {
-    return <Redirect to="/" />;
+    return <Redirect to="/user/transisi" />;
   }
 
   return (

@@ -99,6 +99,10 @@ const useStyles = makeStyles((theme) => ({
   },
   inlineList: {
     display: 'inline',
+  },
+  size:{
+    width:theme.spacing(3),
+    height:theme.spacing(3)
   }
 }));
 

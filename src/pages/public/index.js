@@ -100,6 +100,11 @@ function Home({ history, location }) {
   const [jumlahNotifAll, setJumlahNotifAll] = React.useState(0);
   const [msgNotif, setMsgNotif] = React.useState([]);
 
+  // avatar image
+  const userBio = firestore.collection("userbio").doc(`${user.uid}`);
+  const [userBioSnapshot, userBioLoading] = useCollection(userBio);
+  const [userBioItem, setUserBioItem] = React.useState({});
+
   React.useEffect(() => {
     if (snapshot) {
       setJumlahPesanan(snapshot.docs.length);
@@ -115,7 +120,11 @@ function Home({ history, location }) {
     if (snapshotNotifAll) {
       setJumlahNotifAll(snapshotNotifAll.docs.length);
     }
-  }, [snapshot, snapshotNotif, snapshotNotifAll]);
+
+    if (userBioSnapshot) {
+      setUserBioItem(userBioSnapshot.data());
+    }
+  }, [snapshot, snapshotNotif, snapshotNotifAll, userBioSnapshot]);
 
   const historyPesananCallback = () => {
     setJumlahPesanan(null);
@@ -205,7 +214,11 @@ function Home({ history, location }) {
                 button
               >
                 <ListItemIcon>
-                  <AccountCircleIcon />
+                  {userBioItem.foto === "" ? (
+                    <AccountCircleIcon />
+                  ) : (
+                    <Avatar src={userBioItem.foto} className={classes.size} />
+                  )}
                 </ListItemIcon>
                 <ListItemText primary="User" />
               </ListItem>
