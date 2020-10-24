@@ -68,6 +68,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TimerIcon from "@material-ui/icons/Timer";
 import DoneIcon from "@material-ui/icons/Done";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 function Home({ history, location }) {
   // menu
@@ -431,18 +432,37 @@ function Home({ history, location }) {
                   </MenuItem>
                 );
               })}
-              <MenuItem onClick={() => {
-                setAnchorEl(null)
-                history.push("/notification")
-              }}>
+              <MenuItem
+                onClick={() => {
+                  setAnchorEl(null);
+                  history.push("/notification");
+                }}
+              >
                 <List>
                   <ListItem>
-                    <ListItemAvatar>
-                      <ExpandMoreIcon />
-                    </ListItemAvatar>
-                    <ListItemText>
-                      <Typography>Lihat semua</Typography>
-                    </ListItemText>
+                    {msgNotif.length === 0 ? (
+                      <>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: orange[500] }}>
+                            <ErrorOutlineIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText>
+                          <Typography variant="subtitle1" color="textSecondary">
+                            Belum ada data
+                          </Typography>
+                        </ListItemText>
+                      </>
+                    ) : (
+                      <>
+                        <ListItemAvatar>
+                          <ExpandMoreIcon />
+                        </ListItemAvatar>
+                        <ListItemText>
+                          <Typography>Lihat semua</Typography>
+                        </ListItemText>
+                      </>
+                    )}
                   </ListItem>
                 </List>
               </MenuItem>
