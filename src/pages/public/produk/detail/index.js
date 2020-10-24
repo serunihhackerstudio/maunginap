@@ -468,7 +468,8 @@ function DetailProduk({ match, history, location }) {
                     className={classes.formControl}
                   >
                     <FormGroup>
-                      <FormControlLabel
+                      {fasilitas.kamarMandiDalam ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.kamarMandiDalam}
@@ -478,7 +479,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="Kamar mandi dalam"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.wifi ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.wifi}
@@ -488,7 +494,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="WIFI"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.listrikSendiri ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.listrikSendiri}
@@ -498,7 +509,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="Listrik sendiri (prabayar)"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.ac ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.ac}
@@ -508,7 +524,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="AC"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.meja ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.meja}
@@ -518,7 +539,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="Meja"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.lemari ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.lemari}
@@ -528,7 +554,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="Lemari"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.kasur ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.kasur}
@@ -538,7 +569,12 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="Kasur"
                       />
-                      <FormControlLabel
+                      ) : (
+                        <></>
+                      )}
+                      
+                      {fasilitas.tempatJemur ? (
+                        <FormControlLabel
                         control={
                           <Checkbox
                             checked={fasilitas.tempatJemur}
@@ -548,6 +584,10 @@ function DetailProduk({ match, history, location }) {
                         }
                         label="Tempat Jemur"
                       />
+                      ) : (
+                        <></>
+                      )}
+                      
                     </FormGroup>
                   </FormControl>
                 </Grid>
