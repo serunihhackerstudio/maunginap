@@ -16,7 +16,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-import AppLoading from "../../../../components/AppLoading";
+import AppPageLoading from "../../../../components/AppPageLoading";
 import { currency } from "../../../../utils/formatter";
 import { useSnackbar } from "notistack";
 
@@ -58,6 +58,17 @@ import TextField from "@material-ui/core/TextField";
 // rating
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
+
+// list
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import PersonIcon from "@material-ui/icons/Person";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { green, red, blue, orange, yellow } from "@material-ui/core/colors";
+import AirlineSeatFlatSharpIcon from "@material-ui/icons/AirlineSeatFlatSharp";
+import GradeIcon from '@material-ui/icons/Grade';
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -277,7 +288,7 @@ function DetailProduk({ match, history, location }) {
           action={
             loading ? null : (
               <IconButton aria-label="settings">
-                <MoreVertIcon />
+                {/* <MoreVertIcon /> */}
               </IconButton>
             )
           }
@@ -339,45 +350,195 @@ function DetailProduk({ match, history, location }) {
               {/* <Typography variant="h6" color="inherit" component="p">
                 Rating
               </Typography> */}
-              {loading ? (
-                <Skeleton animation="wave" height={20} width="30%" />
-              ) : (
-                <Tooltip title="Rating" aria-label="rating">
-                <div className={classes.ratingRoot}>
-                    <Rating
-                      className={classes.ratingDiv}
-                      name="rating-produk"
-                      value={value}
-                      precision={0.5}
-                      readOnly
-                    />
-                    {value === "NaN" ? "" : (value) }
-                  
-                </div>
-                </Tooltip>
-              )}
-              <Typography variant="h6" color="inherit" component="p">
-                Lokasi
-              </Typography>
             </>
           )}
           {loading ? (
-            <Skeleton animation="wave" height={20} width="80%" />
+            
+
+            <>
+            
+              <List>
+                <ListItem>
+                  <ListItemAvatar>
+                  <Skeleton
+                      animation="wave"
+                      variant="circle"
+                      width={40}
+                      height={40}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                            <Skeleton animation="wave" height={20} width="30%" />
+                          
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                  <Skeleton
+                      animation="wave"
+                      variant="circle"
+                      width={40}
+                      height={40}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                          <Skeleton animation="wave" height={15} width="15%" />
+                          </Typography>
+                          <Typography color="primary">
+                          <Skeleton animation="wave" height={20} width="80%" />
+                          </Typography>
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                  <Skeleton
+                      animation="wave"
+                      variant="circle"
+                      width={40}
+                      height={40}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                          <Skeleton animation="wave" height={15} width="15%" />
+                          </Typography>
+                          <Typography color="primary">
+                          <Skeleton animation="wave" height={20} width="30%" />
+                          </Typography>
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+   
+              </List>
+            </>
+
           ) : (
-            <Typography variant="subtitle1" color="textSecondary" component="p">
-              {state.lokasi}
-            </Typography>
+            <>
+              <List>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: orange[500] }}>
+                      <GradeIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                            <Tooltip title="Rating" aria-label="rating">
+                              <div className={classes.ratingRoot}>
+                                <Rating
+                                  className={classes.ratingDiv}
+                                  name="rating-produk"
+                                  value={value}
+                                  precision={0.5}
+                                  readOnly
+                                />
+                                {value === "NaN" ? "0.0" : value}
+                              </div>
+                            </Tooltip>
+                          
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: "#016660" }}>
+                      <LocationOnIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                            Lokasi
+                          </Typography>
+                          <Typography color="primary">
+                            {state.lokasi ? state.lokasi : "-"}
+                          </Typography>
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: red[500] }}>
+                      <AirlineSeatFlatSharpIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                            Ketersediaan kamar
+                          </Typography>
+                          <Typography variant="subtitle1" color="error">
+                            {state.jenisPenginapan === "Kontrakan"
+                              ? ""
+                              : `Sisa ${state.jumlahKamar} kamar`}
+                          </Typography>
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+              </List>
+            </>
           )}
 
-          {loading ? (
-            <Skeleton animation="wave" height={20} width="30%" />
-          ) : (
-            <Typography variant="subtitle1" color="error">
-              {state.jenisPenginapan === "Kontrakan"
-                ? ""
-                : `Sisa ${state.jumlahKamar} kamar`}
-            </Typography>
-          )}
         </CardContent>
 
         {loading ? (
@@ -470,124 +631,123 @@ function DetailProduk({ match, history, location }) {
                     <FormGroup>
                       {fasilitas.kamarMandiDalam ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.kamarMandiDalam}
-                            name="kamarMandiDalam"
-                            color="primary"
-                          />
-                        }
-                        label="Kamar mandi dalam"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.kamarMandiDalam}
+                              name="kamarMandiDalam"
+                              color="primary"
+                            />
+                          }
+                          label="Kamar mandi dalam"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.wifi ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.wifi}
-                            name="wifi"
-                            color="primary"
-                          />
-                        }
-                        label="WIFI"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.wifi}
+                              name="wifi"
+                              color="primary"
+                            />
+                          }
+                          label="WIFI"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.listrikSendiri ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.listrikSendiri}
-                            name="listrikSendiri"
-                            color="primary"
-                          />
-                        }
-                        label="Listrik sendiri (prabayar)"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.listrikSendiri}
+                              name="listrikSendiri"
+                              color="primary"
+                            />
+                          }
+                          label="Listrik sendiri (prabayar)"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.ac ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.ac}
-                            name="ac"
-                            color="primary"
-                          />
-                        }
-                        label="AC"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.ac}
+                              name="ac"
+                              color="primary"
+                            />
+                          }
+                          label="AC"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.meja ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.meja}
-                            name="meja"
-                            color="primary"
-                          />
-                        }
-                        label="Meja"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.meja}
+                              name="meja"
+                              color="primary"
+                            />
+                          }
+                          label="Meja"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.lemari ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.lemari}
-                            name="lemari"
-                            color="primary"
-                          />
-                        }
-                        label="Lemari"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.lemari}
+                              name="lemari"
+                              color="primary"
+                            />
+                          }
+                          label="Lemari"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.kasur ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.kasur}
-                            name="kasur"
-                            color="primary"
-                          />
-                        }
-                        label="Kasur"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.kasur}
+                              name="kasur"
+                              color="primary"
+                            />
+                          }
+                          label="Kasur"
+                        />
                       ) : (
                         <></>
                       )}
-                      
+
                       {fasilitas.tempatJemur ? (
                         <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={fasilitas.tempatJemur}
-                            name="tempatJemur"
-                            color="primary"
-                          />
-                        }
-                        label="Tempat Jemur"
-                      />
+                          control={
+                            <Checkbox
+                              checked={fasilitas.tempatJemur}
+                              name="tempatJemur"
+                              color="primary"
+                            />
+                          }
+                          label="Tempat Jemur"
+                        />
                       ) : (
                         <></>
                       )}
-                      
                     </FormGroup>
                   </FormControl>
                 </Grid>
@@ -615,7 +775,9 @@ function DetailProduk({ match, history, location }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              <img src={dialogImg} className={classes.imgThumb} width={800} />
+              {loading ? (<AppPageLoading />) : (
+                <img src={dialogImg} className={classes.imgThumb} width={800} />
+              )}
             </DialogContentText>
           </DialogContent>
         </Dialog>
