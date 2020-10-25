@@ -173,7 +173,7 @@ function UserInfo() {
       />
       {user.emailVerified ? (
         <Typography variant="subtitle1" color="primary">
-          Email sudah terferifikasi
+          Email verified
         </Typography>
       ) : (
         <Button

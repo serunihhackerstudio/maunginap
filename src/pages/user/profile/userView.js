@@ -29,8 +29,10 @@ import LanguageIcon from "@material-ui/icons/Language";
 import PersonIcon from "@material-ui/icons/Person";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import Divider from "@material-ui/core/Divider";
-
-
+import Chip from "@material-ui/core/Chip";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import DoneIcon from "@material-ui/icons/Done";
+import { useSnackbar } from "notistack";
 // data query
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useFirebase } from "../../../components/FirebaseProvider";
@@ -71,13 +73,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserView({history}) {
+export default function UserView({ history }) {
   const { user, firestore } = useFirebase();
   const userQuery = firestore.collection("userbio").doc(`${user.uid}`);
   const [snapshot, loading] = useDocument(userQuery);
   const [item, setItem] = React.useState([]);
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     if (snapshot) {
@@ -88,156 +91,187 @@ export default function UserView({history}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const sendEmailVerification = async (e) => {
+    const actionCodeSettings = {
+      url: `${window.location.origin}/profile/view`,
+    };
+    await user.sendEmailVerification(actionCodeSettings);
+    enqueueSnackbar(
+      `Email verifikasi telah dikirim ke ${user.displayName}`,
+      { variant: "success" }
+    );
+  };
 
   return (
-      <>
-    <Card className={classes.root}>
-      <CardHeader
-        action={
-          <IconButton aria-label="settings" onClick={() => history.push("/profile/user/info")}>
-            <SettingsIcon />
-          </IconButton>
-        }
-      />
+    <>
+      <Card className={classes.root}>
+        <CardHeader
+          action={
+            <IconButton
+              aria-label="settings"
+              onClick={() => history.push("/profile/user/info")}
+            >
+              <SettingsIcon />
+            </IconButton>
+          }
+        />
 
-      <CardContent>
-        <Avatar className={classes.avatar} src={item.foto} />
-        <Divider className={classes.divider} />
-        <List>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: "#016660" }}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <Typography variant="body2" color="textSecondary">
-                      Nama
+        <CardContent>
+          <Avatar className={classes.avatar} src={item.foto} />
+          <Divider className={classes.divider} />
+          <List>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: "#016660" }}>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <Typography variant="body2" color="textSecondary">
+                        Nama
+                      </Typography>
+                      <Typography color="primary">
+                        <strong>
+                          {user.displayName ? user.displayName : "-"}
+                        </strong>
+                      </Typography>
                     </Typography>
-                    <Typography color="primary">
-                      <strong>{user.displayName ? user.displayName : "-"}</strong>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: "#016660" }}>
+                  <AlternateEmailIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <Typography variant="body2" color="textSecondary">
+                        Email
+                      </Typography>
+                      <Typography color="primary">
+                        <strong>{user.email}</strong>
+                        {user.emailVerified ? (
+                          <Chip
+                            icon={<DoneIcon />}
+                            label="email verified"
+                            //   onDelete={handleDelete}
+                            color="primary"
+                            size="small"
+                          />
+                        ) : (
+                          <Chip
+                            icon={<ErrorOutlineIcon />}
+                            label="Konfirmasi Email sekarang"
+                            onClick={sendEmailVerification}
+                            color="secondary"
+                            size="small"
+                          />
+                        )}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: "#016660" }}>
-                <AlternateEmailIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <Typography variant="body2" color="textSecondary">
-                      Email
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: "#016660" }}>
+                  <HomeIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <Typography variant="body2" color="textSecondary">
+                        Alamat
+                      </Typography>
+                      <Typography color="primary">
+                        <strong>{item.alamat ? item.alamat : "-"}</strong>
+                      </Typography>
                     </Typography>
-                    <Typography color="primary">
-                      <strong>{user.email}</strong>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: "#016660" }}>
+                  <PhoneIphoneIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <Typography variant="body2" color="textSecondary">
+                        No. Telp/HP/WA
+                      </Typography>
+                      <Typography color="primary">
+                        <strong>{item.telepon ? item.telepon : "-"}</strong>
+                      </Typography>
                     </Typography>
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: "#016660" }}>
-                <HomeIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <Typography variant="body2" color="textSecondary">
-                      Alamat
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar style={{ backgroundColor: "#016660" }}>
+                  <LanguageIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      <Typography variant="body2" color="textSecondary">
+                        Website
+                      </Typography>
+                      <Typography color="primary">
+                        <strong>{item.website ? item.website : "-"}</strong>
+                      </Typography>
                     </Typography>
-                    <Typography color="primary">
-                      <strong>{item.alamat ? item.alamat : "-"}</strong>
-                    </Typography>
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: "#016660" }}>
-                <PhoneIphoneIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <Typography variant="body2" color="textSecondary">
-                      No. Telp/HP/WA
-                    </Typography>
-                    <Typography color="primary">
-                      <strong>{item.telepon ? item.telepon : "-" }</strong>
-                    </Typography>
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={{ backgroundColor: "#016660" }}>
-                <LanguageIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    <Typography variant="body2" color="textSecondary">
-                      Website
-                    </Typography>
-                    <Typography color="primary">
-                      <strong>{item.website ? item.website : "-"}</strong>
-                    </Typography>
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        </List>
-      </CardContent>
-    </Card>
-    
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          </List>
+        </CardContent>
+      </Card>
     </>
   );
 }
