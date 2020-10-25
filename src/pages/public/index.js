@@ -214,11 +214,7 @@ function Home({ history, location }) {
                 button
               >
                 <ListItemIcon>
-                  {userBioItem.foto === "" ? (
-                    <AccountCircleIcon />
-                  ) : (
-                    <Avatar src={userBioItem.foto} className={classes.size} />
-                  )}
+                  <AccountCircleIcon />
                 </ListItemIcon>
                 <ListItemText primary="User" />
               </ListItem>

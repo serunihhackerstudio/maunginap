@@ -101,8 +101,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline',
   },
   size:{
-    width:theme.spacing(3),
-    height:theme.spacing(3)
+    width:theme.spacing(2),
+    height:theme.spacing(2)
   }
 }));
 

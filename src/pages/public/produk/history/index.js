@@ -51,7 +51,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import datanotfound from "../../../../assets/datanotfound.png";
 
-
 function History({ match, history, location }) {
   const ratingRef = useRef();
 
@@ -413,12 +412,11 @@ function History({ match, history, location }) {
         })
       ) : (
         <div>
-          <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+          <Box display="flex" justifyContent="center" m={1} p={1}>
             <Box p={1}>
-              <img src={datanotfound} width={450} height={350}/>
+              <img src={datanotfound} width={350} height={250} />
             </Box>
-        </Box>
-          
+          </Box>
         </div>
       )}
       <Tooltip title="Kembali" aria-label="kembali">
