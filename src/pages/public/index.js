@@ -45,6 +45,7 @@ import Perpanjang from "./produk/perpanjang";
 import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
 import UserProfile from "../user/profile";
+import UserView from "../user/profile/userView"
 import Notification from "./produk/notification/notification";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -209,7 +210,7 @@ function Home({ history, location }) {
               <ListItem
                 // selected={props.match ? true : false}
                 onClick={() => {
-                  props.history.push("/profile/user");
+                  props.history.push("/profile/view");
                 }}
                 button
               >
@@ -314,6 +315,7 @@ function Home({ history, location }) {
 
               <Route path="/history" exact children="History Pesanan" />
               <Route path="/notification" exact children="Notification" />
+              <Route path="/profile/view" exact children="User Profile" />
             </Switch>
             {/* LOGO TITLE */}
           </Typography>
@@ -526,8 +528,9 @@ function Home({ history, location }) {
               component={ProsesPerpanjang}
             />
             <Route path="/profile/user" component={UserProfile} />
+            <Route path="/profile/view" exact component={UserView} />
             <Route path="/notification" component={Notification} />
-
+            
             <Route component={HomeProduk} />
           </Switch>
         </Container>

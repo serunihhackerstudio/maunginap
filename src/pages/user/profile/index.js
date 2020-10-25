@@ -10,6 +10,9 @@ import UserInfo from "./userInfo";
 import UserBio from "./userBio";
 import useStyles from "./styles";
 
+import Fab from "@material-ui/core/Fab";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 function UserProfile(props) {
   const handleChangeTab = (event, value) => {
     props.history.push(value);
@@ -18,24 +21,35 @@ function UserProfile(props) {
   const classes = useStyles();
 
   return (
-    <Paper square>
-      <Tabs
-        value={props.location.pathname}
-        indicatorColor="primary"
-        textColor="primary"
-        onChange={handleChangeTab}
+    <>
+      <Paper square>
+        <Tabs
+          value={props.location.pathname}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={handleChangeTab}
+        >
+          <Tab label="User" value="/profile/user/info" />
+          <Tab label="Biodata" value="/profile/user/biodata" />
+        </Tabs>
+        <div className={classes.tabContent}>
+          <Switch>
+            <Route path="/profile/user/info" component={UserInfo} />
+            <Route path="/profile/user/biodata" component={UserBio} />
+            <Redirect to="/profile/user/info" />
+          </Switch>
+        </div>
+      </Paper>
+      <Fab
+        color="primary"
+        className={classes.fab}
+        onClick={() => {
+          props.history.push("/profile/view");
+        }}
       >
-        <Tab label="User" value="/profile/user/info" />
-        <Tab label="Biodata" value="/profile/user/biodata" />
-      </Tabs>
-      <div className={classes.tabContent}>
-        <Switch>
-          <Route path="/profile/user/info" component={UserInfo} />
-          <Route path="/profile/user/biodata" component={UserBio} />
-          <Redirect to="/profile/user/info" />
-        </Switch>
-      </div>
-    </Paper>
+        <ArrowBackIcon />
+      </Fab>
+    </>
   );
 }
 

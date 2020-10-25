@@ -34,7 +34,12 @@ const useStyles = makeStyles((theme) => ({
   },
   profilePict:{
     borderRadius:"20%",
-  }
+  },
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing(4),
+    right: theme.spacing(4),
+  },
 }));
 
 export default useStyles;
