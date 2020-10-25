@@ -68,7 +68,17 @@ import PersonIcon from "@material-ui/icons/Person";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { green, red, blue, orange, yellow } from "@material-ui/core/colors";
 import AirlineSeatFlatSharpIcon from "@material-ui/icons/AirlineSeatFlatSharp";
-import GradeIcon from '@material-ui/icons/Grade';
+import GradeIcon from "@material-ui/icons/Grade";
+
+// icon
+import BathtubIcon from "@material-ui/icons/Bathtub";
+import WifiIcon from "@material-ui/icons/Wifi";
+import PowerIcon from "@material-ui/icons/Power";
+import AcUnitIcon from "@material-ui/icons/AcUnit";
+import DnsIcon from "@material-ui/icons/Dns";
+import HotelIcon from "@material-ui/icons/Hotel";
+import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import InfoIcon from "@material-ui/icons/Info";
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -353,14 +363,11 @@ function DetailProduk({ match, history, location }) {
             </>
           )}
           {loading ? (
-            
-
             <>
-            
               <List>
                 <ListItem>
                   <ListItemAvatar>
-                  <Skeleton
+                    <Skeleton
                       animation="wave"
                       variant="circle"
                       width={40}
@@ -376,75 +383,88 @@ function DetailProduk({ match, history, location }) {
                           className={classes.inline}
                           color="textPrimary"
                         >
-                            <Skeleton animation="wave" height={20} width="30%" />
-                          
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                  <Skeleton
-                      animation="wave"
-                      variant="circle"
-                      width={40}
-                      height={40}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          <Typography variant="body2" color="textSecondary">
-                          <Skeleton animation="wave" height={15} width="15%" />
-                          </Typography>
-                          <Typography color="primary">
-                          <Skeleton animation="wave" height={20} width="80%" />
-                          </Typography>
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                  <Skeleton
-                      animation="wave"
-                      variant="circle"
-                      width={40}
-                      height={40}
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          <Typography variant="body2" color="textSecondary">
-                          <Skeleton animation="wave" height={15} width="15%" />
-                          </Typography>
-                          <Typography color="primary">
                           <Skeleton animation="wave" height={20} width="30%" />
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Skeleton
+                      animation="wave"
+                      variant="circle"
+                      width={40}
+                      height={40}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                            <Skeleton
+                              animation="wave"
+                              height={15}
+                              width="15%"
+                            />
+                          </Typography>
+                          <Typography color="primary">
+                            <Skeleton
+                              animation="wave"
+                              height={20}
+                              width="80%"
+                            />
                           </Typography>
                         </Typography>
                       </React.Fragment>
                     }
                   />
                 </ListItem>
-   
+                <ListItem>
+                  <ListItemAvatar>
+                    <Skeleton
+                      animation="wave"
+                      variant="circle"
+                      width={40}
+                      height={40}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                            <Skeleton
+                              animation="wave"
+                              height={15}
+                              width="15%"
+                            />
+                          </Typography>
+                          <Typography color="primary">
+                            <Skeleton
+                              animation="wave"
+                              height={20}
+                              width="30%"
+                            />
+                          </Typography>
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
               </List>
             </>
-
           ) : (
             <>
               <List>
@@ -463,19 +483,18 @@ function DetailProduk({ match, history, location }) {
                           className={classes.inline}
                           color="textPrimary"
                         >
-                            <Tooltip title="Rating" aria-label="rating">
-                              <div className={classes.ratingRoot}>
-                                <Rating
-                                  className={classes.ratingDiv}
-                                  name="rating-produk"
-                                  value={value}
-                                  precision={0.5}
-                                  readOnly
-                                />
-                                {value === "NaN" ? "0.0" : value}
-                              </div>
-                            </Tooltip>
-                          
+                          <Tooltip title="Rating" aria-label="rating">
+                            <div className={classes.ratingRoot}>
+                              <Rating
+                                className={classes.ratingDiv}
+                                name="rating-produk"
+                                value={value}
+                                precision={0.5}
+                                readOnly
+                              />
+                              {value === "NaN" ? "0.0" : value}
+                            </div>
+                          </Tooltip>
                         </Typography>
                       </React.Fragment>
                     }
@@ -499,7 +518,7 @@ function DetailProduk({ match, history, location }) {
                           <Typography variant="body2" color="textSecondary">
                             Lokasi
                           </Typography>
-                          <Typography color="primary">
+                          <Typography color="textSecondary">
                             {state.lokasi ? state.lokasi : "-"}
                           </Typography>
                         </Typography>
@@ -510,7 +529,7 @@ function DetailProduk({ match, history, location }) {
                 <ListItem>
                   <ListItemAvatar>
                     <Avatar style={{ backgroundColor: red[500] }}>
-                      <AirlineSeatFlatSharpIcon />
+                      <InfoIcon />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -538,7 +557,6 @@ function DetailProduk({ match, history, location }) {
               </List>
             </>
           )}
-
         </CardContent>
 
         {loading ? (
@@ -621,8 +639,215 @@ function DetailProduk({ match, history, location }) {
           <CardContent>
             <Typography variant="h6">Fasilitas</Typography>
             <Typography paragraph align="justify" color="textSecondary">
+              <List>
+                {fasilitas.kamarMandiDalam ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <BathtubIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>Kamar mandi dalam</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                {fasilitas.wifi ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <WifiIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>WIFI</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                {fasilitas.listrikSendiri ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <PowerIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>Listrik sendiri</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                {fasilitas.ac ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <AcUnitIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>AC</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                {fasilitas.lemari ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <DnsIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>Lemari</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                {fasilitas.kasur ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <HotelIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>Kasur</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                {fasilitas.tempatJemur ? (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: "#016660" }}>
+                        <WbSunnyIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textSecondary"
+                          >
+                            <Typography>Tempat jemur</Typography>
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                ) : (
+                  <></>
+                )}
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: "#016660" }}>
+                      <MoreVertIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          <Typography variant="body2" color="textSecondary">
+                            Fasilitas lainnya
+                          </Typography>
+                          <Typography
+                            align="justify"
+                            color="textSecondary"
+                          >
+                            {state.fasilitas}
+                          </Typography>
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+              </List>
+
               {/* GRID FASILIAS */}
-              <Grid container direction="column">
+              {/* <Grid container direction="column">
                 <Grid item xs>
                   <FormControl
                     component="fieldset"
@@ -757,7 +982,7 @@ function DetailProduk({ match, history, location }) {
                     {state.fasilitas}
                   </Typography>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Typography>
             <Typography variant="h6">Deskripsi</Typography>
             <Typography paragraph align="justify" color="textSecondary">
@@ -775,7 +1000,9 @@ function DetailProduk({ match, history, location }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {loading ? (<AppPageLoading />) : (
+              {loading ? (
+                <AppPageLoading />
+              ) : (
                 <img src={dialogImg} className={classes.imgThumb} width={800} />
               )}
             </DialogContentText>
