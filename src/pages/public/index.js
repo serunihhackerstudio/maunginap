@@ -222,23 +222,6 @@ function Home({ history, location }) {
             );
           }}
         />
-        <Route
-          path="/profile/user"
-          children={(props) => {
-            return (
-              <ListItem
-                // selected={props.match ? true : false}
-                onClick={handleOpenDialog}
-                button
-              >
-                <ListItemIcon>
-                  <SignOutIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sign out" />
-              </ListItem>
-            );
-          }}
-        />
       </List>
     </div>
   );

@@ -25,7 +25,9 @@ import FormPemesan from "./fragment/FormPemesan";
 import Review from "./fragment/Review";
 import { Typography } from "@material-ui/core";
 import { currency } from "../../../../utils/formatter";
-// import context
+// import telegram endp
+import {endpoint} from "../../../../config/telegram"
+
 
 const DialogBooking = ({
   open,
@@ -95,6 +97,9 @@ const DialogBooking = ({
   // notification
   const notifData = firestore.collection("notification").doc(`${idGenerator}`)
 
+  // put phone number data of user to userBio collection 
+  const phoneNoData = firestore.collection("userbio").doc(`${user.uid}`)
+
   const produk = firestore
     .collection("penginapan")
     .doc("data")
@@ -158,8 +163,7 @@ const DialogBooking = ({
   };
   const request = require("request");
   const sendPesananToTelegram = async (msg) => {
-    const endp =
-      "https://api.telegram.org/bot1291851346:AAHuNYhhWGXwv4t14xbe7KWRJ_YW3Qx4TG0/sendMessage";
+    const endp = endpoint
     const chatId = -488410249;
     await request(
       {
@@ -186,7 +190,7 @@ const DialogBooking = ({
         sendPesananToTelegram(
         `Pesanan baru : ${form.namaPenginapan} (${kodeBooking}) ${form.jenisIuran} ${form.namaKTP} (${form.nomorKTP}) (${currency(biaya)}) ${form.pilihBank} HP : ${form.nomorHpWa} `
         );
-
+        await phoneNoData.set({telepon:form.nomorHpWa}, {merge:true})
         await pesanProduk.set({ ...form }, { merge: false });
         await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
         await notifData.set({

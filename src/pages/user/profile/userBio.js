@@ -84,21 +84,11 @@ function UserBio() {
     if (!form.telepon) {
       newError.telepon = "Telepon wajib diisi";
     }
-    // if (!form.website) {
-    //   newError.website = "Website wajib diisi";
-    // } else if (!isUrl(form.website)) {
-    //   newError.website = "Website tidak valid";
-    // }
-
     return newError;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const findErrors = validate();
-    if (Object.values(findErrors).some((err) => err !== "")) {
-      setError(findErrors);
-    } else {
       setSubmitting(true);
       try {
         await userBio.set(form, { merge: true });
@@ -108,7 +98,6 @@ function UserBio() {
         enqueueSnackbar(e.message, { variant: "error" });
       }
       setSubmitting(false);
-    }
   };
 
   if (loading) {
@@ -190,7 +179,6 @@ function UserBio() {
           id="alamat"
           label="Alamat"
           margin="normal"
-          required
           fullWidth
           rowsMax={3}
           multiline
@@ -206,7 +194,6 @@ function UserBio() {
           label="Nomor Telepon / WA"
           margin="normal"
           fullWidth
-          required
           onChange={handleChange}
           value={form.telepon}
           disabled={isSubmitting}

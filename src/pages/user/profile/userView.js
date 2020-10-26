@@ -9,6 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -36,6 +37,15 @@ import { useSnackbar } from "notistack";
 // data query
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useFirebase } from "../../../components/FirebaseProvider";
+import SignOutIcon from "@material-ui/icons/ExitToApp";
+
+// dialog/modal
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ID from "../../../utils/idgenerator"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,17 +81,24 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(4),
     right: theme.spacing(4),
   },
+  btnSignOut:{
+    textAlign:"center",
+    marginBottom:theme.spacing(2)
+  }
 }));
 
 export default function UserView({ history }) {
-  const { user, firestore } = useFirebase();
+  const { user, firestore, auth } = useFirebase();
   const userQuery = firestore.collection("userbio").doc(`${user.uid}`);
   const [snapshot, loading] = useDocument(userQuery);
   const [item, setItem] = React.useState([]);
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
+  const id = ID()
+  const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`)
+  
   React.useEffect(() => {
     if (snapshot) {
       setItem(snapshot.data());
@@ -96,10 +113,22 @@ export default function UserView({ history }) {
       url: `${window.location.origin}/profile/view`,
     };
     await user.sendEmailVerification(actionCodeSettings);
-    enqueueSnackbar(
-      `Email verifikasi telah dikirim ke ${user.displayName}`,
-      { variant: "success" }
-    );
+    enqueueSnackbar(`Email verifikasi telah dikirim ke ${user.email}`, {
+      variant: "success",
+    });
+  };
+
+  const handleSignOut = (e) => {
+    auth.signOut();
+    window.location.reload();
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -140,7 +169,9 @@ export default function UserView({ history }) {
                       </Typography>
                       <Typography color="primary">
                         <strong>
-                          {user.displayName ? user.displayName : "-"}
+                          {user.displayName
+                            ? user.displayName
+                            : user.email.split("@")[0]}
                         </strong>
                       </Typography>
                     </Typography>
@@ -171,7 +202,7 @@ export default function UserView({ history }) {
                         {user.emailVerified ? (
                           <Chip
                             icon={<DoneIcon />}
-                            label="email verified"
+                            label="Email verified"
                             //   onDelete={handleDelete}
                             color="primary"
                             size="small"
@@ -179,7 +210,7 @@ export default function UserView({ history }) {
                         ) : (
                           <Chip
                             icon={<ErrorOutlineIcon />}
-                            label="Konfirmasi Email sekarang"
+                            label="Klik untuk konfirmasi email"
                             onClick={sendEmailVerification}
                             color="secondary"
                             size="small"
@@ -271,7 +302,43 @@ export default function UserView({ history }) {
             </ListItem>
           </List>
         </CardContent>
+        <div className={classes.btnSignOut}>
+        <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleOpenDialog}
+            startIcon={<SignOutIcon />}
+          >
+            Sign out
+          </Button>
+        </div>
+
       </Card>
+      {/* MODAL / DIALOG */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Konfirmasi sign out"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Apakah Anda yakin ingin keluar dari akun Anda ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Tidak
+          </Button>
+          <Button onClick={handleSignOut} color="primary" autoFocus>
+            Iya
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* MODAL / DIALOG */}
     </>
   );
 }
