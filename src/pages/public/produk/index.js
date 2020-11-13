@@ -31,8 +31,6 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Chip from "@material-ui/core/Chip";
 
-
-
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -205,12 +203,7 @@ function HomeProduk() {
         {loading ? (
           <Skeleton animation="wave" height={100} width="100%" variant="text" />
         ) : (
-          <Typography
-            variant="h3"
-            align="center"
-            color="primary"
-            gutterBottom
-          >
+          <Typography variant="h3" align="center" color="primary" gutterBottom>
             Maunginap ?
           </Typography>
         )}
@@ -437,7 +430,10 @@ function HomeProduk() {
                     </Typography>
 
                     <Typography variant="h6" gutterBottom color="primary">
-                      {currency(produkData.harga)}
+                      {currency(produkData.harga)}{" "}
+                      {produkData.jenisPenginapan === "Kontrakan"
+                        ? " / tahun"
+                        : " / bulan"}
                     </Typography>
 
                     <Typography

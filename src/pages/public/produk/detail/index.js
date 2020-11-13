@@ -206,12 +206,8 @@ function DetailProduk({ match, history, location }) {
   // // };
 
   const handleOpenDialog = () => {
-    if (jenisIuran === "") {
-      enqueueSnackbar("'Jenis iuran' tidak boleh kosong ", {
-        variant: "error",
-      });
-    } else {
-      const harga = jenisIuran === "Tahunan" ? state.harga * 12 : state.harga;
+    if (state.jenisPenginapan === "Kontrakan") {
+      const harga = state.harga;
       setFormPesanan({
         jenisIuran,
         namaPenginapan: state.namaPenginapan,
@@ -220,6 +216,22 @@ function DetailProduk({ match, history, location }) {
         foto: state.foto,
       });
       history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
+    } else {
+      if (jenisIuran === "") {
+        enqueueSnackbar("'Jenis iuran' tidak boleh kosong ", {
+          variant: "error",
+        });
+      } else {
+        const harga = jenisIuran === "Tahunan" ? state.harga * 12 : state.harga;
+        setFormPesanan({
+          jenisIuran,
+          namaPenginapan: state.namaPenginapan,
+          harga,
+          codeHarga: Math.floor(Math.random() * 1000),
+          foto: state.foto,
+        });
+        history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
+      }
     }
   };
 
@@ -318,7 +330,9 @@ function DetailProduk({ match, history, location }) {
             loading ? (
               <Skeleton animation="wave" height={10} width="40%" />
             ) : (
-              `(IDR) ${currency(state.harga)}`
+              `(IDR) ${currency(state.harga)} ${
+                state.jenisPenginapan === "Kost-kostan" ? " / bulan" : "/ tahun"
+              }`
             )
           }
         />
@@ -518,7 +532,7 @@ function DetailProduk({ match, history, location }) {
                           <Typography variant="body2" color="textSecondary">
                             Lokasi
                           </Typography>
-                          <Typography color="textSecondary">
+                          <Typography color="inherit">
                             {state.lokasi ? state.lokasi : "-"}
                           </Typography>
                         </Typography>
@@ -527,32 +541,64 @@ function DetailProduk({ match, history, location }) {
                   />
                 </ListItem>
                 <ListItem>
-                  <ListItemAvatar>
-                    <Avatar style={{ backgroundColor: red[500] }}>
-                      <InfoIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          <Typography variant="body2" color="textSecondary">
-                            Ketersediaan kamar
+                  {state.jenisPenginapan === "Kontrakan" ? (
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: blue[500] }}>
+                        <InfoIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                  ) : (
+                    <ListItemAvatar>
+                      <Avatar style={{ backgroundColor: red[500] }}>
+                        <InfoIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                  )}
+
+                  {state.jenisPenginapan === "Kontrakan" ? (
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            <Typography variant="body2" color="textSecondary">
+                              Ketersediaan kontrakan
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              style={{ color: blue[500] }}
+                            >
+                              Kontrakan tersedia
+                            </Typography>
                           </Typography>
-                          <Typography variant="subtitle1" color="error">
-                            {state.jenisPenginapan === "Kontrakan"
-                              ? ""
-                              : `Sisa ${state.jumlahKamar} kamar`}
+                        </React.Fragment>
+                      }
+                    />
+                  ) : (
+                    <ListItemText
+                      primary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            <Typography variant="body2" color="textSecondary">
+                              Ketersediaan kamar
+                            </Typography>
+                            <Typography variant="subtitle1" color="error">
+                              Sisa {state.jumlahKamar} kamar
+                            </Typography>
                           </Typography>
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
+                        </React.Fragment>
+                      }
+                    />
+                  )}
                 </ListItem>
               </List>
             </>
@@ -598,25 +644,30 @@ function DetailProduk({ match, history, location }) {
                   {isReserved ? "Soldout" : "Pesan"}
                 </Button>
               </Tooltip>
-              <Tooltip title="Bulanan / tahunan" aria-label="jenisIuran">
-                <ButtonBase>
-                  <FormControl className={classes.formControl} required>
-                    <InputLabel id="demo-simple-select-label">
-                      Jenis iuran
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      name="jenisIuran"
-                      value={jenisIuran}
-                      onChange={handleChange}
-                    >
-                      <MenuItem value={"Bulanan"}>Bulanan</MenuItem>
-                      <MenuItem value={"Tahunan"}>Tahunan</MenuItem>
-                    </Select>
-                  </FormControl>
-                </ButtonBase>
-              </Tooltip>
+              {state.jenisPenginapan === "Kontrakan" ? (
+                <div></div>
+              ) : (
+                <Tooltip title="Bulanan / tahunan" aria-label="jenisIuran">
+                  <ButtonBase>
+                    <FormControl className={classes.formControl} required>
+                      <InputLabel id="demo-simple-select-label">
+                        Jenis iuran
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        name="jenisIuran"
+                        value={jenisIuran}
+                        onChange={handleChange}
+                      >
+                        <MenuItem value={"Bulanan"}>Bulanan</MenuItem>
+                        <MenuItem value={"Tahunan"}>Tahunan</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </ButtonBase>
+                </Tooltip>
+              )}
+
               <Tooltip title="Info lebih detail" aria-label="detail">
                 <IconButton
                   className={clsx(classes.expand, {
@@ -833,10 +884,7 @@ function DetailProduk({ match, history, location }) {
                           <Typography variant="body2" color="textSecondary">
                             Fasilitas lainnya
                           </Typography>
-                          <Typography
-                            align="justify"
-                            color="textSecondary"
-                          >
+                          <Typography align="justify" color="textSecondary">
                             {state.fasilitas}
                           </Typography>
                         </Typography>
