@@ -90,6 +90,8 @@ function EditProduk({ match }) {
     namaPemilik: "",
     harga: "",
     lokasi: "",
+    lat: 0,
+    long: 0,
     jumlahKamar: "",
     fasilitas: "",
     fasilitasUmum: {},
@@ -126,12 +128,14 @@ function EditProduk({ match }) {
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
   const kotaData = [];
-  const listGambar = []
+  const listGambar = [];
+
+  // koordinat
+  const [isKoordinat, setKoordinat] = React.useState(false);
 
   // radio button untuk pemilihan main image
   const [selectedValue, setSelectedValue] = React.useState(0);
-  const [radioLabel, setRadioLabel] = React.useState("")
-
+  const [radioLabel, setRadioLabel] = React.useState("");
 
   useEffect(() => {
     if (snapshot) {
@@ -153,7 +157,7 @@ function EditProduk({ match }) {
     }
     if (imgSnapshot) {
       setListImage(imgSnapshot.docs);
-      listGambar.push(imgSnapshot.docs)
+      listGambar.push(imgSnapshot.docs);
     }
 
     if (kotaSnapshot) {
@@ -239,6 +243,7 @@ function EditProduk({ match }) {
     if (!form.deskripsi) {
       newError.deskripsi = "Deskripsi wajib diisi";
     }
+
     if (!form.kota) {
       newError.kota = "kota wajib diisi";
     }
@@ -311,16 +316,23 @@ function EditProduk({ match }) {
   };
 
   const handleRadioChange = async (event) => {
-    const id = parseInt(event.target.value) -1
-    console.log(listImage[id].data().url)
+    const id = parseInt(event.target.value) - 1;
+    console.log(listImage[id].data().url);
     setSelectedValue(event.target.value);
-    await produkDoc.set({foto:listImage[id].data().url},{merge:true})
-    setRadioLabel("Gambar Utama")
+    await produkDoc.set({ foto: listImage[id].data().url }, { merge: true });
+    setRadioLabel("Gambar Utama");
     enqueueSnackbar("Gambar terpilih", {
       variant: "info",
     });
-          
   };
+
+  const handleKoordinat = (event) => {
+    setKoordinat(event.target.checked)
+    if (!event.target.checked){
+      form.lat = 0;
+      form.long = 0;
+    }
+  }
 
   return (
     <Paper className={classes.papperPadding}>
@@ -389,6 +401,56 @@ function EditProduk({ match }) {
               disabled={isSubmitting}
               variant="outlined"
             />
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isKoordinat}
+                    onChange={handleKoordinat}
+                    name="koordinat"
+                  />
+                }
+                label="Isi koordinat (latitude dan longitude) juga ?"
+              />
+            </FormGroup>
+
+            <Grid container direction="row" spacing={2}>
+              <Grid item xs>
+                <TextField
+                  id="lat"
+                  name="lat"
+                  label="Latitude (LAT)"
+                  margin="normal"
+                  type="number"
+                  fullWidth
+                  required
+                  value={form.lat}
+                  onChange={handleChange}
+                  error={error.lat ? true : false}
+                  helperText={error.lat}
+                  disabled={!isKoordinat || isSubmitting}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  id="long"
+                  name="long"
+                  label="longitude (LONG)"
+                  margin="normal"
+                  type="number"
+                  fullWidth
+                  required
+                  value={form.long}
+                  onChange={handleChange}
+                  error={error.long ? true : false}
+                  helperText={error.long}
+                  disabled={!isKoordinat || isSubmitting}
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
+
             <Autocomplete
               className={classes.comboLokasi}
               value={form.kota}
@@ -576,6 +638,7 @@ function EditProduk({ match }) {
                   helperText={error.fasilitas}
                   disabled={isSubmitting}
                   className={classes.fasilitas}
+                  variant="outlined"
                 />
               </Grid>
             </Grid>
@@ -586,7 +649,8 @@ function EditProduk({ match }) {
               label="Deskripsi Penginapan"
               margin="normal"
               fullWidth
-              rowsMax={3}
+              multiline
+              rows={5}
               value={form.deskripsi}
               onChange={handleChange}
               error={error.deskripsi ? true : false}
@@ -628,7 +692,11 @@ function EditProduk({ match }) {
                       </a>
                       <ListItemText className={classes.listAlign}>
                         <Typography color="primary" variant="subtitle1">
-                            <strong>{selectedValue === `${counting}` ? ("Gambar Utama") : ("") }</strong>
+                          <strong>
+                            {selectedValue === `${counting}`
+                              ? "Gambar Utama"
+                              : ""}
+                          </strong>
                         </Typography>
                       </ListItemText>
                       <ListItemSecondaryAction>
@@ -672,7 +740,7 @@ function EditProduk({ match }) {
                 color="primary"
                 startIcon={<UploadIcon />}
               >
-                Upload Foto 
+                Upload Foto
               </Button>
             </label>
             {error.foto && <Typography color="error">{error.foto}</Typography>}

@@ -79,6 +79,8 @@ import DnsIcon from "@material-ui/icons/Dns";
 import HotelIcon from "@material-ui/icons/Hotel";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import InfoIcon from "@material-ui/icons/Info";
+import Chip from "@material-ui/core/Chip";
+import DirectionsIcon from "@material-ui/icons/Directions";
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -534,6 +536,22 @@ function DetailProduk({ match, history, location }) {
                           </Typography>
                           <Typography color="inherit">
                             {state.lokasi ? state.lokasi : "-"}
+                          </Typography>
+                          <Typography>
+                            <a
+                              href={`https://www.google.com/maps/dir/?api=1&destination=${state.lokasi}`}
+                              style={{textDecoration:"none"}}
+                              target="_blank"
+                            >
+                              <Chip
+                                size="small"
+                                icon={<DirectionsIcon />}
+                                label="Tunjukan lokasi"
+                                clickable
+                                style={{ backgroundColor: blue[500] }}
+                                color="secondary"
+                              />
+                            </a>
                           </Typography>
                         </Typography>
                       </React.Fragment>
