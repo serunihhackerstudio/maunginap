@@ -33,7 +33,7 @@ import Chip from "@material-ui/core/Chip";
 // button
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -194,7 +194,7 @@ function Kost({ history }) {
 
       {produkItems.length <= 0 && (
         <Grid container spacing={5} className={classes.gridContainer}>
-          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -216,7 +216,7 @@ function Kost({ history }) {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -238,7 +238,29 @@ function Kost({ history }) {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -267,7 +289,7 @@ function Kost({ history }) {
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           return (
-            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
+            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>
               <Card className={classes.root}>
                 <CardActionArea
                   component={Link}
@@ -281,11 +303,11 @@ function Kost({ history }) {
                   />
 
                   <CardContent>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="h6">
                       {produkData.namaPenginapan}
                     </Typography>
 
-                    <Typography variant="h6" gutterBottom color="primary">
+                    <Typography variant="body1" gutterBottom color="primary">
                       {currency(produkData.harga)}{" "}
                       {produkData.jenisPenginapan === "Kontrakan"
                         ? " / tahun"
@@ -297,7 +319,44 @@ function Kost({ history }) {
                       color="textSecondary"
                       component="p"
                     >
-                      {produkData.lokasi}
+                      {/* {produkData.lokasi} */}
+                      {/* <Chip
+                        icon={<LocationOnIcon />}
+                        label={`mataram`}
+                        size="small"
+                        color="primary"
+                      /> */}
+                      {/* <LocationOnIcon /> Mataram */}
+                    </Typography>
+                    <Grid container>
+                      <Grid item xs={1.8}>
+                        <LocationOnIcon className={classes.ico} />
+                      </Grid>
+                      <Grid item xs>
+                        {produkData.kota}
+                      </Grid>
+                    </Grid>
+
+                    <Typography variant="body2" color="textSecondary">
+                      {produkData.fasilitasUmum.ac ? <>ac &#183; </> : ""}
+                      {produkData.fasilitasUmum.kamarMandiDalam ? (
+                        <>k. mandi dlm &#183; </>
+                      ) : (
+                        ""
+                      )}
+                      {produkData.fasilitasUmum.kasur ? <>kasur &#183; </> : ""}
+                      {produkData.fasilitasUmum.lemari ? (
+                        <>lemari &#183; </>
+                      ) : (
+                        ""
+                      )}
+                      {produkData.fasilitasUmum.listrikSendiri ? (
+                        <>listrik sendiri &#183; </>
+                      ) : (
+                        ""
+                      )}
+                      {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
+                      {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -306,6 +365,7 @@ function Kost({ history }) {
                     icon={<FavoriteIcon />}
                     label={`${produkData.likes} likes`}
                     variant="outlined"
+                    size="small"
                   />
                 </CardActions>
               </Card>
@@ -335,6 +395,8 @@ function Kost({ history }) {
         </Fab>
       </Tooltip>
     </>
+     
+    
   );
 }
 

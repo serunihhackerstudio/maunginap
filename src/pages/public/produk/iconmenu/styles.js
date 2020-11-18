@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   gridContainer: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(-2),
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
@@ -84,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(4),
     right: theme.spacing(4),
   },
+  ico:{
+    marginLeft:theme.spacing(-1)
+  }
 }));
 
 export default useStyles;

@@ -82,6 +82,13 @@ const useStyles = makeStyles((theme) => ({
   menuicon: {
     margin: "auto",
   },
+  semuaPenginapan:{
+    margin:"auto",
+    marginTop:theme.spacing(6)
+  },
+  ico:{
+    marginLeft:theme.spacing(-1)
+  }
 }));
 
 export default useStyles;

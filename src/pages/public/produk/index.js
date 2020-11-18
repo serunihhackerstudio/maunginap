@@ -35,7 +35,7 @@ import Chip from "@material-ui/core/Chip";
 import homekontrakan from "../../../assets/homekontrakan.png";
 import homekostan from "../../../assets/homekostan.png";
 import Divider from "@material-ui/core/Divider";
-
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -262,7 +262,12 @@ function HomeProduk() {
                   />
                 </CardActionArea>
                 <CardActions>
-                  <Skeleton animation="wave" height={35} width="30%" />
+                  <Skeleton
+                    animation="wave"
+                    height={35}
+                    width="30%"
+                    className={classes.menuicon}
+                  />
                 </CardActions>
               </Card>
             </Grid>
@@ -276,7 +281,12 @@ function HomeProduk() {
                   />
                 </CardActionArea>
                 <CardActions>
-                  <Skeleton animation="wave" height={35} width="30%" />
+                  <Skeleton
+                    animation="wave"
+                    height={35}
+                    width="30%"
+                    className={classes.menuicon}
+                  />
                 </CardActions>
               </Card>
             </Grid>
@@ -353,8 +363,8 @@ function HomeProduk() {
               color="textSecondary"
               className={classes.promote}
             >
-              Tidak tahu mau tinggal di mana, ayo cari kota idamanmu untuk
-              hunian tempat tinggalmu.
+              Gak tau harus tinggal dimana? Yuk cari tempat tinggal di kota
+              idamanmu!
             </Typography>
           </>
         )}
@@ -466,9 +476,9 @@ function HomeProduk() {
               align="center"
               variant="h5"
               color="primary"
-              className={classes.all}
+              className={classes.semuaPenginapan}
             >
-              #SemuaPenginapan
+              Semua Penginapan
             </Typography>
           </div>
         )}
@@ -591,11 +601,11 @@ function HomeProduk() {
                   />
 
                   <CardContent>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="h6">
                       {produkData.namaPenginapan}
                     </Typography>
 
-                    <Typography variant="h6" gutterBottom color="primary">
+                    <Typography variant="body1" gutterBottom color="primary">
                       {currency(produkData.harga)}{" "}
                       {produkData.jenisPenginapan === "Kontrakan"
                         ? " / tahun"
@@ -607,7 +617,44 @@ function HomeProduk() {
                       color="textSecondary"
                       component="p"
                     >
-                      {produkData.lokasi}
+                      {/* {produkData.lokasi} */}
+                      {/* <Chip
+                        icon={<LocationOnIcon />}
+                        label={`mataram`}
+                        size="small"
+                        color="primary"
+                      /> */}
+                      {/* <LocationOnIcon /> Mataram */}
+                    </Typography>
+                    <Grid container>
+                      <Grid item xs={1.8}>
+                        <LocationOnIcon className={classes.ico} />
+                      </Grid>
+                      <Grid item xs>
+                        {produkData.kota}
+                      </Grid>
+                    </Grid>
+
+                    <Typography variant="body2" color="textSecondary">
+                      {produkData.fasilitasUmum.ac ? <>ac &#183; </> : ""}
+                      {produkData.fasilitasUmum.kamarMandiDalam ? (
+                        <>k. mandi dlm &#183; </>
+                      ) : (
+                        ""
+                      )}
+                      {produkData.fasilitasUmum.kasur ? <>kasur &#183; </> : ""}
+                      {produkData.fasilitasUmum.lemari ? (
+                        <>lemari &#183; </>
+                      ) : (
+                        ""
+                      )}
+                      {produkData.fasilitasUmum.listrikSendiri ? (
+                        <>listrik sendiri &#183; </>
+                      ) : (
+                        ""
+                      )}
+                      {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
+                      {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -616,6 +663,7 @@ function HomeProduk() {
                     icon={<FavoriteIcon />}
                     label={`${produkData.likes} likes`}
                     variant="outlined"
+                    size="small"
                   />
                 </CardActions>
               </Card>
