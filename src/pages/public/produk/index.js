@@ -243,6 +243,41 @@ function HomeProduk() {
             maungingap.com.
           </Typography>
         )}
+
+        {/* ICON MENU JENIS PRODUK */}
+
+        <Grid container spacing={5} className={classes.gridContainer}>
+          <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Typography variant="h3" align="center">
+                  Kost
+                </Typography>
+                {/* <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                /> */}
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Typography variant="h3" align="center">
+                  Kontrakan
+                </Typography>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+        </Grid>
+
         {loading ? (
           <Skeleton animation="wave" height={80} width="100%" />
         ) : (
