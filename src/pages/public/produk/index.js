@@ -294,7 +294,11 @@ function HomeProduk() {
                   <img src={homekostan} className={classes.mediaiconMenu} />
                 </CardActionArea>
                 <CardActions>
-                  <Typography variant="subtitle1" color="textSecondary">
+                  <Typography
+                    variant="subtitle1"
+                    color="textSecondary"
+                    className={classes.menuicon}
+                  >
                     Kost - kostan
                   </Typography>
                 </CardActions>
@@ -311,7 +315,11 @@ function HomeProduk() {
                   <img src={homekontrakan} className={classes.mediaiconMenu} />
                 </CardActionArea>
                 <CardActions>
-                  <Typography variant="subtitle1" color="textSecondary">
+                  <Typography
+                    variant="subtitle1"
+                    color="textSecondary"
+                    className={classes.menuicon}
+                  >
                     Kontrakan
                   </Typography>
                 </CardActions>

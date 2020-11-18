@@ -79,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
   promote: {
     marginTop: theme.spacing(2),
   },
+  menuicon: {
+    margin: "auto",
+  },
 }));
 
 export default useStyles;
