@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 140,
   },
+  mediaiconMenu: {
+    width: 100,
+  },
 
   gridContainer: {
     marginTop: theme.spacing(4),
@@ -65,6 +68,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     marginTop: theme.spacing(8),
+  },
+  iconMenu: {
+    width: theme.spacing(30),
+    height: theme.spacing(30),
+  },
+  all: {
+    margin: theme.spacing(6),
+  },
+  promote: {
+    marginTop: theme.spacing(2),
   },
 }));
 

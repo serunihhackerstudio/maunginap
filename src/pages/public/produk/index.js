@@ -31,6 +31,11 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Chip from "@material-ui/core/Chip";
 
+// asset
+import homekontrakan from "../../../assets/homekontrakan.png";
+import homekostan from "../../../assets/homekostan.png";
+import Divider from "@material-ui/core/Divider";
+
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -57,7 +62,7 @@ function HomeProduk() {
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
 
   const classes = useStyles();
-  const defaultNumPage = 5;
+  const defaultNumPage = 8;
   const [numPage, setNumPage] = useState(defaultNumPage);
   const dataDoc = firestore
     .collection(`penginapan`)
@@ -245,43 +250,116 @@ function HomeProduk() {
         )}
 
         {/* ICON MENU JENIS PRODUK */}
+        {loading ? (
+          <Grid container spacing={5} className={classes.gridContainer}>
+            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+              <Card className={classes.root}>
+                <CardActionArea component={Link}>
+                  <Skeleton
+                    animation="wave"
+                    variant="rect"
+                    className={classes.media}
+                  />
+                </CardActionArea>
+                <CardActions>
+                  <Skeleton animation="wave" height={35} width="30%" />
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+              <Card className={classes.root}>
+                <CardActionArea component={Link}>
+                  <Skeleton
+                    animation="wave"
+                    variant="rect"
+                    className={classes.media}
+                  />
+                </CardActionArea>
+                <CardActions>
+                  <Skeleton animation="wave" height={35} width="30%" />
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid container spacing={5} className={classes.gridContainer}>
+            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+              <Card className={classes.root}>
+                <CardActionArea
+                  component={Link}
+                  style={{ textAlign: "center" }}
+                  component={Link}
+                  to={"/menu/only/kost"}
+                >
+                  <img src={homekostan} className={classes.mediaiconMenu} />
+                </CardActionArea>
+                <CardActions>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Kost - kostan
+                  </Typography>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+              <Card className={classes.root}>
+                <CardActionArea
+                  component={Link}
+                  style={{ textAlign: "center" }}
+                  component={Link}
+                  to={"/menu/only/kontrakan"}
+                >
+                  <img src={homekontrakan} className={classes.mediaiconMenu} />
+                </CardActionArea>
+                <CardActions>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Kontrakan
+                  </Typography>
+                </CardActions>
+              </Card>
+            </Grid>
+          </Grid>
+        )}
 
-        <Grid container spacing={5} className={classes.gridContainer}>
-          <Grid item={true} xs={12} xm={12} md={6} lg={6}>
-            <Card className={classes.root}>
-              <CardActionArea component={Link}>
-                <Typography variant="h3" align="center">
-                  Kost
-                </Typography>
-                {/* <Skeleton
-                  animation="wave"
-                  variant="rect"
-                  className={classes.media}
-                /> */}
-              </CardActionArea>
-              <CardActions>
-                <Skeleton animation="wave" height={35} width="30%" />
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item={true} xs={12} xm={12} md={6} lg={6}>
-            <Card className={classes.root}>
-              <CardActionArea component={Link}>
-                <Typography variant="h3" align="center">
-                  Kontrakan
-                </Typography>
-              </CardActionArea>
-              <CardActions>
-                <Skeleton animation="wave" height={35} width="30%" />
-              </CardActions>
-            </Card>
-          </Grid>
-        </Grid>
+        {loading ? (
+          <>
+            <Skeleton
+              animation="wave"
+              height={30}
+              width="100%"
+              variant="text"
+            />
+          </>
+        ) : (
+          <>
+            <Typography
+              variant="h4"
+              align="center"
+              color="primary"
+              className={classes.promote}
+            >
+              #Carikota
+            </Typography>
+            <Typography
+              variant="body1"
+              align="center"
+              color="textSecondary"
+              className={classes.promote}
+            >
+              Tidak tahu mau tinggal di mana, ayo cari kota idamanmu untuk
+              hunian tempat tinggalmu.
+            </Typography>
+          </>
+        )}
 
         {loading ? (
           <Skeleton animation="wave" height={80} width="100%" />
         ) : (
-          <form id="produk-form" onSubmit={handleSubmit} noValidate>
+          <form
+            id="produk-form"
+            onSubmit={handleSubmit}
+            noValidate
+            className={classes.promote}
+          >
             <div className={classes.heroButtons}>
               <Grid
                 container
@@ -319,7 +397,7 @@ function HomeProduk() {
                   />
                 </Grid>
                 <Grid item>
-                  <Autocomplete
+                  {/* <Autocomplete
                     className={classes.comboLokasi}
                     value={form.jenisPenginapan}
                     onChange={(event, newValue) => {
@@ -339,7 +417,7 @@ function HomeProduk() {
                         variant="outlined"
                       />
                     )}
-                  />
+                  /> */}
                 </Grid>
                 <Grid item>
                   <Button
@@ -364,6 +442,28 @@ function HomeProduk() {
             </div>
           </form>
         )}
+        {loading ? (
+          <div className={classes.all}>
+            <Skeleton
+              animation="wave"
+              height={40}
+              width="100%"
+              variant="text"
+            />
+          </div>
+        ) : (
+          <div className={classes.all}>
+            <Divider />
+            <Typography
+              align="center"
+              variant="h5"
+              color="primary"
+              className={classes.all}
+            >
+              #SemuaPenginapan
+            </Typography>
+          </div>
+        )}
       </Container>
 
       {/* {produkItems.length === 0 && (
@@ -371,9 +471,10 @@ function HomeProduk() {
           <img src={datanotfound} width={350} alt="Data not found" />
         </div>
       )} */}
+
       {produkItems.length <= 0 && (
         <Grid container spacing={5} className={classes.gridContainer}>
-          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -395,7 +496,7 @@ function HomeProduk() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -417,7 +518,29 @@ function HomeProduk() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={4} lg={4}>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -446,7 +569,7 @@ function HomeProduk() {
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           return (
-            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
+            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>
               <Card className={classes.root}>
                 <CardActionArea
                   component={Link}

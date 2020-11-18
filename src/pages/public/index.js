@@ -45,7 +45,7 @@ import Perpanjang from "./produk/perpanjang";
 import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
 import UserProfile from "../user/profile";
-import UserView from "../user/profile/userView"
+import UserView from "../user/profile/userView";
 import Notification from "./produk/notification/notification";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -70,6 +70,9 @@ import TimerIcon from "@material-ui/icons/Timer";
 import DoneIcon from "@material-ui/icons/Done";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+
+// import menu icnomenu
+import IconMenu from "../public/produk/iconmenu";
 
 function Home({ history, location }) {
   // menu
@@ -299,6 +302,8 @@ function Home({ history, location }) {
               <Route path="/history" exact children="History Pesanan" />
               <Route path="/notification" exact children="Notification" />
               <Route path="/profile/view" exact children="User Profile" />
+              <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
+              <Route path="/menu/only/kost" exact children="Kostan" />
             </Switch>
             {/* LOGO TITLE */}
           </Typography>
@@ -513,7 +518,8 @@ function Home({ history, location }) {
             <Route path="/profile/user" component={UserProfile} />
             <Route path="/profile/view" exact component={UserView} />
             <Route path="/notification" component={Notification} />
-            
+            <Route path="/menu/only" component={IconMenu} />
+
             <Route component={HomeProduk} />
           </Switch>
         </Container>
