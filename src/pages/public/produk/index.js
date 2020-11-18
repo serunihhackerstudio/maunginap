@@ -242,10 +242,10 @@ function HomeProduk() {
             paragraph
             className={classes.descPromotion}
           >
-            Di mana aja pasti bisa nginap dong dengan maunginap.com. Mau nginap
-            di kost-kotan, kontrakan, penginapan resmi ? mau yang bulanan,
-            harian, tahunan ? nggak perlu report dan ribet, pake aja
-            maungingap.com.
+            Di mana aja pasti bisa nginap dengan platform ini. Mau nginap
+            di kost-kotan atau kontrakan ? mau yang bulanan atau
+            tahunan ? nggak perlu report dan ribet, pake aja
+            maungingap.com
           </Typography>
         )}
 
@@ -654,6 +654,7 @@ function HomeProduk() {
                         ""
                       )}
                       {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
+                      {produkData.fasilitasUmum.tempatJemur ? <>tempat jemur &#183; </> : ""}
                       {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
                     </Typography>
                   </CardContent>

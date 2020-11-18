@@ -356,6 +356,7 @@ function Kost({ history }) {
                         ""
                       )}
                       {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
+                      {produkData.fasilitasUmum.tempatJemur ? <>tempat jemur &#183; </> : ""}
                       {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
                     </Typography>
                   </CardContent>
