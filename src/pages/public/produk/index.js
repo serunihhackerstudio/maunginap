@@ -678,9 +678,10 @@ function HomeProduk() {
         })}
         <Grid className={classes.fabGrid} id={"el"} ref={el}>
           {produkItems.length !== maxData && !searchingActivate ? (
-            <Fab color="primary" className={classes.fab} onClick={loadNextData}>
-              <ArrowForwardIcon />
-            </Fab>
+            <Button variant="outlined" className={classes.fab} color="primary" onClick={loadNextData} fullWidth>Load more data</Button>
+            // <Fab color="primary" className={classes.fab} onClick={loadNextData}>
+            //   <ArrowForwardIcon />
+            // </Fab>
           ) : (
             <></>
           )}
