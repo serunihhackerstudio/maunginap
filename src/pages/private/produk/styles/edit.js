@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   comboLokasi: {
     maxWidth: 300,
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(1),
   },
   imgThumb: {
     margin: theme.spacing(1),

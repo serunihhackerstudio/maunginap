@@ -210,10 +210,10 @@ function DetailProduk({ match, history, location }) {
   // // };
 
   const handleOpenDialog = () => {
-    if (state.jenisPenginapan === "Kontrakan") {
-      const harga = state.harga;
+    if (state.jenisPenginapan === "Kontrakan" || state.isTahunan) {
+      const harga = state.isTahunan ? state.harga * 12 : state.harga;
       setFormPesanan({
-        jenisIuran,
+        jenisIuran:"Tahunan",
         namaPenginapan: state.namaPenginapan,
         harga,
         codeHarga: Math.floor(Math.random() * 1000),
@@ -343,8 +343,8 @@ function DetailProduk({ match, history, location }) {
             loading ? (
               <Skeleton animation="wave" height={10} width="40%" />
             ) : (
-              `(IDR) ${currency(state.harga)} ${
-                state.jenisPenginapan === "Kost-kostan" ? " / bulan" : "/ tahun"
+              `(IDR) ${state.isTahunan ? currency(state.harga * 12) : currency(state.harga)} ${
+                state.jenisPenginapan === "Kontrakan" || state.isTahunan ? " / tahun" : "/ bulan"
               }`
             )
           }
@@ -673,7 +673,7 @@ function DetailProduk({ match, history, location }) {
                   {isReserved ? "Soldout" : "Pesan"}
                 </Button>
               </Tooltip>
-              {state.jenisPenginapan === "Kontrakan" ? (
+              {state.jenisPenginapan === "Kontrakan" || state.isTahunan ? (
                 <div></div>
               ) : (
                 <Tooltip title="Bulanan / tahunan" aria-label="jenisIuran">

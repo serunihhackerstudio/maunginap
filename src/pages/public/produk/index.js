@@ -36,6 +36,7 @@ import homekontrakan from "../../../assets/homekontrakan.png";
 import homekostan from "../../../assets/homekostan.png";
 import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import {blue} from "@material-ui/core/colors";
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -604,10 +605,14 @@ function HomeProduk() {
                     <Typography variant="h6">
                       {produkData.namaPenginapan}
                     </Typography>
+                    <Typography variant="body1" style={{color:blue[500]}}>
+                    {produkData.isTahunan ? "(Kost Tahunan)" : ""}{" "}
+                    </Typography>
+
 
                     <Typography variant="body1" gutterBottom color="primary">
-                      {currency(produkData.harga)}{" "}
-                      {produkData.jenisPenginapan === "Kontrakan"
+                      {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "}
+                      {produkData.jenisPenginapan === "Kontrakan" || produkData.isTahunan
                         ? " / tahun"
                         : " / bulan"}
                     </Typography>

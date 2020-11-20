@@ -101,6 +101,7 @@ function EditProduk({ match }) {
     likes: 0,
     diskon: 0,
     rating: 0,
+    isTahunan:false,
   });
 
   form.fasilitasUmum = fasilitas;
@@ -132,6 +133,9 @@ function EditProduk({ match }) {
 
   // koordinat
   const [isKoordinat, setKoordinat] = React.useState(false);
+
+  // tipe tahunan
+  const [isTahunan, setTahunan] = React.useState(false);
 
   // radio button untuk pemilihan main image
   const [selectedValue, setSelectedValue] = React.useState(0);
@@ -327,11 +331,16 @@ function EditProduk({ match }) {
   };
 
   const handleKoordinat = (event) => {
-    setKoordinat(event.target.checked)
-    if (!event.target.checked){
+    setKoordinat(event.target.checked);
+    if (!event.target.checked) {
       form.lat = 0;
       form.long = 0;
     }
+  };
+
+  const handleIsTahunan = (event) => {
+    setSomethingChange(true)
+    setForm({...form, [event.target.name]:event.target.checked})  
   }
 
   return (
@@ -506,6 +515,23 @@ function EditProduk({ match }) {
                 />
               )}
             />
+            {valueJenisPenginapan === "Kost-kostan" ? (
+              <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={form.isTahunan}
+                    onChange={handleIsTahunan}
+                    name="isTahunan"
+                  />
+                }
+                label="kostan menerapkan iuran tahunan ?"
+              />
+            </FormGroup>
+            ) : (
+              ""
+            )}
+            
 
             <TextField
               id="jumlahKamar"
