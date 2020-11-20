@@ -121,7 +121,7 @@ function RegistrasiUser({ match }) {
   };
 
   if (loading) {
-    return <AppLoading />;
+    return <AppLoading message="Loading..."/>;
   }
 
   if (user) {
@@ -157,6 +157,7 @@ function RegistrasiUser({ match }) {
             helperText={error.email}
             error={error.email ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
           <TextField
             id="password"
@@ -171,6 +172,7 @@ function RegistrasiUser({ match }) {
             helperText={error.password}
             error={error.password ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
           <TextField
             id="ulangi_password"
@@ -185,33 +187,32 @@ function RegistrasiUser({ match }) {
             helperText={error.ulangi_password}
             error={error.ulangi_password ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
-          <Grid container className={classes.buttons}>
-            <Grid item xs>
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                color="primary"
-                variant="contained"
-                size="large"
-              >
-                Daftar
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                disabled={isSubmitting}
-                component={Link}
-                type="submit"
-                variant="outlined"
-                size="large"
-                to="/login"
-                color="primary"
-              >
-                Login
-              </Button>
-            </Grid>
-          </Grid>
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            type="submit"
+            color="primary"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Daftar
+          </Button>
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            component={Link}
+            type="submit"
+            variant="outlined"
+            size="large"
+            to="/login"
+            color="primary"
+            fullWidth
+          >
+            Login
+          </Button>
         </form>
       </Paper>
     </Container>

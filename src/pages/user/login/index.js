@@ -24,7 +24,7 @@ import { usePesanan } from "../../../components/PesananProvider";
 import AppLoading from "../../../components/AppLoading";
 
 // asset
-import userLogo from "../../../assets/user.png";
+import maunginap from "../../../assets/maunginap.jpg";
 
 function LoginUser(props) {
   // ambil state openAlert
@@ -162,7 +162,7 @@ function LoginUser(props) {
 
       <Paper className={classes.paper}>
         <div className={classes.title}>
-          <img src={userLogo} alt="user-login" width={100} />
+          <img src={maunginap} alt="user-login" width={100} />
         </div>
         <Typography
           variant="body1"
@@ -170,7 +170,8 @@ function LoginUser(props) {
           className={classes.title}
           color="textSecondary"
         >
-          User Login
+          Selamat datang di platform maunginap. Ayo Login untuk dapat mengakses
+          semua fitur
         </Typography>
         <form onSubmit={handleSubmit} noValidate>
           <TextField
@@ -186,6 +187,7 @@ function LoginUser(props) {
             helperText={error.email}
             error={error.email ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
           <TextField
             id="password"
@@ -200,35 +202,39 @@ function LoginUser(props) {
             helperText={error.password}
             error={error.password ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
-          <Grid container className={classes.buttons}>
-            <Grid item xs>
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                color="primary"
-                variant="contained"
-                size="large"
-              >
-                Login
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                disabled={isSubmitting}
-                component={Link}
-                type="submit"
-                variant="outlined"
-                size="large"
-                to="/user/registrasi"
-                color="primary"
-              >
-                Daftar
-              </Button>
-            </Grid>
-          </Grid>
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            type="submit"
+            color="primary"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Login
+          </Button>
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            component={Link}
+            type="submit"
+            variant="outlined"
+            size="large"
+            to="/user/registrasi"
+            color="primary"
+            fullWidth
+          >
+            Daftar
+          </Button>
           <div className={classes.forgotPassword}>
-            <Typography component={Link} to="/lupa-password">
+            <Typography
+              component={Link}
+              to="/lupa-password"
+              style={{ textDecoration: "none" }}
+              color="primary"
+            >
               Lupa Password
             </Typography>
           </div>

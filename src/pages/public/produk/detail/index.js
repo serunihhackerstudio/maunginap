@@ -572,13 +572,13 @@ function DetailProduk({ match, history, location }) {
                 <ListItem>
                   {state.jenisPenginapan === "Kontrakan" ? (
                     <ListItemAvatar>
-                      <Avatar style={{ backgroundColor: blue[500] }}>
+                      <Avatar style={state.jumlahKamar === 0 ? {backgroundColor:red[500]} : {backgroundColor:blue[500]}}>
                         <InfoIcon />
                       </Avatar>
                     </ListItemAvatar>
                   ) : (
                     <ListItemAvatar>
-                      <Avatar style={{ backgroundColor: red[500] }}>
+                      <Avatar style={state.jumlahKamar === 0 ? {backgroundColor:red[500]} : {backgroundColor:blue[500]}}>
                         <InfoIcon />
                       </Avatar>
                     </ListItemAvatar>
@@ -599,9 +599,9 @@ function DetailProduk({ match, history, location }) {
                             </Typography>
                             <Typography
                               variant="subtitle1"
-                              style={{ color: blue[500] }}
+                              style={state.jumlahKamar === 0 ? {color:red[500]} : {color:blue[500]}}
                             >
-                              Kontrakan tersedia
+                              {state.jumlahKamar === 0 ? ("Kontakan telah terbooking") : ("Kontrakan tersedia")}
                             </Typography>
                           </Typography>
                         </React.Fragment>
@@ -620,7 +620,7 @@ function DetailProduk({ match, history, location }) {
                             <Typography variant="body2" color="textSecondary">
                               Ketersediaan kamar
                             </Typography>
-                            <Typography variant="subtitle1" color="error">
+                            <Typography variant="subtitle1" color={state.jumlahKamar === 0 ? "error" : "inherit"}>
                               Sisa {state.jumlahKamar} kamar
                             </Typography>
                           </Typography>
