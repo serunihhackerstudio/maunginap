@@ -6,11 +6,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
   paper: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(6),
+    marginTop: theme.spacing(5),
+    padding: theme.spacing(3),
   },
   buttons: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(2),
   },
 }));
 

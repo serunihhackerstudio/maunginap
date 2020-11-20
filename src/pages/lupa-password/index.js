@@ -114,7 +114,7 @@ function LupaPassword() {
   };
 
   if (loading) {
-    return <AppLoading />;
+    return <AppLoading message="Loading..."/>;
   }
 
   if (user) {
@@ -127,6 +127,10 @@ function LupaPassword() {
         <Typography variant="h5" component="h1" className={classes.title}>
           Lupa Password
         </Typography>
+        <Typography variant="body2" color="textSecondary" className={classes.title}>
+          Silahkan masukan alamat email Anda yang telah teregistrasi untuk menerima link reset password.
+        </Typography>
+
 
         <form onSubmit={handleSubmit} noValidate>
           <TextField
@@ -135,6 +139,7 @@ function LupaPassword() {
             name="email"
             margin="normal"
             label="Alamat Email"
+            variant="outlined"
             fullWidth
             required
             value={form.email}
@@ -143,31 +148,30 @@ function LupaPassword() {
             error={error.email ? true : false}
             disabled={isSubmitting}
           />
-          <Grid container className={classes.buttons}>
-            <Grid item xs>
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                color="primary"
-                variant="contained"
-                size="large"
-              >
-                Kirim
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                disabled={isSubmitting}
-                component={Link}
-                type="submit"
-                variant="contained"
-                size="large"
-                to="/login"
-              >
-                Login
-              </Button>
-            </Grid>
-          </Grid>
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            type="submit"
+            color="primary"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Kirim
+          </Button>
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            component={Link}
+            type="submit"
+            variant="outlined"
+            size="large"
+            to="/login"
+            fullWidth
+            color="primary"
+          >
+            Kembali ke halaman Login
+          </Button>
         </form>
       </Paper>
     </Container>
