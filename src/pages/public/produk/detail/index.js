@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Grid from "@material-ui/core/Grid";
@@ -81,6 +82,7 @@ import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import InfoIcon from "@material-ui/icons/Info";
 import Chip from "@material-ui/core/Chip";
 import DirectionsIcon from "@material-ui/icons/Directions";
+import ChatIcon from '@material-ui/icons/Chat';
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -283,6 +285,7 @@ function DetailProduk({ match, history, location }) {
   };
 
   const value = ratingValue.toFixed(1);
+  const adminNumber = "+6281990321358";
   return (
     <div>
       <Card className={classes.root}>
@@ -310,10 +313,18 @@ function DetailProduk({ match, history, location }) {
             )
           }
           action={
-            loading ? null : (
-              <IconButton aria-label="settings">
-                {/* <MoreVertIcon /> */}
+            loading ? (<Skeleton
+              animation="wave"
+              variant="circle"
+              width={40}
+              height={40}
+              style={{margin:10}}
+            />) : (
+              <a href={`https://wa.me/${adminNumber}`}>
+              <IconButton aria-label="chatAdmdin">
+                <ChatIcon/>
               </IconButton>
+              </a>
             )
           }
           title={
