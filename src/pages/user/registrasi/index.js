@@ -14,6 +14,7 @@ import isEmail from "validator/lib/isEmail";
 
 // firebase hook
 import { useFirebase } from "../../../components/FirebaseProvider";
+import { usePesanan } from "../../../components/PesananProvider";
 
 // app component
 import AppLoading from "../../../components/AppLoading";
@@ -21,13 +22,23 @@ import AppLoading from "../../../components/AppLoading";
 // asset
 import userLogo from "../../../assets/user.png";
 
+// telegram endpoint for bot notif
+import {user_maunginap_endp} from "../../../config/telegram";
+
 function RegistrasiUser({ match }) {
   // untuk keperluan styling
   const classes = useStyles();
 
+  // use pesanan provider as context api for state managemenet
+  const {setTelepon} = usePesanan();
+
+  // import request library
+  const request = require("request");
+
   // untuk form form nya
   const [form, setForm] = useState({
     email: "",
+    telepon:"",
     password: "",
     ulangi_password: "",
   });
@@ -35,6 +46,7 @@ function RegistrasiUser({ match }) {
   // untuk error
   const [error, setError] = useState({
     email: "",
+    telepon:"",
     password: "",
     ulangi_password: "",
   });
@@ -44,7 +56,7 @@ function RegistrasiUser({ match }) {
   const [isSubmitting, setSubmitting] = useState(false);
 
   // untk keperluan authentikasi
-  const { auth, user, loading } = useFirebase();
+  const { auth, user, loading, firestore } = useFirebase();
 
   const handleChange = (e) => {
     // teknik tercepat untuk perubahan value/nilai di form input
@@ -71,6 +83,10 @@ function RegistrasiUser({ match }) {
       newError.email = "Email tidak valid";
     }
 
+    if (!form.telepon) {
+      newError.telepon = "Nomor HP wajib diisi";
+    }
+
     if (!form.password) {
       newError.password = "Password wajib diisi";
     }
@@ -93,7 +109,9 @@ function RegistrasiUser({ match }) {
     } else {
       try {
         setSubmitting(true);
+        setTelepon(form.telepon);
         await auth.createUserWithEmailAndPassword(form.email, form.password);
+        sendPesananToTelegram(`${form.email} ${form.telepon}`);
       } catch (e) {
         const newError = {};
 
@@ -118,6 +136,21 @@ function RegistrasiUser({ match }) {
         setSubmitting(false);
       }
     }
+  };
+
+  const sendPesananToTelegram = async (msg) => {
+    const endp = user_maunginap_endp;
+    const chatId = -431700698;
+    await request(
+      {
+        url: endp,
+        method: "POST",
+        json: { chat_id: chatId, text: msg },
+      },
+      function (error, response, body) {
+
+      }
+    );
   };
 
   if (loading) {
@@ -156,6 +189,21 @@ function RegistrasiUser({ match }) {
             onChange={handleChange}
             helperText={error.email}
             error={error.email ? true : false}
+            disabled={isSubmitting}
+            variant="outlined"
+          />
+          <TextField
+            id="telepon"
+            type="number"
+            name="telepon"
+            margin="normal"
+            label="Nomor HP (WA)"
+            fullWidth
+            required
+            value={form.telepon}
+            onChange={handleChange}
+            helperText={error.telepon}
+            error={error.telepon ? true : false}
             disabled={isSubmitting}
             variant="outlined"
           />

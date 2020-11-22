@@ -9,6 +9,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Divider from '@material-ui/core/Divider';
+import bank_mandiri_syariah from "../../../../../assets/bank_mandiri_syariah.jpg";
+import bank_bri from "../../../../../assets/bank_bri.png";
 
 export default function PaymentForm({ form, setForm, error, setError }) {
   const { setFormBank } = usePesanan();
@@ -17,16 +19,16 @@ export default function PaymentForm({ form, setForm, error, setError }) {
 
   const handleChange = (e) => {
     const value = e.target.value;
-    if (value === "Bank Mandiri") {
+    if (value === "Bank BRI") {
       form.pilihBank = value;
-      form.noRek = "161-0000-454-3980";
-      form.atasNama = "Toufani Rizal Alfarisi";
+      form.noRek = "4692-01-032593-53-9";
+      form.atasNama = "Raden Khaerul Peratama";
       setFormBank({ ...form });
     }
-    if (value === "Bank BCA") {
+    if (value === "Bank Mandiri Syariah") {
       form.pilihBank = value;
-      form.noRek = "885-0000-9890-161";
-      form.atasNama = "Toufani Rizal Alfarisi";
+      form.noRek = "709-671-279-5";
+      form.atasNama = "Raden Khaerul Peratama";
       setFormBank({ ...form });
     }
     setSubmitting(true);
@@ -56,12 +58,12 @@ export default function PaymentForm({ form, setForm, error, setError }) {
                 value={form.pilihBank}
                 onChange={handleChange}
               >
-                <MenuItem value={"Bank Mandiri"}>
-                  <img width={85} alt="Mandiri" src={"https://1.bp.blogspot.com/-epxOcwo446g/Vxw_q2mS5VI/AAAAAAAAXCs/md15WqOgYdMNg5zK0sYoe91Q9EYlSJySQCLcB/s1600/Bank%2BMandiri%2BLogo.png"}/>
+                <MenuItem value={"Bank Mandiri Syariah"}>
+                  <img width={85} alt="MandiriSyariah" src={bank_mandiri_syariah}/>
                 </MenuItem>
                 <Divider />
-                <MenuItem value={"Bank BCA"}>
-                  <img width={85} alt="BCA" src={"https://i.pinimg.com/originals/fc/cb/47/fccb47aa81d86e25433c93d24147896d.png"} />
+                <MenuItem value={"Bank BRI"}>
+                  <img width={85} alt="BRI" src={bank_bri} />
                 </MenuItem>
               </Select>
               {!form.pilihBank && (

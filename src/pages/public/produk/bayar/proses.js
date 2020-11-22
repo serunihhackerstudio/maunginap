@@ -20,7 +20,7 @@ import { currency } from "../../../../utils/formatter";
 import Pdf from "react-to-pdf";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import Fab from "@material-ui/core/Fab";
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 
 const Proses = ({ match }) => {
   const ref = React.createRef();
@@ -35,7 +35,6 @@ const Proses = ({ match }) => {
 
   React.useEffect(() => {
     if (snapshot) {
-      
     }
   }, [snapshot]);
 
@@ -48,7 +47,7 @@ const Proses = ({ match }) => {
   }
 
   const steps = ["Data", "Bayar", "Review"];
-
+  const adminNumber = "+6281990321358";
   return (
     <div>
       <Paper className={classes.paper}>
@@ -129,41 +128,38 @@ const Proses = ({ match }) => {
           </List>
         </div>
         <Tooltip title="Status pesanan">
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.cekPesanan}
-          component={Link}
-          to="/history"
-        >
-          Cek Pesanan
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.cekPesanan}
+            component={Link}
+            to="/history"
+          >
+            Cek Pesanan
+          </Button>
         </Tooltip>
         <Pdf targetRef={ref} filename="tagihan-pesanan.pdf">
           {({ toPdf }) => (
             <Tooltip title="Download tagihan ini">
-            <Button
-              className={classes.buttonGrid}
-              variant="contained"
-              color="secondary"
-              onClick={toPdf}
-              startIcon={<CloudDownloadIcon />}
-            >
-              Tagihan
-            </Button>
+              <Button
+                className={classes.buttonGrid}
+                variant="contained"
+                color="secondary"
+                onClick={toPdf}
+                startIcon={<CloudDownloadIcon />}
+              >
+                Tagihan
+              </Button>
             </Tooltip>
           )}
         </Pdf>
       </Paper>
-      <a href="https://makeitation.com">
-      <Tooltip title="Hubungi CS maunginap" aria-label="hubungiCs">
-        <Fab
-          color="primary"
-          className={classes.fab}
-        >
-          <WhatsAppIcon />
-        </Fab>
-      </Tooltip>
+      <a href={`https://wa.me/${adminNumber}`}>
+        <Tooltip title="Hubungi CS maunginap" aria-label="hubungiCs">
+          <Fab color="primary" className={classes.fab}>
+            <WhatsAppIcon />
+          </Fab>
+        </Tooltip>
       </a>
     </div>
   );
