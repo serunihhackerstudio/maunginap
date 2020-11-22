@@ -34,7 +34,7 @@ export default function Review({ form }) {
             secondary={`${form.jenisIuran}`}
           />
           <Typography variant="body2">
-            {form.jenisIuran === "Tahunan"
+            {form.jenisIuran === "Tahunan" || form.isTahunan 
               ? currency(form.harga / 12)
               : currency(form.harga)}
           </Typography>
@@ -43,9 +43,7 @@ export default function Review({ form }) {
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-          {form.jenisIuran === "Tahunan"
-              ? currency(form.harga / 12)
-              : currency(form.harga)}
+            {currency(form.harga)}
           </Typography>
         </ListItem>
       </List>
