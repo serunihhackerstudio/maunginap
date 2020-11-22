@@ -304,7 +304,7 @@ function Home({ history, location }) {
               <Route path="/profile/view" exact children="User Profile" />
               <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
               <Route path="/menu/only/kost" exact children="Kostan" />
-              <Route path="/view/penginapan/:checkoutId/proses" exact children="Invoice" />
+              <Route path="/view/penginapan/:checkoutId/proses" exact children="Tagihan" />
             </Switch>
             {/* LOGO TITLE */}
           </Typography>

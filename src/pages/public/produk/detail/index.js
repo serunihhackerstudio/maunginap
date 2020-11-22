@@ -211,9 +211,9 @@ function DetailProduk({ match, history, location }) {
 
   const handleOpenDialog = () => {
     if (state.jenisPenginapan === "Kontrakan" || state.isTahunan) {
-      const harga = state.isTahunan ? state.harga * 12 : state.harga;
+      const harga = state.harga;
       setFormPesanan({
-        jenisIuran:"Tahunan",
+        jenisIuran:"Penginapan Tahunan",
         namaPenginapan: state.namaPenginapan,
         harga,
         codeHarga: Math.floor(Math.random() * 1000),

@@ -34,8 +34,8 @@ export default function Review({ form }) {
             secondary={`${form.jenisIuran}`}
           />
           <Typography variant="body2">
-            {form.jenisIuran === "Tahunan" || form.isTahunan 
-              ? currency(form.harga / 12)
+            {form.jenisIuran === "Tahunan" 
+              ? `${currency(form.harga / 12)} / Bulan`
               : currency(form.harga)}
           </Typography>
         </ListItem>
