@@ -100,7 +100,7 @@ function GridProduk() {
           const produkData = produkDoc.data();
           console.log(produkData);
           return (
-            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
+            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>
               <Card className={classes.root}>
                 <CardActionArea>
                   <CardMedia

@@ -5,12 +5,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginBottom: theme.spacing(3),
   },
-  paper: {
+   paper: {
     marginTop: theme.spacing(8),
-    padding: theme.spacing(6),
+    padding: theme.spacing(3),
   },
   buttons: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(2),
   },
   forgotPassword: {
     marginTop: theme.spacing(3),

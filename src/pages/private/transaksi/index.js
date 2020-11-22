@@ -163,7 +163,7 @@ function Transaksi() {
           const hargaMula = parseInt(produkData.harga) + produkData.codeHarga
           const diskon = produkData.harga - produkData.harga * (produkData.diskon / 100)
           return (
-            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={4} lg={4}>
+            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>
               <Card className={classes.root}>
                 <CardActionArea>
                   <CardMedia

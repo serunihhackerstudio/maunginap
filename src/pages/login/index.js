@@ -151,6 +151,7 @@ function Login(props) {
             helperText={error.email}
             error={error.email ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
           <TextField
             id="password"
@@ -165,34 +166,34 @@ function Login(props) {
             helperText={error.password}
             error={error.password ? true : false}
             disabled={isSubmitting}
+            variant="outlined"
           />
-          <Grid container className={classes.buttons}>
-            <Grid item xs>
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                color="primary"
-                variant="contained"
-                size="large"
-              >
-                Login
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                startIcon={<HomeIcon />}
-                disabled={isSubmitting}
-                component={Link}
-                type="submit"
-                variant="outlined"
-                color="primary"
-                to="/"
-                size="large"
-              >
-                Home
-              </Button>
-            </Grid>
-          </Grid>
+          {/*  */}
+          <Button
+            className={classes.buttons}
+            disabled={isSubmitting}
+            type="submit"
+            color="primary"
+            variant="contained"
+            size="large"
+            fullWidth
+          >
+            Login
+          </Button>
+          <Button
+            className={classes.buttons}
+            startIcon={<HomeIcon />}
+            disabled={isSubmitting}
+            component={Link}
+            type="submit"
+            variant="outlined"
+            color="primary"
+            to="/"
+            size="large"
+            fullWidth
+          >
+            Home
+          </Button>
         </form>
       </Paper>
     </Container>
