@@ -43,7 +43,9 @@ export default function Review({ form }) {
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            {currency(form.harga)}
+          {form.jenisIuran === "Tahunan"
+              ? currency(form.harga / 12)
+              : currency(form.harga)}
           </Typography>
         </ListItem>
       </List>

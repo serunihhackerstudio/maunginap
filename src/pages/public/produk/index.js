@@ -611,7 +611,8 @@ function HomeProduk() {
 
 
                     <Typography variant="body1" gutterBottom color="primary">
-                      {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "}
+                      {currency(produkData.harga)}
+                      {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
                       {produkData.jenisPenginapan === "Kontrakan" || produkData.isTahunan
                         ? " / tahun"
                         : " / bulan"}

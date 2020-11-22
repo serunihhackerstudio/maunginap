@@ -343,7 +343,7 @@ function DetailProduk({ match, history, location }) {
             loading ? (
               <Skeleton animation="wave" height={10} width="40%" />
             ) : (
-              `(IDR) ${state.isTahunan ? currency(state.harga * 12) : currency(state.harga)} ${
+              `(IDR) ${currency(state.harga)} ${
                 state.jenisPenginapan === "Kontrakan" || state.isTahunan ? " / tahun" : "/ bulan"
               }`
             )
