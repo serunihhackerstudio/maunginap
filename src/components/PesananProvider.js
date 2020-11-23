@@ -5,6 +5,8 @@ import ID from "../utils/idgenerator";
 import bank_mandiri from "../assets/bank_mandiri.jpg"
 import bank_bca from "../assets/bank_bca.jpg"
 
+import bank_mandiri_syariah from "../assets/bank_mandiri_syariah.jpg";
+import bank_bri from "../assets/bank_bri.png";
 export const PesananContext = createContext();
 
 export const usePesanan = () => {
@@ -26,21 +28,18 @@ const PesananProvider = (props) => {
   const [formBank, setFormBank] = React.useState({});
   const [akunBank, setAkunBank] = React.useState([
     {
-      fotoBank:bank_mandiri,
-      bank: "Mandiri",
-      noRek: "164-0000-9823-94820",
-      atasNama: "Toufani Rizal Alfarisi",
-      id: `${idGenerator}?mandiri`,
-      button: "Pilih Mandiri",
+      namaBank:"Bank BRI",
+      noRek:"4692-01-032593-53-9",
+      atasNama:"Raden Khaerul Peratama",
+      pict:bank_bri
     },
     {
-      fotoBank:bank_bca,
-      bank: "BCA",
-      noRek: "998-875-956-0989",
-      atasNama: "Toufani Rizal Alfarisi",
-      id: `${idGenerator}?bca`,
-      button: "Pilih BCA",
+      namaBank:"Bank Mandiri Syariah",
+      noRek:"709-671-279-5",
+      atasNama:"Raden Khaerul Peratama",
+      pict:bank_mandiri_syariah
     },
+
   ]);
 
   // form Perpanjangan
@@ -48,7 +47,7 @@ const PesananProvider = (props) => {
 
   const progressPembayaran =
     "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini. Tiga digit terakhir dari nilai transaksi ini untuk memudahkan kami dalam mengkonfirmasi pesanan Anda. Setelah Anda transfer, silahkan kirim foto bukti transfer ke nomor WhatsApp kami.";
-  const nomorWA = "085-123-456-789"
+  const nomorWA = "081-990-321-358";
     const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan"];
   const kotaOpt = ["Surabaya", "Mataram"];
   const [formPesanan, setFormPesanan] = React.useState({});
@@ -75,7 +74,7 @@ const PesananProvider = (props) => {
         setFormPesanan,
         setAkunBank,
         telepon, 
-        setTelepon
+        setTelepon,
       }}
     >
       {props.children}

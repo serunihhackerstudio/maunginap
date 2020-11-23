@@ -128,18 +128,21 @@ export default function Perpanjang({ history, match }) {
     }
   };
 
+  const bri = akunBank[0];
+  const bsm = akunBank[1];
+
   const handleChangeBank = (e) => {
     const value = e.target.value;
-    if (value === "Mandiri") {
+    if (value === bri.namaBank) {
       form.pilihBank = value;
-      form.noRek = "161-0000-454-3980";
-      form.atasNama = "Toufani Rizal Alfarisi";
+      form.noRek = bri.noRek;
+      form.atasNama = bri.atasNama;
       setForm({ ...form });
     }
-    if (value === "BCA") {
+    if (value === bsm.namaBank) {
       form.pilihBank = value;
-      form.noRek = "885-0000-9890-161";
-      form.atasNama = "Toufani Rizal Alfarisi";
+      form.noRek = bsm.noRek;
+      form.atasNama = bsm.atasNama;
       setForm({ ...form });
     }
     // setSubmitting(true);
@@ -207,10 +210,12 @@ export default function Perpanjang({ history, match }) {
               onChange={handleChangeBank}
               label="Bank Tujuan"
             >
-              <MenuItem value={"Mandiri"}>
-                Bank Mandiri (161-0000-454-3980)
+              <MenuItem value={`${bri.namaBank}`}>
+                {bri.namaBank} ({bri.noRek})
               </MenuItem>
-              <MenuItem value={"BCA"}>Bank BCA (885-0000-9890-161)</MenuItem>
+              <MenuItem value={`${bsm.namaBank}`}>
+                {bsm.namaBank} ({bsm.noRek})
+              </MenuItem>
             </Select>
           </FormControl>
 

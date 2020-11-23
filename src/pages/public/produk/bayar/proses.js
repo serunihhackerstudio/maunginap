@@ -84,6 +84,17 @@ const Proses = ({ match }) => {
             <Divider variant="middle" />
 
             <ListItem className={classes.listItem}>
+              <ListItemText primary="Kode Booking" />
+              <Typography
+                variant="body1"
+                color="primary"
+                className={classes.total}
+              >
+                <strong>#{formBank.kodeBooking}</strong>
+              </Typography>
+            </ListItem>
+
+            <ListItem className={classes.listItem}>
               <ListItemText primary="Bank" />
               <Typography
                 variant="body1"
