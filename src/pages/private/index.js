@@ -28,6 +28,7 @@ import Pengaturan from "./pengaturan";
 import Produk from "./produk";
 import Transaksi from "./transaksi";
 import Home from "./home";
+import Users from "./users";
 
 // styles
 import useStyles from "./styles";
@@ -35,6 +36,7 @@ import useStyles from "./styles";
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
 import { Divider } from "@material-ui/core";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 export default function Private(props) {
   const classes = useStyles();
@@ -102,6 +104,10 @@ export default function Private(props) {
               <Route
                 path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan"
                 children="Pengaturan"
+              />
+              <Route
+                path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/users"
+                children="Users"
               />
             </Switch>
             {/* LOGO TITLE */}
@@ -215,6 +221,27 @@ export default function Private(props) {
               );
             }}
           />
+          {/* <Route
+            path="/users"
+            children={(props) => {
+              return (
+                <ListItem
+                  selected={props.match ? true : false}
+                  onClick={() => {
+                    props.history.push(
+                      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/users"
+                    );
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Users" />
+                </ListItem>
+              );
+            }}
+          /> */}
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -236,6 +263,10 @@ export default function Private(props) {
             <Route
               path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/dashboard"
               component={Home}
+            />
+            <Route
+              path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/users"
+              component={Users}
             />
           </Switch>
         </Container>
