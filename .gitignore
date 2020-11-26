@@ -68,3 +68,6 @@ node_modules/
 build/
 
 functions/
+
+android/
+
