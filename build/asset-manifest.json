@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.69eda509.chunk.css",
-    "main.js": "/static/js/main.f431a8a0.chunk.js",
-    "main.js.map": "/static/js/main.f431a8a0.chunk.js.map",
+    "main.js": "/static/js/main.c4239bcd.chunk.js",
+    "main.js.map": "/static/js/main.c4239bcd.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.4a5e9358.js",
     "runtime-main.js.map": "/static/js/runtime-main.4a5e9358.js.map",
-    "static/js/2.b85b8f75.chunk.js": "/static/js/2.b85b8f75.chunk.js",
-    "static/js/2.b85b8f75.chunk.js.map": "/static/js/2.b85b8f75.chunk.js.map",
+    "static/js/2.109d668f.chunk.js": "/static/js/2.109d668f.chunk.js",
+    "static/js/2.109d668f.chunk.js.map": "/static/js/2.109d668f.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.44ee256df368499c84c590b1d0dba405.js": "/precache-manifest.44ee256df368499c84c590b1d0dba405.js",
+    "precache-manifest.5162d1a12c55e1b72bd3db1fa767734a.js": "/precache-manifest.5162d1a12c55e1b72bd3db1fa767734a.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.b85b8f75.chunk.js.LICENSE.txt": "/static/js/2.b85b8f75.chunk.js.LICENSE.txt",
+    "static/js/2.109d668f.chunk.js.LICENSE.txt": "/static/js/2.109d668f.chunk.js.LICENSE.txt",
     "static/media/bank_bca.jpg": "/static/media/bank_bca.dcf0537b.jpg",
     "static/media/bank_bri.png": "/static/media/bank_bri.3a70e837.png",
     "static/media/bank_mandiri.jpg": "/static/media/bank_mandiri.29c9c89f.jpg",
@@ -24,8 +24,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.4a5e9358.js",
-    "static/js/2.b85b8f75.chunk.js",
+    "static/js/2.109d668f.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.f431a8a0.chunk.js"
+    "static/js/main.c4239bcd.chunk.js"
   ]
 }
