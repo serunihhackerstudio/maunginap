@@ -110,6 +110,60 @@ function Transaksi() {
   }
 }
 
+const refundCallback = (produkDoc) => async () => {
+  try {
+    if (window.confirm("Apakah uang telah direfund ? ")) {
+      await firestore
+        .collection("pesanan")
+        .doc(`${produkDoc.id}`)
+        .set({ statusPembatalan: false, statusPembatalanDesc: true }, { merge: true });
+      await notifData.set({
+          userId : user.uid,
+          created: new Date(),
+          status:"Pengembalian dana selesai",
+          namaPenginapan:produkDoc.data().namaPenginapan,
+          kodeBooking:produkDoc.data().kodeBooking
+        })
+
+        /*
+          ketika admin klik refund, maka pesanannya yang semula berkurang 1, bertambah 1. artinya
+          jumlah kamarnya kembali ke semula
+        */
+      //  await firestore
+      //     .collection("pesanan")
+      //     .doc(`${produkDoc.id}`)
+      //     .get()
+      //     .then((res) => {
+      //       firestore
+      //         .collection("penginapan")
+      //         .doc("data")
+      //         .collection("produk")
+      //         .doc(res.data().penginapanId)
+      //         .get()
+      //         .then((child) => {
+      //           firestore
+      //             .collection("penginapan")
+      //             .doc("data")
+      //             .collection("produk")
+      //             .doc(`${res.data().penginapanId}`)
+      //             .set(
+      //               { jumlahKamar: child.data().jumlahKamar + 1 },
+      //               { merge: true }
+      //             );
+      //         });
+      //     });
+
+      enqueueSnackbar(`Refund selesai`, {
+        variant: "success",
+      });
+    }
+  } catch (e) {
+    enqueueSnackbar(e.message, {
+      variant: "error",
+    });
+}
+}
+
   const quitApproval = (produkdocId) => async () => {
     try {
       if (window.confirm("Konfirmasi pemesan meninggalkan penginapan ? ")) {
@@ -139,8 +193,8 @@ function Transaksi() {
 
         await firestore.collection("pesanan").doc(`${produkdocId}`).delete();
         // await firestore.collection("notification").doc(`${produkdocId}`).delete();
-        enqueueSnackbar(`Berhasil`, {
-          variant: "info",
+        enqueueSnackbar(`Service selesai`, {
+          variant: "success",
         });
       }
     } catch (e) {}
@@ -183,13 +237,13 @@ function Transaksi() {
                       color="textSecondary"
                       component="p"
                     >
-                      {produkData.kodeBooking} ({produkData.jenisPenginapan})
+                      #{produkData.kodeBooking} ({produkData.jenisPenginapan})
                     </Typography>
                     <Typography variant="body1" color="primary" component="p">
                       <strong>Tanggal booking :</strong>
                     </Typography>
 
-                    <Typography variant="body1" component="p">
+                    <Typography variant="body1" color="textSecondary" component="p">
                       {dateBooking.toLocaleString()}
                     </Typography>
 
@@ -236,7 +290,14 @@ function Transaksi() {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-
+                {produkData.statusPembatalan ? (
+                  <Button color="primary" variant="outlined" onClick={refundCallback(produkDoc)}>Refund</Button>
+                ) : produkData.statusPembatalanDesc ? (
+                  <Button color="primary" variant="outlined" disabled="true">Refunded</Button>
+                ) : (
+                  ""
+                ) }
+                
                 {produkData.approvalStatus ? (
                     <Button
                     disabled={!produkData.statusPerpanjang ? true : false}

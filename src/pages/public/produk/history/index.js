@@ -92,6 +92,7 @@ function History({ match, history, location }) {
   setJumlahPesanan(state.length);
 
   const [open, setOpen] = React.useState(false);
+  const [openBatalkanPesanan, setOpenBatalkanPesanan] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -101,11 +102,29 @@ function History({ match, history, location }) {
     setOpen(false);
   };
 
+  const handleOpenBatalkanPesanan = () => {
+    setOpenBatalkanPesanan(true);
+  };
+
+  const handleCloseBatalkanPesanan = () => {
+    setOpenBatalkanPesanan(false);
+  };
+
   const perpanjangCallback = (data) => (e) => {
     setPesananId(data.id);
     const dataProduk = data.data();
     const dateNow = new Date().toLocaleDateString();
     history.push(`/perpanjang/${data.id}`);
+  };
+
+  // batalkan pesanan handling callback
+  const batalkanPesananCallback = (data) => async (e) => {
+    await firestore
+      .collection("pesanan")
+      .doc(`${data.id}`)
+      .set({ statusPembatalan: true }, { merge: true });
+    setOpenBatalkanPesanan(false);
+    enqueueSnackbar("Pembatalan pesanan sedang diproses...", { variant: "info" });
   };
 
   const ratingHandling = (data) => async (e) => {
@@ -202,7 +221,7 @@ function History({ match, history, location }) {
               </Grid>
               <Grid container spacing={2}>
                 <Grid item>
-                  <ButtonBase className={classes.image}>
+                  <ButtonBase className={classes.image} component={Link} to={`/view/penginapan/${dataProduk.penginapanId}`}>
                     <CardActionArea>
                       <CardMedia
                         component="img"
@@ -215,7 +234,7 @@ function History({ match, history, location }) {
                 <Grid item sm container>
                   <Grid item xs>
                     <Grid item xs>
-                      <Typography variant="body1" color="primary">
+                      <Typography style={{textDecoration:"none"}} variant="body1" color="primary" component={Link} to={`/view/penginapan/${dataProduk.penginapanId}`}>
                         <strong>{dataProduk.namaPenginapan}</strong>
                       </Typography>
                       {!dataProduk.statusPerpanjang ? (
@@ -256,7 +275,43 @@ function History({ match, history, location }) {
                           </Typography>
                         </Typography>
                       )}
-                      <Button variant="outlined" color="error">Batalkan Pesanan</Button>
+                      <Dialog
+                        disableBackdropClick={isSubmitting}
+                        disableEscapeKeyDown={isSubmitting}
+                        open={openBatalkanPesanan}
+                        onClose={handleCloseBatalkanPesanan}
+                        aria-labelledby="alert-dialog-batalkanPesanan"
+                        aria-describedby="alert-dialog-batalkanPesanan-description"
+                      >
+                        <DialogTitle id="alert-dialog-batalkanPesanan">
+                          {"Konfirmasi Pembatalan Pesanan"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <Typography color="textSecondary" varinat="body2" align="justify">
+                            Jika Anda membatalkan pesanan ini, maka kami akan
+                            melakukan proses refund / pengembalian uang pesanan
+                            Anda sesuai dengan nilai pesanan ke rekening
+                            Anda. Apakah Anda tetap ingin refund / membatalkan pesanan ini
+                            ?
+                          </Typography>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={batalkanPesananCallback(produk)}
+                            color="primary"
+                            autoFocus
+                          >
+                            Iya
+                          </Button>
+                          <Button
+                            onClick={handleCloseBatalkanPesanan}
+                            color="primary"
+                            autoFocus
+                          >
+                            Tidak
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
 
                       <Typography variant="body2" color="textSecondary">
                         {state.deskripsi}
@@ -271,45 +326,60 @@ function History({ match, history, location }) {
                     >
                       Status
                     </Typography>
-                    <Typography variant="body1">
-                      {dataProduk.approvalStatus ? (
-                        <>
-                          <font color="#016660">
-                            <strong>
-                              {dataProduk.approvalStatus &&
-                              dataProduk.tanggalBerakhir === dateNow
-                                ? "Jatuh tempo"
-                                : "Siap ditempati"}
-                            </strong>
-                          </font>
-                          <Typography variant="body2" color="error">
-                            s/d. {dataProduk.tanggalBerakhir}
-                          </Typography>
-                        </>
-                      ) : (
-                        <>
-                          <Typography variant="body2" color="textSecondary">
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <CircularProgress
-                                  disableShrink
-                                  color="primary"
-                                  size={15}
-                                />
+                    
+                    {dataProduk.statusPembatalan ? (
+                      <Typography variant="body1">
+                        <font color="#016660">
+                          <strong>Proses Refund...</strong>
+                        </font>
+                      </Typography>
+                    ) : dataProduk.statusPembatalanDesc ? (
+                      <Typography variant="body1">
+                        <font color="#016660">
+                          <strong>Refund Selesai</strong>
+                        </font>
+                      </Typography>
+                    ): (
+                      <Typography variant="body1">
+                        {dataProduk.approvalStatus ? (
+                          <>
+                            <font color="#016660">
+                              <strong>
+                                {dataProduk.approvalStatus &&
+                                dataProduk.tanggalBerakhir === dateNow
+                                  ? "Jatuh tempo"
+                                  : "Siap ditempati"}
+                              </strong>
+                            </font>
+                            <Typography variant="body2" color="secondary">
+                              s/d. {dataProduk.tanggalBerakhir}
+                            </Typography>
+                          </>
+                        ) : (
+                          <>
+                            <Typography variant="body2" color="textSecondary">
+                              <Grid container spacing={2}>
+                                <Grid item>
+                                  <CircularProgress
+                                    disableShrink
+                                    color="primary"
+                                    size={15}
+                                  />
+                                </Grid>
+                                <Grid item>
+                                  <strong>
+                                    {dataProduk.statusPerpanjang
+                                      ? "Menunggu perpanjangan..."
+                                      : "Menunggu pembayaran..."}
+                                  </strong>
+                                </Grid>
+                                <Grid item></Grid>
                               </Grid>
-                              <Grid item>
-                                <strong>
-                                  {dataProduk.statusPerpanjang
-                                    ? "Menunggu perpanjangan..."
-                                    : "Menunggu pembayaran..."}
-                                </strong>
-                              </Grid>
-                              <Grid item></Grid>
-                            </Grid>
-                          </Typography>
-                        </>
-                      )}
-                    </Typography>
+                            </Typography>
+                          </>
+                        )}
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs className={classes.rating}>
                     <Typography
@@ -387,13 +457,16 @@ function History({ match, history, location }) {
                       gutterBottom
                       color="textSecondary"
                     >
-                      Action
+                      Actions
                     </Typography>
+                    <Grid container>
+                    <Grid item xs>
                     <Tooltip title="Perpanjang pesanan" aria-label="perpanjang">
                       <Button
                         className={classes.btn}
                         variant="contained"
                         color="primary"
+                        size="small"
                         disabled={
                           dataProduk.approvalStatus &&
                           dataProduk.tanggalBerakhir === dateNow
@@ -405,6 +478,24 @@ function History({ match, history, location }) {
                         Perpanjang
                       </Button>
                     </Tooltip>
+                    </Grid>
+                    <Grid item xs>
+                    {dataProduk.approvalStatus && !dataProduk.statusPembatalanDesc ? (
+                        <Button
+                        variant="contained"
+                          size="small"
+                          color="secondary"
+                          disabled={dataProduk.statusPembatalan ? true : false}
+                          onClick={handleOpenBatalkanPesanan}
+                        >
+                          Refund
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                    </Grid>
+                    </Grid>
+                    
                   </Grid>
                 </Grid>
               </Grid>
