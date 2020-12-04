@@ -27,6 +27,7 @@ import { Typography } from "@material-ui/core";
 import { currency } from "../../../../utils/formatter";
 // import telegram endp
 import {endpoint} from "../../../../config/telegram"
+import {sendEmail} from "../../../../config/mailserver"
 
 
 const DialogBooking = ({
@@ -202,7 +203,7 @@ const DialogBooking = ({
           namaPenginapan:form.namaPenginapan,
           kodeBooking:kodeBooking
         })
-
+        sendEmail("Menunggu Pembayaran", form.userEmail, form.kodeBooking, form.pilihBank, form.atasNama, form.noRek, currency(biaya))
         history.push(`/view/penginapan/${idGenerator}/proses`);
       }
     } catch (e) {
