@@ -4,6 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import fingerprint from "../../../assets/fingerprint.png";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Users from "../users";
 const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.palette.primary.main,
@@ -29,7 +31,11 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles();
   return (
-    <>
+    <Grid container>
+      <Grid item xs>
+        <Users />
+      </Grid>
+      <Grid item xs>
       <div className={classes.logo}>
         <img src={fingerprint} width={250} />
       </div>
@@ -43,7 +49,8 @@ function Home() {
           <LinearProgress />
         </div>
       </Container>
-    </>
+      </Grid>
+    </Grid>
   );
 }
 
