@@ -30,11 +30,12 @@ const Proses = ({ match }) => {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(dataQuery);
-  const { progressPembayaran, formBank, nomorWA } = usePesanan();
+  const { progressPembayaran, formBank, nomorWA, formPesanan } = usePesanan();
   const [activeStep, setActiveStep] = React.useState(3);
-
+  const [dataPesanan, setDataPesanan] = React.useState({})
   React.useEffect(() => {
     if (snapshot) {
+      setDataPesanan(snapshot.data())
     }
   }, [snapshot]);
 
@@ -90,7 +91,7 @@ const Proses = ({ match }) => {
                 color="primary"
                 className={classes.total}
               >
-                <strong>#{formBank.kodeBooking}</strong>
+                <strong>#{dataPesanan.kodeBooking}</strong>
               </Typography>
             </ListItem>
 

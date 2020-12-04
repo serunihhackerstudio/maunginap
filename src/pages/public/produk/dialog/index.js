@@ -202,7 +202,7 @@ const DialogBooking = ({
           kodeBooking:kodeBooking
         })
 
-        history.push(`/view/penginapan/${match.params.penginapanId}/proses`);
+        history.push(`/view/penginapan/${idGenerator}/proses`);
       }
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });

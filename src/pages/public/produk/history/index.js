@@ -256,6 +256,7 @@ function History({ match, history, location }) {
                           </Typography>
                         </Typography>
                       )}
+                      <Button variant="outlined" color="error">Batalkan Pesanan</Button>
 
                       <Typography variant="body2" color="textSecondary">
                         {state.deskripsi}
