@@ -119,6 +119,7 @@ function History({ match, history, location }) {
 
   // batalkan pesanan handling callback
   const batalkanPesananCallback = (data) => async (e) => {
+    const total = parseInt(data.data().harga) + data.data().codeHarga;
     await firestore
       .collection("pesanan")
       .doc(`${data.id}`)
@@ -328,14 +329,25 @@ function History({ match, history, location }) {
                     </Typography>
                     
                     {dataProduk.statusPembatalan ? (
-                      <Typography variant="body1">
-                        <font color="#016660">
+                      <Grid container spacing={2}>
+                      <Grid item>
+                        <CircularProgress
+                          disableShrink
+                          color="secondary"
+                          size={15}
+                        />
+                      </Grid>
+                      <Grid item>
+                      <Typography variant="body2" color="textSecondary">
                           <strong>Proses Refund...</strong>
-                        </font>
                       </Typography>
+                      </Grid>
+                      <Grid item></Grid>
+                    </Grid>
+
                     ) : dataProduk.statusPembatalanDesc ? (
-                      <Typography variant="body1">
-                        <font color="#016660">
+                      <Typography variant="body1" color="secondary">
+                        <font>
                           <strong>Refund Selesai</strong>
                         </font>
                       </Typography>

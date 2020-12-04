@@ -20,6 +20,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import AppPageLoading from "../../../components/AppPageLoading";
 import AppLoading from "../../../components/AppLoading";
 import ID from "../../../utils/idgenerator"
+import {sendEmailRefund} from "../../../config/mailserver";
 
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
@@ -124,34 +125,21 @@ const refundCallback = (produkDoc) => async () => {
           namaPenginapan:produkDoc.data().namaPenginapan,
           kodeBooking:produkDoc.data().kodeBooking
         })
-
-        /*
-          ketika admin klik refund, maka pesanannya yang semula berkurang 1, bertambah 1. artinya
-          jumlah kamarnya kembali ke semula
-        */
-      //  await firestore
-      //     .collection("pesanan")
-      //     .doc(`${produkDoc.id}`)
-      //     .get()
-      //     .then((res) => {
-      //       firestore
-      //         .collection("penginapan")
-      //         .doc("data")
-      //         .collection("produk")
-      //         .doc(res.data().penginapanId)
-      //         .get()
-      //         .then((child) => {
-      //           firestore
-      //             .collection("penginapan")
-      //             .doc("data")
-      //             .collection("produk")
-      //             .doc(`${res.data().penginapanId}`)
-      //             .set(
-      //               { jumlahKamar: child.data().jumlahKamar + 1 },
-      //               { merge: true }
-      //             );
-      //         });
-      //     });
+      
+      // email pengembalian dana
+      let total;
+      if (!produkDoc.data().statusPerpanjang){
+        total = parseInt(produkDoc.data().harga) + produkDoc.data().codeHarga
+      } else {
+        const diskon = produkDoc.data().harga - produkDoc.data().harga * (produkDoc.data().diskon / 100)
+        total = diskon+produkDoc.data().codeHarga
+      }
+      sendEmailRefund(
+        "Refund", 
+        produkDoc.data().userEmail, 
+        produkDoc.data().kodeBooking, 
+        total
+      )
 
       enqueueSnackbar(`Refund selesai`, {
         variant: "success",
@@ -298,9 +286,9 @@ const refundCallback = (produkDoc) => async () => {
                 </CardActionArea>
                 <CardActions>
                 {produkData.statusPembatalan ? (
-                  <Button color="primary" variant="outlined" onClick={refundCallback(produkDoc)}>Refund</Button>
+                  <Button size="small" color="secondary" variant="contained" onClick={refundCallback(produkDoc)}>Refund</Button>
                 ) : produkData.statusPembatalanDesc ? (
-                  <Button color="primary" variant="outlined" disabled="true">Refunded</Button>
+                  <Button size="small" color="secondary" variant="contained" disabled="true">Refunded</Button>
                 ) : (
                   ""
                 ) }

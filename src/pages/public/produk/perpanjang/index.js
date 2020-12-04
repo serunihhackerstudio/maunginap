@@ -38,6 +38,7 @@ import useStyles from "./styles"
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Prompt } from "react-router-dom";
 import ID from "../../../../utils/idgenerator";
+import {sendEmailPerpanjangan} from "../../../../config/mailserver";
 
 export default function Perpanjang({ history, match }) {
   const idGenerator = ID()
@@ -106,7 +107,7 @@ export default function Perpanjang({ history, match }) {
     }
   };
 
-
+  // const diskon = form.harga - (form.harga * (diskon / 100));
   const handlePerpanjang = async () => {
     try {
       form.statusPerpanjang = true
@@ -122,6 +123,16 @@ export default function Perpanjang({ history, match }) {
         namaPenginapan:form.namaPenginapan,
         kodeBooking:form.kodeBooking
       })
+      const biaya = form.harga - (form.harga * (form.diskon / 100))
+      sendEmailPerpanjangan(
+        "Menunggu Pembayaran Perpanjangan", 
+        user.email, 
+        form.kodeBooking, 
+        form.pilihBank, 
+        form.atasNama, 
+        form.noRek, 
+        biaya
+      )
       history.push(`/perpanjang/${match.params.penginapanId}/proses`);
     } catch (e) {
       enqueueSnackbar(e.message, { variant: "error" });
