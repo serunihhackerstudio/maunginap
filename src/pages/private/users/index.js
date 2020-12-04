@@ -28,13 +28,6 @@ import {
   pink,
   yellow,
 } from "@material-ui/core/colors";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import TimerIcon from "@material-ui/icons/Timer";
-import DoneIcon from "@material-ui/icons/Done";
-import MenuItem from "@material-ui/core/MenuItem";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import Tooltip from "@material-ui/core/Tooltip";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import AppPageLoading from "../../../components/AppPageLoading";
 import Button from "@material-ui/core/Button";
