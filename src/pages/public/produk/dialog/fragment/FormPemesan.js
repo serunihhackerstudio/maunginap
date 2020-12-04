@@ -66,7 +66,7 @@ function FormPemesan({ form, error, isSubmitting, handleChange }) {
       <TextField
         id="nomorHpWa"
         name="nomorHpWa"
-        label="Nomor HP / WA"
+        label="Nomor Whatsapp (WA)"
         type="number"
         required
         fullWidth

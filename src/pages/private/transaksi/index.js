@@ -193,7 +193,7 @@ const refundCallback = (produkDoc) => async () => {
 
         await firestore.collection("pesanan").doc(`${produkdocId}`).delete();
         // await firestore.collection("notification").doc(`${produkdocId}`).delete();
-        enqueueSnackbar(`Service selesai`, {
+        enqueueSnackbar(`Layanan selesai`, {
           variant: "success",
         });
       }
@@ -257,6 +257,13 @@ const refundCallback = (produkDoc) => async () => {
                       component="p"
                     >
                       {produkData.namaKTP}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {produkData.userEmail}
                     </Typography>
                     <Typography
                       variant="body1"

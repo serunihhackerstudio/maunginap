@@ -126,6 +126,7 @@ const DialogBooking = ({
   form.statusPerpanjang = false;
   form.jenisPenginapan = jenisPenginapan;
   form.rating = 0;
+  form.userEmail = user.email;
   formPesanan.kodeBooking = kodeBooking;
 
   const handleChange = (e) => {
@@ -189,7 +190,7 @@ const DialogBooking = ({
         const biaya = parseInt(form.harga) + form.codeHarga
         const kodeBooking = form.kodeBooking
         sendPesananToTelegram(
-        `Pesanan baru : ${form.namaPenginapan} (${kodeBooking}) ${form.jenisIuran} ${form.namaKTP} (${form.nomorKTP}) (${currency(biaya)}) ${form.pilihBank} HP : ${form.nomorHpWa} `
+        `${form.namaPenginapan} (${kodeBooking}) ${form.jenisIuran}, ${form.namaKTP}, ${form.userEmail}, ${form.nomorKTP}, ${currency(biaya)}, ${form.pilihBank}, HP. ${form.nomorHpWa} `
         );
         await phoneNoData.set({telepon:form.nomorHpWa}, {merge:true})
         await pesanProduk.set({ ...form }, { merge: false });
