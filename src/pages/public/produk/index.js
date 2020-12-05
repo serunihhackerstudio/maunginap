@@ -36,7 +36,11 @@ import homekontrakan from "../../../assets/homekontrakan.png";
 import homekostan from "../../../assets/homekostan.png";
 import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import {blue} from "@material-ui/core/colors";
+import { blue } from "@material-ui/core/colors";
+import Image from "material-ui-image";
+
+
+
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -53,6 +57,7 @@ el.current.scrollIntoView({ block: "end", behavior: "smooth" });
 */
 
 function HomeProduk() {
+  const [value1, setValue1] = React.useState(0);
   const { firestore } = useFirebase();
   const kotaOpt = [];
   const kotaData = [];
@@ -191,6 +196,7 @@ function HomeProduk() {
   return (
     <>
       {/* SLIDER */}
+      {/* <Image src="http://loremflickr.com/300/200"/> */}
       {loading ? (
         <Container className={classes.root}>
           <Skeleton animation="wave" height={260} width="100%" variant="rect" />
@@ -243,10 +249,9 @@ function HomeProduk() {
             paragraph
             className={classes.descPromotion}
           >
-            Di mana aja pasti bisa nginap dengan platform ini. Mau nginap
-            di kost-kotan atau kontrakan ? mau yang bulanan atau
-            tahunan ? nggak perlu report dan ribet, pake aja
-            maungingap.com
+            Di mana aja pasti bisa nginap dengan platform ini. Mau nginap di
+            kost-kotan atau kontrakan ? mau yang bulanan atau tahunan ? nggak
+            perlu report dan ribet, pake aja maungingap.com
           </Typography>
         )}
 
@@ -605,15 +610,15 @@ function HomeProduk() {
                     <Typography variant="h6">
                       {produkData.namaPenginapan}
                     </Typography>
-                    <Typography variant="body1" style={{color:blue[500]}}>
-                    {produkData.isTahunan ? "(Kost Tahunan)" : ""}{" "}
+                    <Typography variant="body1" style={{ color: blue[500] }}>
+                      {produkData.isTahunan ? "(Kost Tahunan)" : ""}{" "}
                     </Typography>
-
 
                     <Typography variant="body1" gutterBottom color="primary">
                       {currency(produkData.harga)}
                       {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
-                      {produkData.jenisPenginapan === "Kontrakan" || produkData.isTahunan
+                      {produkData.jenisPenginapan === "Kontrakan" ||
+                      produkData.isTahunan
                         ? " / tahun"
                         : " / bulan"}
                     </Typography>
@@ -660,7 +665,11 @@ function HomeProduk() {
                         ""
                       )}
                       {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
-                      {produkData.fasilitasUmum.tempatJemur ? <>tempat jemur &#183; </> : ""}
+                      {produkData.fasilitasUmum.tempatJemur ? (
+                        <>tempat jemur &#183; </>
+                      ) : (
+                        ""
+                      )}
                       {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
                     </Typography>
                   </CardContent>
@@ -679,16 +688,25 @@ function HomeProduk() {
         })}
         <Grid className={classes.fabGrid} id={"el"} ref={el}>
           {produkItems.length !== maxData && !searchingActivate ? (
-            <Button variant="outlined" className={classes.fab} color="primary" onClick={loadNextData} fullWidth>Load more data</Button>
+            <Button
+              variant="outlined"
+              className={classes.fab}
+              color="primary"
+              onClick={loadNextData}
+              fullWidth
+            >
+              Load more data
+            </Button>
+          ) : (
             // <Fab color="primary" className={classes.fab} onClick={loadNextData}>
             //   <ArrowForwardIcon />
             // </Fab>
-          ) : (
             <></>
           )}
           {/* {searchingActivate && <></>} */}
         </Grid>
       </Grid>
+      
     </>
   );
 }

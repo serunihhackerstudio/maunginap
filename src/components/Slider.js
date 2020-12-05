@@ -10,6 +10,9 @@ import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import {useFirebase} from "../components/FirebaseProvider"
 import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import Image from 'material-ui-image'
+import { withWidth } from "@material-ui/core";
+import { isBrowser } from "react-device-detect";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -27,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
-    height: 250,
+    height: 270,
     display: "block",
     maxWidth: "full",
     overflow: "hidden",
@@ -77,13 +80,30 @@ function SwipeableTextMobileStepper({ classMedia }) {
           const img = step.data().url
           return (
           <div key={index}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <CardMedia
-                className={classes.img}
-                image={img}
-                alt={step.id}
-              />
-            ) : null}
+            {isBrowser ? (
+              <>
+              {Math.abs(activeStep - index) <= 2 ? (
+                // <Image src={img} aspectRatio={3/1} alt={step.id} />
+                <CardMedia
+                  className={classes.img}
+                  image={img}
+                  alt={step.id}
+                />
+              ) : null}
+              </>
+            ) : (
+              <>
+              {Math.abs(activeStep - index) <= 2 ? (
+                <Image src={img} aspectRatio={1.5/1} alt={step.id} />
+                // <CardMedia
+                //   className={classes.img}
+                //   image={img}
+                //   alt={step.id}
+                // />
+              ) : null}
+              </>
+            )}
+            
           </div>
         )}
         )}
@@ -91,7 +111,7 @@ function SwipeableTextMobileStepper({ classMedia }) {
       <MobileStepper
         steps={maxSteps}
         position="static"
-        variant="text"
+        variant="dots"
         activeStep={activeStep}
         nextButton={
           <Button
@@ -99,7 +119,7 @@ function SwipeableTextMobileStepper({ classMedia }) {
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >
-            Next
+            {/* Next */}
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
             ) : (
@@ -114,7 +134,7 @@ function SwipeableTextMobileStepper({ classMedia }) {
             ) : (
               <KeyboardArrowLeft />
             )}
-            Back
+            {/* Back */}
           </Button>
         }
       />

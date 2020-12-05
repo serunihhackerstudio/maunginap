@@ -88,6 +88,10 @@ const useStyles = makeStyles((theme) => ({
   },
   ico:{
     marginLeft:theme.spacing(-1)
+  },
+  bottomNav:{
+    width:"auto",
+    position: 'absolute',
   }
 }));
 
