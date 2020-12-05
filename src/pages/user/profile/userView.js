@@ -95,6 +95,7 @@ export default function UserView({ history }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDialogV, setOpenDialogV] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const id = ID()
   const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`)
@@ -128,7 +129,19 @@ export default function UserView({ history }) {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    setOpenDialogV(false);
+  };
+  const handleOpenDialogV = async () => {
+    setOpenDialogV(true);
+    const actionCodeSettings = {
+      url: `${window.location.origin}/profile/view`,
+    };
+    await user.sendEmailVerification(actionCodeSettings);
+
+  };
+
+  const handleCloseDialogV = () => {
+    setOpenDialogV(false);
   };
 
   return (
@@ -211,9 +224,10 @@ export default function UserView({ history }) {
                           <Chip
                             icon={<ErrorOutlineIcon />}
                             label="Klik untuk konfirmasi email"
-                            onClick={sendEmailVerification}
+                            onClick={handleOpenDialogV}
                             color="secondary"
                             size="small"
+                            // 
                           />
                         )}
                       </Typography>
@@ -339,6 +353,29 @@ export default function UserView({ history }) {
         </DialogActions>
       </Dialog>
       {/* MODAL / DIALOG */}
+
+      {/* MODAL */}
+      <Dialog
+        open={openDialogV}
+        onClose={handleCloseDialogV}
+        aria-labelledby="alert-dialog-titleV"
+        aria-describedby="alert-dialog-descriptionV"
+      >
+        <DialogTitle id="alert-dialog-titleV">
+          {"Verifikasi Email"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Link verifikasi telah kami kirimkan ke Email Anda. Silahkan periksa email Anda untuk menyelesaikan verifikasi
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogV} color="primary">
+            Tutup
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* MODAL */}
     </>
   );
 }
