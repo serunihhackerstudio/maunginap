@@ -54,6 +54,9 @@ import datanotfound from "../../../../assets/datanotfound.png";
 // detect device
 import { isBrowser } from "react-device-detect";
 
+// send email
+import { sendEmailJatuhTempo } from "../../../../config/mailserver";
+
 function History({ match, history, location }) {
   const ratingRef = useRef();
 
@@ -177,6 +180,13 @@ function History({ match, history, location }) {
                 kodeBooking: dataProduk.kodeBooking,
               },
               { merge: false }
+            );
+            // kirim email saat jatuh tempo layanan
+            sendEmailJatuhTempo(
+              "Jatuh Tempo Pesanan",
+              user.email,
+              dataProduk.kodeBooking,
+              dataProduk.namaPenginapan
             );
             setNow(false);
           }
@@ -514,7 +524,7 @@ function History({ match, history, location }) {
                       </Grid>
                       <Grid item xs>
                         {dataProduk.approvalStatus &&
-                        !dataProduk.statusPembatalanDesc ? (
+                        !dataProduk.statusPembatalanDesc && !(dataProduk.tanggalBerakhir === dateNow) ? (
                           <Button
                             variant="contained"
                             size="small"

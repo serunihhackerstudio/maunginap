@@ -29,4 +29,14 @@ export function sendEmailRefund(subject, targetMail, kodebooking, total){
     console.log('body:', body); // Print the HTML for the Google homepage.
 });
 }
+
+export function sendEmailJatuhTempo(subject, targetMail, kodebooking, namapenginapan){
+    const request = require("request");
+    const endp = `https://maunginap-mail-server.herokuapp.com/jatuh-tempo-pesanan?targetmail=${targetMail}&kodebooking=${kodebooking}&namapenginapan=${namapenginapan}`;
+    request(endp, function (error, response, body) {
+    console.error('error:', error); // Print the error if one occurred
+    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    console.log('body:', body); // Print the HTML for the Google homepage.
+});
+}
     
