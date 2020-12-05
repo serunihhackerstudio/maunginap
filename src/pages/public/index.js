@@ -80,6 +80,7 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import RestoreIcon from "@material-ui/icons/Restore";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 function Home({ history, location }) {
   const [value1, setValue1] = React.useState(0);
@@ -246,94 +247,98 @@ function Home({ history, location }) {
   const navigationTo = (address) => (event) => {
     event.preventDefault();
     history.push(`${address}`);
+    if (address === "/history"){
+      historyPesananCallback();
+    }
+    
   };
 
   return (
     <div className={classes.root}>
       {isBrowser ? (
         <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer(anchor, true)}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden
-            )}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            {/* LOGO TITLE */}
-            <Switch>
-              <Route path="/" exact children="Home" />
-              <Route
-                path="/view/penginapan/:checkoutId/checkout"
-                exact
-                children="Checkout"
-              />
-              <Route
-                path="/view/penginapan/:penginapanId"
-                exact
-                children="Detail"
-              />
-              <Route
-                path="/view/penginapan/:checkoutId/checkout/bayar"
-                exact
-                children="Metode Pembayaran"
-              />
-              <Route
-                path="/view/penginapan/:checkoutId/proses/:prosesId"
-                exact
-                children="Progress Pembayaran"
-              />
-
-              <Route path="/profile/user/info" exact children="User" />
-              <Route path="/profile/user/biodata" exact children="Biodata" />
-
-              <Route
-                exact
-                path="/perpanjang/:penginapanId"
-                children="Perpanjang"
-              />
-              <Route
-                exact
-                path="/perpanjang/:penginapanId/proses"
-                children="Checkout"
-              />
-
-              <Route path="/history" exact children="History Pesanan" />
-              <Route path="/notification" exact children="Notification" />
-              <Route path="/profile/view" exact children="User Profile" />
-              <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
-              <Route path="/menu/only/kost" exact children="Kostan" />
-              <Route
-                path="/view/penginapan/:checkoutId/proses"
-                exact
-                children="Tagihan"
-              />
-            </Switch>
-            {/* LOGO TITLE */}
-          </Typography>
-
-          {/* icon logout */}
-
-          {!user && (
-            <IconButton color="inherit" component={Link} to={"/user/login"}>
-              <AccountCircleIcon />
+          position="absolute"
+          className={clsx(classes.appBar, open && classes.appBarShift)}
+        >
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer(anchor, true)}
+              className={clsx(
+                classes.menuButton,
+                open && classes.menuButtonHidden
+              )}
+            >
+              <MenuIcon />
             </IconButton>
-          )}
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              className={classes.title}
+            >
+              {/* LOGO TITLE */}
+              <Switch>
+                <Route path="/" exact children="Home" />
+                <Route
+                  path="/view/penginapan/:checkoutId/checkout"
+                  exact
+                  children="Checkout"
+                />
+                <Route
+                  path="/view/penginapan/:penginapanId"
+                  exact
+                  children="Detail"
+                />
+                <Route
+                  path="/view/penginapan/:checkoutId/checkout/bayar"
+                  exact
+                  children="Metode Pembayaran"
+                />
+                <Route
+                  path="/view/penginapan/:checkoutId/proses/:prosesId"
+                  exact
+                  children="Progress Pembayaran"
+                />
+
+                <Route path="/profile/user/info" exact children="User" />
+                <Route path="/profile/user/biodata" exact children="Biodata" />
+
+                <Route
+                  exact
+                  path="/perpanjang/:penginapanId"
+                  children="Perpanjang"
+                />
+                <Route
+                  exact
+                  path="/perpanjang/:penginapanId/proses"
+                  children="Checkout"
+                />
+
+                <Route path="/history" exact children="History Pesanan" />
+                <Route path="/notification" exact children="Notification" />
+                <Route path="/profile/view" exact children="User Profile" />
+                <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
+                <Route path="/menu/only/kost" exact children="Kostan" />
+                <Route
+                  path="/view/penginapan/:checkoutId/proses"
+                  exact
+                  children="Tagihan"
+                />
+              </Switch>
+              {/* LOGO TITLE */}
+            </Typography>
+
+            {/* icon logout */}
+
+            {!user && (
+              <IconButton color="inherit" component={Link} to={"/user/login"}>
+                <AccountCircleIcon />
+              </IconButton>
+            )}
             <>
               <Tooltip title="Notifikasi">
                 <IconButton
@@ -355,209 +360,227 @@ function Home({ history, location }) {
               </Tooltip>
             </>
 
-
-          {/* {user && (
+            {/* {user && (
             <Tooltip title="Sign out">
               <IconButton color="inherit" onClick={handleOpenDialog}>
                 <SignOutIcon />
               </IconButton>
             </Tooltip>
           )} */}
-          <div>
-            <Menu
-              className={classes.menuItem}
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              PaperProps={{
-                style: {
-                  maxHeight: "full",
-                  width: 340,
-                },
-              }}
-            >
-              {msgNotif.map((data) => {
-                const item = data.data();
-                const date = new Date(
-                  item.created["seconds"] * 1000
-                ).toLocaleDateString();
-                return (
-                  <MenuItem onClick={handleItemClose}>
-                    <List>
-                      <ListItem>
-                        <ListItemAvatar>
-                          {item.status === "Jatuh tempo pembayaran" ? (
-                            <Avatar style={{ backgroundColor: red[500] }}>
-                              <AttachMoneyIcon />
-                            </Avatar>
-                          ) : item.status === "Menunggu pembayaran" ||
-                            item.status === "Menunggu perpanjangan" ? (
-                            <Avatar style={{ backgroundColor: orange[500] }}>
-                              <TimerIcon />
-                            </Avatar>
-                          ) : (
-                            <Avatar style={{ backgroundColor: "#016660" }}>
-                              <DoneIcon />
-                            </Avatar>
-                          )}
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <React.Fragment>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                              >
-                                <Typography>
-                                  {item.namaPenginapan} #{item.kodeBooking}
-                                </Typography>
-                                <Typography color="primary">
-                                  {item.status === "Jatuh tempo pembayaran" ? (
-                                    <strong>
-                                      <font color="red">{item.status}</font>
-                                    </strong>
-                                  ) : item.status === "Menunggu pembayaran" ||
-                                    item.status === "Menunggu perpanjangan" ? (
-                                    <strong>
-                                      <font color="orange">{item.status}</font>
-                                    </strong>
-                                  ) : (
-                                    <strong>{item.status}</strong>
-                                  )}
-                                </Typography>
+            <div>
+              <Menu
+                className={classes.menuItem}
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: "full",
+                    width: 340,
+                  },
+                }}
+              >
+                {msgNotif.map((data) => {
+                  const item = data.data();
+                  const date = new Date(
+                    item.created["seconds"] * 1000
+                  ).toLocaleDateString();
+                  return (
+                    <MenuItem onClick={handleItemClose}>
+                      <List>
+                        <ListItem>
+                          <ListItemAvatar>
+                            {item.status === "Jatuh tempo pembayaran" ? (
+                              <Avatar style={{ backgroundColor: red[500] }}>
+                                <AttachMoneyIcon />
+                              </Avatar>
+                            ) : item.status === "Menunggu pembayaran" ||
+                              item.status === "Menunggu perpanjangan" ? (
+                              <Avatar style={{ backgroundColor: orange[500] }}>
+                                <TimerIcon />
+                              </Avatar>
+                            ) : (
+                              <Avatar style={{ backgroundColor: "#016660" }}>
+                                <DoneIcon />
+                              </Avatar>
+                            )}
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <React.Fragment>
                                 <Typography
-                                  variant="subtitle2"
-                                  color="textSecondary"
+                                  component="span"
+                                  variant="body2"
+                                  className={classes.inline}
+                                  color="textPrimary"
                                 >
-                                  {date}
+                                  <Typography>
+                                    {item.namaPenginapan} #{item.kodeBooking}
+                                  </Typography>
+                                  <Typography color="primary">
+                                    {item.status ===
+                                    "Jatuh tempo pembayaran" ? (
+                                      <strong>
+                                        <font color="red">{item.status}</font>
+                                      </strong>
+                                    ) : item.status === "Menunggu pembayaran" ||
+                                      item.status ===
+                                        "Menunggu perpanjangan" ? (
+                                      <strong>
+                                        <font color="orange">
+                                          {item.status}
+                                        </font>
+                                      </strong>
+                                    ) : (
+                                      <strong>{item.status}</strong>
+                                    )}
+                                  </Typography>
+                                  <Typography
+                                    variant="subtitle2"
+                                    color="textSecondary"
+                                  >
+                                    {date}
+                                  </Typography>
                                 </Typography>
-                              </Typography>
-                            </React.Fragment>
-                          }
-                        />
-                        {/* <ListItemText
+                              </React.Fragment>
+                            }
+                          />
+                          {/* <ListItemText
                           primary={`Pesanan #${item.kodeBooking} berstatus ${item.status}`}
                           secondary={`${item.created}`}
                         /> */}
-                      </ListItem>
-                    </List>
-                  </MenuItem>
-                );
-              })}
-              <MenuItem
-                onClick={() => {
-                  setAnchorEl(null);
-                  history.push("/notification");
-                }}
-              >
-                <List>
-                  <ListItem>
-                    {msgNotif.length === 0 ? (
-                      <>
-                        <ListItemAvatar>
-                          <Avatar style={{ backgroundColor: orange[500] }}>
-                            <ErrorOutlineIcon />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            Belum ada data
-                          </Typography>
-                        </ListItemText>
-                      </>
-                    ) : (
-                      <>
-                        <ListItemAvatar>
-                          <ExpandMoreIcon />
-                        </ListItemAvatar>
-                        <ListItemText>
-                          <Typography>Lihat semua</Typography>
-                        </ListItemText>
-                      </>
-                    )}
-                  </ListItem>
-                </List>
-              </MenuItem>
-            </Menu>
-          </div>
-        </Toolbar>
-      </AppBar>
+                        </ListItem>
+                      </List>
+                    </MenuItem>
+                  );
+                })}
+                <MenuItem
+                  onClick={() => {
+                    setAnchorEl(null);
+                    history.push("/notification");
+                  }}
+                >
+                  <List>
+                    <ListItem>
+                      {msgNotif.length === 0 ? (
+                        <>
+                          <ListItemAvatar>
+                            <Avatar style={{ backgroundColor: orange[500] }}>
+                              <ErrorOutlineIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText>
+                            <Typography
+                              variant="subtitle1"
+                              color="textSecondary"
+                            >
+                              Belum ada data
+                            </Typography>
+                          </ListItemText>
+                        </>
+                      ) : (
+                        <>
+                          <ListItemAvatar>
+                            <ExpandMoreIcon />
+                          </ListItemAvatar>
+                          <ListItemText>
+                            <Typography>Lihat semua</Typography>
+                          </ListItemText>
+                        </>
+                      )}
+                    </ListItem>
+                  </List>
+                </MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
       ) : (
         <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
-        <Toolbar className={classes.toolbar}>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            {/* LOGO TITLE */}
-            <Switch>
-              <Route path="/" exact children="Home" />
-              <Route
-                path="/view/penginapan/:checkoutId/checkout"
-                exact
-                children="Checkout"
-              />
-              <Route
-                path="/view/penginapan/:penginapanId"
-                exact
-                children="Detail"
-              />
-              <Route
-                path="/view/penginapan/:checkoutId/checkout/bayar"
-                exact
-                children="Metode Pembayaran"
-              />
-              <Route
-                path="/view/penginapan/:checkoutId/proses/:prosesId"
-                exact
-                children="Progress Pembayaran"
-              />
+          position="absolute"
+          className={clsx(classes.appBar, open && classes.appBarShift)}
+        >
+          <Toolbar className={classes.toolbar}>
+            {/* {location.pathname === "/history" ? (
+              <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
+                <ArrowBackIcon style={{color:"white"}}/>
+              </IconButton>
+            ) : location.pathname === "/profile/view" ? (
+              <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
+                <ArrowBackIcon style={{color:"white"}}/>
+              </IconButton>
+            ) : (
+              ""
+            )} */}
 
-              <Route path="/profile/user/info" exact children="User" />
-              <Route path="/profile/user/biodata" exact children="Biodata" />
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              className={classes.title}
+            >
+              {/* LOGO TITLE */}
+              <Switch>
+                <Route path="/" exact children="Home" />
+                <Route
+                  path="/view/penginapan/:checkoutId/checkout"
+                  exact
+                  children="Checkout"
+                />
+                <Route
+                  path="/view/penginapan/:penginapanId"
+                  exact
+                  children="Detail"
+                />
+                <Route
+                  path="/view/penginapan/:checkoutId/checkout/bayar"
+                  exact
+                  children="Metode Pembayaran"
+                />
+                <Route
+                  path="/view/penginapan/:checkoutId/proses/:prosesId"
+                  exact
+                  children="Progress Pembayaran"
+                />
 
-              <Route
-                exact
-                path="/perpanjang/:penginapanId"
-                children="Perpanjang"
-              />
-              <Route
-                exact
-                path="/perpanjang/:penginapanId/proses"
-                children="Checkout"
-              />
+                <Route path="/profile/user/info" exact children="User" />
+                <Route path="/profile/user/biodata" exact children="Biodata" />
 
-              <Route path="/history" exact children="History Pesanan" />
-              <Route path="/notification" exact children="Notification" />
-              <Route path="/profile/view" exact children="User Profile" />
-              <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
-              <Route path="/menu/only/kost" exact children="Kostan" />
-              <Route
-                path="/view/penginapan/:checkoutId/proses"
-                exact
-                children="Tagihan"
-              />
-            </Switch>
-            {/* LOGO TITLE */}
-          </Typography>
+                <Route
+                  exact
+                  path="/perpanjang/:penginapanId"
+                  children="Perpanjang"
+                />
+                <Route
+                  exact
+                  path="/perpanjang/:penginapanId/proses"
+                  children="Checkout"
+                />
 
-          {/* icon logout */}
+                <Route path="/history" exact children="History Pesanan" />
+                <Route path="/notification" exact children="Notification" />
+                <Route path="/profile/view" exact children="User Profile" />
+                <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
+                <Route path="/menu/only/kost" exact children="Kostan" />
+                <Route
+                  path="/view/penginapan/:checkoutId/proses"
+                  exact
+                  children="Tagihan"
+                />
+              </Switch>
+              {/* LOGO TITLE */}
+            </Typography>
 
-          {!user && (
-            <IconButton color="inherit" component={Link} to={"/user/login"}>
-              <AccountCircleIcon />
-            </IconButton>
-          )}
+            {/* icon logout */}
+
+            {!user && (
+              <IconButton color="inherit" component={Link} to={"/user/login"}>
+                <AccountCircleIcon />
+              </IconButton>
+            )}
             <>
               <Tooltip title="Notifikasi">
                 <IconButton
@@ -572,139 +595,144 @@ function Home({ history, location }) {
               </Tooltip>
             </>
 
-
-          {/* {user && (
+            {/* {user && (
             <Tooltip title="Sign out">
               <IconButton color="inherit" onClick={handleOpenDialog}>
                 <SignOutIcon />
               </IconButton>
             </Tooltip>
           )} */}
-          <div>
-            <Menu
-              className={classes.menuItem}
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              PaperProps={{
-                style: {
-                  maxHeight: "full",
-                  width: 340,
-                },
-              }}
-            >
-              {msgNotif.map((data) => {
-                const item = data.data();
-                const date = new Date(
-                  item.created["seconds"] * 1000
-                ).toLocaleDateString();
-                return (
-                  <MenuItem onClick={handleItemClose}>
-                    <List>
-                      <ListItem>
-                        <ListItemAvatar>
-                          {item.status === "Jatuh tempo pembayaran" ? (
-                            <Avatar style={{ backgroundColor: red[500] }}>
-                              <AttachMoneyIcon />
-                            </Avatar>
-                          ) : item.status === "Menunggu pembayaran" ||
-                            item.status === "Menunggu perpanjangan" ? (
-                            <Avatar style={{ backgroundColor: orange[500] }}>
-                              <TimerIcon />
-                            </Avatar>
-                          ) : (
-                            <Avatar style={{ backgroundColor: "#016660" }}>
-                              <DoneIcon />
-                            </Avatar>
-                          )}
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <React.Fragment>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                              >
-                                <Typography>
-                                  {item.namaPenginapan} #{item.kodeBooking}
-                                </Typography>
-                                <Typography color="primary">
-                                  {item.status === "Jatuh tempo pembayaran" ? (
-                                    <strong>
-                                      <font color="red">{item.status}</font>
-                                    </strong>
-                                  ) : item.status === "Menunggu pembayaran" ||
-                                    item.status === "Menunggu perpanjangan" ? (
-                                    <strong>
-                                      <font color="orange">{item.status}</font>
-                                    </strong>
-                                  ) : (
-                                    <strong>{item.status}</strong>
-                                  )}
-                                </Typography>
+            <div>
+              <Menu
+                className={classes.menuItem}
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: "full",
+                    width: 340,
+                  },
+                }}
+              >
+                {msgNotif.map((data) => {
+                  const item = data.data();
+                  const date = new Date(
+                    item.created["seconds"] * 1000
+                  ).toLocaleDateString();
+                  return (
+                    <MenuItem onClick={handleItemClose}>
+                      <List>
+                        <ListItem>
+                          <ListItemAvatar>
+                            {item.status === "Jatuh tempo pembayaran" ? (
+                              <Avatar style={{ backgroundColor: red[500] }}>
+                                <AttachMoneyIcon />
+                              </Avatar>
+                            ) : item.status === "Menunggu pembayaran" ||
+                              item.status === "Menunggu perpanjangan" ? (
+                              <Avatar style={{ backgroundColor: orange[500] }}>
+                                <TimerIcon />
+                              </Avatar>
+                            ) : (
+                              <Avatar style={{ backgroundColor: "#016660" }}>
+                                <DoneIcon />
+                              </Avatar>
+                            )}
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <React.Fragment>
                                 <Typography
-                                  variant="subtitle2"
-                                  color="textSecondary"
+                                  component="span"
+                                  variant="body2"
+                                  className={classes.inline}
+                                  color="textPrimary"
                                 >
-                                  {date}
+                                  <Typography>
+                                    {item.namaPenginapan} #{item.kodeBooking}
+                                  </Typography>
+                                  <Typography color="primary">
+                                    {item.status ===
+                                    "Jatuh tempo pembayaran" ? (
+                                      <strong>
+                                        <font color="red">{item.status}</font>
+                                      </strong>
+                                    ) : item.status === "Menunggu pembayaran" ||
+                                      item.status ===
+                                        "Menunggu perpanjangan" ? (
+                                      <strong>
+                                        <font color="orange">
+                                          {item.status}
+                                        </font>
+                                      </strong>
+                                    ) : (
+                                      <strong>{item.status}</strong>
+                                    )}
+                                  </Typography>
+                                  <Typography
+                                    variant="subtitle2"
+                                    color="textSecondary"
+                                  >
+                                    {date}
+                                  </Typography>
                                 </Typography>
-                              </Typography>
-                            </React.Fragment>
-                          }
-                        />
-                        {/* <ListItemText
+                              </React.Fragment>
+                            }
+                          />
+                          {/* <ListItemText
                           primary={`Pesanan #${item.kodeBooking} berstatus ${item.status}`}
                           secondary={`${item.created}`}
                         /> */}
-                      </ListItem>
-                    </List>
-                  </MenuItem>
-                );
-              })}
-              <MenuItem
-                onClick={() => {
-                  setAnchorEl(null);
-                  history.push("/notification");
-                }}
-              >
-                <List>
-                  <ListItem>
-                    {msgNotif.length === 0 ? (
-                      <>
-                        <ListItemAvatar>
-                          <Avatar style={{ backgroundColor: orange[500] }}>
-                            <ErrorOutlineIcon />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            Belum ada data
-                          </Typography>
-                        </ListItemText>
-                      </>
-                    ) : (
-                      <>
-                        <ListItemAvatar>
-                          <ExpandMoreIcon />
-                        </ListItemAvatar>
-                        <ListItemText>
-                          <Typography>Lihat semua</Typography>
-                        </ListItemText>
-                      </>
-                    )}
-                  </ListItem>
-                </List>
-              </MenuItem>
-            </Menu>
-          </div>
-        </Toolbar>
-      </AppBar>
+                        </ListItem>
+                      </List>
+                    </MenuItem>
+                  );
+                })}
+                <MenuItem
+                  onClick={() => {
+                    setAnchorEl(null);
+                    history.push("/notification");
+                  }}
+                >
+                  <List>
+                    <ListItem>
+                      {msgNotif.length === 0 ? (
+                        <>
+                          <ListItemAvatar>
+                            <Avatar style={{ backgroundColor: orange[500] }}>
+                              <ErrorOutlineIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText>
+                            <Typography
+                              variant="subtitle1"
+                              color="textSecondary"
+                            >
+                              Belum ada data
+                            </Typography>
+                          </ListItemText>
+                        </>
+                      ) : (
+                        <>
+                          <ListItemAvatar>
+                            <ExpandMoreIcon />
+                          </ListItemAvatar>
+                          <ListItemText>
+                            <Typography>Lihat semua</Typography>
+                          </ListItemText>
+                        </>
+                      )}
+                    </ListItem>
+                  </List>
+                </MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
       )}
-      
 
       <div>
         <React.Fragment key={anchor}>
@@ -759,6 +787,7 @@ function Home({ history, location }) {
             <Route component={HomeProduk} />
           </Switch>
         </Container>
+        <div className={classes.appBarSpacer} />
       </main>
       {!isBrowser ? (
         <AppBar
