@@ -83,7 +83,6 @@ function SwipeableTextMobileStepper({ classMedia }) {
             {isBrowser ? (
               <>
               {Math.abs(activeStep - index) <= 2 ? (
-                // <Image src={img} aspectRatio={3/1} alt={step.id} />
                 <CardMedia
                   className={classes.img}
                   image={img}
@@ -94,12 +93,7 @@ function SwipeableTextMobileStepper({ classMedia }) {
             ) : (
               <>
               {Math.abs(activeStep - index) <= 2 ? (
-                <Image src={img} aspectRatio={1.5/1} alt={step.id} />
-                // <CardMedia
-                //   className={classes.img}
-                //   image={img}
-                //   alt={step.id}
-                // />
+                <Image src={img} aspectRatio={2/1} alt={step.id} />
               ) : null}
               </>
             )}
