@@ -83,6 +83,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import Chip from "@material-ui/core/Chip";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import ChatIcon from '@material-ui/icons/Chat';
+import BookingCode from "../../../../utils/bookingCode";
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
@@ -218,6 +219,7 @@ function DetailProduk({ match, history, location }) {
         harga,
         codeHarga: Math.floor(Math.random() * 1000),
         foto: state.foto,
+        kodeBooking:BookingCode()
       });
       history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
     } else {
@@ -233,6 +235,7 @@ function DetailProduk({ match, history, location }) {
           harga,
           codeHarga: Math.floor(Math.random() * 1000),
           foto: state.foto,
+          kodeBooking:BookingCode()
         });
         history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
       }

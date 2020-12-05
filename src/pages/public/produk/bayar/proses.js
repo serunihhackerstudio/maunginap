@@ -30,9 +30,10 @@ const Proses = ({ match }) => {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(dataQuery);
-  const { progressPembayaran, formBank, nomorWA, formPesanan } = usePesanan();
+  const { progressPembayaran, formBank, formPesanan } = usePesanan();
   const [activeStep, setActiveStep] = React.useState(3);
   const [dataPesanan, setDataPesanan] = React.useState({})
+  const nomorWA = "081-990-321-358";
   React.useEffect(() => {
     if (snapshot) {
       setDataPesanan(snapshot.data())
@@ -102,7 +103,7 @@ const Proses = ({ match }) => {
                 color="textSecondary"
                 className={classes.total}
               >
-                {formBank.pilihBank}
+                {dataPesanan.pilihBank}
               </Typography>
             </ListItem>
 
@@ -113,7 +114,7 @@ const Proses = ({ match }) => {
                 color="textSecondary"
                 className={classes.total}
               >
-                {`a/n ${formBank.atasNama}`}
+                {`a/n ${dataPesanan.atasNama}`}
               </Typography>
             </ListItem>
 
@@ -123,7 +124,7 @@ const Proses = ({ match }) => {
                 secondary="Tujuan Transfer"
               />
               <Typography variant="h6" className={classes.total}>
-                {formBank.noRek}
+                {dataPesanan.noRek}
               </Typography>
             </ListItem>
 
@@ -134,7 +135,7 @@ const Proses = ({ match }) => {
                 className={classes.total}
                 color="primary"
               >
-                {currency(parseInt(formBank.harga) + formBank.codeHarga)}
+                {currency(parseInt(dataPesanan.harga) + dataPesanan.codeHarga)}
               </Typography>
             </ListItem>
           </List>

@@ -113,12 +113,11 @@ const DialogBooking = ({
   });
 
   // memasukan data tambahan ke form
-  const kodeBooking = BookingCode();
   form.namaPenginapan = formPesanan.namaPenginapan;
   form.jenisIuran = formPesanan.jenisIuran;
   form.harga = formPesanan.harga;
   form.codeHarga = formPesanan.codeHarga;
-  form.kodeBooking = kodeBooking;
+  form.kodeBooking = formPesanan.kodeBooking;
   form.foto = formPesanan.foto;
   form.reserved = true;
   form.userId = user.uid;
@@ -128,7 +127,6 @@ const DialogBooking = ({
   form.jenisPenginapan = jenisPenginapan;
   form.rating = 0;
   form.userEmail = user.email;
-  formPesanan.kodeBooking = kodeBooking;
 
   const handleChange = (e) => {
     setError({
@@ -189,10 +187,6 @@ const DialogBooking = ({
         setError(findError);
       } else {
         const biaya = parseInt(form.harga) + form.codeHarga
-        const kodeBooking = form.kodeBooking
-        sendPesananToTelegram(
-        `${form.namaPenginapan} (${kodeBooking}) ${form.jenisIuran}, ${form.namaKTP}, ${form.userEmail}, ${form.nomorKTP}, ${currency(biaya)}, ${form.pilihBank}, HP. ${form.nomorHpWa} `
-        );
         await phoneNoData.set({telepon:form.nomorHpWa}, {merge:true})
         await pesanProduk.set({ ...form }, { merge: false });
         await produk.set({ jumlahKamar: jumlahKamar - 1 }, { merge: true });
@@ -201,8 +195,11 @@ const DialogBooking = ({
           created: new Date(),
           status:"Menunggu pembayaran",
           namaPenginapan:form.namaPenginapan,
-          kodeBooking:kodeBooking
+          kodeBooking:form.kodeBooking
         })
+        sendPesananToTelegram(
+          `${form.namaPenginapan} (${form.kodeBooking}) ${form.jenisIuran}, ${form.namaKTP}, ${form.userEmail}, ${form.nomorKTP}, ${currency(biaya)}, ${form.pilihBank}, HP. ${form.nomorHpWa} `
+        );
         sendEmail("Menunggu Pembayaran", form.userEmail, form.kodeBooking, form.pilihBank, form.atasNama, form.noRek, currency(biaya))
         history.push(`/view/penginapan/${idGenerator}/proses`);
       }
