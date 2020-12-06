@@ -40,15 +40,6 @@ function UserProfile(props) {
           </Switch>
         </div>
       </Paper>
-      <Fab
-        color="primary"
-        className={classes.fab}
-        onClick={() => {
-          props.history.push("/profile/view");
-        }}
-      >
-        <ArrowBackIcon />
-      </Fab>
     </>
   );
 }

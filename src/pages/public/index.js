@@ -82,7 +82,13 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-function Home({ history, location }) {
+// import usePesanan from PesananProvider
+import {usePesanan} from "../../components/PesananProvider"
+
+function Home({ history, location, match }) {
+  // use detailParam to get match params penginapanId from detail page
+  const { detailParam } = usePesanan()
+
   const [value1, setValue1] = React.useState(0);
   // menu
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -511,7 +517,11 @@ function Home({ history, location }) {
               <IconButton className={classes.menuButton} onClick={() => history.goBack("/profile/view")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
-            ) : (
+            ) : location.pathname === `/view/penginapan/${detailParam}` ? (
+              <IconButton className={classes.menuButton} onClick={() => history.goBack("/")}>
+                <ArrowBackIcon style={{color:"white"}}/>
+              </IconButton>
+            ): (
               ""
             )}
             <Typography

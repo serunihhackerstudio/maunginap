@@ -51,10 +51,13 @@ const PesananProvider = (props) => {
     const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan"];
   const kotaOpt = ["Surabaya", "Mataram"];
   const [formPesanan, setFormPesanan] = React.useState({});
-  const [telepon, setTelepon] = React.useState("")
+  const [telepon, setTelepon] = React.useState("");
+  const [detailParam, setDetailParam] = React.useState("");
   return (
     <PesananContext.Provider
       value={{
+        setDetailParam,
+        detailParam,
         nomorWA,
         pesananId,
         setPesananId,

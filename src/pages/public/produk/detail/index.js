@@ -84,10 +84,13 @@ import Chip from "@material-ui/core/Chip";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import ChatIcon from '@material-ui/icons/Chat';
 import BookingCode from "../../../../utils/bookingCode";
+import { set } from "date-fns/fp";
+
+// mobile view detection
+import { isBrowser } from "react-device-detect";
 
 function DetailProduk({ match, history, location }) {
   const [expanded, setExpanded] = React.useState(false);
-
   const [open, setOpen] = React.useState(false);
   const { firestore } = useFirebase();
   const produkDoc = firestore
@@ -100,7 +103,10 @@ function DetailProduk({ match, history, location }) {
   const [jenisIuran, setJenisIuran] = React.useState("");
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const { setFormPesanan } = usePesanan();
+
+  // parsing mathc.params.penginapanId to appBar layout
+  const { setFormPesanan, setDetailParam } = usePesanan();
+  setDetailParam(match.params.penginapanId);
 
   // variable untuk membuat logic tombol suka
   const [isSuka, setSuka] = React.useState(false);
@@ -302,7 +308,7 @@ function DetailProduk({ match, history, location }) {
                 width={40}
                 height={40}
               />
-            ) : (
+            ) : isBrowser ? (
               <Tooltip title="Kembali" aria-label="kembali">
                 <IconButton
                   aria-label="Back icon"
@@ -313,6 +319,8 @@ function DetailProduk({ match, history, location }) {
                   <ArrowBackIcon />
                 </IconButton>
               </Tooltip>
+            ) : (
+              <MoreVertIcon color="disabled"/>
             )
           }
           action={
