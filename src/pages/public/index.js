@@ -514,14 +514,18 @@ function Home({ history, location, match }) {
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
             ) : location.pathname === "/profile/user/biodata" ? (
-              <IconButton className={classes.menuButton} onClick={() => history.goBack("/profile/view")}>
+              <IconButton className={classes.menuButton} onClick={() => history.push("/profile/view")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
             ) : location.pathname === `/view/penginapan/${detailParam}` ? (
-              <IconButton className={classes.menuButton} onClick={() => history.goBack("/")}>
+              <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
-            ): (
+            ): location.pathname === `/menu/only/kost` || location.pathname === `/menu/only/kontrakan` ? (
+              <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
+                <ArrowBackIcon style={{color:"white"}}/>
+              </IconButton>
+            ) : (
               ""
             )}
             <Typography

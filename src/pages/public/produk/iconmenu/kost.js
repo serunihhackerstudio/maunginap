@@ -34,6 +34,8 @@ import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { isBrowser } from "react-device-detect";
+
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -384,7 +386,8 @@ function Kost({ history }) {
           {/* {searchingActivate && <></>} */}
         </Grid>
       </Grid>
-      <Tooltip title="Kembali" aria-label="kembali">
+      {isBrowser ? (
+        <Tooltip title="Kembali" aria-label="kembali">
         <Fab
           color="primary"
           className={classes.fab}
@@ -395,9 +398,8 @@ function Kost({ history }) {
           <ArrowBackIcon />
         </Fab>
       </Tooltip>
+      ) : ("")}
     </>
-     
-    
   );
 }
 
