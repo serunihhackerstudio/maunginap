@@ -92,8 +92,9 @@ function UserInfo() {
   };
 
   const sendEmailVerification = async (e) => {
+    // url: `${window.location.origin}/profile/user/info`,
     const actionCodeSettings = {
-      url: `${window.location.origin}/profile/user/info`,
+      url: `https://maunginap.com/profile/user/info`,
     };
     setSubmitting(true);
     await user.sendEmailVerification(actionCodeSettings);
