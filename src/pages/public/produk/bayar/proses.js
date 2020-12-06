@@ -21,6 +21,7 @@ import Pdf from "react-to-pdf";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import Fab from "@material-ui/core/Fab";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import IconButton from "@material-ui/core/IconButton";
 
 const Proses = ({ match }) => {
   const ref = React.createRef();
@@ -32,11 +33,11 @@ const Proses = ({ match }) => {
   const [snapshot, loading] = useDocument(dataQuery);
   const { progressPembayaran, formBank, formPesanan } = usePesanan();
   const [activeStep, setActiveStep] = React.useState(3);
-  const [dataPesanan, setDataPesanan] = React.useState({})
+  const [dataPesanan, setDataPesanan] = React.useState({});
   const nomorWA = "081-990-321-358";
   React.useEffect(() => {
     if (snapshot) {
-      setDataPesanan(snapshot.data())
+      setDataPesanan(snapshot.data());
     }
   }, [snapshot]);
 
@@ -166,14 +167,14 @@ const Proses = ({ match }) => {
             </Tooltip>
           )}
         </Pdf>
+        <Tooltip title="Hubungi tim maunginap" aria-label="hubungiCs">
+        <a href={`https://wa.me/${adminNumber}`} style={{textDecoration:"none"}}>
+          <Button color="primary" variant="outlined" startIcon={<WhatsAppIcon />} className={classes.buttonGrid}>
+            Maunginap
+          </Button>
+        </a>
+      </Tooltip>
       </Paper>
-      <a href={`https://wa.me/${adminNumber}`}>
-        <Tooltip title="Hubungi CS maunginap" aria-label="hubungiCs">
-          <Fab color="primary" className={classes.fab}>
-            <WhatsAppIcon />
-          </Fab>
-        </Tooltip>
-      </a>
     </div>
   );
 };

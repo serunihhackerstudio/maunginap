@@ -345,9 +345,6 @@ function EditProduk({ match }) {
 
   return (
     <Paper className={classes.papperPadding}>
-      <Typography variant="h5" component="h1">
-        Edit Informasi Penignapan : {form.namaPenginapan}
-      </Typography>
       <Grid container alignItems="center" justify="center" spacing={2}>
         <Grid item xs={12} sm={6}>
           <form id="produk-form" onSubmit={handleSubmit} noValidate>
