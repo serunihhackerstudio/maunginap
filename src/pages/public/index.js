@@ -503,18 +503,17 @@ function Home({ history, location }) {
           className={clsx(classes.appBar, open && classes.appBarShift)}
         >
           <Toolbar className={classes.toolbar}>
-            {/* {location.pathname === "/history" ? (
-              <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
+            {location.pathname === "/profile/user/info" ? (
+              <IconButton className={classes.menuButton} onClick={() => history.push("/profile/view")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
-            ) : location.pathname === "/profile/view" ? (
-              <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
+            ) : location.pathname === "/profile/user/biodata" ? (
+              <IconButton className={classes.menuButton} onClick={() => history.goBack("/profile/view")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
             ) : (
               ""
-            )} */}
-
+            )}
             <Typography
               component="h1"
               variant="h6"
