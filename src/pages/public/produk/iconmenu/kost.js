@@ -375,16 +375,6 @@ function Kost({ history }) {
             </Grid>
           );
         })}
-        <Grid className={classes.fabGrid} id={"el"} ref={el}>
-          {produkItems.length !== maxData && !searchingActivate ? (
-            <Fab color="primary" className={classes.fab} onClick={loadNextData}>
-              <ArrowForwardIcon />
-            </Fab>
-          ) : (
-            <></>
-          )}
-          {/* {searchingActivate && <></>} */}
-        </Grid>
       </Grid>
       {isBrowser ? (
         <Tooltip title="Kembali" aria-label="kembali">

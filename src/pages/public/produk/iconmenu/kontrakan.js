@@ -34,6 +34,7 @@ import Chip from "@material-ui/core/Chip";
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { isBrowser } from "react-device-detect";
 
 // import datanotfound from "../../../assets/datanotfound.png";
 
@@ -373,18 +374,9 @@ function Kontrakan({ history }) {
             </Grid>
           );
         })}
-        <Grid className={classes.fabGrid} id={"el"} ref={el}>
-          {produkItems.length !== maxData && !searchingActivate ? (
-            <Fab color="primary" className={classes.fab} onClick={loadNextData}>
-              <ArrowForwardIcon />
-            </Fab>
-          ) : (
-            <></>
-          )}
-          {/* {searchingActivate && <></>} */}
-        </Grid>
       </Grid>
-      <Tooltip title="Kembali" aria-label="kembali">
+      {isBrowser ? (
+        <Tooltip title="Kembali" aria-label="kembali">
         <Fab
           color="primary"
           className={classes.fab}
@@ -395,6 +387,7 @@ function Kontrakan({ history }) {
           <ArrowBackIcon />
         </Fab>
       </Tooltip>
+      ) : ("")}
     </>
   );
 }
