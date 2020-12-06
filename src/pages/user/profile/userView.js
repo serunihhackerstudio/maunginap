@@ -45,7 +45,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ID from "../../../utils/idgenerator"
+import ID from "../../../utils/idgenerator";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,10 +81,10 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(4),
     right: theme.spacing(4),
   },
-  btnSignOut:{
-    textAlign:"center",
-    marginBottom:theme.spacing(2)
-  }
+  btnSignOut: {
+    textAlign: "center",
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export default function UserView({ history }) {
@@ -97,9 +97,9 @@ export default function UserView({ history }) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogV, setOpenDialogV] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const id = ID()
-  const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`)
-  
+  const id = ID();
+  const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`);
+
   React.useEffect(() => {
     if (snapshot) {
       setItem(snapshot.data());
@@ -137,7 +137,6 @@ export default function UserView({ history }) {
       url: `${window.location.origin}/profile/view`,
     };
     await user.sendEmailVerification(actionCodeSettings);
-
   };
 
   const handleCloseDialogV = () => {
@@ -212,6 +211,8 @@ export default function UserView({ history }) {
                       </Typography>
                       <Typography color="primary">
                         <strong>{user.email}</strong>
+                      </Typography>
+                      <Typography>
                         {user.emailVerified ? (
                           <Chip
                             icon={<DoneIcon />}
@@ -227,7 +228,7 @@ export default function UserView({ history }) {
                             onClick={handleOpenDialogV}
                             color="secondary"
                             size="small"
-                            // 
+                            //
                           />
                         )}
                       </Typography>
@@ -317,7 +318,7 @@ export default function UserView({ history }) {
           </List>
         </CardContent>
         <div className={classes.btnSignOut}>
-        <Button
+          <Button
             variant="outlined"
             color="primary"
             onClick={handleOpenDialog}
@@ -326,7 +327,6 @@ export default function UserView({ history }) {
             Sign out
           </Button>
         </div>
-
       </Card>
       {/* MODAL / DIALOG */}
       <Dialog
@@ -361,12 +361,11 @@ export default function UserView({ history }) {
         aria-labelledby="alert-dialog-titleV"
         aria-describedby="alert-dialog-descriptionV"
       >
-        <DialogTitle id="alert-dialog-titleV">
-          {"Verifikasi Email"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-titleV">{"Verifikasi Email"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Link verifikasi telah kami kirimkan ke Email Anda. Silahkan periksa email Anda untuk menyelesaikan verifikasi
+            Link verifikasi telah kami kirimkan ke Email Anda. Silahkan periksa
+            email Anda untuk menyelesaikan verifikasi
           </DialogContentText>
         </DialogContent>
         <DialogActions>
