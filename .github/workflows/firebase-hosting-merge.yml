@@ -24,4 +24,3 @@ jobs:
           projectId: maunginap-bc894
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
-          CI: false
