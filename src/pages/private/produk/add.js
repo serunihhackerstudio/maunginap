@@ -21,6 +21,7 @@ function AddDialog({ history, open, handleClose }) {
     kasur: false,
     tempatJemur: false,
   });
+  console.clear(setFasilitas)
 
   const [error, setError] = useState("");
 

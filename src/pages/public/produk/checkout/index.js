@@ -75,7 +75,7 @@ function Checkout({ match, history }) {
           <TableBody>
             <TableRow>
               <TableCell align="center">
-                <img src={state.foto} width={150} alt="image" />
+                <img src={state.foto} width={150} alt="img2" />
               </TableCell>
               <TableCell component="th" scope="row">
                 <Typography variant="body1">{state.namaPenginapan}</Typography>

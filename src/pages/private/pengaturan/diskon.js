@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from "react";
-import Divider from '@material-ui/core/Divider';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import useStyles from "./styles/diskon";
 import { useSnackbar } from "notistack";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import AppPageLoading from "../../../components/AppPageLoading";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 

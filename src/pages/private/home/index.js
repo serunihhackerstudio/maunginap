@@ -37,7 +37,7 @@ function Home() {
       </Grid>
       <Grid item xs>
       <div className={classes.logo}>
-        <img src={fingerprint} width={250} />
+        <img src={fingerprint} width={250} alt="img-fingerprint"/>
       </div>
       <div className={classes.text}>
         <Typography variant="h5" color="textSecondary">

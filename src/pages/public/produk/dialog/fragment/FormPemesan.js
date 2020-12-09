@@ -1,8 +1,6 @@
 import React from "react";
-import {useDocument} from "react-firebase-hooks/firestore";
 import TextField from "@material-ui/core/TextField";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { useFirebase } from "../../../../../components/FirebaseProvider";
 import MomentUtils from "@date-io/moment";
 
 

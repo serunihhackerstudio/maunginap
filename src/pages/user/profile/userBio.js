@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import isUrl from "validator/lib/isURL";
 // styles
 import useStyles from "./styles";
 
@@ -76,16 +75,16 @@ function UserBio() {
     setSomethingChange(true);
   };
 
-  const validate = () => {
-    const newError = { ...error };
-    if (!form.alamat) {
-      newError.alamat = "Alamat wajib diisi";
-    }
-    if (!form.telepon) {
-      newError.telepon = "Telepon wajib diisi";
-    }
-    return newError;
-  };
+  // const validate = () => {
+  //   const newError = { ...error };
+  //   if (!form.alamat) {
+  //     newError.alamat = "Alamat wajib diisi";
+  //   }
+  //   if (!form.telepon) {
+  //     newError.telepon = "Telepon wajib diisi";
+  //   }
+  //   return newError;
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -152,7 +151,7 @@ function UserBio() {
       <form onSubmit={handleSubmit} noValidate>
       <div className={classes.uploadFotoProduk}>
         {form.foto ? (
-          <img src={form.foto} width={150} className={classes.profilePict}/>
+          <img alt="img" src={form.foto} width={150} className={classes.profilePict}/>
         ) : ("")}
       
             <input

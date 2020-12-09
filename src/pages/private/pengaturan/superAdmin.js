@@ -1,16 +1,11 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 
 // material ui
 import TextField from "@material-ui/core/TextField";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { useSnackbar } from "notistack";
 
 // validator
-import isEmail from "validator/lib/isEmail";
 import useStyles from "./styles/admin";
-
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 function SuperAdmin() {
   const { adminUser, adminPass } = useFirebase();

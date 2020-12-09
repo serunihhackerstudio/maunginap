@@ -1,25 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SettingsIcon from "@material-ui/icons/Settings";
-
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -33,7 +21,6 @@ import Divider from "@material-ui/core/Divider";
 import Chip from "@material-ui/core/Chip";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import DoneIcon from "@material-ui/icons/Done";
-import { useSnackbar } from "notistack";
 // data query
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useFirebase } from "../../../components/FirebaseProvider";
@@ -45,7 +32,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import ID from "../../../utils/idgenerator";
+// import ID from "../../../utils/idgenerator";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,31 +80,29 @@ export default function UserView({ history }) {
   const [snapshot, loading] = useDocument(userQuery);
   const [item, setItem] = React.useState([]);
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogV, setOpenDialogV] = React.useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  const id = ID();
-  const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`);
-
+  // const id = ID();
+  // const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`);
+  console.clear(loading)
   React.useEffect(() => {
     if (snapshot) {
       setItem(snapshot.data());
     }
   }, [snapshot]);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-  const sendEmailVerification = async (e) => {
-    const actionCodeSettings = {
-      url: `${window.location.origin}/profile/view`,
-    };
-    await user.sendEmailVerification(actionCodeSettings);
-    enqueueSnackbar(`Email verifikasi telah dikirim ke ${user.email}`, {
-      variant: "success",
-    });
-  };
+  // const handleExpandClick = () => {
+  //   setExpanded(!expanded);
+  // };
+  // const sendEmailVerification = async (e) => {
+  //   const actionCodeSettings = {
+  //     url: `${window.location.origin}/profile/view`,
+  //   };
+  //   await user.sendEmailVerification(actionCodeSettings);
+  //   enqueueSnackbar(`Email verifikasi telah dikirim ke ${user.email}`, {
+  //     variant: "success",
+  //   });
+  // };
 
   const handleSignOut = (e) => {
     auth.signOut();

@@ -202,7 +202,7 @@ const refundCallback = (produkDoc) => async () => {
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           const dateBooking = produkData.tanggalPesan
-          const hargaMula = parseInt(produkData.harga) + produkData.codeHarga
+          // const hargaMula = parseInt(produkData.harga) + produkData.codeHarga
           const diskon = produkData.harga - produkData.harga * (produkData.diskon / 100)
           return (
             <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>

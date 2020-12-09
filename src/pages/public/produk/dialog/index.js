@@ -17,7 +17,6 @@ import { useSnackbar } from "notistack";
 
 // util
 import ID from "../../../../utils/idgenerator";
-import BookingCode from "../../../../utils/bookingCode";
 
 // react fragment
 import PaymentForm from "./fragment/PaymentForm";

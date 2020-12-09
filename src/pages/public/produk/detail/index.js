@@ -1,17 +1,13 @@
 import React from "react";
-import {Link} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useDocument, useCollection } from "react-firebase-hooks/firestore";
-import SendIcon from "@material-ui/icons/Send";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -22,18 +18,15 @@ import { currency } from "../../../../utils/formatter";
 import { useSnackbar } from "notistack";
 
 // import dialog booking
-import { CardMedia, CardActionArea, Card } from "@material-ui/core";
+import { CardMedia, Card } from "@material-ui/core";
 // import context
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 
 // dialog;
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -48,27 +41,16 @@ import Tooltip from "@material-ui/core/Tooltip";
 // import {DetailShimmer} from "../../../../components/Skeleton"
 import Skeleton from "@material-ui/lab/Skeleton";
 
-// CHECKBOX UNTUK FASILITAS UMUM
-import FormLabel from "@material-ui/core/FormLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
-
 // rating
 import Rating from "@material-ui/lab/Rating";
-import Box from "@material-ui/core/Box";
 
 // list
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import PersonIcon from "@material-ui/icons/Person";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { green, red, blue, orange, yellow } from "@material-ui/core/colors";
-import AirlineSeatFlatSharpIcon from "@material-ui/icons/AirlineSeatFlatSharp";
+import { red, blue, orange } from "@material-ui/core/colors";
 import GradeIcon from "@material-ui/icons/Grade";
 
 // icon
@@ -84,7 +66,6 @@ import Chip from "@material-ui/core/Chip";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import ChatIcon from '@material-ui/icons/Chat';
 import BookingCode from "../../../../utils/bookingCode";
-import { set } from "date-fns/fp";
 
 // mobile view detection
 import { isBrowser } from "react-device-detect";
@@ -128,7 +109,7 @@ function DetailProduk({ match, history, location }) {
   const [snapshotSuka, loadingSuka] = useDocument(isDataLikePath);
   // const likeDb = firestore.collection("datastore").doc("suka");
   //
-
+  console.clear(imgLoading, loadingSuka)
   // status reserveed
   const [isReserved, setReserved] = React.useState(false);
   const dataReserved = firestore
@@ -137,7 +118,7 @@ function DetailProduk({ match, history, location }) {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
-
+  console.clear(loadingReserved)
   // like button handler
   const [likeNum, setLikeNum] = React.useState(0);
 
@@ -152,16 +133,16 @@ function DetailProduk({ match, history, location }) {
     kasur: false,
     tempatJemur: false,
   });
-  const {
-    kamarMandiDalam,
-    wifi,
-    listrikSendiri,
-    ac,
-    meja,
-    lemari,
-    kasur,
-    tempatJemur,
-  } = fasilitas;
+  // const {
+  //   kamarMandiDalam,
+  //   wifi,
+  //   listrikSendiri,
+  //   ac,
+  //   meja,
+  //   lemari,
+  //   kasur,
+  //   tempatJemur,
+  // } = fasilitas;
 
   // rating
   const queryRating = firestore
@@ -170,6 +151,7 @@ function DetailProduk({ match, history, location }) {
   const [snapshotRating, loadingRating] = useCollection(queryRating);
   const [ratingItems, setRatingItems] = React.useState([]);
   const [ratingValue, setRatingValue] = React.useState(0);
+  console.clear(loadingRating, ratingItems)
   React.useEffect(() => {
     const items = [];
     if (snapshotRating) {
@@ -384,14 +366,15 @@ function DetailProduk({ match, history, location }) {
                 {listImage.slice(0, 4).map((data) => {
                   const imgFile = data.data().url;
                   return (
-                    <a href={"#"} onClick={handleClickOpen(imgFile)}>
+                    <span onClick={handleClickOpen(imgFile)}>
                       <img
                         src={imgFile}
                         width={70}
                         height={50}
                         className={classes.imgThumb}
+                        alt="img"
                       />
-                    </a>
+                    </span>
                   );
                 })}
               </Grid>
@@ -563,7 +546,7 @@ function DetailProduk({ match, history, location }) {
                             <a
                               href={`https://www.google.com/maps/dir/?api=1&destination=${state.lokasi}`}
                               style={{textDecoration:"none"}}
-                              target="_blank"
+                              // target="_blank"
                             >
                               <Chip
                                 size="small"
@@ -1091,7 +1074,7 @@ function DetailProduk({ match, history, location }) {
               {loading ? (
                 <AppPageLoading />
               ) : (
-                <img src={dialogImg} className={classes.imgThumb} width={800} />
+                <img src={dialogImg} className={classes.imgThumb} width={800} alt="main img" />
               )}
             </DialogContentText>
           </DialogContent>

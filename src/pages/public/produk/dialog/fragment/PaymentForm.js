@@ -9,8 +9,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Divider from "@material-ui/core/Divider";
-import bank_mandiri_syariah from "../../../../../assets/bank_mandiri_syariah.jpg";
-import bank_bri from "../../../../../assets/bank_bri.png";
 
 export default function PaymentForm({ form, setForm, error, setError }) {
   const { setFormBank, akunBank } = usePesanan();

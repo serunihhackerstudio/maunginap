@@ -23,7 +23,6 @@ import useStyles from "./styles/grid";
 // page component
 import AddDialog from "./add";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { usePesanan } from "../../../components/PesananProvider";
 import AppPageLoading from "../../../components/AppPageLoading";
 import AppLoading from "../../../components/AppLoading";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -38,8 +37,6 @@ function GridProduk() {
   const classes = useStyles();
 
   const { firestore, storage } = useFirebase();
-
-  const productStorage = storage.ref(`penginapan/data/produk`);
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
 

@@ -60,11 +60,12 @@ export default function Users({ history }) {
     pink[500],
     yellow[500],
   ];
+  console.clear(lengthLoading)
 
   const el = React.useRef(null);
   const [isNextClicked, setNextClicked] = React.useState(false);
-
-  React.useEffect(() => {
+  console.clear(isNextClicked)
+  React.useEffect((isNextClicked) => {
     if (snapshot) {
       setDataUsers(snapshot.docs);
       if (isNextClicked) {

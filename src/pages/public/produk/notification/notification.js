@@ -1,43 +1,28 @@
 import React from "react";
-import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useStyles from "./styles";
-import Box from "@material-ui/core/Box";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import Divider from "@material-ui/core/Divider";
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { green, red, blue, orange } from "@material-ui/core/colors";
+import {  red, orange } from "@material-ui/core/colors";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TimerIcon from "@material-ui/icons/Timer";
 import DoneIcon from "@material-ui/icons/Done";
-import MenuItem from "@material-ui/core/MenuItem";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Tooltip from "@material-ui/core/Tooltip";
 
 export default function Notification({history}) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
   const { firestore, user } = useFirebase();
 
   const notifQuery = firestore
@@ -46,7 +31,7 @@ export default function Notification({history}) {
 
   const [snapshot, loading] = useCollection(notifQuery);
   const [msgNotif, setMsgNotif] = React.useState([]);
-
+  console.clear(loading)
   React.useEffect(() => {
     if (snapshot) {
       const notifData = snapshot.docs;
@@ -55,9 +40,9 @@ export default function Notification({history}) {
     }
   }, [snapshot]);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  // const handleExpandClick = () => {
+  //   setExpanded(!expanded);
+  // };
   return (
     <>
       

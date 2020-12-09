@@ -1,24 +1,20 @@
 import React, {useState, useEffect} from "react";
 import Divider from '@material-ui/core/Divider';
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import useStyles from "./styles/imageSlider";
 import { useSnackbar } from "notistack";
 import { useFirebase } from "../../../components/FirebaseProvider";
 import AppPageLoading from "../../../components/AppPageLoading";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ID from "../../../utils/idgenerator"
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import Checkbox from "@material-ui/core/Checkbox";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -39,7 +35,7 @@ export default function ImageSlider({ match }) {
   const [error, setError] = useState({
     foto:""
   })
-  
+  console.clear(form,error)
   // // query/load data
   useEffect(() => {
     if (snapshot){
@@ -138,21 +134,20 @@ export default function ImageSlider({ match }) {
         <List className={classes.rootImg}>
           {loading ? (<AppPageLoading />) : (
               state.map((data, index) => {
-                const counting = index + 1;
+                // const counting = index + 1;
                 const imgFile = data.data().url;
                 return (
                   <div>
                     <ListItem key={data.id} role={undefined} dense button>
                       
                       <ListItemText className={classes.listAlign}>
-                      <a href={"#"}>
                         <img
+                          alt={"sliderImage"}
                           src={imgFile}
                           width={300}
                           height={100}
                           className={classes.imgThumb}
                         />
-                      </a>
                       </ListItemText>
                       <ListItemSecondaryAction>
                         <IconButton

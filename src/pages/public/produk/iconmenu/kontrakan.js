@@ -3,8 +3,6 @@ import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -12,20 +10,14 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import Container from "@material-ui/core/Container";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
 import { currency } from "../../../../utils/formatter";
 // React router
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 
 // component
-import AppPageLoading from "../../../../components/AppPageLoading";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 // icon
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Skeleton from "@material-ui/lab/Skeleton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Chip from "@material-ui/core/Chip";
@@ -53,17 +45,13 @@ el.current.scrollIntoView({ block: "end", behavior: "smooth" });
 
 function Kontrakan({ history }) {
   const { firestore } = useFirebase();
-  const kotaOpt = [];
-  const kotaData = [];
   const [options, setOptions] = React.useState([]);
   const [value, setValue] = React.useState(options[0]);
-  const [inputValue, setInputValue] = React.useState("");
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
+  console.clear(setValue, kotaLoading, value)
 
   const classes = useStyles();
-  const defaultNumPage = 8;
-  const [numPage, setNumPage] = useState(defaultNumPage);
   const dataDoc = firestore
     .collection(`penginapan`)
     .doc("data")
@@ -78,24 +66,18 @@ function Kontrakan({ history }) {
   const [valueKota, setKota] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const { jenisPenginapanOpt } = usePesanan();
-
-  const [success, setSuccess] = React.useState(false);
-  const [loadingBtn, setLoading] = React.useState(false);
-
+  const [success, setSuccess] = React.useState(false);  
+  
   // hilangkan fab ketika tombol search diaktifkan
   const [searchingActivate, setSearchingActivate] = useState(false);
-
+  console.clear(valueJenisPenginapan,setSearchingActivate, setSuccess,loading, valueKota, jenisPenginapanOpt, setKota, setJenisPenginapan, success)
+  console.clear(searchingActivate)
   const timer = React.useRef();
-
-  const [form, setForm] = useState({
-    kota: "",
-    jenisPenginapan: "",
-  });
-
   const el = useRef(null);
   const [isNextClicked, setNextClicked] = useState(false);
-
+  console.clear(setNextClicked)
   useEffect(() => {
+    const kotaData = [];
     if (snapshot) {
       setProdukItems(snapshot.docs);
       if (isNextClicked) {
@@ -113,13 +95,14 @@ function Kontrakan({ history }) {
   }, [snapshot, isNextClicked, kotaSnapshot]);
 
   const [maxData, setMaxData] = useState(0);
+  console.clear(maxData)
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
 
-  const loadNextData = (e) => {
-    e.preventDefault();
-    setNextClicked(true);
-    setNumPage(numPage + defaultNumPage);
-  };
+  // const loadNextData = (e) => {
+  //   e.preventDefault();
+  //   setNextClicked(true);
+  //   setNumPage(numPage + defaultNumPage);
+  // };
 
   // React.useEffect(() => {
   //   return () => {
@@ -131,59 +114,59 @@ function Kontrakan({ history }) {
   //   return <AppPageLoading />;
   // }
 
-  const handleSubmit = async (e) => {
-    setSearchingActivate(true);
-    e.preventDefault();
-    if (!loadingBtn) {
-      setSuccess(false);
-      setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 1500);
-    }
-    if (produkItems !== "" || (value !== "" && valueJenisPenginapan !== "")) {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .where("kota", "==", `${value}`)
-        .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-    }
-    if (form.kota === "" && valueJenisPenginapan === "") {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .orderBy("created", "desc")
-        .limit(numPage)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-      setSearchingActivate(false);
-    }
+  // const handleSubmit = async (e) => {
+  //   setSearchingActivate(true);
+  //   e.preventDefault();
+  //   if (!loadingBtn) {
+  //     setSuccess(false);
+  //     setLoading(true);
+  //     timer.current = window.setTimeout(() => {
+  //       setSuccess(true);
+  //       setLoading(false);
+  //     }, 1500);
+  //   }
+  //   if (produkItems !== "" || (value !== "" && valueJenisPenginapan !== "")) {
+  //     await firestore
+  //       .collection(`penginapan`)
+  //       .doc("data")
+  //       .collection("produk")
+  //       .where("kota", "==", `${value}`)
+  //       .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
+  //       .get()
+  //       .then((data) => setProdukItems(data.docs));
+  //   }
+  //   if (form.kota === "" && valueJenisPenginapan === "") {
+  //     await firestore
+  //       .collection(`penginapan`)
+  //       .doc("data")
+  //       .collection("produk")
+  //       .orderBy("created", "desc")
+  //       .limit(numPage)
+  //       .get()
+  //       .then((data) => setProdukItems(data.docs));
+  //     setSearchingActivate(false);
+  //   }
 
-    if (form.kota !== "" && valueJenisPenginapan === "") {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .where("kota", "==", `${form.kota}`)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-      form.kota = "";
-    }
-    if (form.kota === "" && valueJenisPenginapan !== "") {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-    }
-  };
+  //   if (form.kota !== "" && valueJenisPenginapan === "") {
+  //     await firestore
+  //       .collection(`penginapan`)
+  //       .doc("data")
+  //       .collection("produk")
+  //       .where("kota", "==", `${form.kota}`)
+  //       .get()
+  //       .then((data) => setProdukItems(data.docs));
+  //     form.kota = "";
+  //   }
+  //   if (form.kota === "" && valueJenisPenginapan !== "") {
+  //     await firestore
+  //       .collection(`penginapan`)
+  //       .doc("data")
+  //       .collection("produk")
+  //       .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
+  //       .get()
+  //       .then((data) => setProdukItems(data.docs));
+  //   }
+  // };
 
   return (
     <>

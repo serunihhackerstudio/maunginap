@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
@@ -26,7 +19,7 @@ import Fab from "@material-ui/core/Fab";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 // react-router
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import AppLoading from "../../../../components/AppLoading";
 
@@ -34,7 +27,6 @@ import AppLoading from "../../../../components/AppLoading";
 import useStyles from "./styles";
 import { currency } from "../../../../utils/formatter";
 import ID from "../../../../utils/idgenerator";
-import Skeleton from "@material-ui/lab/Skeleton";
 
 // rating
 import Rating from "@material-ui/lab/Rating";
@@ -47,7 +39,6 @@ import { useSnackbar } from "notistack";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import datanotfound from "../../../../assets/datanotfound.png";
 
@@ -58,7 +49,6 @@ import { isBrowser } from "react-device-detect";
 import { sendEmailJatuhTempo } from "../../../../config/mailserver";
 
 function History({ match, history, location }) {
-  const ratingRef = useRef();
 
   const ratingId = ID();
 
@@ -81,11 +71,11 @@ function History({ match, history, location }) {
   const [form, setForm] = useState({
     rating: "",
   });
-  const queryAll = firestore
-    .collection("pesanan")
-    .where("userId", "==", user.uid);
+  // const queryAll = firestore
+  //   .collection("pesanan")
+  //   .where("userId", "==", user.uid);
 
-  const [querySnapshot, queryLoading] = useCollection(queryAll);
+  // const [querySnapshot, queryLoading] = useCollection(queryAll);
 
   const [isNow, setNow] = useState(true);
 
@@ -118,14 +108,12 @@ function History({ match, history, location }) {
 
   const perpanjangCallback = (data) => (e) => {
     setPesananId(data.id);
-    const dataProduk = data.data();
-    const dateNow = new Date().toLocaleDateString();
     history.push(`/perpanjang/${data.id}`);
   };
 
   // batalkan pesanan handling callback
   const batalkanPesananCallback = (data) => async (e) => {
-    const total = parseInt(data.data().harga) + data.data().codeHarga;
+    // const total = parseInt(data.data().harga) + data.data().codeHarga;
     await firestore
       .collection("pesanan")
       .doc(`${data.id}`)
@@ -551,7 +539,7 @@ function History({ match, history, location }) {
         <div>
           <Box display="flex" justifyContent="center" m={1} p={1}>
             <Box p={1}>
-              <img src={datanotfound} width={350} height={250} />
+              <img src={datanotfound} width={350} height={250} alt="img history pesanan" />
             </Box>
           </Box>
         </div>

@@ -5,7 +5,6 @@ import Paper from "@material-ui/core/Paper"; // => kotak putih untuk melapisi ob
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 
 // import react router dom
 import { Link, Redirect } from "react-router-dom";
@@ -56,7 +55,7 @@ function RegistrasiUser({ match }) {
   const [isSubmitting, setSubmitting] = useState(false);
 
   // untk keperluan authentikasi
-  const { auth, user, loading, firestore } = useFirebase();
+  const { auth, user, loading } = useFirebase();
 
   const handleChange = (e) => {
     // teknik tercepat untuk perubahan value/nilai di form input

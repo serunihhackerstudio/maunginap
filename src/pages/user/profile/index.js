@@ -10,9 +10,6 @@ import UserInfo from "./userInfo";
 import UserBio from "./userBio";
 import useStyles from "./styles";
 
-import Fab from "@material-ui/core/Fab";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-
 function UserProfile(props) {
   const handleChangeTab = (event, value) => {
     props.history.push(value);

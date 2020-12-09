@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { usePesanan } from "../../../components/PesananProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -21,12 +18,10 @@ import { Link } from "react-router-dom";
 import useStyles from "./styles";
 
 // component
-import AppPageLoading from "../../../components/AppPageLoading";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Skeleton from "@material-ui/lab/Skeleton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Chip from "@material-ui/core/Chip";
@@ -37,10 +32,6 @@ import homekostan from "../../../assets/homekostan.png";
 import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
-import Image from "material-ui-image";
-
-
-
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -57,16 +48,13 @@ el.current.scrollIntoView({ block: "end", behavior: "smooth" });
 */
 
 function HomeProduk() {
-  const [value1, setValue1] = React.useState(0);
   const { firestore } = useFirebase();
-  const kotaOpt = [];
-  const kotaData = [];
   const [options, setOptions] = React.useState([]);
   const [value, setValue] = React.useState(options[0]);
   const [inputValue, setInputValue] = React.useState("");
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-
+  console.clear(kotaLoading)
   const classes = useStyles();
   const defaultNumPage = 8;
   const [numPage, setNumPage] = useState(defaultNumPage);
@@ -83,12 +71,10 @@ function HomeProduk() {
     .collection("produk");
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
-  const [valueKota, setKota] = React.useState("");
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
-  const { jenisPenginapanOpt } = usePesanan();
-
   const [success, setSuccess] = React.useState(false);
   const [loadingBtn, setLoading] = React.useState(false);
+  console.clear(setJenisPenginapan,success )
 
   // hilangkan fab ketika tombol search diaktifkan
   const [searchingActivate, setSearchingActivate] = useState(false);
@@ -104,6 +90,7 @@ function HomeProduk() {
   const [isNextClicked, setNextClicked] = useState(false);
 
   useEffect(() => {
+    const kotaData = [];
     if (snapshot) {
       setProdukItems(snapshot.docs);
       if (isNextClicked) {
@@ -302,12 +289,11 @@ function HomeProduk() {
             <Grid item={true} xs={12} xm={12} md={6} lg={6}>
               <Card className={classes.root}>
                 <CardActionArea
-                  component={Link}
                   style={{ textAlign: "center" }}
                   component={Link}
                   to={"/menu/only/kost"}
                 >
-                  <img src={homekostan} className={classes.mediaiconMenu} />
+                  <img src={homekostan} className={classes.mediaiconMenu} alt="img"/>
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -325,10 +311,9 @@ function HomeProduk() {
                 <CardActionArea
                   component={Link}
                   style={{ textAlign: "center" }}
-                  component={Link}
                   to={"/menu/only/kontrakan"}
                 >
-                  <img src={homekontrakan} className={classes.mediaiconMenu} />
+                  <img src={homekontrakan} className={classes.mediaiconMenu} alt="img" />
                 </CardActionArea>
                 <CardActions>
                   <Typography

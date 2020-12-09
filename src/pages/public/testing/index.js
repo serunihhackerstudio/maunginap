@@ -6,6 +6,7 @@ import { useFirebase } from "../../../components/FirebaseProvider";
 function Testing() {
   const { firestore } = useFirebase();
   const [dataKota, setataKota] = React.useState([]);
+  console.clear(setataKota)
   firestore
     .collection("kota")
     .get()

@@ -1,9 +1,8 @@
 import React, { createContext, useContext } from "react";
-import ID from "../utils/idgenerator";
 
-// image assets
-import bank_mandiri from "../assets/bank_mandiri.jpg"
-import bank_bca from "../assets/bank_bca.jpg"
+// // image assets
+// import bank_mandiri from "../assets/bank_mandiri.jpg"
+// import bank_bca from "../assets/bank_bca.jpg"
 
 import bank_mandiri_syariah from "../assets/bank_mandiri_syariah.jpg";
 import bank_bri from "../assets/bank_bri.png";
@@ -14,7 +13,6 @@ export const usePesanan = () => {
 };
 
 const PesananProvider = (props) => {
-  const idGenerator = ID();
   const [formBooking, setFormBooking] = React.useState({
     namaKTP: "",
     nomorKTP: "",

@@ -36,7 +36,6 @@ import useStyles from "./styles";
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
 import { Divider } from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 export default function Private(props) {
   const classes = useStyles();

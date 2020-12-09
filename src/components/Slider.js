@@ -9,9 +9,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import {useFirebase} from "../components/FirebaseProvider"
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import Image from 'material-ui-image'
-import { withWidth } from "@material-ui/core";
 import { isBrowser } from "react-device-detect";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -46,7 +45,7 @@ function SwipeableTextMobileStepper({ classMedia }) {
   const produkStorageItem = firestore.collection("promosi")
   const [snapshot, loading] = useCollection(produkStorageItem)
   const [tutorialSteps, setTutorialSteps] = React.useState([])
-
+  console.clear(loading)
   React.useEffect(() => {
     if (snapshot){
       setTutorialSteps(snapshot.docs)

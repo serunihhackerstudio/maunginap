@@ -25,21 +25,18 @@ import ID from "../../../utils/idgenerator";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Checkbox from "@material-ui/core/Checkbox";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
-import { CardMedia } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio";
 
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 
 function EditProduk({ match }) {
   // stylesheet
@@ -70,16 +67,7 @@ function EditProduk({ match }) {
     kasur: false,
     tempatJemur: false,
   });
-  const {
-    kamarMandiDalam,
-    wifi,
-    listrikSendiri,
-    ac,
-    meja,
-    lemari,
-    kasur,
-    tempatJemur,
-  } = fasilitas;
+
 
   const handleFasilitas = (event) => {
     setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
@@ -119,8 +107,6 @@ function EditProduk({ match }) {
   });
 
   const { jenisPenginapanOpt } = usePesanan();
-  const [valueKota, setKota] = React.useState("");
-  const kotaOpt = [];
   const [options, setOptions] = React.useState([]);
   const [value, setValue] = React.useState(options[0]);
   const [inputValue, setInputValue] = React.useState("");
@@ -128,20 +114,19 @@ function EditProduk({ match }) {
   const [isSubmitting, setSubmitting] = useState(false);
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-  const kotaData = [];
-  const listGambar = [];
+  console.clear(value, kotaLoading)
 
   // koordinat
   const [isKoordinat, setKoordinat] = React.useState(false);
 
-  // tipe tahunan
-  const [isTahunan, setTahunan] = React.useState(false);
-
   // radio button untuk pemilihan main image
   const [selectedValue, setSelectedValue] = React.useState(0);
   const [radioLabel, setRadioLabel] = React.useState("");
+  console.clear(radioLabel)
 
   useEffect(() => {
+    const kotaData = [];
+    const listGambar = [];
     if (snapshot) {
       const data = snapshot.data();
       setForm((currentForm) => ({
@@ -255,7 +240,6 @@ function EditProduk({ match }) {
     return newError;
   };
 
-  const storageStore = [];
 
   const handleUploadFile = (e) => {
     const fotos = e.target.files;
@@ -705,14 +689,13 @@ function EditProduk({ match }) {
                 return (
                   <div>
                     <ListItem key={data.id} role={undefined} dense button>
-                      <a href={"#"}>
                         <img
                           src={imgFile}
                           width={80}
                           height={80}
                           className={classes.imgThumb}
+                          alt="img"
                         />
-                      </a>
                       <ListItemText className={classes.listAlign}>
                         <Typography color="primary" variant="subtitle1">
                           <strong>

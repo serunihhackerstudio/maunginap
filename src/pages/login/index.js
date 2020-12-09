@@ -5,7 +5,6 @@ import Paper from "@material-ui/core/Paper"; // => kotak putih untuk melapisi ob
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles.js";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 import HomeIcon from "@material-ui/icons/Home";
 import { useSnackbar } from "notistack";
 import fingerprint from "../../assets/fingerprint.png";
@@ -17,12 +16,6 @@ import isEmail from "validator/lib/isEmail";
 
 // firebase hook
 import { useFirebase } from "../../components/FirebaseProvider";
-
-// app component
-import AppLoading from "../../components/AppLoading";
-
-// icon
-import FingerprintIcon from "@material-ui/icons/Fingerprint";
 
 function Login(props) {
   const { location } = props;
@@ -47,7 +40,7 @@ function Login(props) {
   const [isSubmitting, setSubmitting] = useState(false);
 
   // untk keperluan authentikasi
-  const { adminUser, adminPass, setAdminUser, setAdminPass } = useFirebase();
+  const { adminUser, setAdminUser, setAdminPass } = useFirebase();
 
   const handleChange = (e) => {
     // teknik tercepat untuk perubahan value/nilai di form input

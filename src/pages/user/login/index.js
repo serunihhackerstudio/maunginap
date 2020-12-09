@@ -5,7 +5,6 @@ import Paper from "@material-ui/core/Paper"; // => kotak putih untuk melapisi ob
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles.js";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 import Alert from "@material-ui/lab/Alert";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
@@ -51,7 +50,7 @@ function LoginUser(props) {
   const [isSubmitting, setSubmitting] = useState(false);
 
   // untk keperluan authentikasi
-  const { auth, user, loading, firestore } = useFirebase();
+  const { auth, user, loading } = useFirebase();
   // if (user){
   //   const userIdQuery = firestore.collection("userbio").doc(user.uid)
   //   userIdQuery.set({userUid:user.uid, foto:""}, {merge:true})

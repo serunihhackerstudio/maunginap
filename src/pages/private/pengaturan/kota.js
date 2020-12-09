@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // material-ui
 import TextField from "@material-ui/core/TextField";
@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 
 // firebase
 import { useFirebase } from "../../../components/FirebaseProvider";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 // css
 import useStyles from "./styles/identitas";
@@ -21,10 +21,8 @@ import ID from "../../../utils/idgenerator";
 // LIST
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -32,7 +30,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 
 function Kota() {
-  const { firestore, user } = useFirebase();
+  const { firestore } = useFirebase();
   const genId = ID();
   const dataDoc = firestore.collection("kota").doc(`${genId}`);
   const [queryDataItems, setQueryDataItems] = useState([])

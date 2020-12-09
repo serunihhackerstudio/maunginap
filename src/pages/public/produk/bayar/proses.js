@@ -19,9 +19,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { currency } from "../../../../utils/formatter";
 import Pdf from "react-to-pdf";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import Fab from "@material-ui/core/Fab";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import IconButton from "@material-ui/core/IconButton";
 
 const Proses = ({ match }) => {
   const ref = React.createRef();
@@ -31,10 +29,11 @@ const Proses = ({ match }) => {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(dataQuery);
-  const { progressPembayaran, formBank, formPesanan } = usePesanan();
+  const { progressPembayaran, formBank } = usePesanan();
   const [activeStep, setActiveStep] = React.useState(3);
   const [dataPesanan, setDataPesanan] = React.useState({});
   const nomorWA = "081-990-321-358";
+  console.clear(setActiveStep)
   React.useEffect(() => {
     if (snapshot) {
       setDataPesanan(snapshot.data());

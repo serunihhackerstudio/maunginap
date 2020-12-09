@@ -8,7 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import MenuIcon from "@material-ui/icons/Menu";
-import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -61,10 +60,11 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-import { green, red, blue, orange } from "@material-ui/core/colors";
+
+
+
+
+import { red, orange } from "@material-ui/core/colors";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TimerIcon from "@material-ui/icons/Timer";
 import DoneIcon from "@material-ui/icons/Done";
@@ -77,9 +77,9 @@ import IconMenu from "../public/produk/iconmenu";
 // bottom navigation
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import RestoreIcon from "@material-ui/icons/Restore";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+
+
+
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 // import usePesanan from PesananProvider
@@ -95,6 +95,7 @@ function Home({ history, location, match }) {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  console.clear(setOpen)
   const { auth, user, firestore } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
@@ -103,6 +104,7 @@ function Home({ history, location, match }) {
     .where("userId", "==", user.uid);
 
   const [snapshot, loading] = useCollection(historyQuery);
+  console.clear(loading)
 
   const notifQuery = firestore
     .collection("notification")
@@ -118,12 +120,12 @@ function Home({ history, location, match }) {
   const [jumlahNotif, setJumlahNotif] = React.useState(0);
   const [jumlahNotifAll, setJumlahNotifAll] = React.useState(0);
   const [msgNotif, setMsgNotif] = React.useState([]);
-
+  console.clear(loadingNotif, loadingNotifAll,jumlahNotif,)
   // avatar image
   const userBio = firestore.collection("userbio").doc(`${user.uid}`);
   const [userBioSnapshot, userBioLoading] = useCollection(userBio);
   const [userBioItem, setUserBioItem] = React.useState({});
-
+  console.clear(userBioLoading, userBioItem)
   React.useEffect(() => {
     if (snapshot) {
       setJumlahPesanan(snapshot.docs.length);
@@ -150,9 +152,9 @@ function Home({ history, location, match }) {
     history.push("/history");
   };
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
+  // const handleOpenDialog = () => {
+  //   setOpenDialog(true);
+  // };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);

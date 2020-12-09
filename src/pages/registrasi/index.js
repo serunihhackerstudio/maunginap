@@ -41,7 +41,7 @@ function Registrasi() {
   const [isSubmitting, setSubmitting] = useState(false);
 
   // untk keperluan authentikasi
-  const { auth, user, loading, firestore } = useFirebase();
+  const { auth, user, loading } = useFirebase();
 
   const handleChange = (e) => {
     // teknik tercepat untuk perubahan value/nilai di form input
