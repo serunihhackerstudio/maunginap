@@ -172,7 +172,7 @@ function RegistrasiUser({ match }) {
           className={classes.title}
           color="textSecondary"
         >
-          Buat Akun Baru
+          Ayo buat akun baru kemudian cari kost-kostan / kontrakan idaman Anda setelah membuat akun baru di platform maunginap
         </Typography>
 
         <form onSubmit={handleSubmit} noValidate>

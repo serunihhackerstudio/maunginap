@@ -169,8 +169,7 @@ function LoginUser(props) {
           className={classes.title}
           color="textSecondary"
         >
-          Selamat datang di platform maunginap. Ayo Login untuk dapat mengakses
-          semua fitur
+          Selamat datang di platform maunginap. Ayo login untuk mulai booking kost-kostan/kontrakan idaman Anda
         </Typography>
         <form onSubmit={handleSubmit} noValidate>
           <TextField

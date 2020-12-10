@@ -129,7 +129,7 @@ function Registrasi() {
     <Container maxWidth="xs">
       <Paper className={classes.paper}>
         <Typography variant="h5" component="h1" className={classes.title}>
-          Buat Akun Baru
+          Ayo buat akun baru. Ayo cari kost-kostan / kontrakan idaman Anda setelah membuat akun baru di platform maunginap
         </Typography>
 
         <form onSubmit={handleSubmit} noValidate>
