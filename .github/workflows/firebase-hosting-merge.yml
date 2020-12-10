@@ -2,7 +2,7 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
-'on':
+"on":
   push:
     branches:
       - master
@@ -15,12 +15,12 @@ jobs:
         run: npm install
       - name: Build Script
         run: npm run build
-      
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAUNGINAP_BC894 }}'
-          channelId: live
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAUNGINAP_BC894 }}"
+          expires: 30d
           projectId: maunginap-bc894
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
