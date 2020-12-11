@@ -114,7 +114,7 @@ export default function UserView({ history }) {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialogV(false);
+    setOpenDialog(false);
   };
   const handleOpenDialogV = async () => {
     setOpenDialogV(true);
@@ -329,11 +329,11 @@ export default function UserView({ history }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Tidak
-          </Button>
-          <Button onClick={handleSignOut} color="primary" autoFocus>
+          <Button onClick={handleSignOut} color="primary">
             Iya
+          </Button>
+          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            Tidak
           </Button>
         </DialogActions>
       </Dialog>
