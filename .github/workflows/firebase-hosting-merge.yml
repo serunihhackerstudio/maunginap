@@ -15,12 +15,13 @@ jobs:
         run: npm install
       - name: Build Script
         run: npm run build
-      # - uses: FirebaseExtended/action-hosting-deploy@v0
-      #   with:
-      #     repoToken: "${{ secrets.GITHUB_TOKEN }}"
-      #     firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAUNGINAP_BC894 }}"
-      #     channelId: live
-      #     projectId: maunginap-bc894
 
-      #   env:
-      #     FIREBASE_CLI_PREVIEWS: hostingchannels
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAUNGINAP_BC894 }}"
+          channelId: live
+          projectId: maunginap-bc894
+
+        env:
+          FIREBASE_CLI_PREVIEWS: hostingchannels
