@@ -18,7 +18,7 @@ export function useFirebase() {
 function FirebaseProvider(props) {
   const auth = firebase.auth();
   const firestore = firebase.firestore();
-  
+
   console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV){
     firestore.settings({
