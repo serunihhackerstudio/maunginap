@@ -290,7 +290,7 @@ function Home({ history, location, match }) {
             >
               {/* LOGO TITLE */}
               <Switch>
-                <Route path="/" exact children="Home" />
+                <Route path="/" exact children="Beranda" />
                 <Route
                   path="/view/penginapan/:checkoutId/checkout"
                   exact
