@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     width: 300,
   },
   tabContent: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   pengaturanBio: {
     display: "flex",
