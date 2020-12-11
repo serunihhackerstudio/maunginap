@@ -18,11 +18,6 @@ export function useFirebase() {
 function FirebaseProvider(props) {
   const auth = firebase.auth();
   const firestore = firebase.firestore();
-  if (process.env.NODE_ENV){
-    firestore.settings({
-      host: 'localhost:8080',
-      ssl: false
-  })}
   /*
   jika ingin melakukan development, maka aktifkan ini
   console.log(process.env.NODE_ENV)
