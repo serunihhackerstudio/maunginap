@@ -681,7 +681,7 @@ function EditProduk({ match }) {
         </Grid>
 
         <Grid item xs={6} sm={6}>
-          <Grid className={classes.center}>
+          <Grid className={classes.uploadItemFotoProduk}>
             <List className={classes.rootImg}>
               {listImage.map((data, index) => {
                 const counting = index + 1;

@@ -64,7 +64,12 @@ const useStyles = makeStyles((theme) => ({
   },
   iconCenter:{
     textAlign:"center"
-  }
+  },
+  uploadItemFotoProduk: {
+    textAlign: "center",
+    marginLeft:theme.spacing(12),
+    marginRight:theme.spacing(12)
+  },
 }));
 
 export default useStyles;
