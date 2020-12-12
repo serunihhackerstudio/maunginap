@@ -57,14 +57,23 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-
+import MoodIcon from '@material-ui/icons/Mood';
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 
+// colors
+import {
+  green,
+  red,
+  blue,
+  orange,
+  purple,
+  lightBlue,
+  teal,
+  cyan,
+  pink,
+} from "@material-ui/core/colors";
 
-
-
-import { red, orange } from "@material-ui/core/colors";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TimerIcon from "@material-ui/icons/Timer";
 import DoneIcon from "@material-ui/icons/Done";
@@ -77,13 +86,12 @@ import IconMenu from "../public/produk/iconmenu";
 // bottom navigation
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-
-
-
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import Divider from '@material-ui/core/Divider';
 
 // import usePesanan from PesananProvider
 import {usePesanan} from "../../components/PesananProvider"
+import IconLoading from "../../components/AppPageLoading/icon";
 
 function Home({ history, location, match }) {
   // use detailParam to get match params penginapanId from detail page
@@ -194,6 +202,18 @@ function Home({ history, location, match }) {
     setDrawer({ left: open });
   };
 
+  const colors = [
+    green[500],
+    red[500],
+    blue[500],
+    orange[500],
+    purple[500],
+    lightBlue[500],
+    teal[500],
+    cyan[500],
+    pink[500],
+  ];
+  const colorIndex = Math.floor(Math.random() * colors.length); // returns a random integer from 0 to 10
   const list = (anchor) => (
     <div
       className={!isBrowser ? clsx(classes.fullList) : clsx(classes.list)}
@@ -202,6 +222,31 @@ function Home({ history, location, match }) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
+      <div>
+          <ListItem
+            // selected={props.match ? true : false}
+            button
+          >
+            <ListItemIcon>
+              
+              {userBioLoading ? (
+                <IconLoading />
+              ) : (
+                <Avatar style={{backgroundColor:colors[colorIndex]}} className={classes.small} src={userBioItem.foto} alt="img" >
+                  <MoodIcon />
+                  </Avatar>
+              )}
+              
+            </ListItemIcon>
+            
+            {/* <ListItemText primary={`Hai ${user.email.split("@")[0]}`} color="primary"/> */}
+            <Typography color={colors[colorIndex]}>
+                Hai {user.email.split("@")[0]}
+            </Typography>
+            
+          </ListItem>
+        </div>
+      <Divider />
         <Route
           path="/"
           exact
@@ -269,7 +314,15 @@ function Home({ history, location, match }) {
           className={clsx(classes.appBar, open && classes.appBarShift)}
         >
           <Toolbar className={classes.toolbar}>
-            <IconButton
+            {location.pathname === "/profile/user/info" || location.pathname === "/profile/user/biodata" ? (
+               <IconButton className={classes.goBackIcon}
+                component={Link}
+                to={"/profile/view"}
+             >
+               <ArrowBackIcon color="white"/>
+             </IconButton>
+            ) : (
+              <IconButton
               edge="start"
               color="inherit"
               aria-label="open drawer"
@@ -281,6 +334,9 @@ function Home({ history, location, match }) {
             >
               <MenuIcon />
             </IconButton>
+             
+            )}
+
             <Typography
               component="h1"
               variant="h6"

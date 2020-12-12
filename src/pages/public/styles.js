@@ -33,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: 36,
   },
+  goBackIcon: {
+    marginRight: 25,
+    color:"white"
+  },
   menuButtonHidden: {
     display: "none",
   },
@@ -103,7 +107,11 @@ const useStyles = makeStyles((theme) => ({
   size:{
     width:theme.spacing(2),
     height:theme.spacing(2)
-  }
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
 }));
 
 export default useStyles;
