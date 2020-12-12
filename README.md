@@ -1,3 +1,13 @@
+### We have updated Maunginap to V2.2.0
+<li>New design for mobile view</li>
+<li>UI Improvement on desktop view</li>
+<li>Better data management</li>
+<li>Integrated with github automatic deployment</li>
+<li>Email notification integration</li>
+<li>Funding service activation</li>
+<br/>
+Find out at <a href="https://maunginap.com">https://maunginap.com</a>
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
