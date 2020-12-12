@@ -21,7 +21,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 // react-router
 import { Link } from "react-router-dom";
 
-import AppLoading from "../../../../components/AppLoading";
+import AppPageLoading from "../../../../components/AppPageLoading";
 
 // styles
 import useStyles from "./styles";
@@ -143,7 +143,7 @@ function History({ match, history, location }) {
   };
 
   if (loading) {
-    return <AppLoading message="History Pesanan" />;
+    return <AppPageLoading />;
   }
 
   return (

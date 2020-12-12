@@ -321,6 +321,13 @@ function Home({ history, location, match }) {
              >
                <ArrowBackIcon color="white"/>
              </IconButton>
+            ) : location.pathname ==="/menu/only/kost" || location.pathname === "/menu/only/kontrakan" ? (
+              <IconButton className={classes.goBackIcon}
+                  component={Link}
+                  to={"/"}
+              >
+                <ArrowBackIcon color="white"/>
+              </IconButton>
             ) : (
               <IconButton
               edge="start"

@@ -3,7 +3,6 @@ import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -23,8 +22,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Chip from "@material-ui/core/Chip";
 
 // button
-import Tooltip from "@material-ui/core/Tooltip";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { isBrowser } from "react-device-detect";
 
@@ -359,17 +357,7 @@ function Kontrakan({ history }) {
         })}
       </Grid>
       {isBrowser ? (
-        <Tooltip title="Kembali" aria-label="kembali">
-        <Fab
-          color="primary"
-          className={classes.fab}
-          onClick={() => {
-            history.push("/");
-          }}
-        >
-          <ArrowBackIcon />
-        </Fab>
-      </Tooltip>
+        ""
       ) : ("")}
     </>
   );

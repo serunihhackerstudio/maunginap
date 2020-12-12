@@ -22,6 +22,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import ID from "../../../utils/idgenerator";
 
+import Avatar from "@material-ui/core/Avatar";
+
 function UserBio() {
   const classes = useStyles();
 
@@ -151,7 +153,8 @@ function UserBio() {
       <form onSubmit={handleSubmit} noValidate>
       <div className={classes.uploadFotoProduk}>
         {form.foto ? (
-          <img alt="img" src={form.foto} width={150} className={classes.profilePict}/>
+          <Avatar className={classes.avatar} src={form.foto} />
+          // <img alt="img" src={form.foto} width={150} className={classes.profilePict}/>
         ) : ("")}
       
             <input

@@ -33,12 +33,19 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
   },
   profilePict:{
-    borderRadius:"20%",
+    borderRadius:"8%",
   },
   fab: {
     position: "absolute",
     bottom: theme.spacing(4),
     right: theme.spacing(4),
+  },
+  avatar: {
+    backgroundColor: "#016660",
+    height: theme.spacing(15),
+    width: theme.spacing(15),
+    margin: "auto",
+    marginBottom:theme.spacing(2)
   },
 }));
 
