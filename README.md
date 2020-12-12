@@ -1,4 +1,4 @@
-### We have updated Maunginap to V2.2.0
+## We have updated Maunginap to V2.2.0
 <li>New design for mobile view</li>
 <li>UI Improvement on desktop view</li>
 <li>Better data management</li>
@@ -8,10 +8,10 @@
 <br/>
 Find out at <a href="https://maunginap.com">https://maunginap.com</a>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 In the project directory, you can run:
 
 ### `yarn start`
