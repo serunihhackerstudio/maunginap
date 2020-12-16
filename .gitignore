@@ -72,3 +72,5 @@ functions/
 android/
 
 capacitor.config.json
+
+keystore/

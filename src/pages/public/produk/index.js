@@ -238,7 +238,7 @@ function HomeProduk() {
           >
             Di mana aja pasti bisa nginap dengan platform ini. Mau nginap di
             kost-kotan atau kontrakan ? mau yang bulanan atau tahunan ? nggak
-            perlu report dan ribet, pake aja maungingap.com
+            perlu report dan ribet, pake aja maunginap.com
           </Typography>
         )}
 
