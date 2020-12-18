@@ -103,7 +103,6 @@ function Home({ history, location, match }) {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  console.clear(setOpen)
   const { auth, user, firestore } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
@@ -112,7 +111,6 @@ function Home({ history, location, match }) {
     .where("userId", "==", user.uid);
 
   const [snapshot, loading] = useCollection(historyQuery);
-  console.clear(loading)
 
   const notifQuery = firestore
     .collection("notification")
@@ -159,6 +157,8 @@ function Home({ history, location, match }) {
   if (!clear){
     console.clear(loadingNotif, loadingNotifAll,jumlahNotif,)
     console.clear(userBioLoading, userBioItem)
+    console.clear(setOpen)
+    console.clear(loading)
   } 
 
   const historyPesananCallback = () => {
@@ -238,9 +238,10 @@ function Home({ history, location, match }) {
               {userBioLoading ? (
                 <IconLoading />
               ) : (
-                <Avatar style={{backgroundColor:colors[colorIndex]}} className={classes.small} src={userBioItem.foto} alt="img" >
-                  <MoodIcon />
-                  </Avatar>
+                // <Avatar style={{backgroundColor:colors[colorIndex]}} className={classes.small} src={userBioItem.foto} alt="img" >
+                //   <MoodIcon />
+                //   </Avatar>
+                  <MoodIcon style={{color:colors[colorIndex]}} />
               )}
               
             </ListItemIcon>

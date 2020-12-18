@@ -363,8 +363,9 @@ function DetailProduk({ match, history, location }) {
               height={50}
               className={classes.imgThumb}
             />
-          ) : (
+          ) : isBrowser ? (
             <>
+
               <Grid className={classes.center} direction="row">
                 {listImage.slice(0, 4).map((data) => {
                   const imgFile = data.data().url;
@@ -385,6 +386,9 @@ function DetailProduk({ match, history, location }) {
                 Rating
               </Typography> */}
             </>
+          ) : (
+            ""
+          
           )}
           {loading ? (
             <>

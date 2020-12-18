@@ -28,7 +28,6 @@ import maunginap from "../../../assets/maunginap.jpg";
 function LoginUser(props) {
   // ambil state openAlert
   const { needLogin, setNeedLogin } = usePesanan();
-  console.log(needLogin);
   const { location } = props;
   // untuk keperluan styling
   const classes = useStyles();
