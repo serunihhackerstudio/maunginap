@@ -19,6 +19,7 @@ import Chip from "@material-ui/core/Chip";
 // button
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { isBrowser } from "react-device-detect";
+import { blue } from "@material-ui/core/colors";
 
 // import datanotfound from "../../../assets/datanotfound.png";
 
@@ -43,13 +44,11 @@ function Kost({ history }) {
   const classes = useStyles();
   const defaultNumPage = 8;
   const [numPage, setNumPage] = useState(defaultNumPage);
-  console.clear(kotaLoading,options, numPage)
   const dataDoc = firestore
     .collection(`penginapan`)
     .doc("data")
     .collection("produk")
     .where("jenisPenginapan", "==", "Kost-kostan");
-    console.clear(setNumPage)
 
   const dataDocMax = firestore
     .collection(`penginapan`)
@@ -58,11 +57,10 @@ function Kost({ history }) {
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
   // hilangkan fab ketika tombol search diaktifkan
-  console.clear(loading)
   const timer = React.useRef();  
   const el = useRef(null);
   const [isNextClicked, setNextClicked] = useState(false);
-  console.clear(setNextClicked)
+  
   useEffect(() => {
     const kotaData = [];
     if (snapshot) {
@@ -83,22 +81,17 @@ function Kost({ history }) {
 
   const [maxData, setMaxData] = useState(0);
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
+  
 
-  // const loadNextData = (e) => {
-  //   e.preventDefault();
-  //   setNextClicked(true);
-  //   setNumPage(numPage + defaultNumPage);
-  // };
-  console.clear(maxData)
-  // React.useEffect(() => {
-  //   return () => {
-  //     clearTimeout(timer.current);
-  //   };
-  // }, []);
+  const clear = true;
+  if (!clear){
+    console.clear(maxData)
+    console.clear(setNextClicked)
+    console.clear(loading)
+    console.clear(setNumPage)
+    console.clear(kotaLoading,options, numPage)
+  }
 
-  // if (loading) {
-  //   return <AppPageLoading />;
-  // }
 
 
   return (
@@ -223,10 +216,14 @@ function Kost({ history }) {
                     <Typography variant="h6">
                       {produkData.namaPenginapan}
                     </Typography>
-
+                    <Typography variant="body1" style={{ color: blue[500] }}>
+                      {produkData.isTahunan ? "(Kost Tahunan)" : ""}{" "}
+                    </Typography>
                     <Typography variant="body1" gutterBottom color="primary">
-                      {currency(produkData.harga)}{" "}
-                      {produkData.jenisPenginapan === "Kontrakan"
+                      {currency(produkData.harga)}
+                      {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
+                      {produkData.jenisPenginapan === "Kontrakan" ||
+                      produkData.isTahunan
                         ? " / tahun"
                         : " / bulan"}
                     </Typography>

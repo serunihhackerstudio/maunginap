@@ -33,12 +33,17 @@ const Proses = ({ match }) => {
   const [activeStep, setActiveStep] = React.useState(3);
   const [dataPesanan, setDataPesanan] = React.useState({});
   const nomorWA = "081-990-321-358";
-  console.clear(setActiveStep)
+  
   React.useEffect(() => {
     if (snapshot) {
       setDataPesanan(snapshot.data());
     }
   }, [snapshot]);
+
+  const clear = true;
+  if (!clear){
+    console.clear(setActiveStep)
+  }
 
   if (loading) {
     return <AppLoading message="Memproses pesanan..." />;

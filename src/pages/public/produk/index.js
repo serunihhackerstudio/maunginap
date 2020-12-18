@@ -54,7 +54,7 @@ function HomeProduk() {
   const [inputValue, setInputValue] = React.useState("");
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-  console.clear(kotaLoading)
+  
   const classes = useStyles();
   const defaultNumPage = 8;
   const [numPage, setNumPage] = useState(defaultNumPage);
@@ -74,7 +74,7 @@ function HomeProduk() {
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [success, setSuccess] = React.useState(false);
   const [loadingBtn, setLoading] = React.useState(false);
-  console.clear(setJenisPenginapan,success )
+  
 
   // hilangkan fab ketika tombol search diaktifkan
   const [searchingActivate, setSearchingActivate] = useState(false);
@@ -179,6 +179,12 @@ function HomeProduk() {
         .then((data) => setProdukItems(data.docs));
     }
   };
+
+  const clear = true;
+  if (!clear){
+    console.clear(setJenisPenginapan,success )
+    console.clear(kotaLoading)
+  }
 
   return (
     <>

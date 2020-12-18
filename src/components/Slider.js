@@ -45,7 +45,6 @@ function SwipeableTextMobileStepper({ classMedia }) {
   const produkStorageItem = firestore.collection("promosi")
   const [snapshot, loading] = useCollection(produkStorageItem)
   const [tutorialSteps, setTutorialSteps] = React.useState([])
-  console.clear(loading)
   React.useEffect(() => {
     if (snapshot){
       setTutorialSteps(snapshot.docs)
@@ -65,6 +64,11 @@ function SwipeableTextMobileStepper({ classMedia }) {
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
+
+  const clear = true;
+  if (!clear){
+    console.clear(loading)  
+  } 
 
   return (
     <div className={classes.root}>

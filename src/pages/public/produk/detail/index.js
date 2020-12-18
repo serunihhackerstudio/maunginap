@@ -18,7 +18,7 @@ import { currency } from "../../../../utils/formatter";
 import { useSnackbar } from "notistack";
 
 // import dialog booking
-import { CardMedia, Card } from "@material-ui/core";
+import { Card } from "@material-ui/core";
 // import context
 import { useFirebase } from "../../../../components/FirebaseProvider";
 import { usePesanan } from "../../../../components/PesananProvider";
@@ -66,7 +66,7 @@ import Chip from "@material-ui/core/Chip";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import ChatIcon from '@material-ui/icons/Chat';
 import BookingCode from "../../../../utils/bookingCode";
-
+import SwipeableTextMobileStepperDetail from "../../../../components/SliderDetail";
 // mobile view detection
 import { isBrowser } from "react-device-detect";
 
@@ -108,8 +108,6 @@ function DetailProduk({ match, history, location }) {
   const [imgSnapshot, imgLoading] = useCollection(queryImages);
   const [snapshotSuka, loadingSuka] = useDocument(isDataLikePath);
   // const likeDb = firestore.collection("datastore").doc("suka");
-  //
-  console.clear(imgLoading, loadingSuka)
   // status reserveed
   const [isReserved, setReserved] = React.useState(false);
   const dataReserved = firestore
@@ -118,7 +116,7 @@ function DetailProduk({ match, history, location }) {
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
   const [snapshotReserved, loadingReserved] = useDocument(dataReserved);
-  console.clear(loadingReserved)
+  
   // like button handler
   const [likeNum, setLikeNum] = React.useState(0);
 
@@ -151,7 +149,7 @@ function DetailProduk({ match, history, location }) {
   const [snapshotRating, loadingRating] = useCollection(queryRating);
   const [ratingItems, setRatingItems] = React.useState([]);
   const [ratingValue, setRatingValue] = React.useState(0);
-  console.clear(loadingRating, ratingItems)
+  
   React.useEffect(() => {
     const items = [];
     if (snapshotRating) {
@@ -193,10 +191,6 @@ function DetailProduk({ match, history, location }) {
       setListImage(imgSnapshot.docs);
     }
   }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot, snapshotRating]);
-
-  // // const handleFasilitas = (event) => {
-  // //   setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
-  // // };
 
   const handleOpenDialog = () => {
     if (state.jenisPenginapan === "Kontrakan" || state.isTahunan) {
@@ -275,6 +269,14 @@ function DetailProduk({ match, history, location }) {
     setExpanded(!expanded);
   };
 
+  const clear = true;
+  if (!clear){
+    console.clear(loadingRating, ratingItems)
+    console.clear(loadingReserved)
+    console.clear(imgLoading, loadingSuka)
+  }
+  
+
   const value = ratingValue.toFixed(1);
   const adminNumber = "+6281990321358";
   return (
@@ -346,11 +348,12 @@ function DetailProduk({ match, history, location }) {
         {loading ? (
           <Skeleton animation="wave" variant="rect" className={classes.media} />
         ) : (
-          <CardMedia
-            className={classes.media}
-            image={state.foto}
-            title="Foto Utama"
-          />
+          <SwipeableTextMobileStepperDetail classMedia={classes.mediaPromotion} imgParams={match.params.penginapanId} />
+          // <CardMedia
+          //   className={classes.media}
+          //   image={state.foto}
+          //   title="Foto Utama"
+          // />
         )}
 
         <CardContent>

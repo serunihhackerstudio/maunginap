@@ -128,12 +128,12 @@ function Home({ history, location, match }) {
   const [jumlahNotif, setJumlahNotif] = React.useState(0);
   const [jumlahNotifAll, setJumlahNotifAll] = React.useState(0);
   const [msgNotif, setMsgNotif] = React.useState([]);
-  console.clear(loadingNotif, loadingNotifAll,jumlahNotif,)
+  
   // avatar image
   const userBio = firestore.collection("userbio").doc(`${user.uid}`);
   const [userBioSnapshot, userBioLoading] = useCollection(userBio);
   const [userBioItem, setUserBioItem] = React.useState({});
-  console.clear(userBioLoading, userBioItem)
+  
   React.useEffect(() => {
     if (snapshot) {
       setJumlahPesanan(snapshot.docs.length);
@@ -154,6 +154,12 @@ function Home({ history, location, match }) {
       setUserBioItem(userBioSnapshot.data());
     }
   }, [snapshot, snapshotNotif, snapshotNotifAll, userBioSnapshot]);
+
+  const clear = true;
+  if (!clear){
+    console.clear(loadingNotif, loadingNotifAll,jumlahNotif,)
+    console.clear(userBioLoading, userBioItem)
+  } 
 
   const historyPesananCallback = () => {
     setJumlahPesanan(null);

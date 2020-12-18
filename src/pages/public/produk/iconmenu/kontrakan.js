@@ -47,7 +47,7 @@ function Kontrakan({ history }) {
   const [value, setValue] = React.useState(options[0]);
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-  console.clear(setValue, kotaLoading, value)
+  
 
   const classes = useStyles();
   const dataDoc = firestore
@@ -68,12 +68,10 @@ function Kontrakan({ history }) {
   
   // hilangkan fab ketika tombol search diaktifkan
   const [searchingActivate, setSearchingActivate] = useState(false);
-  console.clear(valueJenisPenginapan,setSearchingActivate, setSuccess,loading, valueKota, jenisPenginapanOpt, setKota, setJenisPenginapan, success)
-  console.clear(searchingActivate)
   const timer = React.useRef();
   const el = useRef(null);
   const [isNextClicked, setNextClicked] = useState(false);
-  console.clear(setNextClicked)
+  
   useEffect(() => {
     const kotaData = [];
     if (snapshot) {
@@ -93,9 +91,16 @@ function Kontrakan({ history }) {
   }, [snapshot, isNextClicked, kotaSnapshot]);
 
   const [maxData, setMaxData] = useState(0);
-  console.clear(maxData)
+  
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
-
+  const clear = true;
+  if (!clear){
+    console.clear(maxData)
+    console.clear(setNextClicked)
+    console.clear(valueJenisPenginapan,setSearchingActivate, setSuccess,loading, valueKota, jenisPenginapanOpt, setKota, setJenisPenginapan, success)
+    console.clear(searchingActivate)
+    console.clear(setValue, kotaLoading, value)
+  }
   // const loadNextData = (e) => {
   //   e.preventDefault();
   //   setNextClicked(true);

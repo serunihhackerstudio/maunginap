@@ -37,7 +37,6 @@ export default function Perpanjang({ history, match }) {
   // const [expanded, setExpanded] = React.useState(false);
   const { akunBank, pesananId } = usePesanan();
   const { firestore, user } = useFirebase();
-  console.clear(pesananId)
   const query = firestore
     .collection("pesanan")
     .doc(`${match.params.penginapanId}`);
@@ -62,7 +61,7 @@ export default function Perpanjang({ history, match }) {
   const [diskon, setDiskon] = React.useState(0)
   const queryDiskon =   firestore.collection(`penginapan`).doc("data").collection("produk");
   const [snapshotDiskon, loadingDiskon] = useCollection(queryDiskon)
-  console.clear(loadingDiskon)
+  
   React.useEffect(() => {
     if (snapshot) {
       setForm(snapshot.data());
@@ -73,6 +72,12 @@ export default function Perpanjang({ history, match }) {
 
 
   }, [snapshot, snapshotDiskon]);
+
+  const clear = true;
+  if (!clear){
+    console.clear(loadingDiskon)
+    console.clear(pesananId)
+  }
 
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);

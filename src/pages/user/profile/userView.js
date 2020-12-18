@@ -84,12 +84,16 @@ export default function UserView({ history }) {
   const [openDialogV, setOpenDialogV] = React.useState(false);
   // const id = ID();
   // const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`);
-  console.clear(loading)
   React.useEffect(() => {
     if (snapshot) {
       setItem(snapshot.data());
     }
   }, [snapshot]);
+
+  const clear = true;
+  if (!clear){
+    console.clear(loading)
+  }
 
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);

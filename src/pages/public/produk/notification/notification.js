@@ -31,7 +31,7 @@ export default function Notification({history}) {
 
   const [snapshot, loading] = useCollection(notifQuery);
   const [msgNotif, setMsgNotif] = React.useState([]);
-  console.clear(loading)
+  
   React.useEffect(() => {
     if (snapshot) {
       const notifData = snapshot.docs;
@@ -39,6 +39,11 @@ export default function Notification({history}) {
       setMsgNotif(notifData);
     }
   }, [snapshot]);
+
+  const clear = true;
+  if (!clear){
+    console.clear(loading)
+  }
 
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);

@@ -30,12 +30,16 @@ export default function ProsesPerpanjang({ history, match }) {
     .doc(`${match.params.penginapanId}`);
   const [snapshot, loading] = useDocument(query);
   const [form, setForm] = React.useState({})
-  console.clear(loading)
+  
   React.useEffect(() => {
     if (snapshot) {
       setForm(snapshot.data());
     }
   }, [snapshot]);
+  const clear = true;
+  if (!clear){
+    console.clear(loading)
+  }
   const diskon = form.harga - (form.harga * (form.diskon / 100))
   return (
     <>
