@@ -180,7 +180,7 @@ function DetailProduk({ match, history, location }) {
         setSuka(snapshotSuka.docs[0].data());
         setIdSuka(snapshotSuka.docs[0].id);
       } catch (e) {
-        console.log(e.message);
+        
       }
     }
     if (snapshotReserved) {
