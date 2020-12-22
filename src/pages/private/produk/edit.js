@@ -518,15 +518,16 @@ function EditProduk({ match }) {
               id="jumlahKamar"
               name="jumlahKamar"
               label={
-                form.jenisPenginapan === "Kontrakan"
+                form.jenisPenginapan === "Kontrakan" 
                   ? "Jumlah Rumah Kontrakan"
+                  : form.jenisPenginapan === "Ruko" ? "Jumlah Ruko"
                   : "Jumlah Kamar"
               }
               margin="normal"
               type="number"
               fullWidth
               value={
-                form.jenisPenginapan === "Kontrakan"
+                form.jenisPenginapan === "Kontrakan" || form.jenisPenginapan === "Ruko"
                   ? (form.jumlahKamar = 1)
                   : form.jumlahKamar
               }
@@ -534,7 +535,7 @@ function EditProduk({ match }) {
               error={error.jumlahKamar ? true : false}
               helperText={error.jumlahKamar}
               disabled={
-                form.jenisPenginapan === "Kontrakan" ? true : isSubmitting
+                form.jenisPenginapan === "Kontrakan" || form.jenisPenginapan === "Ruko" ? true : isSubmitting
               }
               variant="outlined"
             />

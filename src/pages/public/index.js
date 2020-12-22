@@ -328,7 +328,7 @@ function Home({ history, location, match }) {
              >
                <ArrowBackIcon color="white"/>
              </IconButton>
-            ) : location.pathname ==="/menu/only/kost" || location.pathname === "/menu/only/kontrakan" ? (
+            ) : location.pathname ==="/menu/only/kost" || location.pathname === "/menu/only/kontrakan" || location.pathname === "/menu/only/ruko" ? (
               <IconButton className={classes.goBackIcon}
                   component={Link}
                   to={"/"}
@@ -401,6 +401,7 @@ function Home({ history, location, match }) {
                 <Route path="/profile/view" exact children="User Profile" />
                 <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
                 <Route path="/menu/only/kost" exact children="Kostan" />
+                <Route path="/menu/only/ruko" exact children="Ruko" />
                 <Route
                   path="/view/penginapan/:checkoutId/proses"
                   exact
@@ -593,7 +594,7 @@ function Home({ history, location, match }) {
               <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
-            ): location.pathname === `/menu/only/kost` || location.pathname === `/menu/only/kontrakan` ? (
+            ): location.pathname === `/menu/only/kost` || location.pathname === `/menu/only/kontrakan` || location.pathname === `/menu/only/ruko` ? (
               <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
@@ -650,6 +651,7 @@ function Home({ history, location, match }) {
                 <Route path="/profile/view" exact children="User Profile" />
                 <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
                 <Route path="/menu/only/kost" exact children="Kostan" />
+                <Route path="/menu/only/ruko" exact children="Ruko" />
                 <Route
                   path="/view/penginapan/:checkoutId/proses"
                   exact

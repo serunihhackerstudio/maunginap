@@ -29,9 +29,12 @@ import Chip from "@material-ui/core/Chip";
 // asset
 import homekontrakan from "../../../assets/homekontrakan.png";
 import homekostan from "../../../assets/homekostan.png";
+import ruko from "../../../assets/ruko.png";
 import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
+import StorefrontIcon from '@material-ui/icons/Storefront';
+import Tooltip from '@material-ui/core/Tooltip';
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -251,7 +254,7 @@ function HomeProduk() {
         {/* ICON MENU JENIS PRODUK */}
         {loading ? (
           <Grid container spacing={5} className={classes.gridContainer}>
-            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+            <Grid item={true} xs>
               <Card className={classes.root}>
                 <CardActionArea component={Link}>
                   <Skeleton
@@ -270,7 +273,26 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+            <Grid item={true} xs>
+              <Card className={classes.root}>
+                <CardActionArea component={Link}>
+                  <Skeleton
+                    animation="wave"
+                    variant="rect"
+                    className={classes.media}
+                  />
+                </CardActionArea>
+                <CardActions>
+                  <Skeleton
+                    animation="wave"
+                    height={35}
+                    width="30%"
+                    className={classes.menuicon}
+                  />
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item={true} xs>
               <Card className={classes.root}>
                 <CardActionArea component={Link}>
                   <Skeleton
@@ -292,7 +314,7 @@ function HomeProduk() {
           </Grid>
         ) : (
           <Grid container spacing={5} className={classes.gridContainer}>
-            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+            <Grid item={true} xs>
               <Card className={classes.root}>
                 <CardActionArea
                   style={{ textAlign: "center" }}
@@ -312,7 +334,7 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={6} lg={6}>
+            <Grid item={true} xs>
               <Card className={classes.root}>
                 <CardActionArea
                   component={Link}
@@ -328,6 +350,26 @@ function HomeProduk() {
                     className={classes.menuicon}
                   >
                     Kontrakan
+                  </Typography>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item={true} xs>
+              <Card className={classes.root}>
+                <CardActionArea
+                  component={Link}
+                  style={{ textAlign: "center" }}
+                  to={"/menu/only/ruko"}
+                >
+                  <img src={ruko} className={classes.mediaiconMenu} alt="img" />
+                </CardActionArea>
+                <CardActions>
+                  <Typography
+                    variant="subtitle1"
+                    color="textSecondary"
+                    className={classes.menuicon}
+                  >
+                    Sewa Ruko
                   </Typography>
                 </CardActions>
               </Card>
@@ -608,7 +650,7 @@ function HomeProduk() {
                     <Typography variant="body1" gutterBottom color="primary">
                       {currency(produkData.harga)}
                       {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
-                      {produkData.jenisPenginapan === "Kontrakan" ||
+                      {produkData.jenisPenginapan === "Kontrakan" || produkData.jenisPenginapan === "Ruko" ||
                       produkData.isTahunan
                         ? " / tahun"
                         : " / bulan"}
@@ -672,31 +714,28 @@ function HomeProduk() {
                     variant="outlined"
                     size="small"
                   />
+                  {produkData.jenisPenginapan === "Ruko" ? <Tooltip title="Penyewaan Ruko"><StorefrontIcon /></Tooltip> : ""}
                 </CardActions>
               </Card>
             </Grid>
           );
         })}
-        <Grid className={classes.fabGrid} id={"el"} ref={el}>
+      </Grid>
+      <Grid className={classes.fabGrid} id={"el"} ref={el}>
           {produkItems.length !== maxData && !searchingActivate ? (
             <Button
               variant="outlined"
               className={classes.fab}
               color="primary"
               onClick={loadNextData}
-              fullWidth
             >
               Load more data
             </Button>
           ) : (
-            // <Fab color="primary" className={classes.fab} onClick={loadNextData}>
-            //   <ArrowForwardIcon />
-            // </Fab>
             <></>
           )}
           {/* {searchingActivate && <></>} */}
         </Grid>
-      </Grid>
       
     </>
   );

@@ -193,7 +193,7 @@ function DetailProduk({ match, history, location }) {
   }, [snapshot, snapshotSuka, snapshotReserved, imgSnapshot, snapshotRating]);
 
   const handleOpenDialog = () => {
-    if (state.jenisPenginapan === "Kontrakan" || state.isTahunan) {
+    if (state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko"  || state.isTahunan) {
       const harga = state.harga;
       setFormPesanan({
         jenisIuran:"Penginapan Tahunan",
@@ -206,7 +206,7 @@ function DetailProduk({ match, history, location }) {
       history.push(`/view/penginapan/${match.params.penginapanId}/checkout`);
     } else {
       if (jenisIuran === "") {
-        enqueueSnackbar("'Jenis iuran' tidak boleh kosong ", {
+        enqueueSnackbar("Jenis iuran tidak boleh kosong ", {
           variant: "error",
         });
       } else {
@@ -339,7 +339,7 @@ function DetailProduk({ match, history, location }) {
               <Skeleton animation="wave" height={10} width="40%" />
             ) : (
               `(IDR) ${currency(state.harga)} ${
-                state.jenisPenginapan === "Kontrakan" || state.isTahunan ? " / tahun" : "/ bulan"
+                state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko" || state.isTahunan ? " / tahun" : "/ bulan"
               }`
             )
           }
@@ -357,12 +357,15 @@ function DetailProduk({ match, history, location }) {
         )}
 
         <CardContent>
-          {loading ? (
+          {loading && isBrowser? (
+            <div>
             <Skeleton
               animation="wave"
               height={50}
-              className={classes.imgThumb}
+              width="60%"
+              className={classes.imgThumbDiv}
             />
+            </div>
           ) : isBrowser ? (
             <>
 
@@ -551,7 +554,7 @@ function DetailProduk({ match, history, location }) {
                           </Typography>
                           <Typography>
                             <a
-                              href={`https://www.google.com/maps/dir/?api=1&destination=${state.lokasi}`}
+                              href={`https://www.google.com/maps/dir/?api=1&query =${state.lat}, ${state.long}`}
                               style={{textDecoration:"none"}}
                               // target="_blank"
                             >
@@ -571,7 +574,7 @@ function DetailProduk({ match, history, location }) {
                   />
                 </ListItem>
                 <ListItem>
-                  {state.jenisPenginapan === "Kontrakan" ? (
+                  {state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko" ? (
                     <ListItemAvatar>
                       <Avatar style={state.jumlahKamar === 0 ? {backgroundColor:red[500]} : {backgroundColor:blue[500]}}>
                         <InfoIcon />
@@ -585,7 +588,7 @@ function DetailProduk({ match, history, location }) {
                     </ListItemAvatar>
                   )}
 
-                  {state.jenisPenginapan === "Kontrakan" ? (
+                  {state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko" ? (
                     <ListItemText
                       primary={
                         <React.Fragment>
@@ -596,13 +599,17 @@ function DetailProduk({ match, history, location }) {
                             color="textPrimary"
                           >
                             <Typography variant="body2" color="textSecondary">
-                              Ketersediaan kontrakan
+                              {state.jenisPenginapan === "Kontrakan" ? "Ketersediaan kontrakan" : "Ketersediaan Ruko"}
+                              
                             </Typography>
                             <Typography
                               variant="subtitle1"
                               style={state.jumlahKamar === 0 ? {color:red[500]} : {color:blue[500]}}
                             >
-                              {state.jumlahKamar === 0 ? ("Kontakan telah terbooking") : ("Kontrakan tersedia")}
+                              {state.jumlahKamar === 0 && state.jenisPenginapan === "Kontrakan" ? ("Kontakan telah terbooking") 
+                              : state.jumlahKamar === 0 && state.jenisPenginapan === "Ruko" ? ("Ruko telah terbooking")
+                              : state.jumlahKamar !== 0 && state.jenisPenginapan === "Kontrakan" ? ("Kontrakan tersedia") :
+                              ("Ruko tersedia")}
                             </Typography>
                           </Typography>
                         </React.Fragment>
@@ -674,7 +681,7 @@ function DetailProduk({ match, history, location }) {
                   {isReserved ? "Soldout" : "Pesan"}
                 </Button>
               </Tooltip>
-              {state.jenisPenginapan === "Kontrakan" || state.isTahunan ? (
+              {state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko" || state.isTahunan ? (
                 <div></div>
               ) : (
                 <Tooltip title="Bulanan / tahunan" aria-label="jenisIuran">

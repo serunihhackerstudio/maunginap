@@ -15,8 +15,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 // Icon
-import HomeIcon from "@material-ui/icons/Home";
-import StoreIcon from "@material-ui/icons/Store";
+// import HomeIcon from "@material-ui/icons/Home";
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import StorefrontIcon from '@material-ui/icons/Storefront';
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import SettingsIcon from "@material-ui/icons/Settings";
 
@@ -94,7 +95,7 @@ export default function Private(props) {
               />
               <Route
                 path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/produk"
-                children="Tambah Prodok"
+                children="Kost & Penginapan"
               />
               <Route
                 path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/transaksi"
@@ -147,7 +148,7 @@ export default function Private(props) {
                   button
                 >
                   <ListItemIcon>
-                    <HomeIcon />
+                    <DashboardIcon />
                   </ListItemIcon>
                   <ListItemText primary="Home" />
                 </ListItem>
@@ -169,7 +170,7 @@ export default function Private(props) {
                   button
                 >
                   <ListItemIcon>
-                    <StoreIcon />
+                    <StorefrontIcon />
                   </ListItemIcon>
                   <ListItemText primary="Produk" />
                 </ListItem>

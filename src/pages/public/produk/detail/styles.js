@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
   },
   ratingDiv:{
     marginRight:theme.spacing(1),
+  },
+  imgThumbDiv:{
+    margin:"auto"
   }
 }));
 

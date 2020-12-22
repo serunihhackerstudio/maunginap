@@ -46,7 +46,7 @@ const PesananProvider = (props) => {
   const progressPembayaran =
     "Terima kasih telah melakukan pemesanan. Silahkan lakukakan transaksi pembayarannya sesuai dengan informasi berikut ini. Tiga digit terakhir dari nilai transaksi ini untuk memudahkan kami dalam mengkonfirmasi pesanan Anda. Setelah Anda transfer, silahkan kirim foto bukti transfer ke nomor WhatsApp kami.";
   const nomorWA = "081-990-321-358";
-    const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan"];
+    const jenisPenginapanOpt = ["Kost-kostan", "Kontrakan", "Ruko"];
   const kotaOpt = ["Surabaya", "Mataram"];
   const [formPesanan, setFormPesanan] = React.useState({});
   const [telepon, setTelepon] = React.useState("");

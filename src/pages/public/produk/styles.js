@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mediaiconMenu: {
     width: 100,
+    margin:theme.spacing(2)
   },
 
   gridContainer: {
