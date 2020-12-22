@@ -21,7 +21,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { isBrowser } from "react-device-detect";
 import { blue } from "@material-ui/core/colors";
 import StorefrontIcon from '@material-ui/icons/Storefront';
-
+import Tooltip from "@material-ui/core/Tooltip";
 // import datanotfound from "../../../assets/datanotfound.png";
 
 /*
@@ -283,7 +283,7 @@ function Ruko({ history }) {
                     variant="outlined"
                     size="small"
                   />
-                  {produkData.jenisPenginapan === "Ruko" ? <StorefrontIcon/> : ""}
+                  {produkData.jenisPenginapan === "Ruko" ? <Tooltip title="Penyewaan Ruko"><StorefrontIcon /></Tooltip> : ""}
                 </CardActions>
               </Card>
             </Grid>
