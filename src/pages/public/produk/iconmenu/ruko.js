@@ -316,7 +316,7 @@ function Ruko({ history }) {
                       {produkData.namaPenginapan}
                     </Typography>
                     <Typography variant="body1" style={{ color: blue[500] }}>
-                      {produkData.isTahunan ? "(Kost Tahunan)" : ""}{" "}
+                      {produkData.isTahunan && produkData.jenisPenginapan !== "Ruko" ? "(Kost Tahunan)" : ""}{" "}
                     </Typography>
                     <Typography variant="body1" gutterBottom color="primary">
                       {currency(produkData.harga)}
