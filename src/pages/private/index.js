@@ -16,10 +16,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 // Icon
 // import HomeIcon from "@material-ui/icons/Home";
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import StorefrontIcon from '@material-ui/icons/Storefront';
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import SettingsIcon from "@material-ui/icons/Settings";
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
 // React router
 import { Route, Switch } from "react-router-dom";
@@ -148,7 +148,7 @@ export default function Private(props) {
                   button
                 >
                   <ListItemIcon>
-                    <DashboardIcon />
+                    <DashboardOutlinedIcon />
                   </ListItemIcon>
                   <ListItemText primary="Home" />
                 </ListItem>
@@ -192,7 +192,7 @@ export default function Private(props) {
                   button
                 >
                   <ListItemIcon>
-                    <ShoppingCartIcon />
+                    <ShoppingCartOutlinedIcon />
                   </ListItemIcon>
                   <ListItemText primary="Transaksi" />
                 </ListItem>
@@ -214,7 +214,7 @@ export default function Private(props) {
                   button
                 >
                   <ListItemIcon>
-                    <SettingsIcon />
+                    <SettingsOutlinedIcon />
                   </ListItemIcon>
                   <ListItemText primary="Pengaturan" />
                 </ListItem>

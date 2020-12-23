@@ -12,6 +12,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Badge from "@material-ui/core/Badge";
 
 // dialog/modal
@@ -24,8 +25,9 @@ import Button from "@material-ui/core/Button";
 
 // Icon
 import HomeIcon from "@material-ui/icons/Home";
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 // React router
 import { Route, Switch, Link } from "react-router-dom";
 
@@ -895,7 +897,7 @@ function Home({ history, location, match }) {
           >
             <BottomNavigationAction
               label="Home"
-              icon={<HomeIcon />}
+              icon={<HomeOutlinedIcon />}
               onClick={navigationTo("/")}
             />
             <BottomNavigationAction
@@ -903,14 +905,14 @@ function Home({ history, location, match }) {
               label="History"
               icon={
                 <Badge badgeContent={jumlahPesanan} color="secondary">
-                  <ShoppingCartIcon />
+                  <ShoppingCartOutlinedIcon />
                 </Badge>
               }
             />
             <BottomNavigationAction
               onClick={navigationTo("/profile/view")}
               label="Profile"
-              icon={<AccountCircleIcon />}
+              icon={<AccountCircleOutlinedIcon />}
             />
           </BottomNavigation>
           {/* <Toolbar>
