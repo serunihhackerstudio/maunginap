@@ -35,7 +35,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import Tooltip from '@material-ui/core/Tooltip';
-import datatidakditemukan from "../../../assets/datatidakditemukan.png";
+// import datatidakditemukan from "../../../assets/datatidakditemukan.png";
 
 /*
 Fitur untuk autoscroll view

@@ -197,6 +197,94 @@ function Ruko({ history }) {
               </CardActions>
             </Card>
           </Grid>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+            <Card className={classes.root}>
+              <CardActionArea component={Link}>
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  className={classes.media}
+                />
+
+                <CardContent>
+                  <Skeleton animation="wave" height={35} width="100%" />
+
+                  <Skeleton animation="wave" height={30} width="100%" />
+
+                  <Skeleton animation="wave" height={35} width="100%" />
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Skeleton animation="wave" height={35} width="30%" />
+              </CardActions>
+            </Card>
+          </Grid>
         </Grid>
       )}
     {produkItems.length === 0 && !loading ? (

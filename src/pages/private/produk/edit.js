@@ -90,6 +90,7 @@ function EditProduk({ match }) {
     diskon: 0,
     rating: 0,
     isTahunan:false,
+    intJenisPenginapan:0
   });
 
   form.fasilitasUmum = fasilitas;
@@ -156,6 +157,13 @@ function EditProduk({ match }) {
       setOptions(kotaData);
     }
   }, [snapshot, imgSnapshot, kotaSnapshot]);
+
+  // kondisi untuk mengklasifikasikan numJenisPenginapan
+  if (form.jenisPenginapan === "Kontrakan" || form.jenisPenginapan === "Kost-kostan"){
+    form.intJenisPenginapan = 0;
+  } else {
+    form.intJenisPenginapan = 1;
+  }
 
   const handleChange = (e) => {
     setForm({
