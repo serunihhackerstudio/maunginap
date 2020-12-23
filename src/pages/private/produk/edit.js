@@ -682,8 +682,9 @@ function EditProduk({ match }) {
                 color="primary"
                 disabled={isSubmitting || !isSomethingChange}
                 variant="contained"
+                startIcon={<SaveIcon/>}
               >
-                <SaveIcon className={classes.iconLeft} /> Simpan
+                Simpan
               </Button>
             </div>
           </form>

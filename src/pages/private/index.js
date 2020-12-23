@@ -13,6 +13,7 @@ import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import MailOutlineOutlinedIcon from '@material-ui/icons/MailOutlineOutlined';
 
 // Icon
 // import HomeIcon from "@material-ui/icons/Home";
@@ -30,6 +31,7 @@ import Produk from "./produk";
 import Transaksi from "./transaksi";
 import Home from "./home";
 import Users from "./users";
+import Messaging from "./messaging";
 
 // styles
 import useStyles from "./styles";
@@ -108,6 +110,10 @@ export default function Private(props) {
               <Route
                 path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/users"
                 children="Users"
+              />
+              <Route
+                path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/cloud-messaging"
+                children="Cloud Messaging"
               />
             </Switch>
             {/* LOGO TITLE */}
@@ -201,6 +207,29 @@ export default function Private(props) {
           />
 
           <Route
+            path="/cloud-messaging"
+            children={(props) => {
+              return (
+                <ListItem
+                  selected={props.match ? true : false}
+                  onClick={() => {
+                    props.history.push(
+                      "/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/cloud-messaging"
+                    );
+                  }}
+                  button
+                >
+                  <ListItemIcon>
+                    <MailOutlineOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Cloud Messaging" />
+                </ListItem>
+              );
+            }}
+            
+          />
+
+        <Route
             path="/pengaturan"
             children={(props) => {
               return (
@@ -220,7 +249,9 @@ export default function Private(props) {
                 </ListItem>
               );
             }}
+            
           />
+          
           {/* <Route
             path="/users"
             children={(props) => {
@@ -267,6 +298,11 @@ export default function Private(props) {
             <Route
               path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/users"
               component={Users}
+            />
+
+            <Route
+              path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/cloud-messaging"
+              component={Messaging}
             />
           </Switch>
         </Container>

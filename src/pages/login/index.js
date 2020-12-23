@@ -5,7 +5,6 @@ import Paper from "@material-ui/core/Paper"; // => kotak putih untuk melapisi ob
 import Typography from "@material-ui/core/Typography";
 import useStyles from "./styles.js";
 import TextField from "@material-ui/core/TextField";
-import HomeIcon from "@material-ui/icons/Home";
 import { useSnackbar } from "notistack";
 import fingerprint from "../../assets/fingerprint.png";
 
@@ -175,7 +174,6 @@ function Login(props) {
           </Button>
           <Button
             className={classes.buttons}
-            startIcon={<HomeIcon />}
             disabled={isSubmitting}
             component={Link}
             type="submit"

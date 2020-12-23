@@ -56,6 +56,11 @@ function App() {
                     path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/users"
                     component={Private}
                   />
+
+                  <PrivateRoute
+                    path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/cloud-messaging"
+                    component={Private}
+                  />
                   {/* halaman public */}
                   <Route path="/testing/checkout" component={Checkout} />
                   {/* <Route path="/view" component={Home} /> */}

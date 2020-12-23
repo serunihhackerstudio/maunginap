@@ -1,0 +1,4 @@
+curl -H "Content-Type: application/json" \
+     -H "Authorization: Bearer 3FB08F27B6EF463DA7E81B01A854D656F5EE0EDD050A97E52B7F92C6F0AED9C5" \
+     -X POST "https://2f6a164b-e799-42a0-a4cd-a8b4990895b8.pushnotifications.pusher.com/publish_api/v1/instances/2f6a164b-e799-42a0-a4cd-a8b4990895b8/publishes" \
+     -d '{"interests":["hello"],"fcm":{"notification":{"title":"Maunginap Promo", "body":"Ada diskon bagi kamu yang memperpanjang peginapan!"}}}'
