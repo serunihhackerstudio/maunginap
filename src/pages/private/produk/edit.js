@@ -335,7 +335,7 @@ function EditProduk({ match }) {
             <TextField
               id="nama"
               name="nama"
-              label="Nama Penginapan"
+              label="Nama Produk"
               margin="normal"
               fullWidth
               required

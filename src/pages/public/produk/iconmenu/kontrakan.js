@@ -13,7 +13,7 @@ import { currency } from "../../../../utils/formatter";
 // React router
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
-
+import Button from "@material-ui/core/Button";
 // component
 
 // icon
@@ -24,7 +24,7 @@ import Chip from "@material-ui/core/Chip";
 // button
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { isBrowser } from "react-device-detect";
+// import { isBrowser } from "react-device-detect";
 
 // import datanotfound from "../../../assets/datanotfound.png";
 
@@ -47,18 +47,19 @@ function Kontrakan({ history }) {
   const [value, setValue] = React.useState(options[0]);
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-  
-
   const classes = useStyles();
+  const defaultNumPage = 8;
+  const [numPage, setNumPage] = useState(defaultNumPage);
   const dataDoc = firestore
     .collection(`penginapan`)
     .doc("data")
     .collection("produk")
-    .where("jenisPenginapan", "==", "Kontrakan");
+    .where("jenisPenginapan", "==", "Kontrakan").limit(numPage);
+
   const dataDocMax = firestore
     .collection(`penginapan`)
     .doc("data")
-    .collection("produk");
+    .collection("produk").where("jenisPenginapan", "==", "Kontrakan");
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
   const [valueKota, setKota] = React.useState("");
@@ -90,8 +91,13 @@ function Kontrakan({ history }) {
     clearTimeout(timer.current);
   }, [snapshot, isNextClicked, kotaSnapshot]);
 
+  const loadNextData = (e) => {
+    e.preventDefault();
+    setNextClicked(true);
+    setNumPage(numPage + defaultNumPage);
+  };
+
   const [maxData, setMaxData] = useState(0);
-  
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
   const clear = true;
   if (!clear){
@@ -179,7 +185,7 @@ function Kontrakan({ history }) {
         </div>
       )} */}
 
-      {produkItems.length <= 0 && (
+      {loading && (
         <Grid container spacing={5} className={classes.gridContainer}>
           <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
@@ -361,9 +367,20 @@ function Kontrakan({ history }) {
           );
         })}
       </Grid>
-      {isBrowser ? (
-        ""
-      ) : ("")}
+      <Grid className={classes.fabGrid} id={"el"} ref={el}>
+          {produkItems.length !== maxData ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={loadNextData}
+            >
+              Load more data
+            </Button>
+          ) : (
+            <></>
+          )}
+          {/* {searchingActivate && <></>} */}
+        </Grid>
     </>
   );
 }

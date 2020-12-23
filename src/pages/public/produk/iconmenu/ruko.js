@@ -18,11 +18,12 @@ import Chip from "@material-ui/core/Chip";
 
 // button
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { isBrowser } from "react-device-detect";
+// import { isBrowser } from "react-device-detect";
 import { blue } from "@material-ui/core/colors";
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import Tooltip from "@material-ui/core/Tooltip";
-// import datanotfound from "../../../assets/datanotfound.png";
+import Button from "@material-ui/core/Button";
+import datatidakditemukan from "../../../../assets/datatidakditemukan.png";
 
 /*
 Fitur untuk autoscroll view
@@ -49,19 +50,20 @@ function Ruko({ history }) {
     .collection(`penginapan`)
     .doc("data")
     .collection("produk")
-    .where("jenisPenginapan", "==", "Ruko");
+    .where("jenisPenginapan", "==", "Ruko").limit(numPage);
 
   const dataDocMax = firestore
     .collection(`penginapan`)
     .doc("data")
-    .collection("produk");
+    .collection("produk").where("jenisPenginapan", "==", "Ruko");
+  const [snapshotDataDocMax, loadingDataDocMax] = useCollection(dataDocMax)
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
   // hilangkan fab ketika tombol search diaktifkan
   const timer = React.useRef();  
   const el = useRef(null);
   const [isNextClicked, setNextClicked] = useState(false);
-  
+  const [maxData, setMaxData] = useState(0);
   useEffect(() => {
     const kotaData = [];
     if (snapshot) {
@@ -78,32 +80,34 @@ function Ruko({ history }) {
       setOptions(kotaData);
     }
     clearTimeout(timer.current);
-  }, [snapshot, isNextClicked, kotaSnapshot]);
 
-  const [maxData, setMaxData] = useState(0);
-  dataDocMax.get().then((data) => setMaxData(data.docs.length));
+    if (snapshotDataDocMax){
+      setMaxData(snapshotDataDocMax.docs.length)
+    }
+
+  }, [snapshot, isNextClicked, kotaSnapshot, snapshotDataDocMax]);
+  const loadNextData = (e) => {
+    e.preventDefault();
+    setNextClicked(true);
+    setNumPage(numPage + defaultNumPage);
+  };
   
-
+  
   const clear = true;
   if (!clear){
     console.clear(maxData)
     console.clear(setNextClicked)
     console.clear(loading)
     console.clear(setNumPage)
-    console.clear(kotaLoading,options, numPage)
+    console.clear(kotaLoading,options, numPage, loadingDataDocMax)
   }
 
 
 
   return (
     <>
-      {/* {produkItems.length === 0 && (
-        <div className={classes.textNoFound}>
-          <img src={datanotfound} width={350} alt="Data not found" />
-        </div>
-      )} */}
-
-      {produkItems.length <= 0 && (
+      
+      {loading && (
         <Grid container spacing={5} className={classes.gridContainer}>
           <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
@@ -195,8 +199,14 @@ function Ruko({ history }) {
           </Grid>
         </Grid>
       )}
+    {produkItems.length === 0 && !loading ? (
+        <div className={classes.textNoFound}>
+          <img src={datatidakditemukan} width={350} alt="Data not found" />
+        </div>
+      ) : (
 
-      <Grid container spacing={5} className={classes.gridContainer}>
+        <>
+           <Grid container spacing={5} className={classes.gridContainer}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           return (
@@ -290,9 +300,24 @@ function Ruko({ history }) {
           );
         })}
       </Grid>
-      {isBrowser ? (
-        ""
-      ) : ("")}
+      <Grid className={classes.fabGrid} id={"el"} ref={el}>
+          {produkItems.length !== maxData ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={loadNextData}
+            >
+              Load more data
+            </Button>
+          ) : (
+            <></>
+          )}
+          {/* {searchingActivate && <></>} */}
+        </Grid>
+        </>
+
+      )}
+     
     </>
   );
 }

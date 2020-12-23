@@ -66,12 +66,12 @@ function AddDialog({ history, open, handleClose }) {
       open={open}
       onClose={handleClose}
     >
-      <DialogTitle>Tambah Data Kost / penginapan</DialogTitle>
+      <DialogTitle>Tambah Data Penginapan / Ruko</DialogTitle>
 
       <DialogContent divides>
         <TextField
           id=""
-          label="Nama Penginapan"
+          label="Nama Produk"
           fullWidth
           value={namaPenginapan}
           onChange={handleChange}

@@ -3,6 +3,7 @@ import { useFirebase } from "../../../../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
@@ -18,7 +19,7 @@ import Chip from "@material-ui/core/Chip";
 
 // button
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { isBrowser } from "react-device-detect";
+// import { isBrowser } from "react-device-detect";
 import { blue } from "@material-ui/core/colors";
 
 // import datanotfound from "../../../assets/datanotfound.png";
@@ -48,12 +49,12 @@ function Kost({ history }) {
     .collection(`penginapan`)
     .doc("data")
     .collection("produk")
-    .where("jenisPenginapan", "==", "Kost-kostan");
+    .where("jenisPenginapan", "==", "Kost-kostan").limit(numPage);
 
   const dataDocMax = firestore
     .collection(`penginapan`)
     .doc("data")
-    .collection("produk");
+    .collection("produk").where("jenisPenginapan", "==", "Kost-kostan");
   const [snapshot, loading] = useCollection(dataDoc);
   const [produkItems, setProdukItems] = useState([]);
   // hilangkan fab ketika tombol search diaktifkan
@@ -79,6 +80,12 @@ function Kost({ history }) {
     clearTimeout(timer.current);
   }, [snapshot, isNextClicked, kotaSnapshot]);
 
+  const loadNextData = (e) => {
+    e.preventDefault();
+    setNextClicked(true);
+    setNumPage(numPage + defaultNumPage);
+  };
+
   const [maxData, setMaxData] = useState(0);
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
   
@@ -102,7 +109,7 @@ function Kost({ history }) {
         </div>
       )} */}
 
-      {produkItems.length <= 0 && (
+      {loading && (
         <Grid container spacing={5} className={classes.gridContainer}>
           <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
@@ -288,9 +295,24 @@ function Kost({ history }) {
           );
         })}
       </Grid>
-      {isBrowser ? (
+      <Grid className={classes.fabGrid} id={"el"} ref={el}>
+          {produkItems.length !== maxData ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={loadNextData}
+            >
+              Load more data
+            </Button>
+          ) : (
+            <></>
+          )}
+          {/* {searchingActivate && <></>} */}
+        </Grid>
+      
+      {/* {isBrowser ? (
         ""
-      ) : ("")}
+      ) : ("")} */}
     </>
   );
 }

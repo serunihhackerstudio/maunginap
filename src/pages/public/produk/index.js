@@ -35,7 +35,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import Tooltip from '@material-ui/core/Tooltip';
-// import datanotfound from "../../../assets/datanotfound.png";
+import datatidakditemukan from "../../../assets/datatidakditemukan.png";
 
 /*
 Fitur untuk autoscroll view
@@ -110,6 +110,7 @@ function HomeProduk() {
     clearTimeout(timer.current);
   }, [snapshot, isNextClicked, kotaSnapshot]);
 
+  
   const [maxData, setMaxData] = useState(0);
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
 
@@ -394,7 +395,7 @@ function HomeProduk() {
               color="primary"
               className={classes.promote}
             >
-              #Carikota
+              #CariLokasi
             </Typography>
             <Typography
               variant="body1"
@@ -402,7 +403,7 @@ function HomeProduk() {
               color="textSecondary"
               className={classes.promote}
             >
-              Gak tau harus tinggal dimana? Yuk cari tempat tinggal di kota
+              Gak tau harus tinggal dimana? Yuk cari tempat tinggal di lokasi
               idamanmu!
             </Typography>
           </>
@@ -437,7 +438,7 @@ function HomeProduk() {
                       setInputValue(newInputValue);
                       setForm({ kota: newInputValue });
                     }}
-                    name="kota"
+                    name="lokasi"
                     options={options}
                     getOptionLabel={(option) => option}
                     style={{ width: 200 }}
@@ -490,9 +491,9 @@ function HomeProduk() {
                         size={24}
                         className={classes.buttonProgress}
                       />
-                    ) : (
-                      "Cari"
-                    )}
+                    ) : produkItems.length === 0 ||  produkItems.length !== 8 ? (
+                      "Refresh"
+                    ) :  "Cari"}
                   </Button>
                 </Grid>
               </Grid>
@@ -529,7 +530,7 @@ function HomeProduk() {
         </div>
       )} */}
 
-      {produkItems.length <= 0 && (
+      {loading && (
         <Grid container spacing={5} className={classes.gridContainer}>
           <Grid item={true} xs={12} xm={12} md={3} lg={3}>
             <Card className={classes.root}>
@@ -621,8 +622,14 @@ function HomeProduk() {
           </Grid>
         </Grid>
       )}
+      {produkItems.length === 0 && !loading ? (
+        <div className={classes.textNoFound}>
+          {/* <img src={datatidakditemukan} width={350} alt="Data not found" /> */}
+          
+        </div>
+      ) : (
 
-      <Grid container spacing={5} className={classes.gridContainer}>
+        <Grid container spacing={5} className={classes.gridContainer}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           return (
@@ -721,6 +728,9 @@ function HomeProduk() {
           );
         })}
       </Grid>
+
+      )}
+  
       <Grid className={classes.fabGrid} id={"el"} ref={el}>
           {produkItems.length !== maxData && !searchingActivate ? (
             <Button

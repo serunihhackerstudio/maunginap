@@ -297,7 +297,7 @@ function DetailProduk({ match, history, location }) {
                 <IconButton
                   aria-label="Back icon"
                   onClick={() => {
-                    history.push("/");
+                    history.goBack();
                   }}
                 >
                   <ArrowBackIcon />
