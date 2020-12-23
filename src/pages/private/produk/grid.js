@@ -40,7 +40,7 @@ function GridProduk() {
 
   const [openAddDialog, setOpenAddDialog] = useState(false);
 
-  const produkCol = firestore.collection(`penginapan/data/produk`);
+  const produkCol = firestore.collection(`penginapan/data/produk`).orderBy("created", "desc");
 
   const [snapshot, loading] = useCollection(produkCol);
 
