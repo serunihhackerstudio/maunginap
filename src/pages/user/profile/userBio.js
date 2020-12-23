@@ -216,7 +216,6 @@ function UserBio() {
         />{" "}
         <Button
           disabled={!isSomethingChange || isSubmitting}
-          type="submit"
           onClick={handleSubmit}
           className={classes.tombolSimpan}
           variant="contained"

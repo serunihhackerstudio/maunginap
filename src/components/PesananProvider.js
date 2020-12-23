@@ -51,9 +51,12 @@ const PesananProvider = (props) => {
   const [formPesanan, setFormPesanan] = React.useState({});
   const [telepon, setTelepon] = React.useState("");
   const [detailParam, setDetailParam] = React.useState("");
+  const [searchText, setSearchText] = React.useState([])
   return (
     <PesananContext.Provider
       value={{
+        searchText, 
+        setSearchText,
         setDetailParam,
         detailParam,
         nomorWA,

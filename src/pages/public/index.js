@@ -14,6 +14,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Badge from "@material-ui/core/Badge";
+import Paper from '@material-ui/core/Paper';
 
 // dialog/modal
 import Dialog from "@material-ui/core/Dialog";
@@ -48,6 +49,7 @@ import DialogBooking from "./produk/dialog/index";
 import UserProfile from "../user/profile";
 import UserView from "../user/profile/userView";
 import Notification from "./produk/notification/notification";
+import Search from "./produk/search";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // mobile detector
@@ -95,9 +97,14 @@ import Divider from '@material-ui/core/Divider';
 import {usePesanan} from "../../components/PesananProvider"
 import IconLoading from "../../components/AppPageLoading/icon";
 
+// searhing fiture
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+// import DirectionsIcon from '@material-ui/icons/Directions';
+
 function Home({ history, location, match }) {
   // use detailParam to get match params penginapanId from detail page
-  const { detailParam } = usePesanan()
+  const { detailParam, setSearchText } = usePesanan()
 
   const [value1, setValue1] = React.useState(0);
   // menu
@@ -108,6 +115,14 @@ function Home({ history, location, match }) {
   const { auth, user, firestore } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [jumlahPesanan, setJumlahPesanan] = React.useState(0);
+  
+
+  // searh functionality
+  const [produkItemSearch, setProdukItemSearch] = React.useState([]);
+  const produkQuery =  firestore.collection(`penginapan`).doc("data").collection("produk");
+  const [snapshotProdukQuery, loadingProdukQuery] = useCollection(produkQuery);
+  // 
+
   const historyQuery = firestore
     .collection("pesanan")
     .where("userId", "==", user.uid);
@@ -133,7 +148,7 @@ function Home({ history, location, match }) {
   const userBio = firestore.collection("userbio").doc(`${user.uid}`);
   const [userBioSnapshot, userBioLoading] = useCollection(userBio);
   const [userBioItem, setUserBioItem] = React.useState({});
-  
+  const [isSearchIconClicked, setSearchIconClicked] = React.useState(false)
   React.useEffect(() => {
     if (snapshot) {
       setJumlahPesanan(snapshot.docs.length);
@@ -153,14 +168,19 @@ function Home({ history, location, match }) {
     if (userBioSnapshot) {
       setUserBioItem(userBioSnapshot.data());
     }
-  }, [snapshot, snapshotNotif, snapshotNotifAll, userBioSnapshot]);
+
+    if (snapshotProdukQuery){
+      setProdukItemSearch(snapshotProdukQuery.docs)
+    }
+
+  }, [snapshot, snapshotNotif, snapshotNotifAll, userBioSnapshot, snapshotProdukQuery]);
 
   const clear = true;
   if (!clear){
     console.clear(loadingNotif, loadingNotifAll,jumlahNotif,)
     console.clear(userBioLoading, userBioItem)
     console.clear(setOpen)
-    console.clear(loading)
+    console.clear(loading, loadingProdukQuery, isSearchIconClicked)
   } 
 
   const historyPesananCallback = () => {
@@ -315,6 +335,33 @@ function Home({ history, location, match }) {
     
   };
 
+  const [formSearch, setFormSearch] = React.useState({
+    search:""
+  })
+  
+  
+  const handleSearchChange =  (e) => {
+    setFormSearch({
+      ...formSearch,
+      [e.target.name] : e.target.value
+    })
+    setSearchText(produkItemSearch.filter(item =>  item.data().kota.match(`${e.target.value}`.charAt(0).toUpperCase() + `${e.target.value}`.slice(1))))
+    
+  }
+  
+
+  const handleSearch = () => {
+    history.push("/search")
+    setSearchIconClicked(true)
+  }
+
+  const handleBackSearch = () => {
+    history.goBack()
+    setSearchIconClicked(false)
+  }
+
+
+
   return (
     <div className={classes.root}>
       {isBrowser ? (
@@ -330,14 +377,35 @@ function Home({ history, location, match }) {
              >
                <ArrowBackIcon color="white"/>
              </IconButton>
-            ) : location.pathname ==="/menu/only/kost" || location.pathname === "/menu/only/kontrakan" || location.pathname === "/menu/only/ruko" ? (
+            ) : location.pathname ==="/filter/kost" || location.pathname === "/filter/kontrakan" || location.pathname === "/filter/ruko" ? (
               <IconButton className={classes.goBackIcon}
                   component={Link}
                   to={"/"}
               >
                 <ArrowBackIcon color="white"/>
               </IconButton>
-            ) : (
+            ) : location.pathname === "/search" ? (
+              <Paper className={classes.rootSearch}>
+                <IconButton className={classes.iconButtonSearch} aria-label="menu" onClick={handleBackSearch}>
+                  <ArrowBackIcon/>
+                </IconButton>
+                <InputBase
+                  className={classes.inputSearch}
+                  placeholder="Cari lokasi. cth : Mataram"
+                  name="search"
+                  onChange={handleSearchChange}
+                  value={formSearch.search}
+                  inputProps={{ 'aria-label': 'search google maps' }}
+                />
+                {/* <IconButton type="submit" onClick={searchSubmitHandler} className={classes.iconButtonSearch} aria-label="search">
+                  <SearchIcon />
+                </IconButton> */}
+                {/* <Divider className={classes.dividerSearch} orientation="vertical" /> */}
+                {/* <IconButton color="primary" className={classes.iconButtonSearch} aria-label="directions">
+                  <DirectionsIcon />
+                </IconButton> */}
+              </Paper>
+            ): (
               <IconButton
               edge="start"
               color="inherit"
@@ -401,9 +469,9 @@ function Home({ history, location, match }) {
                 <Route path="/history" exact children="History Pesanan" />
                 <Route path="/notification" exact children="Notification" />
                 <Route path="/profile/view" exact children="User Profile" />
-                <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
-                <Route path="/menu/only/kost" exact children="Kostan" />
-                <Route path="/menu/only/ruko" exact children="Ruko" />
+                <Route path="/filter/kontrakan" exact children="Kontrakan" />
+                <Route path="/filter/kost" exact children="Kostan" />
+                <Route path="/filter/ruko" exact children="Ruko" />
                 <Route
                   path="/view/penginapan/:checkoutId/proses"
                   exact
@@ -421,6 +489,20 @@ function Home({ history, location, match }) {
               </IconButton>
             )}
             <>
+            {location.pathname !== "/search" ? (
+              
+              <Tooltip title="Cari Data">
+              <IconButton
+                color="inherit"
+                aria-controls="simple-menu"
+                onClick={handleSearch}
+              >
+                <SearchIcon />
+              </IconButton>
+            </Tooltip>
+
+            ) : ""}
+            
               <Tooltip title="Notifikasi">
                 <IconButton
                   color="inherit"
@@ -596,11 +678,32 @@ function Home({ history, location, match }) {
               <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
-            ): location.pathname === `/menu/only/kost` || location.pathname === `/menu/only/kontrakan` || location.pathname === `/menu/only/ruko` ? (
+            ): location.pathname === `/filter/kost` || location.pathname === `/filter/kontrakan` || location.pathname === `/filter/ruko` ? (
               <IconButton className={classes.menuButton} onClick={() => history.push("/")}>
                 <ArrowBackIcon style={{color:"white"}}/>
               </IconButton>
-            ) : (
+            ) : location.pathname === "/search" ? (
+              <Paper className={classes.rootSearch}>
+                <IconButton className={classes.iconButtonSearch} aria-label="menu" onClick={handleBackSearch}>
+                  <ArrowBackIcon/>
+                </IconButton>
+                <InputBase
+                  className={classes.inputSearch}
+                  placeholder="Cari lokasi. cth : Mataram"
+                  name="search"
+                  onChange={handleSearchChange}
+                  value={formSearch.search}
+                  inputProps={{ 'aria-label': 'search google maps' }}
+                />
+                {/* <IconButton type="submit" onClick={searchSubmitHandler} className={classes.iconButtonSearch} aria-label="search">
+                  <SearchIcon />
+                </IconButton> */}
+                {/* <Divider className={classes.dividerSearch} orientation="vertical" /> */}
+                {/* <IconButton color="primary" className={classes.iconButtonSearch} aria-label="directions">
+                  <DirectionsIcon />
+                </IconButton> */}
+              </Paper>
+            ): (
               ""
             )}
             <Typography
@@ -651,9 +754,9 @@ function Home({ history, location, match }) {
                 <Route path="/history" exact children="History Pesanan" />
                 <Route path="/notification" exact children="Notification" />
                 <Route path="/profile/view" exact children="User Profile" />
-                <Route path="/menu/only/kontrakan" exact children="Kontrakan" />
-                <Route path="/menu/only/kost" exact children="Kostan" />
-                <Route path="/menu/only/ruko" exact children="Ruko" />
+                <Route path="/filter/kontrakan" exact children="Kontrakan" />
+                <Route path="/filter/kost" exact children="Kostan" />
+                <Route path="/filter/ruko" exact children="Ruko" />
                 <Route
                   path="/view/penginapan/:checkoutId/proses"
                   exact
@@ -671,6 +774,19 @@ function Home({ history, location, match }) {
               </IconButton>
             )}
             <>
+            {location.pathname !== "/search" ? (
+              
+              <Tooltip title="Cari Data">
+              <IconButton
+                color="inherit"
+                aria-controls="simple-menu"
+                onClick={handleSearch}
+              >
+                <SearchIcon />
+              </IconButton>
+            </Tooltip>
+
+            ) : ""}
               <Tooltip title="Notifikasi">
                 <IconButton
                   color="inherit"
@@ -871,7 +987,9 @@ function Home({ history, location, match }) {
             <Route path="/profile/user" component={UserProfile} />
             <Route path="/profile/view" exact component={UserView} />
             <Route path="/notification" component={Notification} />
-            <Route path="/menu/only" component={IconMenu} />
+            <Route path="/filter" component={IconMenu} />
+            <Route path="/search" component={Search} />
+            
 
             <Route component={HomeProduk} />
           </Switch>

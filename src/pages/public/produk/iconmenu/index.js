@@ -7,9 +7,9 @@ import Ruko from "./ruko";
 function IconMenu() {
   return (
     <Switch>
-      <Route path="/menu/only/kost" component={Kost} />
-      <Route path="/menu/only/kontrakan" component={Kontrakan} />
-      <Route path="/menu/only/ruko" component={Ruko} />
+      <Route path="/filter/kost" component={Kost} />
+      <Route path="/filter/kontrakan" component={Kontrakan} />
+      <Route path="/filter/ruko" component={Ruko} />
       <Route component={Kost} />
     </Switch>
   );

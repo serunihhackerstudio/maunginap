@@ -112,6 +112,26 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
   },
+
+
+  rootSearch: {
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: "100%",
+  },
+  inputSearch: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButtonSearch: {
+    padding: 10,
+  },
+  dividerSearch: {
+    height: 28,
+    margin: 4,
+  },
+
 }));
 
 export default useStyles;

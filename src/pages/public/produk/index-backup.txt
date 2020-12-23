@@ -353,3 +353,79 @@ function HomeProduk() {
 }
 
 export default HomeProduk;
+
+
+
+
+Autocomplete Code 
+<Grid item>
+                  <Autocomplete
+                    className={classes.comboLokasi}
+                    value={form.kota}
+                    onChange={(event, newValue) => {
+                      setValue(newValue);
+                      setForm({ kota: newValue });
+                    }}
+                    inputValue={inputValue}
+                    onInputChange={(event, newInputValue) => {
+                      setInputValue(newInputValue);
+                      setForm({ kota: newInputValue });
+                    }}
+                    name="lokasi"
+                    options={options}
+                    getOptionLabel={(option) => option}
+                    style={{ width: 200 }}
+                    renderInput={(params) => {
+                      return (
+                        <TextField
+                          {...params}
+                          name="kota"
+                          label="Kota"
+                          variant="outlined"
+                        />
+                      );
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  {/* <Autocomplete
+                    className={classes.comboLokasi}
+                    value={form.jenisPenginapan}
+                    onChange={(event, newValue) => {
+                      form.jenisPenginapan = newValue;
+                    }}
+                    inputValue={valueJenisPenginapan}
+                    onInputChange={(event, newInputValue) => {
+                      setJenisPenginapan(newInputValue);
+                    }}
+                    name="jenisPenginapan"
+                    options={jenisPenginapanOpt}
+                    style={{ width: 200 }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Jenis Penginapan"
+                        variant="outlined"
+                      />
+                    )}
+                  /> */}
+                </Grid>
+                <Grid item>
+                  <Button
+                    size="large"
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                    className={classes.btn}
+                    disabled={loadingBtn}
+                  >
+                    {loadingBtn ? (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    ) : produkItems.length === 0 ||  produkItems.length !== 8 ? (
+                      "Refresh"
+                    ) :  "Cari"}
+                  </Button>
+                </Grid>

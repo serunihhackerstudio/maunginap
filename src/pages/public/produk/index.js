@@ -10,15 +10,14 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Container from "@material-ui/core/Container";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
+// import Autocomplete from "@material-ui/lab/Autocomplete";
+// import TextField from "@material-ui/core/TextField";
 import { currency } from "../../../utils/formatter";
 // React router
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 
 // component
-import CircularProgress from "@material-ui/core/CircularProgress";
 import SwipeableTextMobileStepper from "../../../components/Slider";
 
 // icon
@@ -54,7 +53,6 @@ function HomeProduk() {
   const { firestore } = useFirebase();
   const [options, setOptions] = React.useState([]);
   const [value, setValue] = React.useState(options[0]);
-  const [inputValue, setInputValue] = React.useState("");
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
   
@@ -187,7 +185,7 @@ function HomeProduk() {
   const clear = true;
   if (!clear){
     console.clear(setJenisPenginapan,success )
-    console.clear(kotaLoading)
+    console.clear(kotaLoading, setValue, setForm, handleSubmit)
   }
 
   return (
@@ -320,7 +318,7 @@ function HomeProduk() {
                 <CardActionArea
                   style={{ textAlign: "center" }}
                   component={Link}
-                  to={"/menu/only/kost"}
+                  to={"/filter/kost"}
                 >
                   <img src={homekostan} className={classes.mediaiconMenu} alt="img"/>
                 </CardActionArea>
@@ -340,7 +338,7 @@ function HomeProduk() {
                 <CardActionArea
                   component={Link}
                   style={{ textAlign: "center" }}
-                  to={"/menu/only/kontrakan"}
+                  to={"/filter/kontrakan"}
                 >
                   <img src={homekontrakan} className={classes.mediaiconMenu} alt="img" />
                 </CardActionArea>
@@ -360,7 +358,7 @@ function HomeProduk() {
                 <CardActionArea
                   component={Link}
                   style={{ textAlign: "center" }}
-                  to={"/menu/only/ruko"}
+                  to={"/filter/ruko"}
                 >
                   <img src={ruko} className={classes.mediaiconMenu} alt="img" />
                 </CardActionArea>
@@ -378,128 +376,8 @@ function HomeProduk() {
           </Grid>
         )}
 
-        {loading ? (
-          <>
-            <Skeleton
-              animation="wave"
-              height={30}
-              width="100%"
-              variant="text"
-            />
-          </>
-        ) : (
-          <>
-            <Typography
-              variant="h4"
-              align="center"
-              color="primary"
-              className={classes.promote}
-            >
-              #CariLokasi
-            </Typography>
-            <Typography
-              variant="body1"
-              align="center"
-              color="textSecondary"
-              className={classes.promote}
-            >
-              Gak tau harus tinggal dimana? Yuk cari tempat tinggal di lokasi
-              idamanmu!
-            </Typography>
-          </>
-        )}
+        
 
-        {loading ? (
-          <Skeleton animation="wave" height={80} width="100%" />
-        ) : (
-          <form
-            id="produk-form"
-            onSubmit={handleSubmit}
-            noValidate
-            className={classes.promote}
-          >
-            <div className={classes.heroButtons}>
-              <Grid
-                container
-                spacing={2}
-                justify="center"
-                className={classes.rootGrid}
-              >
-                <Grid item>
-                  <Autocomplete
-                    className={classes.comboLokasi}
-                    value={form.kota}
-                    onChange={(event, newValue) => {
-                      setValue(newValue);
-                      setForm({ kota: newValue });
-                    }}
-                    inputValue={inputValue}
-                    onInputChange={(event, newInputValue) => {
-                      setInputValue(newInputValue);
-                      setForm({ kota: newInputValue });
-                    }}
-                    name="lokasi"
-                    options={options}
-                    getOptionLabel={(option) => option}
-                    style={{ width: 200 }}
-                    renderInput={(params) => {
-                      return (
-                        <TextField
-                          {...params}
-                          name="kota"
-                          label="Kota"
-                          variant="outlined"
-                        />
-                      );
-                    }}
-                  />
-                </Grid>
-                <Grid item>
-                  {/* <Autocomplete
-                    className={classes.comboLokasi}
-                    value={form.jenisPenginapan}
-                    onChange={(event, newValue) => {
-                      form.jenisPenginapan = newValue;
-                    }}
-                    inputValue={valueJenisPenginapan}
-                    onInputChange={(event, newInputValue) => {
-                      setJenisPenginapan(newInputValue);
-                    }}
-                    name="jenisPenginapan"
-                    options={jenisPenginapanOpt}
-                    style={{ width: 200 }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Jenis Penginapan"
-                        variant="outlined"
-                      />
-                    )}
-                  /> */}
-                </Grid>
-                <Grid item>
-                  <Button
-                    size="large"
-                    type="submit"
-                    variant="outlined"
-                    color="primary"
-                    className={classes.btn}
-                    disabled={loadingBtn}
-                  >
-                    {loadingBtn ? (
-                      <CircularProgress
-                        size={24}
-                        className={classes.buttonProgress}
-                      />
-                    ) : produkItems.length === 0 ||  produkItems.length !== 8 ? (
-                      "Refresh"
-                    ) :  "Cari"}
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </form>
-        )}
         {loading ? (
           <div className={classes.all}>
             <Skeleton
