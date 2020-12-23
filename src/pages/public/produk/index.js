@@ -255,9 +255,9 @@ function HomeProduk() {
         {/* ICON MENU JENIS PRODUK */}
         {loading ? (
           <Grid container spacing={5} className={classes.gridContainer}>
-            <Grid item={true} xs>
+            <Grid item={true} xs={12} xm={12} md={4} lg={4} style={{margin:"4"}}>
               <Card className={classes.root}>
-                <CardActionArea component={Link}>
+                <CardActionArea>
                   <Skeleton
                     animation="wave"
                     variant="rect"
@@ -274,9 +274,9 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs>
+            <Grid item={true} xs={12} xm={12} md={4} lg={4} style={{margin:"4"}}>
               <Card className={classes.root}>
-                <CardActionArea component={Link}>
+                <CardActionArea>
                   <Skeleton
                     animation="wave"
                     variant="rect"
@@ -293,9 +293,9 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs>
+            <Grid item={true} xs={12} xm={12} md={4} lg={4} style={{margin:"4"}}>
               <Card className={classes.root}>
-                <CardActionArea component={Link}>
+                <CardActionArea>
                   <Skeleton
                     animation="wave"
                     variant="rect"
