@@ -554,7 +554,7 @@ function DetailProduk({ match, history, location }) {
                           </Typography>
                           <Typography>
                             <a
-                              href={`https://www.google.com/maps/dir/?api=1&query =${state.lat}, ${state.long}`}
+                              href={`https://www.google.com/maps/dir/?api=1&query=${state.lat},${state.long}`}
                               style={{textDecoration:"none"}}
                               // target="_blank"
                             >
