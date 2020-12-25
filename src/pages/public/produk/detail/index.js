@@ -315,7 +315,7 @@ function DetailProduk({ match, history, location }) {
               height={40}
               style={{margin:10}}
             />) : (
-              <a href={`https://wa.me/${adminNumber}`}>
+              <a href={`https://wa.me/${adminNumber}?text=Mas, *${state.namaPenginapan}* masih ada ? `}>
               <IconButton aria-label="chatAdmdin">
                 <ChatIcon/>
               </IconButton>
