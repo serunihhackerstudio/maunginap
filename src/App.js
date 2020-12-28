@@ -24,7 +24,20 @@ import Checkout from "./testing/Checkout";
 // notistack
 import { SnackbarProvider } from "notistack";
 
+// pusher
+import * as PusherPushNotifications from "@pusher/push-notifications-web"
+
 function App() {
+  
+
+const beamsClient = new PusherPushNotifications.Client({
+  instanceId: '118259de-124d-42a4-8d8f-edade323e549',
+})
+  
+beamsClient.start()
+    .then(() => beamsClient.addDeviceInterest('hello'))
+    .then(() => console.log('Successfully registered and subscribed!'))
+    .catch(console.error);
   return (
     <>
       <CssBaseline />
