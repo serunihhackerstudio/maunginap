@@ -2,3 +2,9 @@ curl -H "Content-Type: application/json" \
      -H "Authorization: Bearer 3FB08F27B6EF463DA7E81B01A854D656F5EE0EDD050A97E52B7F92C6F0AED9C5" \
      -X POST "https://2f6a164b-e799-42a0-a4cd-a8b4990895b8.pushnotifications.pusher.com/publish_api/v1/instances/2f6a164b-e799-42a0-a4cd-a8b4990895b8/publishes" \
      -d '{"interests":["hello"],"fcm":{"notification":{"title":"Maunginap Promo", "body":"Ada diskon bagi kamu yang memperpanjang peginapan!"}}}'
+
+
+curl -H "Content-Type: application/json" \
+     -H "Authorization: Bearer 377DCA2132C53D30A8C8909C1BC96EF8757CB164C47DCBED13CA9A17D4E81A62" \
+     -X POST "https://118259de-124d-42a4-8d8f-edade323e549.pushnotifications.pusher.com/publish_api/v1/instances/118259de-124d-42a4-8d8f-edade323e549/publishes" \
+     -d '{"interests":["hello"],"web":{"notification":{"title":"Hello","body":"Hello, world!"}}}'
