@@ -35,9 +35,14 @@ const beamsClient = new PusherPushNotifications.Client({
 })
   
 beamsClient.start()
-    .then(() => beamsClient.addDeviceInterest('hello'))
-    .then(() => console.log('Successfully registered and subscribed!'))
-    .catch(console.error);
+.then(beamsClient => beamsClient.getDeviceId())
+.then(deviceId =>
+  console.log('Successfully registered with Beams. Device ID:', deviceId)
+)
+.then(() => beamsClient.addDeviceInterest('hello'))
+.then(() => beamsClient.getDeviceInterests())
+.then(interests => console.log('Current interests:', interests))
+.catch(console.error);
   return (
     <>
       <CssBaseline />
