@@ -49,7 +49,6 @@ import { isBrowser } from "react-device-detect";
 import { sendEmailJatuhTempo } from "../../../../config/mailserver";
 
 function History({ match, history, location }) {
-
   const ratingId = ID();
 
   const { firestore, user } = useFirebase();
@@ -258,7 +257,11 @@ function History({ match, history, location }) {
                             parseInt(dataProduk.harga) + dataProduk.codeHarga
                           )}
                           <Typography variant="body2" color="textSecondary">
-                            / {dataProduk.jenisIuran}
+                            {dataProduk.jenisIuran}
+                          </Typography>
+                          <Typography variant="body2" color="primary">
+                            Transfer ke : {dataProduk.pilihBank} (
+                            {dataProduk.noRek})
                           </Typography>
                         </Typography>
                       ) : (
@@ -285,7 +288,11 @@ function History({ match, history, location }) {
                             />
                           </Typography>
                           <Typography variant="body2" color="textSecondary">
-                            / {dataProduk.jenisIuran}
+                            {dataProduk.jenisIuran}
+                          </Typography>
+                          <Typography variant="body2" color="primary">
+                            Transfer ke : {dataProduk.pilihBank} (
+                            {dataProduk.noRek})
                           </Typography>
                         </Typography>
                       )}
@@ -512,7 +519,8 @@ function History({ match, history, location }) {
                       </Grid>
                       <Grid item xs>
                         {dataProduk.approvalStatus &&
-                        !dataProduk.statusPembatalanDesc && !(dataProduk.tanggalBerakhir === dateNow) ? (
+                        !dataProduk.statusPembatalanDesc &&
+                        !(dataProduk.tanggalBerakhir === dateNow) ? (
                           <Button
                             variant="contained"
                             size="small"
@@ -539,7 +547,12 @@ function History({ match, history, location }) {
         <div>
           <Box display="flex" justifyContent="center" m={1} p={1}>
             <Box p={1}>
-              <img src={datanotfound} width={350} height={250} alt="img history pesanan" />
+              <img
+                src={datanotfound}
+                width={350}
+                height={250}
+                alt="img history pesanan"
+              />
             </Box>
           </Box>
         </div>
