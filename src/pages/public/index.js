@@ -368,7 +368,7 @@ function Home({ history, location, match }) {
       // useExtendedSearch: false,
       // ignoreLocation: false,
       // ignoreFieldNorm: false,
-      keys: ["namaPenginapan", "lokasi", "jenisPenginapan"],
+      keys: ["namaPenginapan", "lokasi", "jenisPenginapan", "harga"],
     };
 
     const fuse = new Fuse(produkItemSearch, options);
@@ -432,7 +432,7 @@ function Home({ history, location, match }) {
                 </IconButton>
                 <InputBase
                   className={classes.inputSearch}
-                  placeholder="Cari lokasi. cth : Mataram"
+                  placeholder="Cari item berdasarkan nama / lokasi / harga"
                   name="search"
                   onChange={handleSearchChange}
                   value={formSearch.search}
