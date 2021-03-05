@@ -25,24 +25,31 @@ import Checkout from "./testing/Checkout";
 import { SnackbarProvider } from "notistack";
 // test
 // pusher
-import * as PusherPushNotifications from "@pusher/push-notifications-web"
+import * as PusherPushNotifications from "@pusher/push-notifications-web";
 
 function App() {
-  
-const beamsClient = new PusherPushNotifications.Client({
-  instanceId: '118259de-124d-42a4-8d8f-edade323e549',
-})
-  
-beamsClient.start()
-  .then(() => beamsClient.addDeviceInterest('hello'))
-  .then(() => console.log('Successfully registered and subscribed!'))
-  .catch(console.error);
-  
+  const beamsClient = new PusherPushNotifications.Client({
+    instanceId: "118259de-124d-42a4-8d8f-edade323e549",
+  });
+
+  beamsClient
+    .start()
+    .then(() => beamsClient.addDeviceInterest("hello"))
+    .then(() => console.log("Successfully registered and subscribed!"))
+    .catch(console.error);
+
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+        <SnackbarProvider
+          maxSnack={2}
+          autoHideDuration={2000}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
           <FirebaseProvider>
             <PesananProvider>
               <Router>

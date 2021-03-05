@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.69eda509.chunk.css",
-    "main.js": "/static/js/main.7acda0de.chunk.js",
-    "main.js.map": "/static/js/main.7acda0de.chunk.js.map",
+    "main.js": "/static/js/main.c22707c0.chunk.js",
+    "main.js.map": "/static/js/main.c22707c0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.4a5e9358.js",
     "runtime-main.js.map": "/static/js/runtime-main.4a5e9358.js.map",
-    "static/js/2.a06ee600.chunk.js": "/static/js/2.a06ee600.chunk.js",
-    "static/js/2.a06ee600.chunk.js.map": "/static/js/2.a06ee600.chunk.js.map",
+    "static/js/2.4a5c4dcb.chunk.js": "/static/js/2.4a5c4dcb.chunk.js",
+    "static/js/2.4a5c4dcb.chunk.js.map": "/static/js/2.4a5c4dcb.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.7a4a954facf38fc57734a6cba69e09d3.js": "/precache-manifest.7a4a954facf38fc57734a6cba69e09d3.js",
+    "precache-manifest.3c1144ad4943b1d06a33bf0b4901400f.js": "/precache-manifest.3c1144ad4943b1d06a33bf0b4901400f.js",
     "service-worker.js": "/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.a06ee600.chunk.js.LICENSE.txt": "/static/js/2.a06ee600.chunk.js.LICENSE.txt",
+    "static/js/2.4a5c4dcb.chunk.js.LICENSE.txt": "/static/js/2.4a5c4dcb.chunk.js.LICENSE.txt",
     "static/media/bank_bri.png": "/static/media/bank_bri.3a70e837.png",
     "static/media/bank_mandiri_syariah.jpg": "/static/media/bank_mandiri_syariah.c27992f4.jpg",
     "static/media/datanotfound.png": "/static/media/datanotfound.f7282133.png",
@@ -24,8 +24,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.4a5e9358.js",
-    "static/js/2.a06ee600.chunk.js",
+    "static/js/2.4a5c4dcb.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.7acda0de.chunk.js"
+    "static/js/main.c22707c0.chunk.js"
   ]
 }

@@ -372,16 +372,9 @@ function Home({ history, location, match }) {
     };
 
     const fuse = new Fuse(produkItemSearch, options);
-
     // Change the pattern
     const pattern = `${e.target.value}`;
-    // <mark>${match}</mark>
-
-    console.log(fuse.search(pattern));
-
     setSearchText(fuse.search(pattern));
-
-    // setSearchText(produkItemSearch.filter(item =>  item.data().kota.match(`${e.target.value}`.charAt(0).toUpperCase() + `${e.target.value}`.slice(1))))
   };
 
   const handleSearch = () => {
@@ -432,7 +425,7 @@ function Home({ history, location, match }) {
                 </IconButton>
                 <InputBase
                   className={classes.inputSearch}
-                  placeholder="Cari item berdasarkan nama / lokasi / harga"
+                  placeholder="Cari nama / lokasi / harga item"
                   name="search"
                   onChange={handleSearchChange}
                   value={formSearch.search}
@@ -747,7 +740,7 @@ function Home({ history, location, match }) {
                 </IconButton>
                 <InputBase
                   className={classes.inputSearch}
-                  placeholder="Cari lokasi. cth : Mataram"
+                  placeholder="Cari nama / lokasi / harga item"
                   name="search"
                   onChange={handleSearchChange}
                   value={formSearch.search}

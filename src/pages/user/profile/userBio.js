@@ -63,6 +63,7 @@ function UserBio() {
   }, [snapshot]);
 
   const handleChange = (e) => {
+    setSomethingChange(true);
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -177,9 +178,9 @@ function UserBio() {
           {error.foto && <Typography color="error">{error.foto}</Typography>}
         </div>
         <TextField
-          name="idFoto"
-          id="idFoto"
-          label="ID Foto"
+          name="alamat"
+          id="alamat"
+          label="Alamat"
           margin="normal"
           fullWidth
           rowsMax={3}
