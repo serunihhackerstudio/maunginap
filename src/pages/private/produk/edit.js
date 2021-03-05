@@ -68,12 +68,12 @@ function EditProduk({ match }) {
     tempatJemur: false,
   });
 
-
   const handleFasilitas = (event) => {
     setFasilitas({ ...fasilitas, [event.target.name]: event.target.checked });
   };
 
   const [form, setForm] = useState({
+    id: match.params.produkId,
     namaPenginapan: "",
     namaPemilik: "",
     harga: "",
@@ -89,8 +89,8 @@ function EditProduk({ match }) {
     likes: 0,
     diskon: 0,
     rating: 0,
-    isTahunan:false,
-    intJenisPenginapan:0
+    isTahunan: false,
+    intJenisPenginapan: 0,
   });
 
   form.fasilitasUmum = fasilitas;
@@ -115,7 +115,7 @@ function EditProduk({ match }) {
   const [isSubmitting, setSubmitting] = useState(false);
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-  console.clear(value, kotaLoading)
+  console.clear(value, kotaLoading);
 
   // koordinat
   const [isKoordinat, setKoordinat] = React.useState(false);
@@ -123,7 +123,7 @@ function EditProduk({ match }) {
   // radio button untuk pemilihan main image
   const [selectedValue, setSelectedValue] = React.useState(0);
   const [radioLabel, setRadioLabel] = React.useState("");
-  console.clear(radioLabel)
+  console.clear(radioLabel);
 
   useEffect(() => {
     const kotaData = [];
@@ -159,7 +159,10 @@ function EditProduk({ match }) {
   }, [snapshot, imgSnapshot, kotaSnapshot]);
 
   // kondisi untuk mengklasifikasikan numJenisPenginapan
-  if (form.jenisPenginapan === "Kontrakan" || form.jenisPenginapan === "Kost-kostan"){
+  if (
+    form.jenisPenginapan === "Kontrakan" ||
+    form.jenisPenginapan === "Kost-kostan"
+  ) {
     form.intJenisPenginapan = 0;
   } else {
     form.intJenisPenginapan = 1;
@@ -248,7 +251,6 @@ function EditProduk({ match }) {
     return newError;
   };
 
-
   const handleUploadFile = (e) => {
     const fotos = e.target.files;
     setSubmitting(true);
@@ -331,9 +333,9 @@ function EditProduk({ match }) {
   };
 
   const handleIsTahunan = (event) => {
-    setSomethingChange(true)
-    setForm({...form, [event.target.name]:event.target.checked})  
-  }
+    setSomethingChange(true);
+    setForm({ ...form, [event.target.name]: event.target.checked });
+  };
 
   return (
     <Paper className={classes.papperPadding}>
@@ -506,36 +508,37 @@ function EditProduk({ match }) {
             />
             {valueJenisPenginapan === "Kost-kostan" ? (
               <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={form.isTahunan}
-                    onChange={handleIsTahunan}
-                    name="isTahunan"
-                  />
-                }
-                label="kostan menerapkan iuran tahunan ?"
-              />
-            </FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={form.isTahunan}
+                      onChange={handleIsTahunan}
+                      name="isTahunan"
+                    />
+                  }
+                  label="kostan menerapkan iuran tahunan ?"
+                />
+              </FormGroup>
             ) : (
               ""
             )}
-            
 
             <TextField
               id="jumlahKamar"
               name="jumlahKamar"
               label={
-                form.jenisPenginapan === "Kontrakan" 
+                form.jenisPenginapan === "Kontrakan"
                   ? "Jumlah Rumah Kontrakan"
-                  : form.jenisPenginapan === "Ruko" ? "Jumlah Ruko"
+                  : form.jenisPenginapan === "Ruko"
+                  ? "Jumlah Ruko"
                   : "Jumlah Kamar"
               }
               margin="normal"
               type="number"
               fullWidth
               value={
-                form.jenisPenginapan === "Kontrakan" || form.jenisPenginapan === "Ruko"
+                form.jenisPenginapan === "Kontrakan" ||
+                form.jenisPenginapan === "Ruko"
                   ? (form.jumlahKamar = 1)
                   : form.jumlahKamar
               }
@@ -543,7 +546,10 @@ function EditProduk({ match }) {
               error={error.jumlahKamar ? true : false}
               helperText={error.jumlahKamar}
               disabled={
-                form.jenisPenginapan === "Kontrakan" || form.jenisPenginapan === "Ruko" ? true : isSubmitting
+                form.jenisPenginapan === "Kontrakan" ||
+                form.jenisPenginapan === "Ruko"
+                  ? true
+                  : isSubmitting
               }
               variant="outlined"
             />
@@ -682,7 +688,7 @@ function EditProduk({ match }) {
                 color="primary"
                 disabled={isSubmitting || !isSomethingChange}
                 variant="contained"
-                startIcon={<SaveIcon/>}
+                startIcon={<SaveIcon />}
               >
                 Simpan
               </Button>
@@ -699,13 +705,13 @@ function EditProduk({ match }) {
                 return (
                   <div>
                     <ListItem key={data.id} role={undefined} dense button>
-                        <img
-                          src={imgFile}
-                          width={80}
-                          height={80}
-                          className={classes.imgThumb}
-                          alt="img"
-                        />
+                      <img
+                        src={imgFile}
+                        width={80}
+                        height={80}
+                        className={classes.imgThumb}
+                        alt="img"
+                      />
                       <ListItemText className={classes.listAlign}>
                         <Typography color="primary" variant="subtitle1">
                           <strong>

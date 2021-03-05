@@ -18,7 +18,7 @@ import { Prompt } from "react-router-dom";
 
 import { Typography } from "@material-ui/core";
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import ID from "../../../utils/idgenerator";
 
@@ -33,12 +33,14 @@ function UserBio() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const produkStorageRef = storage.ref(`penginapan/data/user/profile_pict/${user.uid}`);
+  const produkStorageRef = storage.ref(
+    `penginapan/data/user/profile_pict/${user.uid}`
+  );
 
   const [snapshot, loading] = useDocument(userBio);
 
   const [form, setForm] = useState({
-    foto:"",
+    foto: "",
     alamat: "",
     telepon: "",
     website: "",
@@ -52,15 +54,12 @@ function UserBio() {
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [isSomethingChange, setSomethingChange] = useState(false);
-  
-
 
   useEffect(() => {
     if (snapshot) {
       // console.log(snapshot.data())
       setForm(snapshot.data());
     }
-   
   }, [snapshot]);
 
   const handleChange = (e) => {
@@ -74,8 +73,10 @@ function UserBio() {
       [e.target.name]: "",
     });
 
-    setSomethingChange(true);
+    // setSomethingChange(true);
   };
+
+  // console.log(form);
 
   // const validate = () => {
   //   const newError = { ...error };
@@ -89,16 +90,16 @@ function UserBio() {
   // };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-      setSubmitting(true);
-      try {
-        await userBio.set(form, { merge: true });
-        setSomethingChange(false);
-        enqueueSnackbar("Data berhasil disimpan", { variant: "success" });
-      } catch (e) {
-        enqueueSnackbar(e.message, { variant: "error" });
-      }
-      setSubmitting(false);
+    // e.preventDefault();
+    setSubmitting(true);
+    try {
+      await userBio.set(form, { merge: true });
+      setSomethingChange(false);
+      enqueueSnackbar("Data berhasil disimpan", { variant: "success" });
+    } catch (e) {
+      enqueueSnackbar(e.message, { variant: "error" });
+    }
+    setSubmitting(false);
   };
 
   if (loading) {
@@ -106,80 +107,79 @@ function UserBio() {
   }
 
   const handleUploadFile = async (e) => {
-    if (form.foto){
-      userBio.get().then(doc => {
-        storage.refFromURL(doc.data().foto).delete()
-      })
+    if (form.foto) {
+      userBio.get().then((doc) => {
+        storage.refFromURL(doc.data().foto).delete();
+      });
     }
-    setSomethingChange(true)
-    const file = e.target.files[0]
+    setSomethingChange(true);
+    const file = e.target.files[0];
     const idImg = ID();
-      const reader = new FileReader();
-      if (!["image/png", "image/jpeg", "image/jpg"]) {
+    const reader = new FileReader();
+    if (!["image/png", "image/jpeg", "image/jpg"]) {
+      setError((error) => ({
+        ...error,
+        foto: `Tipe file tidak didukung ${file.type}`,
+      }));
+
+      reader.onabort = () => {
         setError((error) => ({
           ...error,
-          foto: `Tipe file tidak didukung ${file.type}`,
-        }));
-
-        reader.onabort = () => {
-          setError((error) => ({
-            ...error,
-            foto: "File tidak bisa dibaca",
-          }));
-        };
-        
-      }
-      reader.onload = async () => {
-        const fotoExt = file.name.substring(file.name.lastIndexOf("."));
-        const fotoRef = await produkStorageRef.child(`${idImg}${fotoExt}`);
-        const fotoSnapshot = await fotoRef.putString(reader.result, "data_url");
-        const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
-        setForm((currentForm) => ({
-          ...currentForm,
-          foto: fotoUrl,
+          foto: "File tidak bisa dibaca",
         }));
       };
-      reader.readAsDataURL(file);
-      enqueueSnackbar("Foto berhasil diupload", {
-        variant: "info",
-      });
-  }
-
-
+    }
+    reader.onload = async () => {
+      const fotoExt = file.name.substring(file.name.lastIndexOf("."));
+      const fotoRef = await produkStorageRef.child(`${idImg}${fotoExt}`);
+      const fotoSnapshot = await fotoRef.putString(reader.result, "data_url");
+      const fotoUrl = await fotoSnapshot.ref.getDownloadURL();
+      setForm((currentForm) => ({
+        ...currentForm,
+        foto: fotoUrl,
+      }));
+    };
+    reader.readAsDataURL(file);
+    enqueueSnackbar("Foto berhasil diupload", {
+      variant: "info",
+    });
+  };
 
   return (
     <div className={classes.pengaturanBio}>
-      
       <form onSubmit={handleSubmit} noValidate>
-      <div className={classes.uploadFotoProduk}>
-        {form.foto ? (
-          <Avatar className={classes.avatar} src={form.foto} />
-          // <img alt="img" src={form.foto} width={150} className={classes.profilePict}/>
-        ) : ("")}
-      
-            <input
-              className={classes.hideInputFile}
-              type="file"
-              id="upload-foto-produk"
-              accept="image/jpeg, image/jpeg, image/png"
-              onChange={handleUploadFile}
-            />
-            <label htmlFor="upload-foto-produk">
+        <div className={classes.uploadFotoProduk}>
+          {form.foto ? (
+            <Avatar className={classes.avatar} src={form.foto} />
+          ) : (
+            // <img alt="img" src={form.foto} width={150} className={classes.profilePict}/>
+            ""
+          )}
+
+          <input
+            className={classes.hideInputFile}
+            type="file"
+            id="upload-foto-produk"
+            accept="image/jpeg, image/jpeg, image/png"
+            onChange={handleUploadFile}
+          />
+          <label htmlFor="upload-foto-produk">
             <Button
-            disabled={isSubmitting}
-            variant="outlined"
-            margin="normal"
-            component="span"
-            startIcon={<AccountCircleIcon />}
-          >Profile
-          </Button>
-            </label>
-            {error.foto && <Typography color="error">{error.foto}</Typography>}
-          </div>
+              disabled={isSubmitting}
+              variant="outlined"
+              margin="normal"
+              component="span"
+              startIcon={<AccountCircleIcon />}
+            >
+              Profile
+            </Button>
+          </label>
+          {error.foto && <Typography color="error">{error.foto}</Typography>}
+        </div>
         <TextField
-          name="alamat"
-          id="alamat"
-          label="Alamat"
+          name="idFoto"
+          id="idFoto"
+          label="ID Foto"
           margin="normal"
           fullWidth
           rowsMax={3}
