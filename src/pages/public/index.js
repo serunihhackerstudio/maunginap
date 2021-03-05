@@ -716,7 +716,8 @@ function Home({ history, location, match }) {
             ) : location.pathname === `/view/penginapan/${detailParam}` ? (
               <IconButton
                 className={classes.menuButton}
-                onClick={() => history.push("/")}
+                // onClick={() => history.push("/")}
+                onClick={() => history.goBack()}
               >
                 <ArrowBackIcon style={{ color: "white" }} />
               </IconButton>
