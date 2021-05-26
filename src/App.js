@@ -26,6 +26,7 @@ import { SnackbarProvider } from "notistack";
 // test
 // pusher
 import * as PusherPushNotifications from "@pusher/push-notifications-web";
+import "./App.css"
 
 function App() {
   const beamsClient = new PusherPushNotifications.Client({
