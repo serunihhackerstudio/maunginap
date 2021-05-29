@@ -62,6 +62,14 @@ function Kost({ history }) {
   const el = useRef(null);
   const [isNextClicked, setNextClicked] = useState(false);
   
+  window.onscroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight){
+      console.log("MAX")
+    }
+  }
+
+  window.addEventListener("scroll", () => console.log("hallo"))
+
   useEffect(() => {
     const kotaData = [];
     if (snapshot) {

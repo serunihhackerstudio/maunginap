@@ -207,7 +207,7 @@ function HomeProduk() {
       )}
 
       <Container maxWidth="sm">
-        {loading ? (
+        {/* {loading ? (
           <Skeleton animation="wave" height={100} width="100%" variant="text" />
         ) : (
           <Typography variant="h3" align="center" color="primary" gutterBottom>
@@ -248,7 +248,7 @@ function HomeProduk() {
             kost-kotan atau kontrakan ? mau yang bulanan atau tahunan ? nggak
             perlu repot dan ribet, pake aja maunginap.com
           </Typography>
-        )}
+        )} */}
 
         {/* ICON MENU JENIS PRODUK */}
         {loading ? (
@@ -313,7 +313,7 @@ function HomeProduk() {
           </Grid>
         ) : (
           <Grid container spacing={5} className={classes.gridContainer}>
-            <Grid item={true} xs>
+            <Grid item={true} xs={6} md={3}>
               <Card className={classes.root}>
                 <CardActionArea
                   style={{ textAlign: "center" }}
@@ -321,6 +321,7 @@ function HomeProduk() {
                   to={"/filter/kost"}
                 >
                   <img src={homekostan} className={classes.mediaiconMenu} alt="img"/>
+                  {/* <CardMedia image={homekostan} alt={"gambar"}/> */}
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -328,12 +329,12 @@ function HomeProduk() {
                     color="textSecondary"
                     className={classes.menuicon}
                   >
-                    Kost - kostan
+                    Kost
                   </Typography>
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs>
+            <Grid item={true} xs={6} md={3}>
               <Card className={classes.root}>
                 <CardActionArea
                   component={Link}
@@ -353,7 +354,7 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs>
+            <Grid item={true} xs={6} md={3}>
               <Card className={classes.root}>
                 <CardActionArea
                   component={Link}
@@ -369,6 +370,26 @@ function HomeProduk() {
                     className={classes.menuicon}
                   >
                     Sewa Ruko
+                  </Typography>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item={true} xs={6} md={3}>
+              <Card className={classes.root}>
+                <CardActionArea
+                  component={Link}
+                  style={{ textAlign: "center" }}
+                  to={"/filter/ruko"}
+                >
+                  <img src={ruko} className={classes.mediaiconMenu} alt="img" />
+                </CardActionArea>
+                <CardActions>
+                  <Typography
+                    variant="subtitle1"
+                    color="textSecondary"
+                    className={classes.menuicon}
+                  >
+                    Pesan Air
                   </Typography>
                 </CardActions>
               </Card>

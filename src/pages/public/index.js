@@ -102,8 +102,14 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 // import DirectionsIcon from '@material-ui/icons/Directions';
 
-// searh Feature
+// search Feature
 import Fuse from "fuse.js";
+
+// add new produk - pesan air to be as third app
+import ProdukAir from "./pesan_air/produk";
+import ProgressAir from "./pesan_air/progress";
+import CheckoutAir from "./pesan_air/checkout";
+import DetailProdukAir from "./pesan_air/detail";
 
 function Home({ history, location, match }) {
   // use detailParam to get match params penginapanId from detail page
@@ -510,7 +516,11 @@ function Home({ history, location, match }) {
                   exact
                   children="Tagihan"
                 />
-              </Switch>
+                <Route path="/pesan-air" exact children="Pesan Air" />
+                <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
+                <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
+                <Route path="/pesan-air/detail" exact children="Detail" />
+                </Switch>
               {/* LOGO TITLE */}
             </Typography>
 
@@ -814,6 +824,10 @@ function Home({ history, location, match }) {
                   exact
                   children="Tagihan"
                 />
+                <Route path="/pesan-air" exact children="Pesan Air" />
+                <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
+                <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
+                <Route path="/pesan-air/detail" exact children="Detail" />
               </Switch>
               {/* LOGO TITLE */}
             </Typography>
@@ -1041,7 +1055,10 @@ function Home({ history, location, match }) {
             <Route path="/notification" component={Notification} />
             <Route path="/filter" component={IconMenu} />
             <Route path="/search" component={Search} />
-
+            <Route path="/pesan-air" exact component={ProdukAir} />
+            <Route path="/pesan-air/progress" exact component={ProgressAir} />
+            <Route path="/pesan-air/detail/checkout" exact component={CheckoutAir} />
+            <Route path="/pesan-air/detail" exact component={DetailProdukAir} />
             <Route component={HomeProduk} />
           </Switch>
         </Container>
