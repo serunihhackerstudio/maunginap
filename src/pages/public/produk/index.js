@@ -29,11 +29,13 @@ import Chip from "@material-ui/core/Chip";
 import homekontrakan from "../../../assets/homekontrakan.png";
 import homekostan from "../../../assets/homekostan.png";
 import ruko from "../../../assets/ruko.png";
+import gallon from "../../../assets/gallon.png";
 import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import Tooltip from '@material-ui/core/Tooltip';
+import ComplexButton from "./component/complexButton"
 // import datatidakditemukan from "../../../assets/datatidakditemukan.png";
 
 /*
@@ -252,8 +254,8 @@ function HomeProduk() {
 
         {/* ICON MENU JENIS PRODUK */}
         {loading ? (
-          <Grid container spacing={5} className={classes.gridContainer}>
-            <Grid item={true} xs={12} xm={12} md={4} lg={4} style={{margin:"4"}}>
+          <Grid container spacing={2} className={classes.gridContainer}>
+            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -272,7 +274,7 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={4} lg={4} style={{margin:"4"}}>
+            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -291,7 +293,26 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={4} lg={4} style={{margin:"4"}}>
+            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
+              <Card className={classes.root}>
+                <CardActionArea>
+                  <Skeleton
+                    animation="wave"
+                    variant="rect"
+                    className={classes.media}
+                  />
+                </CardActionArea>
+                <CardActions>
+                  <Skeleton
+                    animation="wave"
+                    height={35}
+                    width="30%"
+                    className={classes.menuicon}
+                  />
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -312,7 +333,8 @@ function HomeProduk() {
             </Grid>
           </Grid>
         ) : (
-          <Grid container spacing={5} className={classes.gridContainer}>
+
+          <Grid container spacing={2} className={classes.gridContainer}>
             <Grid item={true} xs={6} md={3}>
               <Card className={classes.root}>
                 <CardActionArea
@@ -321,7 +343,6 @@ function HomeProduk() {
                   to={"/filter/kost"}
                 >
                   <img src={homekostan} className={classes.mediaiconMenu} alt="img"/>
-                  {/* <CardMedia image={homekostan} alt={"gambar"}/> */}
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -369,7 +390,7 @@ function HomeProduk() {
                     color="textSecondary"
                     className={classes.menuicon}
                   >
-                    Sewa Ruko
+                    Ruko
                   </Typography>
                 </CardActions>
               </Card>
@@ -379,9 +400,9 @@ function HomeProduk() {
                 <CardActionArea
                   component={Link}
                   style={{ textAlign: "center" }}
-                  to={"/filter/ruko"}
+                  to={"/pesan-air/detail"}
                 >
-                  <img src={ruko} className={classes.mediaiconMenu} alt="img" />
+                  <img src={gallon} className={classes.mediaiconMenu} alt="img" />
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -389,7 +410,7 @@ function HomeProduk() {
                     color="textSecondary"
                     className={classes.menuicon}
                   >
-                    Pesan Air
+                    Air isi ulang
                   </Typography>
                 </CardActions>
               </Card>
@@ -410,7 +431,7 @@ function HomeProduk() {
           </div>
         ) : (
           <div className={classes.all}>
-            <Divider />
+            {/* <Divider /> */}
             <Typography
               align="center"
               variant="h5"

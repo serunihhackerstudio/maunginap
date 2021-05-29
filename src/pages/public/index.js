@@ -519,7 +519,7 @@ function Home({ history, location, match }) {
                 <Route path="/pesan-air" exact children="Pesan Air" />
                 <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
                 <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
-                <Route path="/pesan-air/detail" exact children="Detail" />
+                <Route path="/pesan-air/detail" exact children="Isi Ulang Air" />
                 </Switch>
               {/* LOGO TITLE */}
             </Typography>
@@ -827,7 +827,7 @@ function Home({ history, location, match }) {
                 <Route path="/pesan-air" exact children="Pesan Air" />
                 <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
                 <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
-                <Route path="/pesan-air/detail" exact children="Detail" />
+                <Route path="/pesan-air/detail" exact children="Isi Ulang Air" />
               </Switch>
               {/* LOGO TITLE */}
             </Typography>

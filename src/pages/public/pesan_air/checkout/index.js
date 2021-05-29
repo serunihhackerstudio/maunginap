@@ -74,9 +74,9 @@ function CheckoutAir() {
                   />
                 </TableCell>
                 <TableCell align="left">Air minum isi ulang</TableCell>
-                <TableCell align="right">Rp. 10.000</TableCell>
+                <TableCell align="center">Rp. 10.000</TableCell>
                 <TableCell align="right">
-                  <Grid container spacing={1}>
+                  <Grid container style={{textAlign:"left"}}>
                     <Grid item>
                       <IconButton
                         color="primary"
@@ -100,7 +100,7 @@ function CheckoutAir() {
                     </Grid>
                   </Grid>
                 </TableCell>
-                <TableCell align="right">Rp. 20.000</TableCell>
+                <TableCell align="center">Rp. 20.000</TableCell>
               </TableRow>
             </TableBody>
           </Table>
