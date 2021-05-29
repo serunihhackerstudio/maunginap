@@ -412,7 +412,9 @@ function Home({ history, location, match }) {
               </IconButton>
             ) : location.pathname === "/filter/kost" ||
               location.pathname === "/filter/kontrakan" ||
-              location.pathname === "/filter/ruko" ? (
+              location.pathname === "/filter/ruko" ||
+              location.pathname === `/pesan-air/detail` ? 
+              (
               <IconButton
                 className={classes.goBackIcon}
                 component={Link}
@@ -519,7 +521,7 @@ function Home({ history, location, match }) {
                 <Route path="/pesan-air" exact children="Pesan Air" />
                 <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
                 <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
-                <Route path="/pesan-air/detail" exact children="Isi Ulang Air" />
+                <Route path="/pesan-air/detail" exact children="Air isi ulang" />
                 </Switch>
               {/* LOGO TITLE */}
             </Typography>
@@ -733,13 +735,16 @@ function Home({ history, location, match }) {
               </IconButton>
             ) : location.pathname === `/filter/kost` ||
               location.pathname === `/filter/kontrakan` ||
-              location.pathname === `/filter/ruko` ? (
+              location.pathname === `/filter/ruko` ||
+              location.pathname === `/pesan-air/detail` ? 
+              (
               <IconButton
                 className={classes.menuButton}
                 onClick={() => history.push("/")}
               >
                 <ArrowBackIcon style={{ color: "white" }} />
               </IconButton>
+              
             ) : location.pathname === "/search" ? (
               <Paper className={classes.rootSearch}>
                 <IconButton
@@ -827,7 +832,7 @@ function Home({ history, location, match }) {
                 <Route path="/pesan-air" exact children="Pesan Air" />
                 <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
                 <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
-                <Route path="/pesan-air/detail" exact children="Isi Ulang Air" />
+                <Route path="/pesan-air/detail" exact children="Air isi ulang" />
               </Switch>
               {/* LOGO TITLE */}
             </Typography>

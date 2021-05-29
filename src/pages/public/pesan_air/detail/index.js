@@ -67,7 +67,7 @@ export default function DetailProdukAir() {
               type="number"
             />
             <Button variant="contained" color="primary" disableElevation>
-              Pesan Air Sekarang
+              Pesan Air
             </Button>
           </CardActions>
         </Card>
