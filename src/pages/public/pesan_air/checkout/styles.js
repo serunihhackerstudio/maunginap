@@ -20,6 +20,14 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: "center",
   },
+  formControl: {
+    margin: theme.spacing(1),
+    // minWidth: 120,
+    display: "flex",
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export default useStyles;
