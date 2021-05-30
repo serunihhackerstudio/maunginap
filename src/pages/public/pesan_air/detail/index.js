@@ -43,6 +43,7 @@ export default function DetailProdukAir({ history }) {
 		userId: user.uid,
 		jumlahGln: 0,
 		total: 0,
+		cod:false,
 		tanggal: new Date(),
 	});
   

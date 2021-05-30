@@ -76,6 +76,17 @@ function CheckoutAir(props) {
 	const [alamatLengkap, setAlamatLengkap] = React.useState("");
 	const [isAlamat, setAlamat] = React.useState(false)
 
+	// ketika COD belum diklik, maka tombol checkout masih disable guna mencegah 
+	// eksekusi sebelum menentukan metode pembayaran / delivery
+	// maka digunakan useEffect untuk memanipulasi dom secara real time
+	React.useEffect(() => {
+		if (!airIsiUlangForm.cod){
+			setSubmitting(true)
+		} else {
+			setSubmitting(false)
+		}
+	},[airIsiUlangForm.cod])
+
 	const handleChange = (event) => {
 		// setState({ ...state, [event.target.name]: event.target.checked });
 		setAirIsiUlangForm({
@@ -145,9 +156,6 @@ function CheckoutAir(props) {
 
 	return (
 		<Grid container spacing={3}>
-			{JSON.stringify(airIsiUlangForm)}
-			{<br />}
-			{JSON.stringify(kab.filter(data => data.id === "5201")[0].data.map(item => item.name))}
 			<Grid item xs={12} md={8}>
 				{/* Tabel */}
 				<TableContainer component={Paper} className={classes.mypaper}>
