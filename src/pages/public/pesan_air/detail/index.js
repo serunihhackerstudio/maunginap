@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -13,11 +12,10 @@ import useStyles from './styles';
 
 // import idr formatter
 import { currency } from '../../../../utils/formatter';
-import ID from '../../../../utils/idgenerator';
 
 // import firebase package
 import { useFirebase } from '../../../../components/FirebaseProvider';
-// import { useCollection } from 'react-firebase-hooks/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
 
 // import component context provider
 import { usePesanan } from '../../../../components/PesananProvider';
@@ -26,28 +24,43 @@ export default function DetailProdukAir({ history }) {
 	// style
 	const classes = useStyles();
 
-	// Generate Random ID
-	const dataId = ID();
-
 	// membuat progress loading bar
 	const [ isSubmitting, setSubmitting ] = React.useState(false);
 
 	// memanggil variable global melalui PesananProvider
 	const {setAirIsiUlangForm } = usePesanan();
 
+
 	// buat database untuk menyimpan data pesanan
 	const { firestore, user } = useFirebase();
-	const payload = firestore.collection('airIsiUlang').doc(`${dataId}`);
+	// const payload = firestore.collection('airIsiUlang').doc(`${dataId}`);
 	const harga = 10000;
 	const [ dataForm, setDataForm ] = React.useState({
 		userId: user.uid,
+		userEmail:user.email,
+		userNameDisplay:user.displayName,
 		jumlahGln: '',
 		total: 0,
 		cod:false,
 		tanggal: new Date(),
+		nomorHpPemesan:"",
+		probisSelesai:false
 	});
-  
 
+	// panggil data / collection yang berisi nomor hp user 
+	const [item, setItem] = React.useState({})
+	const userQuery = firestore.collection("userbio").doc(`${user.uid}`);
+	const [snapshot, loading] = useDocument(userQuery);
+
+	// use effect untuk query data userBio
+	React.useEffect(() => {
+		if (snapshot){
+			setItem(snapshot.data())
+		}
+	},[snapshot])
+	dataForm.nomorHpPemesan = item.telepon
+	
+	// handle event formulasi pemesanan galon secara matematika
 	const handleJumlahGln = (e) => {
     e.preventDefault()
     const volume = e.target.value;
@@ -68,8 +81,15 @@ export default function DetailProdukAir({ history }) {
     history.push('/pesan-air/detail/checkout');
 	};
 
+	// error warning handling
+	const error = true;
+	if (!error){
+		console.clear(setSubmitting, loading)
+	}
+
 	return (
 		<Grid container spacing={3}>
+			{/* {JSON.stringify()} */}
 			<Hidden mdDown>
 				<Grid item xs={12} md={1}>
 					<Card>

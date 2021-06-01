@@ -8,39 +8,54 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import HotelIcon from '@material-ui/icons/Hotel';
-import RepeatIcon from '@material-ui/icons/Repeat';
 import Paper from '@material-ui/core/Paper';
 
 // start
-import RoomIcon from '@material-ui/icons/Room';
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
 import RepeatOutlinedIcon from '@material-ui/icons/RepeatOutlined';
 
 // delivery
-import MotorcycleIcon from '@material-ui/icons/Motorcycle';
 import MotorcycleOutlinedIcon from '@material-ui/icons/MotorcycleOutlined';
 
 // sampai
-import FlagIcon from '@material-ui/icons/Flag';
 import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
 
 // selesai
-import StopIcon from '@material-ui/icons/Stop';
 import StopOutlinedIcon from '@material-ui/icons/StopOutlined';
 
+// import firebase package
+import { useFirebase } from '../../../../components/FirebaseProvider';
+import { useDocument } from 'react-firebase-hooks/firestore';
+
+// progressBar
+import AppPageLoading from '../../../../components/AppPageLoading';
 
 function ProgressAir() {
 	const classes = useStyles();
-    let progressPacking = true;
-    let progressDelivery = true;
-    let progressSampai = true;
-    let progressSelesai = true;
+	const {firestore, user} = useFirebase()
+	const query = firestore.collection("airIsiUlang").where("userId", "==", `${user.uid}`)
+	const [snapshot, loading] = useDocument(query)
+	const [item, setItem] = React.useState({})
+
+	// load data melalui useEffect
+	React.useEffect(() => {
+		if (snapshot){
+			setItem(snapshot.docs[0].data())
+			// console.log(snapshot.docs[0].data())
+		}
+	}, [snapshot])
+	let progressPacking = true;
+    let progressDelivery = item.delivery;
+    let progressSampai = item.sampai;
+    let progressSelesai = item.selesai;
+
+	if (loading){
+		
+		return <AppPageLoading />
+	}
 	return (
 		<Card className={classes.paper}>
 			<CardContent>
+				{loading ? (<AppPageLoading />):(
 				<Timeline align="alternate">
 					<TimelineItem>
 						<TimelineOppositeContent>
@@ -166,7 +181,8 @@ function ProgressAir() {
 							
 						</TimelineContent>
 					</TimelineItem>
-				</Timeline>
+				</Timeline>	
+				)}
 			</CardContent>
 		</Card>
 	);

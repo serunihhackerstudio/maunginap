@@ -1,8 +1,9 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Collapse from '@material-ui/core/Collapse';
+
 
 // table
 import Table from '@material-ui/core/Table';
@@ -19,6 +20,8 @@ import useStyles from './styles';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import IndeterminateCheckBoxRoundedIcon from '@material-ui/icons/IndeterminateCheckBoxRounded';
 import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 // import component context provider
 import { usePesanan } from '../../../../components/PesananProvider';
@@ -29,7 +32,6 @@ import ID from '../../../../utils/idgenerator';
 
 // import firebase package
 import { useFirebase } from '../../../../components/FirebaseProvider';
-import AlamatDialog from './distrik';
 // import { useCollection } from 'react-firebase-hooks/firestore';
 
 // progressBar
@@ -46,10 +48,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 // select
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {lotim, lobar, mataram, ntb, loteng, kab} from "./distrik"
+import {ntb, kab} from "./distrik"
+
+// alert
+import Alert from '@material-ui/lab/Alert';
+
 
 function CheckoutAir(props) {
   const [ provinsi, setProvinsi ] = React.useState('');
@@ -60,6 +65,9 @@ function CheckoutAir(props) {
 
 	const classes = useStyles();
 
+	// alert manipulation
+	const [openAlert, setOpenAlert] = React.useState(true);
+
 	// Generate Random ID
 	const dataId = ID();
 
@@ -67,7 +75,7 @@ function CheckoutAir(props) {
 	const [isSubmitting, setSubmitting] = React.useState(false)
 
 	// buat database untuk menyimpan data pesanan
-	const { firestore, user } = useFirebase();
+	const { firestore } = useFirebase();
 	const payload = firestore.collection('airIsiUlang').doc(`${dataId}`);
 
 	// variable untuk dialog view
@@ -84,12 +92,12 @@ function CheckoutAir(props) {
 	// eksekusi sebelum menentukan metode pembayaran / delivery
 	// maka digunakan useEffect untuk memanipulasi dom secara real time
 	React.useEffect(() => {
-		if (!airIsiUlangForm.cod){
-			setSubmitting(true)
-		} else {
+		if (airIsiUlangForm.cod && airIsiUlangForm.alamatLengkap){
 			setSubmitting(false)
+		} else {
+			setSubmitting(true)
 		}
-	},[airIsiUlangForm.cod])
+	},[airIsiUlangForm.cod, airIsiUlangForm.alamatLengkap])
 
 	const handleChange = (event) => {
 		// setState({ ...state, [event.target.name]: event.target.checked });
@@ -163,7 +171,25 @@ function CheckoutAir(props) {
 	}
 
 	return (
+		<>
+		 <Collapse in={openAlert}>
+		<Alert variant="standard" severity="warning" style={{marginBottom:20}} action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpenAlert(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }>
+			Alamat lengkap wajib diisi untuk bisa mengaktifkan tombol checkout
+			</Alert>
+			 </Collapse>
 		<Grid container spacing={3}>
+			{/* {JSON.stringify(airIsiUlangForm)} */}
 			<Grid item xs={12} md={8}>
 				{/* Tabel */}
 				<TableContainer component={Paper} className={classes.mypaper}>
@@ -215,7 +241,7 @@ function CheckoutAir(props) {
 			</Grid>
 			<Grid item xs={12} md={4}>
 				<Paper className={classes.mypaper} elevation={1}>
-					<Typography style={{ marginBottom: 20 }}>Alamat Pengiriman</Typography>
+					<Typography style={{ marginBottom: 20 }}>Alamat Lengkap Pengiriman</Typography>
 					{provinsi && kabupaten && kecamatan && alamatLengkap && isAlamat ? (
 						<>
 						<Typography variant="body2" color="primary" style={{ marginBottom: 20 }}>
@@ -261,13 +287,13 @@ function CheckoutAir(props) {
 						label="COD"
 					/>
 				</Paper>
-				<Button startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : ""} style={{ marginTop: 10 }} variant="contained" color="secondary" fullWidth disableElevation onClick={handleSubmit} disabled={isSubmitting}>
-					Checkout Sekarang
+				<Button style={{ marginTop: 10 }} variant="contained" color="secondary" fullWidth disableElevation onClick={handleSubmit} disabled={isSubmitting}>
+					{isSubmitting ? <CircularProgress size={20} color="inherit" /> : "Checkout Sekarang"}
 				</Button>
 			</Grid>
 			{/* <Typography variant="body1">Ini Halaman Cehckout Produk Air</Typography> */}
 			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-				<DialogTitle id="form-dialog-title">Tambah Alamat - {kabupaten}</DialogTitle>
+				<DialogTitle id="form-dialog-title">Tambah Alamat</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
 						Pilih alamat secara lengkap sebagai tujuan pengiriman air isi ulangnya
@@ -340,6 +366,7 @@ function CheckoutAir(props) {
 				</DialogActions>
 			</Dialog>
 		</Grid>
+		</>
 	);
 }
 
