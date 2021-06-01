@@ -60,7 +60,6 @@ import Alert from '@material-ui/lab/Alert';
 // membuat radio group
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormLabel from '@material-ui/core/FormLabel';
 
 
 function CheckoutAir(props) {
@@ -92,7 +91,6 @@ function CheckoutAir(props) {
 	const dataAlamatCollection = firestore.collection('dataAlamat').doc(`${user.uid}`)
 	const [snapshotAlamat, loadingAlamat] = useCollection(alamatCollection)
 	const [stateDataAlamat, setStateDataAlamat] = React.useState([])
-	const [arrDataAlamat, setArrDataAlamat] = React.useState([])
 
 	// variable untuk dialog view
 	const [ open, setOpen ] = React.useState(false);
@@ -140,7 +138,6 @@ function CheckoutAir(props) {
 		// stateDataAlamat,
 		snapshotAlamat
 	])
-	console.log(arrDataAlamat)
 
 	// loading ketika collection diload oleh aplikasi
 	// collection yang diload adalah collection dataAlamat
