@@ -1,5 +1,8 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
 import React from 'react';
+import { Card, CardContent, Typography } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
 import useStyles from './styles';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -54,6 +57,16 @@ function ProgressAir() {
 	}
 	return (
 		<Card className={classes.paper}>
+			<CardHeader
+				avatar={
+				<Avatar aria-label="recipe" style={{backgroundColor: "#016660"}}>
+					ID
+				</Avatar>
+				}
+				
+				title="Kode Pesanan"
+				subheader={`#${item.pesananId}`}
+			/>
 			<CardContent>
 				{loading ? (<AppPageLoading />):(
 				<Timeline align="alternate">

@@ -29,13 +29,15 @@ import { usePesanan } from '../../../../components/PesananProvider';
 // import currency
 import { currency } from '../../../../utils/formatter';
 import ID from '../../../../utils/idgenerator';
+import BookingCode from '../../../../utils/bookingCode';
 
 // import firebase package
 import { useFirebase } from '../../../../components/FirebaseProvider';
-// import { useCollection } from 'react-firebase-hooks/firestore';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 // progressBar
 import CircularProgress from '@material-ui/core/CircularProgress';
+import AppPageLoading from '../../../../components/AppPageLoading';
 
 
 // import dialog untuk input alamat
@@ -55,6 +57,11 @@ import {ntb, kab} from "./distrik"
 // alert
 import Alert from '@material-ui/lab/Alert';
 
+// membuat radio group
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+
 
 function CheckoutAir(props) {
   const [ provinsi, setProvinsi ] = React.useState('');
@@ -68,15 +75,24 @@ function CheckoutAir(props) {
 	// alert manipulation
 	const [openAlert, setOpenAlert] = React.useState(true);
 
-	// Generate Random ID
+	// Generate Random ID dan kode boking
 	const dataId = ID();
+	const pesananId = BookingCode()
 
 	// submit process
 	const [isSubmitting, setSubmitting] = React.useState(false)
 
 	// buat database untuk menyimpan data pesanan
-	const { firestore } = useFirebase();
-	const payload = firestore.collection('airIsiUlang').doc(`${dataId}`);
+	const { firestore, user } = useFirebase();
+	const payload = firestore.collection('airIsiUlang').doc(`${user.uid}`)
+	const payloadHistory = firestore.collection('historyAirIsiUlang').doc(`${dataId}`)
+
+	//  buat database untuk menyimpan collection alamat
+	const alamatCollection = firestore.collection('dataAlamat').where('userId', '==', `${user.uid}`)
+	const dataAlamatCollection = firestore.collection('dataAlamat').doc(`${user.uid}`)
+	const [snapshotAlamat, loadingAlamat] = useCollection(alamatCollection)
+	const [stateDataAlamat, setStateDataAlamat] = React.useState([])
+	const [arrDataAlamat, setArrDataAlamat] = React.useState([])
 
 	// variable untuk dialog view
 	const [ open, setOpen ] = React.useState(false);
@@ -88,18 +104,54 @@ function CheckoutAir(props) {
 	const [alamatLengkap, setAlamatLengkap] = React.useState("");
 	const [isAlamat, setAlamat] = React.useState(false)
 
+	// radio group
+	// ketika user sudah memesan air sebelumnya, untuk pemesanan selanjutnya
+	// user hanya perlu memilih alamat yang sudah diinputkan sebelumnya
+	// agar tidak capek-capek atau memasukan alamat yang baru
+	const [valueRadioAlamat, setValueRadioAlamat] = React.useState('');
+	const handleRadioAlamat = (event) => {
+		setValueRadioAlamat(event.target.value);
+	};
+
 	// ketika COD belum diklik, maka tombol checkout masih disable guna mencegah 
 	// eksekusi sebelum menentukan metode pembayaran / delivery
 	// maka digunakan useEffect untuk memanipulasi dom secara real time
 	React.useEffect(() => {
-		if (airIsiUlangForm.cod && airIsiUlangForm.alamatLengkap){
+		if (airIsiUlangForm.cod && valueRadioAlamat ){
+			setSubmitting(false)
+		} else if (airIsiUlangForm.cod && airIsiUlangForm.alamatLengkap) {
 			setSubmitting(false)
 		} else {
 			setSubmitting(true)
 		}
-	},[airIsiUlangForm.cod, airIsiUlangForm.alamatLengkap])
 
-	const handleChange = (event) => {
+		// load collection dataAlamat melalui useEffect ini
+		// bentuknya berupa array dengan 1 nilai, sehingga perlu diambil nilai itu
+		if (snapshotAlamat){
+			setStateDataAlamat(snapshotAlamat.docs)
+			// stateDataAlamat.forEach(data => arrAlamat.push(data.data().dataAlamat))
+			// setArrDataAlamat(stateDataAlamat)
+		}
+	},[
+		airIsiUlangForm.cod, 
+		valueRadioAlamat, 
+		airIsiUlangForm.alamatLengkap, 
+		// arrAlamat, 
+		// stateDataAlamat,
+		snapshotAlamat
+	])
+	console.log(arrDataAlamat)
+
+	// loading ketika collection diload oleh aplikasi
+	// collection yang diload adalah collection dataAlamat
+	if (loadingAlamat){
+		return <AppPageLoading />
+	}
+
+	// menyimpan hasil query setStateDataAlamat ke dalam setArrDataAlamat
+
+	// handle COD selected form
+	const handleChange = async (event) => {
 		// setState({ ...state, [event.target.name]: event.target.checked });
 		setAirIsiUlangForm({
 			...airIsiUlangForm,
@@ -129,12 +181,15 @@ function CheckoutAir(props) {
 	}
 	const handleTambahAlamat = (e) => {
 		e.preventDefault()
+		const output = valueRadioAlamat ? `${valueRadioAlamat}` : `${alamatLengkap}, ${kecamatan}, ${kabupaten}`
 		setAirIsiUlangForm({
 			...airIsiUlangForm,
+			dataAlamat:output,
 			provinsi,
 			kabupaten,
 			kecamatan,
-			alamatLengkap
+			alamatLengkap,
+			
 		})
 		setAlamat(true)
 		setOpen(false);
@@ -160,11 +215,56 @@ function CheckoutAir(props) {
 		})
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault()
 		setSubmitting(true)
+		// handle penyimpanan alamat yang sudah diinputkan ke collection dataAlamat
+		// collection ini berbeda dengan collection airIsiUlang 
+		const output = valueRadioAlamat ? `${valueRadioAlamat}` : `${alamatLengkap}, ${kecamatan}, ${kabupaten}`
+		await dataAlamatCollection.set(
+			{
+				userId:user.uid,
+				isSelected:false,
+				provinsi,
+				kabupaten,
+				kecamatan,
+				alamatLengkap,
+				dataAlamat:output,
+				
+			},
+			{
+				merge:true
+			}
+		)
+
+		// copy paste proses pemesanan air isi ulang ke collection historyAirIsiUlang
+		// ini berguna untuk membuat catatan log pemesanan air isi ulang
+		await payloadHistory.set(
+				{
+					...airIsiUlangForm, 
+					pesananId:pesananId, 
+					dataAlamat:output
+				}, 
+				{
+					merge:true
+				}
+			)
+
+		// handle upload semua data pemesanan ke collectionairIsiUlang
 		setTimeout(() => {
-			payload.set(airIsiUlangForm, {merge:true})
+			payload.set(
+				{
+					...airIsiUlangForm, 
+					packing:false, 
+					delivery:false, 
+					sampai:false, 
+					selesai:false,
+					pesananId:pesananId
+				}, 
+				{
+					merge:true
+				}
+			)
 			props.history.push("/history/pesan-air/progress")	
 		  }, 3500)
 		
@@ -189,7 +289,6 @@ function CheckoutAir(props) {
 			</Alert>
 			 </Collapse>
 		<Grid container spacing={3}>
-			{/* {JSON.stringify(airIsiUlangForm)} */}
 			<Grid item xs={12} md={8}>
 				{/* Tabel */}
 				<TableContainer component={Paper} className={classes.mypaper}>
@@ -243,6 +342,7 @@ function CheckoutAir(props) {
 				<Paper className={classes.mypaper} elevation={1}>
 					<Typography style={{ marginBottom: 20 }}>Alamat Lengkap Pengiriman</Typography>
 					{provinsi && kabupaten && kecamatan && alamatLengkap && isAlamat ? (
+						// dataAlamat
 						<>
 						<Typography variant="body2" color="primary" style={{ marginBottom: 20 }}>
 							{alamatLengkap}, {kecamatan}, {kabupaten}
@@ -252,9 +352,27 @@ function CheckoutAir(props) {
 						</Button>
 						</>
 					) : (
+						<>
+						<FormControl component="fieldset" style={{marginBottom:15}}> 
+						{/* <FormLabel component="legend">Gender</FormLabel> */}
+						<RadioGroup 
+							aria-label="data history alamat" 
+							name="dataAlamat" 
+							value={valueRadioAlamat} 
+							onChange={handleRadioAlamat}>
+							{stateDataAlamat.map(data => {
+								const item = data.data()
+							return (
+								<FormControlLabel value={`${item.dataAlamat}`} control={<Radio />} label={`${item.dataAlamat}`} />
+							)
+						})}
+							
+						</RadioGroup>
+						</FormControl>
 						<Button variant="contained" color="primary" fullWidth disableElevation onClick={handleClickOpen}>
 							Tambah Alamat
 						</Button>
+						</>
 					)}
 					
 				</Paper>
@@ -351,7 +469,7 @@ function CheckoutAir(props) {
           variant="standard"
           label="Alamat Lengkap"
 		  name="alamatLengkap"
-		  value={alamatLengkap.toUpperCase()}
+		  value={alamatLengkap}
 		  onChange={handleAlamatLengkap}
           />
           </FormControl>
