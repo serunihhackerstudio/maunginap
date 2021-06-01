@@ -251,11 +251,11 @@ function CheckoutAir(props) {
 			)
 
 		// handle upload semua data pemesanan ke collectionairIsiUlang
-		setTimeout(() => {
-			payload.set(
+		// setTimeout(() => {}, 3500)
+		await payload.set(
 				{
 					...airIsiUlangForm, 
-					packing:false, 
+					packing:true, 
 					delivery:false, 
 					sampai:false, 
 					selesai:false,
@@ -265,9 +265,7 @@ function CheckoutAir(props) {
 					merge:true
 				}
 			)
-			props.history.push("/history/pesan-air/progress")	
-		  }, 3500)
-		
+		props.history.push("/history/pesan-air/progress")	
 	}
 
 	return (
