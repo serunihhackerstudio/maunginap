@@ -553,7 +553,7 @@ function HomeProduk() {
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
           return (
-            <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>
+            <Grid key={produkDoc.id} direction="row" item={true} xs={12} xm={12} md={3} lg={3}>
               <Card className={classes.root}>
                 <CardActionArea
                   component={Link}

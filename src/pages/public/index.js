@@ -111,6 +111,9 @@ import ProgressAir from "./pesan_air/progress";
 import CheckoutAir from "./pesan_air/checkout";
 import DetailProdukAir from "./pesan_air/detail";
 
+// import tab
+import TabProgress from "./pesan_air/progress/tabprogress"
+
 function Home({ history, location, match }) {
   // use detailParam to get match params penginapanId from detail page
   const { detailParam, setSearchText } = usePesanan();
@@ -413,7 +416,9 @@ function Home({ history, location, match }) {
             ) : location.pathname === "/filter/kost" ||
               location.pathname === "/filter/kontrakan" ||
               location.pathname === "/filter/ruko" ||
-              location.pathname === `/pesan-air/detail` ? 
+              location.pathname === `/pesan-air/detail` ||
+              location.pathname === `/pesan-air/detail/checkout` 
+               ? 
               (
               <IconButton
                 className={classes.goBackIcon}
@@ -519,7 +524,7 @@ function Home({ history, location, match }) {
                   children="Tagihan"
                 />
                 <Route path="/pesan-air" exact children="Pesan Air" />
-                <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
+                <Route path="/history/pesan-air/progress" exact children="Progress Pesanan Air" />
                 <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
                 <Route path="/pesan-air/detail" exact children="Air isi ulang" />
                 </Switch>
@@ -736,7 +741,9 @@ function Home({ history, location, match }) {
             ) : location.pathname === `/filter/kost` ||
               location.pathname === `/filter/kontrakan` ||
               location.pathname === `/filter/ruko` ||
-              location.pathname === `/pesan-air/detail` ? 
+              location.pathname === `/pesan-air/detail` ||
+              location.pathname === `/pesan-air/detail/checkout` 
+              ? 
               (
               <IconButton
                 className={classes.menuButton}
@@ -830,7 +837,7 @@ function Home({ history, location, match }) {
                   children="Tagihan"
                 />
                 <Route path="/pesan-air" exact children="Pesan Air" />
-                <Route path="/pesan-air/progress" exact children="Progress Pesanan Air" />
+                <Route path="/history/pesan-air/progress" exact children="Progress Pesanan Air" />
                 <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
                 <Route path="/pesan-air/detail" exact children="Air isi ulang" />
               </Switch>
@@ -1044,7 +1051,8 @@ function Home({ history, location, match }) {
               exact
               component={DetailProduk}
             />
-            <Route path="/history" component={History} />
+            {/* <Route path="/history" component={History} /> */}
+            <Route path="/history" component={TabProgress} />
             <Route
               exact
               path="/perpanjang/:penginapanId"
@@ -1061,7 +1069,7 @@ function Home({ history, location, match }) {
             <Route path="/filter" component={IconMenu} />
             <Route path="/search" component={Search} />
             <Route path="/pesan-air" exact component={ProdukAir} />
-            <Route path="/pesan-air/progress" exact component={ProgressAir} />
+            <Route path="/history/pesan-air/progress" exact component={ProgressAir} />
             <Route path="/pesan-air/detail/checkout" exact component={CheckoutAir} />
             <Route path="/pesan-air/detail" exact component={DetailProdukAir} />
             <Route component={HomeProduk} />

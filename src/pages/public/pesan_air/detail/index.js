@@ -41,7 +41,7 @@ export default function DetailProdukAir({ history }) {
 	const harga = 10000;
 	const [ dataForm, setDataForm ] = React.useState({
 		userId: user.uid,
-		jumlahGln: 0,
+		jumlahGln: '',
 		total: 0,
 		cod:false,
 		tanggal: new Date(),

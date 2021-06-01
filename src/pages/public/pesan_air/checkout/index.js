@@ -32,6 +32,10 @@ import { useFirebase } from '../../../../components/FirebaseProvider';
 import AlamatDialog from './distrik';
 // import { useCollection } from 'react-firebase-hooks/firestore';
 
+// progressBar
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
 // import dialog untuk input alamat
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -151,7 +155,11 @@ function CheckoutAir(props) {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		setSubmitting(true)
-		payload.set(airIsiUlangForm, {merge:true})
+		setTimeout(() => {
+			payload.set(airIsiUlangForm, {merge:true})
+			props.history.push("/history/pesan-air/progress")	
+		  }, 3500)
+		
 	}
 
 	return (
@@ -253,7 +261,7 @@ function CheckoutAir(props) {
 						label="COD"
 					/>
 				</Paper>
-				<Button style={{ marginTop: 10 }} variant="contained" color="secondary" fullWidth disableElevation onClick={handleSubmit} disabled={isSubmitting}>
+				<Button startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : ""} style={{ marginTop: 10 }} variant="contained" color="secondary" fullWidth disableElevation onClick={handleSubmit} disabled={isSubmitting}>
 					Checkout Sekarang
 				</Button>
 			</Grid>
