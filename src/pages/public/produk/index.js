@@ -30,12 +30,12 @@ import homekontrakan from "../../../assets/homekontrakan.png";
 import homekostan from "../../../assets/homekostan.png";
 import ruko from "../../../assets/ruko.png";
 import gallon from "../../../assets/gallon.png";
-import Divider from "@material-ui/core/Divider";
+// import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import Tooltip from '@material-ui/core/Tooltip';
-import ComplexButton from "./component/complexButton"
+// import ComplexButton from "./component/complexButton"
 // import datatidakditemukan from "../../../assets/datatidakditemukan.png";
 
 /*

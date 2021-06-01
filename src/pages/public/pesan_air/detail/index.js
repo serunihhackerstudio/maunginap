@@ -58,7 +58,6 @@ export default function DetailProdukAir({ history }) {
 			setItem(snapshot.data())
 		}
 	},[snapshot])
-	dataForm.nomorHpPemesan = item.telepon
 	
 	// handle event formulasi pemesanan galon secara matematika
 	const handleJumlahGln = (e) => {
@@ -77,7 +76,7 @@ export default function DetailProdukAir({ history }) {
 		// setSubmitting(true);
 		// await payload.set(dataForm, { merge: true });
 		// setSubmitting(false);
-    setAirIsiUlangForm({...dataForm})
+    setAirIsiUlangForm({...dataForm, nomorHpPemesan : item.telepon})
     history.push('/pesan-air/detail/checkout');
 	};
 

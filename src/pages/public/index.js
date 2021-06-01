@@ -42,7 +42,7 @@ import { useFirebase } from "../../components/FirebaseProvider";
 import DetailProduk from "./produk/detail";
 import HomeProduk from "./produk";
 import Proses from "./produk/bayar/proses";
-import History from "./produk/history";
+// import History from "./produk/history";
 import Perpanjang from "./produk/perpanjang";
 import ProsesPerpanjang from "./produk/perpanjang/proses";
 import DialogBooking from "./produk/dialog/index";
