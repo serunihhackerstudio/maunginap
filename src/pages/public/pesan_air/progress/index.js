@@ -55,7 +55,9 @@ function ProgressAir({ history }) {
   const [item, setItem] = React.useState({});
 
   // history collection query
-  const historyQUery = firestore.collection("historyAirIsiUlang");
+  const historyQUery = firestore
+    .collection("historyAirIsiUlang")
+    .where("userId", "==", `${user.uid}`);
   const [historySnapshot, historyLoading] = useCollection(historyQUery);
   const [historyData, setHistoryData] = React.useState([]);
 
