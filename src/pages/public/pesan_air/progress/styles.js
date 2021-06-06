@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   hideInputFile: {
-      display: "none",
+    display: "none",
   },
   uploadFotoProduk: {
     textAlign: "center",
@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
     height: "auto",
   },
-  profilePict:{
-    borderRadius:"8%",
+  profilePict: {
+    borderRadius: "8%",
   },
   fab: {
     position: "absolute",
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(15),
     width: theme.spacing(15),
     margin: "auto",
-    marginBottom:theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   paper: {
     padding: theme.spacing(2),
@@ -55,6 +55,11 @@ const useStyles = makeStyles((theme) => ({
   },
   secondaryTail: {
     backgroundColor: theme.palette.secondary.main,
+  },
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 

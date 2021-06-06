@@ -112,7 +112,7 @@ import CheckoutAir from "./pesan_air/checkout";
 import DetailProdukAir from "./pesan_air/detail";
 
 // import tab
-import TabProgress from "./pesan_air/progress/tabprogress"
+import TabProgress from "./pesan_air/progress/tabprogress";
 
 function Home({ history, location, match }) {
   // use detailParam to get match params penginapanId from detail page
@@ -417,13 +417,12 @@ function Home({ history, location, match }) {
               location.pathname === "/filter/kontrakan" ||
               location.pathname === "/filter/ruko" ||
               location.pathname === `/pesan-air/detail` ||
-              location.pathname === `/pesan-air/detail/checkout` 
-               ? 
-              (
+              location.pathname === `/pesan-air/detail/checkout` ? (
               <IconButton
                 className={classes.goBackIcon}
-                component={Link}
-                to={"/"}
+                onClick={() => history.goBack()}
+                // component={Link}
+                // to={"/"}
               >
                 <ArrowBackIcon color="white" />
               </IconButton>
@@ -524,10 +523,22 @@ function Home({ history, location, match }) {
                   children="Tagihan"
                 />
                 <Route path="/pesan-air" exact children="Pesan Air" />
-                <Route path="/history/pesan-air/progress" exact children="Progress Pesanan Air" />
-                <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
-                <Route path="/pesan-air/detail" exact children="Air isi ulang" />
-                </Switch>
+                <Route
+                  path="/history/pesan-air/progress"
+                  exact
+                  children="Progress Pesanan Air"
+                />
+                <Route
+                  path="/pesan-air/detail/checkout"
+                  exact
+                  children="Checkout Pesanan Air"
+                />
+                <Route
+                  path="/pesan-air/detail"
+                  exact
+                  children="Air isi ulang"
+                />
+              </Switch>
               {/* LOGO TITLE */}
             </Typography>
 
@@ -742,16 +753,14 @@ function Home({ history, location, match }) {
               location.pathname === `/filter/kontrakan` ||
               location.pathname === `/filter/ruko` ||
               location.pathname === `/pesan-air/detail` ||
-              location.pathname === `/pesan-air/detail/checkout` 
-              ? 
-              (
+              location.pathname === `/pesan-air/detail/checkout` ? (
               <IconButton
                 className={classes.menuButton}
-                onClick={() => history.push("/")}
+                onClick={() => history.goBack()}
+                // onClick={() => history.push("/")}
               >
                 <ArrowBackIcon style={{ color: "white" }} />
               </IconButton>
-              
             ) : location.pathname === "/search" ? (
               <Paper className={classes.rootSearch}>
                 <IconButton
@@ -837,9 +846,21 @@ function Home({ history, location, match }) {
                   children="Tagihan"
                 />
                 <Route path="/pesan-air" exact children="Pesan Air" />
-                <Route path="/history/pesan-air/progress" exact children="Progress Pesanan Air" />
-                <Route path="/pesan-air/detail/checkout" exact children="Checkout Pesanan Air" />
-                <Route path="/pesan-air/detail" exact children="Air isi ulang" />
+                <Route
+                  path="/history/pesan-air/progress"
+                  exact
+                  children="Progress Pesanan Air"
+                />
+                <Route
+                  path="/pesan-air/detail/checkout"
+                  exact
+                  children="Checkout Pesanan Air"
+                />
+                <Route
+                  path="/pesan-air/detail"
+                  exact
+                  children="Air isi ulang"
+                />
               </Switch>
               {/* LOGO TITLE */}
             </Typography>
@@ -1069,8 +1090,16 @@ function Home({ history, location, match }) {
             <Route path="/filter" component={IconMenu} />
             <Route path="/search" component={Search} />
             <Route path="/pesan-air" exact component={ProdukAir} />
-            <Route path="/history/pesan-air/progress" exact component={ProgressAir} />
-            <Route path="/pesan-air/detail/checkout" exact component={CheckoutAir} />
+            <Route
+              path="/history/pesan-air/progress"
+              exact
+              component={ProgressAir}
+            />
+            <Route
+              path="/pesan-air/detail/checkout"
+              exact
+              component={CheckoutAir}
+            />
             <Route path="/pesan-air/detail" exact component={DetailProdukAir} />
             <Route component={HomeProduk} />
           </Switch>

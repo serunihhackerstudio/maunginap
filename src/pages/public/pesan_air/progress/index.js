@@ -13,6 +13,7 @@ import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import Paper from "@material-ui/core/Paper";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import HistoryIcon from "@material-ui/icons/History";
 import { red } from "@material-ui/core/colors";
 
 // start
@@ -29,13 +30,30 @@ import StopOutlinedIcon from "@material-ui/icons/StopOutlined";
 
 // import firebase package
 import { useFirebase } from "../../../../components/FirebaseProvider";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
 // progressBar
 import AppPageLoading from "../../../../components/AppPageLoading";
 import CheckIcon from "@material-ui/icons/Check";
 
+// dialog
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+// membuat list item
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ImageIcon from "@material-ui/icons/Image";
+import WorkIcon from "@material-ui/icons/Work";
+import BeachAccessIcon from "@material-ui/icons/BeachAccess";
+
 function ProgressAir({ history }) {
+  const color = "#016660";
   const classes = useStyles();
   const { firestore, user } = useFirebase();
   const query = firestore
@@ -44,9 +62,30 @@ function ProgressAir({ history }) {
   const [snapshot, loading] = useDocument(query);
   const [item, setItem] = React.useState({});
 
+  // history collection query
+  const historyQUery = firestore.collection("historyAirIsiUlang");
+  const [historySnapshot, historyLoading] = useCollection(historyQUery);
+  const [historyData, setHistoryData] = React.useState([]);
+
   // fungsi untuk kembali ke halaman produk air isi ulang
   const kembaliKeProduk = () => {
     history.push("/pesan-air/detail");
+  };
+
+  // dialog
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  // menampilkan fitur histori pesanan
+  const historiClicked = () => {
+    setOpen(true);
   };
 
   // load data melalui useEffect
@@ -64,7 +103,13 @@ function ProgressAir({ history }) {
         setItem(snapshot.docs[0].data());
       }
     }
-  }, [snapshot]);
+
+    if (historySnapshot) {
+      setHistoryData(historySnapshot.docs);
+      console.log(historySnapshot.docs[0].data());
+    }
+  }, [snapshot, historySnapshot]);
+
   let progressPacking = item.packing;
   let progressDelivery = item.delivery;
   let progressSampai = item.sampai;
@@ -97,7 +142,7 @@ function ProgressAir({ history }) {
       <Card className={classes.paper}>
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" style={{ backgroundColor: "#f50057" }}>
+            <Avatar aria-label="recipe" style={{ backgroundColor: color }}>
               {item.packing &&
               !item.sampai &&
               !item.delivery &&
@@ -134,7 +179,7 @@ function ProgressAir({ history }) {
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   {progressPacking ? (
-                    <TimelineDot color="secondary">
+                    <TimelineDot color="primary">
                       <RepeatOutlinedIcon />
                     </TimelineDot>
                   ) : (
@@ -166,7 +211,7 @@ function ProgressAir({ history }) {
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   {progressDelivery ? (
-                    <TimelineDot color="secondary">
+                    <TimelineDot color="primary">
                       <MotorcycleOutlinedIcon />
                     </TimelineDot>
                   ) : (
@@ -198,7 +243,7 @@ function ProgressAir({ history }) {
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   {progressSampai ? (
-                    <TimelineDot color="secondary">
+                    <TimelineDot color="primary">
                       <FlagOutlinedIcon />
                     </TimelineDot>
                   ) : (
@@ -230,7 +275,7 @@ function ProgressAir({ history }) {
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   {progressSelesai ? (
-                    <TimelineDot color="secondary">
+                    <TimelineDot color="primary">
                       <CheckIcon />
                     </TimelineDot>
                   ) : (
@@ -266,8 +311,51 @@ function ProgressAir({ history }) {
           >
             Kembali ke produk
           </Button>
+          <Button
+            startIcon={<HistoryIcon />}
+            size="medium"
+            color="primary"
+            variant="contained"
+            disableElevation
+            onClick={historiClicked}
+          >
+            Histori Order
+          </Button>
         </CardActions>
       </Card>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Catatan Pemesanan Air</DialogTitle>
+        <DialogContent>
+          <List className={classes.root}>
+            {historyData.map((data, index) => {
+              const number = index + 1;
+              const item = data.data();
+              return (
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: color }}>{number}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`#${item.pesananId}`}
+                    secondary={new Date(item.tanggal).toLocaleString()}
+                  />
+                </ListItem>
+              );
+            })}
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Tutup
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
