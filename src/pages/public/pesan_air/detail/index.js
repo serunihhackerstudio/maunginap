@@ -31,7 +31,7 @@ export default function DetailProdukAir({ history }) {
   const [isSubmitting, setSubmitting] = React.useState(false);
 
   // memanggil variable global melalui PesananProvider
-  const { setAirIsiUlangForm, airIsiUlangForm } = usePesanan();
+  const { setAirIsiUlangForm } = usePesanan();
 
   // buat database untuk menyimpan data pesanan
   const { firestore, user } = useFirebase();
@@ -56,8 +56,6 @@ export default function DetailProdukAir({ history }) {
   const [snapshot, loading] = useDocument(userQuery);
   const [hargaAir, setHargaAir] = React.useState({});
   const [snapshotAir, loadingAir] = useDocument(hargaAirQuery);
-  const [volumeGlobal, setVolume] = React.useState(0);
-  const [hargaAccAir, setHargaAccAir] = React.useState(0);
 
   // use effect untuk query data userBio
   React.useEffect(() => {
@@ -105,9 +103,6 @@ export default function DetailProdukAir({ history }) {
 
   return (
     <Grid container spacing={3}>
-      {JSON.stringify(airIsiUlangForm)}
-      {JSON.stringify(dataForm)}
-      {JSON.stringify(hargaAccAir)}
       <Hidden mdDown>
         <Grid item xs={12} md={1}>
           <Card>

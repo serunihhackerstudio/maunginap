@@ -14,7 +14,6 @@ import TimelineDot from "@material-ui/lab/TimelineDot";
 import Paper from "@material-ui/core/Paper";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import HistoryIcon from "@material-ui/icons/History";
-import { red } from "@material-ui/core/colors";
 
 // start
 import RepeatOutlinedIcon from "@material-ui/icons/RepeatOutlined";
@@ -24,9 +23,6 @@ import MotorcycleOutlinedIcon from "@material-ui/icons/MotorcycleOutlined";
 
 // sampai
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
-
-// selesai
-import StopOutlinedIcon from "@material-ui/icons/StopOutlined";
 
 // import firebase package
 import { useFirebase } from "../../../../components/FirebaseProvider";
@@ -40,7 +36,6 @@ import CheckIcon from "@material-ui/icons/Check";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 // membuat list item
@@ -48,10 +43,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
-
+import { currency } from "../../../../utils/formatter";
 function ProgressAir({ history }) {
   const color = "#016660";
   const classes = useStyles();
@@ -74,10 +66,6 @@ function ProgressAir({ history }) {
 
   // dialog
   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -134,7 +122,7 @@ function ProgressAir({ history }) {
   // let progressSampaiTime = item.waktuSampai;
   // let progressSelesaiTime = item.waktuSelesai;
 
-  if (loading) {
+  if (loading && historyLoading) {
     return <AppPageLoading />;
   }
   return (
@@ -342,7 +330,7 @@ function ProgressAir({ history }) {
                     <Avatar style={{ backgroundColor: color }}>{number}</Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={`#${item.pesananId}`}
+                    primary={`#${item.pesananId} - ${currency(item.total)}`}
                     secondary={new Date(item.tanggal).toLocaleString()}
                   />
                 </ListItem>

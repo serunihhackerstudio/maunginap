@@ -107,7 +107,6 @@ function CheckoutAir(props) {
     useCollection(currentAlamat);
   const [stateDataAlamat, setStateDataAlamat] = React.useState([]);
   const [stateCurDataAlamat, setStateCurDataAlamat] = React.useState({});
-  const [stateKelurahan, setStateKelurahan] = React.useState("");
 
   // variable untuk dialog view
   const [open, setOpen] = React.useState(false);
@@ -176,7 +175,7 @@ function CheckoutAir(props) {
 
   // loading ketika collection diload oleh aplikasi
   // collection yang diload adalah collection dataAlamat
-  if (loadingAlamat) {
+  if (loadingAlamat && loadingAir && loadingCurrentAlamat) {
     return <AppPageLoading />;
   }
 
@@ -340,6 +339,7 @@ function CheckoutAir(props) {
         ...airIsiUlangForm,
         pesananId: pesananId,
         dataAlamat: output,
+        total: hargaAirIsiUlang * airIsiUlangForm.jumlahGln + ongkir,
       },
       {
         merge: true,
