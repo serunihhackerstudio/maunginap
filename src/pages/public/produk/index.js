@@ -33,8 +33,8 @@ import gallon from "../../../assets/gallon.png";
 // import Divider from "@material-ui/core/Divider";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { blue } from "@material-ui/core/colors";
-import StorefrontIcon from '@material-ui/icons/Storefront';
-import Tooltip from '@material-ui/core/Tooltip';
+import StorefrontIcon from "@material-ui/icons/Storefront";
+import Tooltip from "@material-ui/core/Tooltip";
 // import ComplexButton from "./component/complexButton"
 // import datatidakditemukan from "../../../assets/datatidakditemukan.png";
 
@@ -57,7 +57,7 @@ function HomeProduk() {
   const [value, setValue] = React.useState(options[0]);
   const kotaQuery = firestore.collection("kota");
   const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-  
+
   const classes = useStyles();
   const defaultNumPage = 8;
   const [numPage, setNumPage] = useState(defaultNumPage);
@@ -77,7 +77,6 @@ function HomeProduk() {
   const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
   const [success, setSuccess] = React.useState(false);
   const [loadingBtn, setLoading] = React.useState(false);
-  
 
   // hilangkan fab ketika tombol search diaktifkan
   const [searchingActivate, setSearchingActivate] = useState(false);
@@ -110,7 +109,6 @@ function HomeProduk() {
     clearTimeout(timer.current);
   }, [snapshot, isNextClicked, kotaSnapshot]);
 
-  
   const [maxData, setMaxData] = useState(0);
   dataDocMax.get().then((data) => setMaxData(data.docs.length));
 
@@ -185,9 +183,9 @@ function HomeProduk() {
   };
 
   const clear = true;
-  if (!clear){
-    console.clear(setJenisPenginapan,success )
-    console.clear(kotaLoading, setValue, setForm, handleSubmit)
+  if (!clear) {
+    console.clear(setJenisPenginapan, success);
+    console.clear(kotaLoading, setValue, setForm, handleSubmit);
   }
 
   return (
@@ -255,7 +253,14 @@ function HomeProduk() {
         {/* ICON MENU JENIS PRODUK */}
         {loading ? (
           <Grid container spacing={2} className={classes.gridContainer}>
-            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
+            <Grid
+              item={true}
+              xs={12}
+              xm={12}
+              md={3}
+              lg={3}
+              style={{ margin: "4" }}
+            >
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -274,7 +279,14 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
+            <Grid
+              item={true}
+              xs={12}
+              xm={12}
+              md={3}
+              lg={3}
+              style={{ margin: "4" }}
+            >
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -293,7 +305,14 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
+            <Grid
+              item={true}
+              xs={12}
+              xm={12}
+              md={3}
+              lg={3}
+              style={{ margin: "4" }}
+            >
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -312,7 +331,14 @@ function HomeProduk() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item={true} xs={12} xm={12} md={3} lg={3} style={{margin:"4"}}>
+            <Grid
+              item={true}
+              xs={12}
+              xm={12}
+              md={3}
+              lg={3}
+              style={{ margin: "4" }}
+            >
               <Card className={classes.root}>
                 <CardActionArea>
                   <Skeleton
@@ -333,7 +359,6 @@ function HomeProduk() {
             </Grid>
           </Grid>
         ) : (
-
           <Grid container spacing={2} className={classes.gridContainer}>
             <Grid item={true} xs={6} md={3}>
               <Card className={classes.root}>
@@ -342,7 +367,11 @@ function HomeProduk() {
                   component={Link}
                   to={"/filter/kost"}
                 >
-                  <img src={homekostan} className={classes.mediaiconMenu} alt="img"/>
+                  <img
+                    src={homekostan}
+                    className={classes.mediaiconMenu}
+                    alt="img"
+                  />
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -362,7 +391,11 @@ function HomeProduk() {
                   style={{ textAlign: "center" }}
                   to={"/filter/kontrakan"}
                 >
-                  <img src={homekontrakan} className={classes.mediaiconMenu} alt="img" />
+                  <img
+                    src={homekontrakan}
+                    className={classes.mediaiconMenu}
+                    alt="img"
+                  />
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -400,9 +433,13 @@ function HomeProduk() {
                 <CardActionArea
                   component={Link}
                   style={{ textAlign: "center" }}
-                  to={"/pesan-air/detail"}
+                  // to={"/pesan-air/detail"}
                 >
-                  <img src={gallon} className={classes.mediaiconMenu} alt="img" />
+                  <img
+                    src={gallon}
+                    className={classes.mediaiconMenu}
+                    alt="img"
+                  />
                 </CardActionArea>
                 <CardActions>
                   <Typography
@@ -417,8 +454,6 @@ function HomeProduk() {
             </Grid>
           </Grid>
         )}
-
-        
 
         {loading ? (
           <div className={classes.all}>
@@ -545,128 +580,146 @@ function HomeProduk() {
       {produkItems.length === 0 && !loading ? (
         <div className={classes.textNoFound}>
           {/* <img src={datatidakditemukan} width={350} alt="Data not found" /> */}
-          
         </div>
       ) : (
-
         <Grid container spacing={5} className={classes.gridContainer}>
-        {produkItems.map((produkDoc) => {
-          const produkData = produkDoc.data();
-          return (
-            <Grid key={produkDoc.id} direction="row" item={true} xs={12} xm={12} md={3} lg={3}>
-              <Card className={classes.root}>
-                <CardActionArea
-                  component={Link}
-                  to={`/view/penginapan/${produkDoc.id}`}
-                >
-                  <CardMedia
-                    className={classes.media}
-                    image={produkData.foto}
-                    title="Contemplative Reptile"
-                    alt={`gambar-${produkDoc.id}`}
-                  />
+          {produkItems.map((produkDoc) => {
+            const produkData = produkDoc.data();
+            return (
+              <Grid
+                key={produkDoc.id}
+                direction="row"
+                item={true}
+                xs={12}
+                xm={12}
+                md={3}
+                lg={3}
+              >
+                <Card className={classes.root}>
+                  <CardActionArea
+                    component={Link}
+                    to={`/view/penginapan/${produkDoc.id}`}
+                  >
+                    <CardMedia
+                      className={classes.media}
+                      image={produkData.foto}
+                      title="Contemplative Reptile"
+                      alt={`gambar-${produkDoc.id}`}
+                    />
 
-                  <CardContent>
-                    <Typography variant="h6">
-                      {produkData.namaPenginapan}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: blue[500] }}>
-                      {produkData.isTahunan && produkData.jenisPenginapan !== "Ruko" ? "(Kost Tahunan)" : ""}{" "}
-                    </Typography>
+                    <CardContent>
+                      <Typography variant="h6">
+                        {produkData.namaPenginapan}
+                      </Typography>
+                      <Typography variant="body1" style={{ color: blue[500] }}>
+                        {produkData.isTahunan &&
+                        produkData.jenisPenginapan !== "Ruko"
+                          ? "(Kost Tahunan)"
+                          : ""}{" "}
+                      </Typography>
 
-                    <Typography variant="body1" gutterBottom color="primary">
-                      {currency(produkData.harga)}
-                      {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
-                      {produkData.jenisPenginapan === "Kontrakan" || produkData.jenisPenginapan === "Ruko" ||
-                      produkData.isTahunan
-                        ? " / tahun"
-                        : " / bulan"}
-                    </Typography>
+                      <Typography variant="body1" gutterBottom color="primary">
+                        {currency(produkData.harga)}
+                        {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
+                        {produkData.jenisPenginapan === "Kontrakan" ||
+                        produkData.jenisPenginapan === "Ruko" ||
+                        produkData.isTahunan
+                          ? " / tahun"
+                          : " / bulan"}
+                      </Typography>
 
-                    <Typography
-                      variant="body1"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {/* {produkData.lokasi} */}
-                      {/* <Chip
+                      <Typography
+                        variant="body1"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {/* {produkData.lokasi} */}
+                        {/* <Chip
                         icon={<LocationOnIcon />}
                         label={`mataram`}
                         size="small"
                         color="primary"
                       /> */}
-                      {/* <LocationOnIcon /> Mataram */}
-                    </Typography>
-                    <Grid container>
-                      <Grid item xs={1.8}>
-                        <LocationOnIcon className={classes.ico} />
+                        {/* <LocationOnIcon /> Mataram */}
+                      </Typography>
+                      <Grid container>
+                        <Grid item xs={1.8}>
+                          <LocationOnIcon className={classes.ico} />
+                        </Grid>
+                        <Grid item xs>
+                          {produkData.kota}
+                        </Grid>
                       </Grid>
-                      <Grid item xs>
-                        {produkData.kota}
-                      </Grid>
-                    </Grid>
 
-                    <Typography variant="body2" color="textSecondary">
-                      {produkData.fasilitasUmum.ac ? <>ac &#183; </> : ""}
-                      {produkData.fasilitasUmum.kamarMandiDalam ? (
-                        <>k. mandi dlm &#183; </>
-                      ) : (
-                        ""
-                      )}
-                      {produkData.fasilitasUmum.kasur ? <>kasur &#183; </> : ""}
-                      {produkData.fasilitasUmum.lemari ? (
-                        <>lemari &#183; </>
-                      ) : (
-                        ""
-                      )}
-                      {produkData.fasilitasUmum.listrikSendiri ? (
-                        <>listrik sendiri &#183; </>
-                      ) : (
-                        ""
-                      )}
-                      {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
-                      {produkData.fasilitasUmum.tempatJemur ? (
-                        <>tempat jemur &#183; </>
-                      ) : (
-                        ""
-                      )}
-                      {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Chip
-                    icon={<FavoriteIcon />}
-                    label={`${produkData.likes} likes`}
-                    variant="outlined"
-                    size="small"
-                  />
-                  {produkData.jenisPenginapan === "Ruko" ? <Tooltip title="Penyewaan Ruko"><StorefrontIcon /></Tooltip> : ""}
-                </CardActions>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
-
-      )}
-  
-      <Grid className={classes.fabGrid} id={"el"} ref={el}>
-          {produkItems.length !== maxData && !searchingActivate ? (
-            <Button
-              variant="outlined"
-              className={classes.fab}
-              color="primary"
-              onClick={loadNextData}
-            >
-              Load more data
-            </Button>
-          ) : (
-            <></>
-          )}
-          {/* {searchingActivate && <></>} */}
+                      <Typography variant="body2" color="textSecondary">
+                        {produkData.fasilitasUmum.ac ? <>ac &#183; </> : ""}
+                        {produkData.fasilitasUmum.kamarMandiDalam ? (
+                          <>k. mandi dlm &#183; </>
+                        ) : (
+                          ""
+                        )}
+                        {produkData.fasilitasUmum.kasur ? (
+                          <>kasur &#183; </>
+                        ) : (
+                          ""
+                        )}
+                        {produkData.fasilitasUmum.lemari ? (
+                          <>lemari &#183; </>
+                        ) : (
+                          ""
+                        )}
+                        {produkData.fasilitasUmum.listrikSendiri ? (
+                          <>listrik sendiri &#183; </>
+                        ) : (
+                          ""
+                        )}
+                        {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
+                        {produkData.fasilitasUmum.tempatJemur ? (
+                          <>tempat jemur &#183; </>
+                        ) : (
+                          ""
+                        )}
+                        {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Chip
+                      icon={<FavoriteIcon />}
+                      label={`${produkData.likes} likes`}
+                      variant="outlined"
+                      size="small"
+                    />
+                    {produkData.jenisPenginapan === "Ruko" ? (
+                      <Tooltip title="Penyewaan Ruko">
+                        <StorefrontIcon />
+                      </Tooltip>
+                    ) : (
+                      ""
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
-      
+      )}
+
+      <Grid className={classes.fabGrid} id={"el"} ref={el}>
+        {produkItems.length !== maxData && !searchingActivate ? (
+          <Button
+            variant="outlined"
+            className={classes.fab}
+            color="primary"
+            onClick={loadNextData}
+          >
+            Load more data
+          </Button>
+        ) : (
+          <></>
+        )}
+        {/* {searchingActivate && <></>} */}
+      </Grid>
     </>
   );
 }
