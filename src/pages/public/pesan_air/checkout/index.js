@@ -97,6 +97,11 @@ function CheckoutAir(props) {
   const dataAlamatCollection = firestore
     .collection("dataAlamat")
     .doc(`${user.uid}`);
+
+  const dataHargaAir = firestore.collection("hargaAir").doc("hargaAirDoc2021");
+  const [snapshotAir, loadingAir] = useDocument(dataHargaAir);
+  const [hargaAirIsiUlang, setHargaAirIsiUlang] = React.useState(0);
+
   const [snapshotAlamat, loadingAlamat] = useCollection(alamatCollection);
   const [snapshotCurrentAlamat, loadingCurrentAlamat] =
     useCollection(currentAlamat);
@@ -108,8 +113,7 @@ function CheckoutAir(props) {
   const [open, setOpen] = React.useState(false);
 
   // import data dari pesanan provider / context api
-  const { airIsiUlangForm, setAirIsiUlangForm, hargaAirIsiUlang } =
-    usePesanan();
+  const { airIsiUlangForm, setAirIsiUlangForm } = usePesanan();
 
   // inisialisasi state dan variable pendukung untuk handle alamat
   const [alamatLengkap, setAlamatLengkap] = React.useState("");
@@ -156,12 +160,16 @@ function CheckoutAir(props) {
     if (snapshotCurrentAlamat) {
       setStateCurDataAlamat(snapshotCurrentAlamat.data());
     }
+
+    if (snapshotAir) {
+      setHargaAirIsiUlang(snapshotAir.data().hargaAir);
+      console.log(snapshotAir.data());
+    }
   }, [
     airIsiUlangForm.cod,
     valueRadioAlamat,
     airIsiUlangForm.alamatLengkap,
-    // arrAlamat,
-    // stateDataAlamat,
+    snapshotAir,
     snapshotAlamat,
     snapshotCurrentAlamat,
   ]);
@@ -414,7 +422,9 @@ function CheckoutAir(props) {
                     />
                   </TableCell>
                   <TableCell align="left">Air minum isi ulang</TableCell>
-                  <TableCell align="center">Rp10.000</TableCell>
+                  <TableCell align="center">
+                    {currency(hargaAirIsiUlang)}
+                  </TableCell>
                   <TableCell align="right">
                     <Grid container style={{ textAlign: "left" }}>
                       <Grid item>

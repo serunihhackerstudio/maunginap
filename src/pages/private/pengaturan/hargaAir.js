@@ -16,7 +16,7 @@ export default function HargaAir() {
   const classes = useStyles();
   const queryData = firestore.collection(`hargaAir`).doc("hargaAirDoc2021");
   const [snapshot, loading] = useDocument(queryData);
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     hargaAir: 0,
@@ -26,6 +26,7 @@ export default function HargaAir() {
   useEffect(() => {
     if (snapshot) {
       const data = snapshot.data();
+      // console.log(data);
       setState(data);
     }
   }, [snapshot]);

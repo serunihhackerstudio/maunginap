@@ -19,8 +19,11 @@ import { useDocument } from "react-firebase-hooks/firestore";
 
 // import component context provider
 import { usePesanan } from "../../../../components/PesananProvider";
+import AppPageLoading from "../../../../components/AppPageLoading";
 
 export default function DetailProdukAir({ history }) {
+  const idHargaAir = "hargaAirDoc2021";
+
   // style
   const classes = useStyles();
 
@@ -28,12 +31,12 @@ export default function DetailProdukAir({ history }) {
   const [isSubmitting, setSubmitting] = React.useState(false);
 
   // memanggil variable global melalui PesananProvider
-  const { setAirIsiUlangForm } = usePesanan();
+  const { setAirIsiUlangForm, airIsiUlangForm } = usePesanan();
 
   // buat database untuk menyimpan data pesanan
   const { firestore, user } = useFirebase();
   // const payload = firestore.collection('airIsiUlang').doc(`${dataId}`);
-  const harga = 10000;
+  // const harga = 10000;
   const [dataForm, setDataForm] = React.useState({
     userId: user.uid,
     userEmail: user.email,
@@ -49,14 +52,23 @@ export default function DetailProdukAir({ history }) {
   // panggil data / collection yang berisi nomor hp user
   const [item, setItem] = React.useState({});
   const userQuery = firestore.collection("userbio").doc(`${user.uid}`);
+  const hargaAirQuery = firestore.collection("hargaAir").doc(idHargaAir);
   const [snapshot, loading] = useDocument(userQuery);
+  const [hargaAir, setHargaAir] = React.useState({});
+  const [snapshotAir, loadingAir] = useDocument(hargaAirQuery);
+  const [volumeGlobal, setVolume] = React.useState(0);
+  const [hargaAccAir, setHargaAccAir] = React.useState(0);
 
   // use effect untuk query data userBio
   React.useEffect(() => {
     if (snapshot) {
       setItem(snapshot.data());
     }
-  }, [snapshot]);
+    if (snapshotAir) {
+      setHargaAir(snapshotAir.data());
+      // setHargaAirIsiUlang(snapshotAir.data().hargaAir);
+    }
+  }, [snapshot, snapshotAir]);
 
   // handle event formulasi pemesanan galon secara matematika
   const handleJumlahGln = (e) => {
@@ -65,7 +77,7 @@ export default function DetailProdukAir({ history }) {
     setDataForm({
       ...dataForm,
       jumlahGln: parseInt(volume > 0 ? volume : 0),
-      total: volume * harga,
+      total: volume * hargaAir.hargaAir,
     });
   };
 
@@ -74,7 +86,10 @@ export default function DetailProdukAir({ history }) {
     // setSubmitting(true);
     // await payload.set(dataForm, { merge: true });
     // setSubmitting(false);
-    setAirIsiUlangForm({ ...dataForm, nomorHpPemesan: item.telepon });
+    setAirIsiUlangForm({
+      ...dataForm,
+      nomorHpPemesan: item.telepon,
+    });
     history.push("/pesan-air/detail/checkout");
   };
 
@@ -84,9 +99,15 @@ export default function DetailProdukAir({ history }) {
     console.clear(setSubmitting, loading);
   }
 
+  if (loadingAir) {
+    return <AppPageLoading />;
+  }
+
   return (
     <Grid container spacing={3}>
-      {/* {JSON.stringify()} */}
+      {JSON.stringify(airIsiUlangForm)}
+      {JSON.stringify(dataForm)}
+      {JSON.stringify(hargaAccAir)}
       <Hidden mdDown>
         <Grid item xs={12} md={1}>
           <Card>
@@ -121,13 +142,15 @@ export default function DetailProdukAir({ history }) {
         <form onSubmit={handlePesanAirClicked}>
           <Card className={classes.mypaper}>
             <CardContent>
-              <Typography variant="h5">Rp. 10.000</Typography>
+              <Typography variant="h5">
+                {currency(hargaAir.hargaAir)}
+              </Typography>
               <Typography
                 className={classes.text}
                 variant="body2"
                 color="primary"
               >
-                Total = {currency(dataForm.jumlahGln * harga)}
+                Total = {currency(dataForm.jumlahGln * hargaAir.hargaAir)}
               </Typography>
               <Typography variant="body2">
                 Siapkan galonnya, kami antarkan air isi ulangnnya ke tempat Anda
