@@ -97,21 +97,26 @@ function ProgressAir({ history }) {
       <Card className={classes.paper}>
         <CardHeader
           avatar={
-            item.selesai ? (
-              <Avatar
-                aria-label="recipe"
-                style={{ backgroundColor: "#f73378" }}
-              >
+            <Avatar aria-label="recipe" style={{ backgroundColor: "#f50057" }}>
+              {item.packing &&
+              !item.sampai &&
+              !item.delivery &&
+              !item.selesai ? (
+                <RepeatOutlinedIcon />
+              ) : item.delivery &&
+                item.packing &&
+                !item.delivery &&
+                !item.selesai ? (
+                <MotorcycleOutlinedIcon />
+              ) : item.sampai &&
+                item.delivery &&
+                item.packing &&
+                !item.selesai ? (
+                <FlagOutlinedIcon />
+              ) : (
                 <CheckIcon />
-              </Avatar>
-            ) : (
-              <Avatar
-                aria-label="recipe"
-                style={{ backgroundColor: "#016660" }}
-              >
-                ID
-              </Avatar>
-            )
+              )}
+            </Avatar>
           }
           title={`Kode Pesanan #${item.pesananId}`}
           subheader={`#${new Date(item.tanggal).toUTCString()}`}
@@ -226,7 +231,7 @@ function ProgressAir({ history }) {
                 <TimelineSeparator>
                   {progressSelesai ? (
                     <TimelineDot color="secondary">
-                      <StopOutlinedIcon />
+                      <CheckIcon />
                     </TimelineDot>
                   ) : (
                     <TimelineDot>

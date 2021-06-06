@@ -32,7 +32,7 @@ import BookingCode from "../../../../utils/bookingCode";
 
 // import firebase package
 import { useFirebase } from "../../../../components/FirebaseProvider";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
 // progressBar
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -91,11 +91,17 @@ function CheckoutAir(props) {
   const alamatCollection = firestore
     .collection("dataAlamat")
     .where("userId", "==", `${user.uid}`);
+
+  const currentAlamat = firestore.collection("dataAlamat").doc(user.uid);
+
   const dataAlamatCollection = firestore
     .collection("dataAlamat")
     .doc(`${user.uid}`);
   const [snapshotAlamat, loadingAlamat] = useCollection(alamatCollection);
+  const [snapshotCurrentAlamat, loadingCurrentAlamat] =
+    useCollection(currentAlamat);
   const [stateDataAlamat, setStateDataAlamat] = React.useState([]);
+  const [stateCurDataAlamat, setStateCurDataAlamat] = React.useState({});
   const [stateKelurahan, setStateKelurahan] = React.useState("");
 
   // variable untuk dialog view
@@ -116,6 +122,8 @@ function CheckoutAir(props) {
   const [valueRadioAlamat, setValueRadioAlamat] = React.useState("");
   const handleRadioAlamat = (event) => {
     setValueRadioAlamat(event.target.value);
+    // tutup alert / informasi yang berwarna kuning
+    setOpenAlert(false);
   };
   const [ongkir, setOngkir] = React.useState(0);
 
@@ -144,6 +152,10 @@ function CheckoutAir(props) {
         // setAlamatLengkap(snapshotAlamat.docs[0].data().split(",")[0])
       }
     }
+
+    if (snapshotCurrentAlamat) {
+      setStateCurDataAlamat(snapshotCurrentAlamat.data());
+    }
   }, [
     airIsiUlangForm.cod,
     valueRadioAlamat,
@@ -151,6 +163,7 @@ function CheckoutAir(props) {
     // arrAlamat,
     // stateDataAlamat,
     snapshotAlamat,
+    snapshotCurrentAlamat,
   ]);
 
   // loading ketika collection diload oleh aplikasi
@@ -170,17 +183,23 @@ function CheckoutAir(props) {
     });
     setOngkir(
       dataMataram
-        .filter(
-          (data) =>
-            data.name ===
-            stateDataAlamat.map((data) => data.data().kecamatan)[0]
-        )[0]
-        .subData.filter(
-          (item) =>
-            item.name ===
-            stateDataAlamat.map((data) => data.data().kelurahan)[0]
-        )[0].ongkir
+        .filter((data) => data.name === stateCurDataAlamat.kecamatan)[0]
+        .subData.filter((item) => item.name === stateCurDataAlamat.kelurahan)[0]
+        .ongkir
     );
+    // setOngkir(
+    //   dataMataram
+    //     .filter(
+    //       (data) =>
+    //         data.name ===
+    //         stateDataAlamat.map((data) => data.data().kecamatan)[0]
+    //     )[0]
+    //     .subData.filter(
+    //       (item) =>
+    //         item.name ===
+    //         stateDataAlamat.map((data) => data.data().kelurahan)[0]
+    //     )[0].ongkir
+    // );
   };
 
   // logic untuk mencegah web mereload halaman ini kembali ketika user refresh
@@ -205,9 +224,11 @@ function CheckoutAir(props) {
   };
   const handleTambahAlamat = (e) => {
     e.preventDefault();
+
     const output = valueRadioAlamat
       ? `${valueRadioAlamat}`
       : `${alamatLengkap}, ${kecamatan}, ${kabupaten}`;
+
     setAirIsiUlangForm({
       ...airIsiUlangForm,
       dataAlamat: output,
@@ -235,6 +256,10 @@ function CheckoutAir(props) {
         merge: true,
       }
     );
+
+    // TUTUP ALERT / INFORMASI YANG BERWARNA KUNING
+    // tutup alert / informasi yang berwarna kuning
+    setOpenAlert(false);
 
     // set harga ongkos kirim
     // setOngkir(
@@ -340,9 +365,9 @@ function CheckoutAir(props) {
   return (
     <div>
       {/* {JSON.stringify(valueRadioAlamat)} */}
-      {JSON.stringify(
+      {/* {JSON.stringify(
         String(stateDataAlamat.map((data) => data.data().kelurahan)[0])
-      )}
+      )} */}
       <Collapse in={openAlert}>
         <Alert
           variant="standard"
@@ -455,7 +480,6 @@ function CheckoutAir(props) {
             ) : (
               <div>
                 <FormControl component="fieldset" style={{ marginBottom: 15 }}>
-                  {/* <FormLabel component="legend">Gender</FormLabel> */}
                   <RadioGroup
                     aria-label="data history alamat"
                     name="dataAlamat"
@@ -474,6 +498,21 @@ function CheckoutAir(props) {
                     })}
                   </RadioGroup>
                 </FormControl>
+                {/* <FormControl component="fieldset" style={{ marginBottom: 15 }}>
+                  <RadioGroup
+                    aria-label="data history alamat"
+                    name="dataAlamat"
+                    value={valueRadioAlamat}
+                    onChange={handleRadioAlamat}
+                  >
+                    <FormControlLabel
+                      value={`${stateCurDataAlamat.kelurahan}`}
+                      control={<Radio />}
+                      label={`${stateCurDataAlamat.kelurahan}`}
+                    />
+                  </RadioGroup>
+                </FormControl> */}
+
                 <Button
                   variant="contained"
                   color="primary"
