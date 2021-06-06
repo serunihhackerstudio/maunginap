@@ -96,9 +96,9 @@ function UserBio() {
     try {
       await userBio.set(form, { merge: true });
       setSomethingChange(false);
-      enqueueSnackbar("Data berhasil disimpan", { variant: "success" });
+      enqueueSnackbar("Data berhasil disimpan", { variant: "default" });
     } catch (e) {
-      enqueueSnackbar(e.message, { variant: "error" });
+      enqueueSnackbar(e.message, { variant: "default" });
     }
     setSubmitting(false);
   };
@@ -142,7 +142,7 @@ function UserBio() {
     };
     reader.readAsDataURL(file);
     enqueueSnackbar("Foto berhasil diupload", {
-      variant: "info",
+      variant: "default",
     });
   };
 

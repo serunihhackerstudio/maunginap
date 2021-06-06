@@ -89,9 +89,9 @@ function Identitas() {
     } else {
       try {
         await dataDoc.set(form, { merge: true });
-        enqueueSnackbar("Berhasil menyimpan data", { variant: "success" });
+        enqueueSnackbar("Berhasil menyimpan data", { variant: "default" });
       } catch (e) {
-        enqueueSnackbar(e.message, { variant: "error" });
+        enqueueSnackbar(e.message, { variant: "default" });
       }
 
       setSubmitting(false);

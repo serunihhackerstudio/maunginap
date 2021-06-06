@@ -44,7 +44,7 @@ function Admin() {
       });
       setSubmitting(false);
       enqueueSnackbar("Data pengguna berhasil diperbaharui", {
-        variant: "success",
+        variant: "default",
       });
     }
   };
@@ -66,7 +66,7 @@ function Admin() {
       setSubmitting(true);
       try {
         await user.updateEmail(email);
-        enqueueSnackbar("email berhasil diperbaharui", { variant: "success" });
+        enqueueSnackbar("email berhasil diperbaharui", { variant: "default" });
       } catch (e) {
         let emailError = "";
         switch (e.code) {
@@ -100,7 +100,7 @@ function Admin() {
     await user.sendEmailVerification(actionCodeSettings);
     enqueueSnackbar(
       `Email verifikasi telah dikirim ke ${emailRef.current.value}`,
-      { variant: "success" }
+      { variant: "default" }
     );
     setSubmitting(false);
   };
@@ -118,7 +118,7 @@ function Admin() {
       try {
         await user.updatePassword(password);
         setSubmitting(true);
-        enqueueSnackbar("Password berhasil diubah", { variant: "success" });
+        enqueueSnackbar("Password berhasil diubah", { variant: "default" });
       } catch (e) {
         let passwordError = "";
         switch (e.code) {

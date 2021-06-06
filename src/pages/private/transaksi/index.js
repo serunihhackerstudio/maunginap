@@ -19,8 +19,8 @@ import { useCollection } from "react-firebase-hooks/firestore";
 // component
 import AppPageLoading from "../../../components/AppPageLoading";
 import AppLoading from "../../../components/AppLoading";
-import ID from "../../../utils/idgenerator"
-import {sendEmailRefund} from "../../../config/mailserver";
+import ID from "../../../utils/idgenerator";
+import { sendEmailRefund } from "../../../config/mailserver";
 
 function Transaksi() {
   const { enqueueSnackbar } = useSnackbar();
@@ -30,8 +30,8 @@ function Transaksi() {
   const [snapshot, loading] = useCollection(query);
   const [produkItems, setProdukItems] = useState([]);
   const classes = useState();
-  const notifData = firestore.collection("notification").doc(`${idGenerator}`)
-    // const [msgNotif, setMsgNotif] = React.useState([]);
+  const notifData = firestore.collection("notification").doc(`${idGenerator}`);
+  // const [msgNotif, setMsgNotif] = React.useState([]);
 
   useEffect(() => {
     if (snapshot) {
@@ -43,42 +43,42 @@ function Transaksi() {
   const approveCallback = (produk) => async () => {
     try {
       if (window.confirm("Apakah pesanan ini telah terkonfirmasi ? ")) {
-        
-        if (produk.data().statusPerpanjang === true){
-          await firestore
-          .collection("pesanan")
-          .doc(`${produk.id}`)
-          .set({ statusPerpanjang: true }, { merge: true });
-          await notifData.set({
-              userId : user.uid,
-              created: new Date(),
-              status:"Berhasil diperpanjang",
-              namaPenginapan:produk.data().namaPenginapan,
-              kodeBooking:produk.data().kodeBooking
-            })
-          enqueueSnackbar(`Pesanan diperpanjang`, {
-            variant: "success",
-          });
-
-        } else {
-          await notifData.set({
-            userId : user.uid,
-            created: new Date(),
-            status:"Siap ditempati",
-            namaPenginapan:produk.data().namaPenginapan,
-            kodeBooking:produk.data().kodeBooking
-          })
-        }
+        if (produk.data().statusPerpanjang === true) {
           await firestore
             .collection("pesanan")
             .doc(`${produk.id}`)
-            .set({ approvalStatus: true, statusPerpanjang: false }, { merge: true });
+            .set({ statusPerpanjang: true }, { merge: true });
+          await notifData.set({
+            userId: user.uid,
+            created: new Date(),
+            status: "Berhasil diperpanjang",
+            namaPenginapan: produk.data().namaPenginapan,
+            kodeBooking: produk.data().kodeBooking,
+          });
+          enqueueSnackbar(`Pesanan diperpanjang`, {
+            variant: "default",
+          });
+        } else {
+          await notifData.set({
+            userId: user.uid,
+            created: new Date(),
+            status: "Siap ditempati",
+            namaPenginapan: produk.data().namaPenginapan,
+            kodeBooking: produk.data().kodeBooking,
+          });
+        }
+        await firestore
+          .collection("pesanan")
+          .doc(`${produk.id}`)
+          .set(
+            { approvalStatus: true, statusPerpanjang: false },
+            { merge: true }
+          );
       }
 
       enqueueSnackbar(`Pesanan terkonfirmasi`, {
-        variant: "success",
+        variant: "default",
       });
-
     } catch (e) {
       enqueueSnackbar(e.message, {
         variant: "error",
@@ -88,69 +88,78 @@ function Transaksi() {
 
   const perpanjangCallback = (produkDoc) => async () => {
     try {
-      if (window.confirm("Apakah pesanan ini telah dikonfirmasi untuk perpanjangan ? ")) {
+      if (
+        window.confirm(
+          "Apakah pesanan ini telah dikonfirmasi untuk perpanjangan ? "
+        )
+      ) {
         await firestore
           .collection("pesanan")
           .doc(`${produkDoc.id}`)
           .set({ statusPerpanjang: true }, { merge: true });
         await notifData.set({
-            userId : user.uid,
-            created: new Date(),
-            status:"Berhasil diperpanjang",
-            namaPenginapan:produkDoc.data().namaPenginapan,
-            kodeBooking:produkDoc.data().kodeBooking
-          })
+          userId: user.uid,
+          created: new Date(),
+          status: "Berhasil diperpanjang",
+          namaPenginapan: produkDoc.data().namaPenginapan,
+          kodeBooking: produkDoc.data().kodeBooking,
+        });
         enqueueSnackbar(`Pesanan diperpanjang`, {
-          variant: "success",
+          variant: "default",
         });
       }
     } catch (e) {
       enqueueSnackbar(e.message, {
-        variant: "error",
-      });
-  }
-}
-
-const refundCallback = (produkDoc) => async () => {
-  try {
-    if (window.confirm("Apakah uang telah direfund ? ")) {
-      await firestore
-        .collection("pesanan")
-        .doc(`${produkDoc.id}`)
-        .set({ statusPembatalan: false, statusPembatalanDesc: true }, { merge: true });
-      await notifData.set({
-          userId : user.uid,
-          created: new Date(),
-          status:"Pengembalian dana selesai",
-          namaPenginapan:produkDoc.data().namaPenginapan,
-          kodeBooking:produkDoc.data().kodeBooking
-        })
-      
-      // email pengembalian dana
-      let total;
-      if (!produkDoc.data().statusPerpanjang){
-        total = parseInt(produkDoc.data().harga) + produkDoc.data().codeHarga
-      } else {
-        const diskon = produkDoc.data().harga - produkDoc.data().harga * (produkDoc.data().diskon / 100)
-        total = diskon+produkDoc.data().codeHarga
-      }
-      sendEmailRefund(
-        "Refund", 
-        produkDoc.data().userEmail, 
-        produkDoc.data().kodeBooking, 
-        total
-      )
-
-      enqueueSnackbar(`Refund selesai`, {
-        variant: "success",
+        variant: "default",
       });
     }
-  } catch (e) {
-    enqueueSnackbar(e.message, {
-      variant: "error",
-    });
-}
-}
+  };
+
+  const refundCallback = (produkDoc) => async () => {
+    try {
+      if (window.confirm("Apakah uang telah direfund ? ")) {
+        await firestore
+          .collection("pesanan")
+          .doc(`${produkDoc.id}`)
+          .set(
+            { statusPembatalan: false, statusPembatalanDesc: true },
+            { merge: true }
+          );
+        await notifData.set({
+          userId: user.uid,
+          created: new Date(),
+          status: "Pengembalian dana selesai",
+          namaPenginapan: produkDoc.data().namaPenginapan,
+          kodeBooking: produkDoc.data().kodeBooking,
+        });
+
+        // email pengembalian dana
+        let total;
+        if (!produkDoc.data().statusPerpanjang) {
+          total = parseInt(produkDoc.data().harga) + produkDoc.data().codeHarga;
+        } else {
+          const diskon =
+            produkDoc.data().harga -
+            produkDoc.data().harga * (produkDoc.data().diskon / 100);
+          total = diskon + produkDoc.data().codeHarga;
+        }
+        sendEmailRefund(
+          "Refund",
+          produkDoc.data().userEmail,
+          produkDoc.data().kodeBooking,
+          total
+        );
+
+        enqueueSnackbar(`Refund selesai`, {
+          variant: "default",
+        });
+      }
+    } catch (e) {
+      enqueueSnackbar(e.message, {
+        variant: "default",
+      });
+    }
+  };
 
   const quitApproval = (produkdocId) => async () => {
     try {
@@ -182,7 +191,7 @@ const refundCallback = (produkDoc) => async () => {
         await firestore.collection("pesanan").doc(`${produkdocId}`).delete();
         // await firestore.collection("notification").doc(`${produkdocId}`).delete();
         enqueueSnackbar(`Layanan selesai`, {
-          variant: "success",
+          variant: "default",
         });
       }
     } catch (e) {}
@@ -201,9 +210,10 @@ const refundCallback = (produkDoc) => async () => {
       <Grid container spacing={5}>
         {produkItems.map((produkDoc) => {
           const produkData = produkDoc.data();
-          const dateBooking = produkData.tanggalPesan
+          const dateBooking = produkData.tanggalPesan;
           // const hargaMula = parseInt(produkData.harga) + produkData.codeHarga
-          const diskon = produkData.harga - produkData.harga * (produkData.diskon / 100)
+          const diskon =
+            produkData.harga - produkData.harga * (produkData.diskon / 100);
           return (
             <Grid key={produkDoc.id} item={true} xs={12} xm={12} md={3} lg={3}>
               <Card className={classes.root}>
@@ -215,7 +225,13 @@ const refundCallback = (produkDoc) => async () => {
 
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {produkData.namaPenginapan} ({!produkData.statusPerpanjang ? currency(parseInt(produkData.harga) + produkData.codeHarga) : currency(diskon+produkData.codeHarga)})
+                      {produkData.namaPenginapan} (
+                      {!produkData.statusPerpanjang
+                        ? currency(
+                            parseInt(produkData.harga) + produkData.codeHarga
+                          )
+                        : currency(diskon + produkData.codeHarga)}
+                      )
                     </Typography>
                     <Typography variant="body1" color="primary" component="p">
                       <strong>Kode boking :</strong>
@@ -231,7 +247,11 @@ const refundCallback = (produkDoc) => async () => {
                       <strong>Tanggal booking :</strong>
                     </Typography>
 
-                    <Typography variant="body1" color="textSecondary" component="p">
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      component="p"
+                    >
                       {dateBooking.toLocaleString()}
                     </Typography>
 
@@ -285,24 +305,38 @@ const refundCallback = (produkDoc) => async () => {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                {produkData.statusPembatalan ? (
-                  <Button size="small" color="secondary" variant="contained" onClick={refundCallback(produkDoc)}>Refund</Button>
-                ) : produkData.statusPembatalanDesc ? (
-                  <Button size="small" color="secondary" variant="contained" disabled="true">Refunded</Button>
-                ) : (
-                  ""
-                ) }
-                
-                {produkData.approvalStatus ? (
+                  {produkData.statusPembatalan ? (
                     <Button
-                    disabled={!produkData.statusPerpanjang ? true : false}
-                    size="small"
-                    color="primary"
-                    variant="contained"
-                    onClick={perpanjangCallback(produkDoc)}
-                  >
-                    Perpanjang
-                  </Button>
+                      size="small"
+                      color="secondary"
+                      variant="contained"
+                      onClick={refundCallback(produkDoc)}
+                    >
+                      Refund
+                    </Button>
+                  ) : produkData.statusPembatalanDesc ? (
+                    <Button
+                      size="small"
+                      color="secondary"
+                      variant="contained"
+                      disabled="true"
+                    >
+                      Refunded
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+
+                  {produkData.approvalStatus ? (
+                    <Button
+                      disabled={!produkData.statusPerpanjang ? true : false}
+                      size="small"
+                      color="primary"
+                      variant="contained"
+                      onClick={perpanjangCallback(produkDoc)}
+                    >
+                      Perpanjang
+                    </Button>
                   ) : (
                     <Button
                       disabled={false}
@@ -311,11 +345,12 @@ const refundCallback = (produkDoc) => async () => {
                       variant="contained"
                       onClick={approveCallback(produkDoc)}
                     >
-                      {produkData.statusPerpanjang ? "Perpanjang" : "Konfirmasi "}
+                      {produkData.statusPerpanjang
+                        ? "Perpanjang"
+                        : "Konfirmasi "}
                     </Button>
-                  )
-        }
-                
+                  )}
+
                   <Button
                     disabled={!produkData.approvalStatus ? true : false}
                     size="small"

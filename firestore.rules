@@ -73,6 +73,9 @@ service cloud.firestore {
      match /historyAirIsiUlang/{orderId} {
        allow read, write: if true;
      }
+      match /hargaAir/{hargaAirId} {
+       allow read, write: if true;
+     }
 
   }
 }

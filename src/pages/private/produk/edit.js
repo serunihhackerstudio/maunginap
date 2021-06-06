@@ -203,11 +203,11 @@ function EditProduk({ match }) {
         }
         await produkDoc.set(form, { merge: true });
         enqueueSnackbar("Data penginapan berhasil ditambahkan", {
-          variant: "success",
+          variant: "default",
         });
         setSomethingChange(false);
       } catch (e) {
-        enqueueSnackbar(e.message, { variant: "error" });
+        enqueueSnackbar(e.message, { variant: "default" });
       }
       setSubmitting(false);
     }
@@ -294,7 +294,7 @@ function EditProduk({ match }) {
       reader.readAsDataURL(file);
     }
     enqueueSnackbar("Upload berhasil", {
-      variant: "success",
+      variant: "default",
     });
     setSubmitting(false);
   };
@@ -309,7 +309,7 @@ function EditProduk({ match }) {
         doc.ref.delete();
       });
     enqueueSnackbar("Gambar terhapus", {
-      variant: "success",
+      variant: "default",
     });
   };
 
@@ -320,7 +320,7 @@ function EditProduk({ match }) {
     await produkDoc.set({ foto: listImage[id].data().url }, { merge: true });
     setRadioLabel("Gambar Utama");
     enqueueSnackbar("Gambar terpilih", {
-      variant: "info",
+      variant: "default",
     });
   };
 

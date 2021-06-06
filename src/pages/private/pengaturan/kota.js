@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 import { useSnackbar } from "notistack";
 
 // firebase
@@ -19,40 +19,37 @@ import AppPageLoading from "../../../components/AppPageLoading";
 import ID from "../../../utils/idgenerator";
 
 // LIST
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
-
-
-
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 
 function Kota() {
   const { firestore } = useFirebase();
   const genId = ID();
   const dataDoc = firestore.collection("kota").doc(`${genId}`);
-  const [queryDataItems, setQueryDataItems] = useState([])
-  const queryData = firestore.collection("kota")
-  const [snapshot, loading] = useCollection(queryData)
+  const [queryDataItems, setQueryDataItems] = useState([]);
+  const queryData = firestore.collection("kota");
+  const [snapshot, loading] = useCollection(queryData);
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const [form, setForm] = useState({
     kota: "",
   });
-  form.kota = form.kota.toUpperCase()
+  form.kota = form.kota.toUpperCase();
 
   const [error, setError] = useState({
     kota: "",
   });
 
-  React.useEffect(()=> {
-    if (snapshot){
-      setQueryDataItems(snapshot.docs)
+  React.useEffect(() => {
+    if (snapshot) {
+      setQueryDataItems(snapshot.docs);
     }
-  }, [snapshot])
+  }, [snapshot]);
 
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -86,9 +83,9 @@ function Kota() {
     } else {
       try {
         await dataDoc.set(form, { merge: true });
-        enqueueSnackbar("Berhasil menyimpan data", { variant: "success" });
+        enqueueSnackbar("Berhasil menyimpan data", { variant: "default" });
       } catch (e) {
-        enqueueSnackbar(e.message, { variant: "error" });
+        enqueueSnackbar(e.message, { variant: "default" });
       }
 
       setSubmitting(false);
@@ -96,68 +93,74 @@ function Kota() {
   };
 
   const deleteCallback = (data) => async (e) => {
-    console.log("CLICKED")
-    console.log(data)
-    await firestore.collection("kota").doc(`${data}`)
-    .delete().then(() => console.log("BERHASIL DIHAPUS"))
-    .catch(error => console.log(e.message))
-  }
+    console.log("CLICKED");
+    console.log(data);
+    await firestore
+      .collection("kota")
+      .doc(`${data}`)
+      .delete()
+      .then(() => console.log("BERHASIL DIHAPUS"))
+      .catch((error) => console.log(e.message));
+  };
 
   return (
     <div className={classes.pengaturanIdentitas}>
       <Grid container spacing={6}>
         <Grid item xs>
-        <form onSubmit={handleSubmit} noValidate>
-        <TextField
-          name="kota"
-          id="kota"
-          label="Masukan Nama Kota"
-          value={form.kota}
-          fullWidth
-          required
-          variant="outlined"
-          margin="normal"
-          onChange={handleChange}
-          helperText={error.kota}
-          error={error.kota ? true : false}
-          disabled={isSubmitting}
-        />
+          <form onSubmit={handleSubmit} noValidate>
+            <TextField
+              name="kota"
+              id="kota"
+              label="Masukan Nama Kota"
+              value={form.kota}
+              fullWidth
+              required
+              variant="outlined"
+              margin="normal"
+              onChange={handleChange}
+              helperText={error.kota}
+              error={error.kota ? true : false}
+              disabled={isSubmitting}
+            />
 
-        <Button
-          className={classes.tombolSimpan}
-          variant="contained"
-          type="submit"
-          color="primary"
-        >
-          Tambah
-        </Button>
-      </form>
-      <Divider orientation="vertical" flexItem />
+            <Button
+              className={classes.tombolSimpan}
+              variant="contained"
+              type="submit"
+              color="primary"
+            >
+              Tambah
+            </Button>
+          </form>
+          <Divider orientation="vertical" flexItem />
         </Grid>
-      
+
         <Grid item xs>
-          {loading ? <AppPageLoading /> : (
+          {loading ? (
+            <AppPageLoading />
+          ) : (
             <List className={classes.root}>
-            {queryDataItems.map(data => {
-              const kota = data.data().kota
-              return (
-                <ListItem key={data.id} role={undefined} dense button>
-                <ListItemText primary={`${kota}`} />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={deleteCallback(data.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              )
-            })}
-          </List>
+              {queryDataItems.map((data) => {
+                const kota = data.data().kota;
+                return (
+                  <ListItem key={data.id} role={undefined} dense button>
+                    <ListItemText primary={`${kota}`} />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={deleteCallback(data.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
           )}
-        
         </Grid>
-
       </Grid>
-      
     </div>
   );
 }

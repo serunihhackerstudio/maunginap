@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -10,52 +10,52 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 
 export default function Diskon() {
-  const {firestore} = useFirebase()
-  const {enqueueSnackbar} = useSnackbar()
+  const { firestore } = useFirebase();
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-  const queryData =   firestore.collection(`penginapan`).doc("data").collection("produk");
-  const [snapshot, loading] = useCollection(queryData)
-  const [state, setState] = useState([])
-  const [isSubmitting, setSubmitting] = useState(false)
-  const [diskon, setDiskon] = useState(0)
+  const queryData = firestore
+    .collection(`penginapan`)
+    .doc("data")
+    .collection("produk");
+  const [snapshot, loading] = useCollection(queryData);
+  const [state, setState] = useState([]);
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [diskon, setDiskon] = useState(0);
   const [form, setForm] = useState({
-    diskon:0
-  })
-  
+    diskon: 0,
+  });
+
   // query/load data
   useEffect(() => {
-    if (snapshot){
-      const data = snapshot.docs
-      setState(data)
-      setDiskon(data[0].data().diskon)
+    if (snapshot) {
+      const data = snapshot.docs;
+      setState(data);
+      setDiskon(data[0].data().diskon);
     }
-  }, [snapshot])
+  }, [snapshot]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setSubmitting(true)
-    for (let data of state){
-      await queryData.doc(`${data.id}`).set({...form}, {merge:true})
-      
+    e.preventDefault();
+    setSubmitting(true);
+    for (let data of state) {
+      await queryData.doc(`${data.id}`).set({ ...form }, { merge: true });
     }
-    enqueueSnackbar("Diskon diatur untuk semua produk", {variant:"success"})
-    setSubmitting(false)
-  }
+    enqueueSnackbar("Diskon diatur untuk semua produk", { variant: "default" });
+    setSubmitting(false);
+  };
 
   const handleChange = (e) => {
     setForm({
-        ...form, 
-        [e.target.name]:e.target.value
-      })
-  }
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
-      <Grid container spacing={6}>
-        <Grid item xs>
+    <Grid container spacing={6}>
+      <Grid item xs>
         <div className={classes.pengaturanIdentitas}>
-          <form 
-            onSubmit={handleSubmit} 
-            noValidate>
+          <form onSubmit={handleSubmit} noValidate>
             <TextField
               name="diskon"
               id="diskon"
@@ -77,21 +77,24 @@ export default function Diskon() {
               color="primary"
               disabled={isSubmitting}
             >
-              {isSubmitting ? <CircularProgress color="inherit" size={20}/>:"Set diskon"}
+              {isSubmitting ? (
+                <CircularProgress color="inherit" size={20} />
+              ) : (
+                "Set diskon"
+              )}
             </Button>
           </form>
-          </div>
-        </Grid>
-        <Grid item xs>
-        <Typography variant="subtitle1" color="textSecondary"> 
+        </div>
+      </Grid>
+      <Grid item xs>
+        <Typography variant="subtitle1" color="textSecondary">
           Settingan diskon saat ini :
         </Typography>
-        <Typography variant="h4" color="primary"> 
+        <Typography variant="h4" color="primary">
           {loading ? <CircularProgress /> : `${diskon} %`}
         </Typography>
-        </Grid>
-        <Grid item xs></Grid>
       </Grid>
-    
+      <Grid item xs></Grid>
+    </Grid>
   );
 }

@@ -26,7 +26,11 @@ import { SnackbarProvider } from "notistack";
 // test
 // pusher
 import * as PusherPushNotifications from "@pusher/push-notifications-web";
-import "./App.css"
+import "./App.css";
+
+// button
+import Zoom from "@material-ui/core/Zoom";
+import { Button } from "@material-ui/core";
 
 function App() {
   const beamsClient = new PusherPushNotifications.Client({
@@ -39,17 +43,29 @@ function App() {
     .then(() => console.log("Successfully registered and subscribed!"))
     .catch(console.error);
 
+  const notistackRef = React.createRef();
+  const onClickDismiss = (key) => () => {
+    notistackRef.current.closeSnackbar(key);
+  };
+
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <SnackbarProvider
-          maxSnack={2}
+          maxSnack={1}
           autoHideDuration={2000}
           anchorOrigin={{
             vertical: "top",
             horizontal: "center",
           }}
+          TransitionComponent={Zoom}
+          ref={notistackRef}
+          action={(key) => (
+            <Button color="secondary" onClick={onClickDismiss(key)}>
+              Tutup
+            </Button>
+          )}
         >
           <FirebaseProvider>
             <PesananProvider>

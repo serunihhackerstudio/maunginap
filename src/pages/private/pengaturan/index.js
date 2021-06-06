@@ -9,10 +9,10 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SuperAdmin from "./superAdmin";
 import IdentitasAdmin from "./identitasAdmin";
 import Kota from "./kota";
-import Diskon from "./diskon"
-import ImageSlider from "./imageSlider"
+import Diskon from "./diskon";
+import ImageSlider from "./imageSlider";
+import HargaAir from "./hargaAir";
 import useStyles from "./styles";
-
 
 function Pengaturan(props) {
   const handleChangeTab = (event, value) => {
@@ -49,6 +49,10 @@ function Pengaturan(props) {
           label="Gambar Promosi"
           value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/gambar-promosi"
         />
+        <Tab
+          label="Harga Air"
+          value="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/harga-air"
+        />
       </Tabs>
       <div className={classes.tabContent}>
         <Switch>
@@ -71,6 +75,10 @@ function Pengaturan(props) {
           <Route
             path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/gambar-promosi"
             component={ImageSlider}
+          />
+          <Route
+            path="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/harga-air/"
+            component={HargaAir}
           />
           <Redirect to="/bWF1bmdpbmFwLmNvbS13ZWNhbm1ha2VpdDIwMjAtc3Vrc2VzJmJlcmhhc2ls/pengaturan/admin" />
         </Switch>
