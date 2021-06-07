@@ -62,9 +62,9 @@ function ProgressAir({ history }) {
   const [historyData, setHistoryData] = React.useState([]);
 
   // fungsi untuk kembali ke halaman produk air isi ulang
-  const kembaliKeProduk = () => {
-    history.push("/pesan-air/detail");
-  };
+  // const kembaliKeProduk = () => {
+  //   history.push("/pesan-air/detail");
+  // };
 
   // dialog
   const [open, setOpen] = React.useState(false);
