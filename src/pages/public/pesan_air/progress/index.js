@@ -61,10 +61,10 @@ function ProgressAir({ history }) {
   const [historySnapshot, historyLoading] = useCollection(historyQUery);
   const [historyData, setHistoryData] = React.useState([]);
 
-  // fungsi untuk kembali ke halaman produk air isi ulang
-  // const kembaliKeProduk = () => {
-  //   history.push("/pesan-air/detail");
-  // };
+  fungsi untuk kembali ke halaman produk air isi ulang
+  const kembaliKeProduk = () => {
+    history.push("/pesan-air/detail");
+  };
 
   // dialog
   const [open, setOpen] = React.useState(false);
@@ -297,7 +297,7 @@ function ProgressAir({ history }) {
             color="secondary"
             variant="contained"
             disableElevation
-            // onClick={kembaliKeProduk}
+            onClick={kembaliKeProduk}
           >
             Kembali ke produk
           </Button>
