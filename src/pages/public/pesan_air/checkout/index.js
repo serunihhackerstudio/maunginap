@@ -374,7 +374,7 @@ function CheckoutAir(props) {
     sendPesananToTelegram(
       `#${pesananId} - Request ${airIsiUlangForm.jumlahGln} galon (${currency(
         airIsiUlangForm.total
-      )}) ke : ${output} `
+      )}) ke : ${output} - ${airIsiUlangForm.nomorHpPemesan}`
     );
     props.history.push("/history/pesan-air/progress");
   };

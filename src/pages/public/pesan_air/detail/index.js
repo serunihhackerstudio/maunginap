@@ -154,7 +154,7 @@ export default function DetailProdukAir({ history }) {
             <CardActions>
               <TextField
                 variant="outlined"
-                label="jumlah (galon):"
+                label="jumlah (galon)"
                 size="small"
                 type="number"
                 name="value"
