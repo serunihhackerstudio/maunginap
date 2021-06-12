@@ -60,6 +60,10 @@ import Alert from "@material-ui/lab/Alert";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 
+// telegram bot
+import { pesanan_air_endp } from "../../../../config/telegram";
+const request = require("request");
+
 function CheckoutAir(props) {
   const [provinsi, setProvinsi] = React.useState("");
   const [kabupaten, setKabupaten] = React.useState("");
@@ -367,7 +371,25 @@ function CheckoutAir(props) {
         merge: true,
       }
     );
+    sendPesananToTelegram(
+      `#${pesananId} - Request ${airIsiUlangForm.jumlahGln} galon (${currency(
+        airIsiUlangForm.total
+      )}) ke : ${output} `
+    );
     props.history.push("/history/pesan-air/progress");
+  };
+
+  const sendPesananToTelegram = async (msg) => {
+    const endp = pesanan_air_endp;
+    const chatId = -501279788;
+    await request(
+      {
+        url: endp,
+        method: "POST",
+        json: { chat_id: chatId, text: msg },
+      },
+      function (error, response, body) {}
+    );
   };
 
   return (
