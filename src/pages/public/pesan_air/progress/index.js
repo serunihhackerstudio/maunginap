@@ -183,10 +183,10 @@ function ProgressAir({ history }) {
                 <TimelineContent>
                   {progressPacking ? (
                     <Paper elevation={3} className={classes.paper}>
-                      <Typography variant="h6" component="h1">
-                        Packing
+                      <Typography variant="h6">Pickup dan Packing</Typography>
+                      <Typography variant="body2">
+                        Driver sedang menjemput galon Anda untuk diisi ulang
                       </Typography>
-                      <Typography>Air sedang diisi ulang</Typography>
                     </Paper>
                   ) : (
                     ""
@@ -218,7 +218,9 @@ function ProgressAir({ history }) {
                       <Typography variant="h6" component="h1">
                         Delivery
                       </Typography>
-                      <Typography>Air isi ulang sedang diantar</Typography>
+                      <Typography variant="body2">
+                        Air isi ulang sedang diantar
+                      </Typography>
                     </Paper>
                   ) : (
                     ""
@@ -250,7 +252,9 @@ function ProgressAir({ history }) {
                       <Typography variant="h6" component="h1">
                         sampai
                       </Typography>
-                      <Typography>Pengantar air sudah tiba</Typography>
+                      <Typography variant="body2">
+                        Pengantar air sudah tiba
+                      </Typography>
                     </Paper>
                   ) : (
                     ""
@@ -280,7 +284,9 @@ function ProgressAir({ history }) {
                       <Typography variant="h6" component="h1">
                         Selesai
                       </Typography>
-                      <Typography>Pesanan berhasil diantarkan</Typography>
+                      <Typography variant="body2">
+                        Pesanan berhasil diantarkan
+                      </Typography>
                     </Paper>
                   ) : (
                     ""
