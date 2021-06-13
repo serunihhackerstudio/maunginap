@@ -182,7 +182,7 @@ function ProgressAir({ history }) {
                 </TimelineSeparator>
                 <TimelineContent>
                   {progressPacking ? (
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={1} className={classes.paper}>
                       <Typography variant="h6">Pickup dan Packing</Typography>
                       <Typography variant="body2">
                         Driver sedang menjemput galon Anda untuk diisi ulang
@@ -214,7 +214,7 @@ function ProgressAir({ history }) {
                 </TimelineSeparator>
                 <TimelineContent>
                   {progressDelivery ? (
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={1} className={classes.paper}>
                       <Typography variant="h6" component="h1">
                         Delivery
                       </Typography>
@@ -248,7 +248,7 @@ function ProgressAir({ history }) {
                 </TimelineSeparator>
                 <TimelineContent>
                   {progressSampai ? (
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={1} className={classes.paper}>
                       <Typography variant="h6" component="h1">
                         sampai
                       </Typography>
@@ -280,7 +280,7 @@ function ProgressAir({ history }) {
                 </TimelineSeparator>
                 <TimelineContent>
                   {progressSelesai ? (
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={1} className={classes.paper}>
                       <Typography variant="h6" component="h1">
                         Selesai
                       </Typography>
