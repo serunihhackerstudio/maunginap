@@ -416,8 +416,17 @@ function Home({ history, location, match }) {
             ) : location.pathname === "/filter/kost" ||
               location.pathname === "/filter/kontrakan" ||
               location.pathname === "/filter/ruko" ||
-              location.pathname === `/pesan-air/detail` ||
-              location.pathname === `/pesan-air/detail/checkout` ? (
+              location.pathname === `/pesan-air/detail` ? (
+              <IconButton
+                className={classes.goBackIcon}
+                onClick={() => history.push("/")}
+                // onClick={() => history.goBack()}
+                // component={Link}
+                // to={"/"}
+              >
+                <ArrowBackIcon color="white" />
+              </IconButton>
+            ) : location.pathname === `/pesan-air/detail/checkout` ? (
               <IconButton
                 className={classes.goBackIcon}
                 onClick={() => history.goBack()}
@@ -752,12 +761,18 @@ function Home({ history, location, match }) {
             ) : location.pathname === `/filter/kost` ||
               location.pathname === `/filter/kontrakan` ||
               location.pathname === `/filter/ruko` ||
-              location.pathname === `/pesan-air/detail` ||
-              location.pathname === `/pesan-air/detail/checkout` ? (
+              location.pathname === `/pesan-air/detail` ? (
+              <IconButton
+                className={classes.menuButton}
+                // onClick={() => history.goBack()}
+                onClick={() => history.push("/")}
+              >
+                <ArrowBackIcon style={{ color: "white" }} />
+              </IconButton>
+            ) : location.pathname === `/pesan-air/detail/checkout` ? (
               <IconButton
                 className={classes.menuButton}
                 onClick={() => history.goBack()}
-                // onClick={() => history.push("/")}
               >
                 <ArrowBackIcon style={{ color: "white" }} />
               </IconButton>

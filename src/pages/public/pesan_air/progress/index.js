@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, CardContent, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, Typography, Grid } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
@@ -293,28 +293,35 @@ function ProgressAir({ history }) {
             </Timeline>
           )}
         </CardContent>
-        <CardActions>
-          <Button
-            startIcon={<ArrowBackIcon />}
-            size="medium"
-            color="secondary"
-            variant="contained"
-            disableElevation
-            onClick={kembaliKeProduk}
-          >
-            Kembali ke produk
-          </Button>
-          <Button
-            startIcon={<HistoryIcon />}
-            size="medium"
-            color="primary"
-            variant="contained"
-            disableElevation
-            onClick={historiClicked}
-          >
-            Histori Order
-          </Button>
-        </CardActions>
+        <Grid container spacing={3}>
+          <Grid item xs={3} md={3} lg={3}></Grid>
+          <Grid item xs={6} md={6} lg={6}>
+            <Button
+              startIcon={<ArrowBackIcon />}
+              size="medium"
+              color="secondary"
+              variant="contained"
+              disableElevation
+              onClick={kembaliKeProduk}
+              style={{ margin: 15 }}
+            >
+              Kembali ke produk
+            </Button>
+            <Button
+              startIcon={<HistoryIcon />}
+              size="medium"
+              color="primary"
+              variant="contained"
+              disableElevation
+              onClick={historiClicked}
+              style={{ margin: 15 }}
+            >
+              Histori Order
+            </Button>
+          </Grid>
+          <Grid item xs={3} md={3} lg={3}></Grid>
+        </Grid>
+        <CardActions></CardActions>
       </Card>
 
       <Dialog
