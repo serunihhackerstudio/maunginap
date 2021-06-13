@@ -253,7 +253,7 @@ function ProgressAir({ history }) {
                         sampai
                       </Typography>
                       <Typography variant="body2">
-                        Pengantar air sudah tiba
+                        Driver air sudah tiba
                       </Typography>
                     </Paper>
                   ) : (
@@ -284,9 +284,7 @@ function ProgressAir({ history }) {
                       <Typography variant="h6" component="h1">
                         Selesai
                       </Typography>
-                      <Typography variant="body2">
-                        Pesanan berhasil diantarkan
-                      </Typography>
+                      <Typography variant="body2">Pesanan berhasil</Typography>
                     </Paper>
                   ) : (
                     ""
