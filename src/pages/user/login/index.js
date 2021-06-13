@@ -168,7 +168,8 @@ function LoginUser(props) {
           className={classes.title}
           color="textSecondary"
         >
-          Selamat datang di platform maunginap. Ayo login untuk mulai booking kost-kostan/kontrakan idaman Anda
+          Selamat datang di platform maunginap. Ayo login untuk mulai booking
+          kost-kostan/kontrakan idaman Anda
         </Typography>
         <form onSubmit={handleSubmit} noValidate>
           <TextField
@@ -237,6 +238,17 @@ function LoginUser(props) {
           </div>
         </form>
       </Paper>
+      <div className={classes.forgotPassword} style={{ textAlign: "center" }}>
+        <a
+          href="http://bit.ly/jadiMitraMaunginap"
+          target="blank"
+          style={{ textDecoration: "none" }}
+        >
+          <Typography variant="body2" color="primary">
+            Pengen bermitra ? klik di sini
+          </Typography>
+        </a>
+      </div>
     </Container>
   );
 }
