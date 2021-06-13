@@ -96,7 +96,6 @@ function ProgressAir({ history }) {
 
     if (historySnapshot) {
       setHistoryData(historySnapshot.docs);
-      console.log(historySnapshot.docs[0].data());
     }
   }, [snapshot, historySnapshot]);
 
