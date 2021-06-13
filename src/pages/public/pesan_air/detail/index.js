@@ -74,7 +74,7 @@ export default function DetailProdukAir({ history }) {
     const volume = e.target.value;
     setDataForm({
       ...dataForm,
-      jumlahGln: parseInt(volume > 0 ? volume : 0),
+      jumlahGln: parseInt(volume > 0 ? volume : null),
       total: volume * hargaAir.hargaAir,
     });
   };
