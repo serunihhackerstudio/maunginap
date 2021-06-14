@@ -458,8 +458,8 @@ function HomeProduk() {
       )} */}
 
       {loading && (
-        <Grid container spacing={5} className={classes.gridContainer}>
-          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+        <Grid container spacing={2} className={classes.gridContainer}>
+          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -481,7 +481,7 @@ function HomeProduk() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -503,7 +503,7 @@ function HomeProduk() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -525,7 +525,7 @@ function HomeProduk() {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item={true} xs={12} xm={12} md={3} lg={3}>
+          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
             <Card className={classes.root}>
               <CardActionArea component={Link}>
                 <Skeleton
@@ -562,8 +562,8 @@ function HomeProduk() {
                 key={produkDoc.id}
                 direction="row"
                 item={true}
-                xs={12}
-                xm={12}
+                xs={6}
+                xm={6}
                 md={3}
                 lg={3}
               >
