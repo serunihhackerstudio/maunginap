@@ -8,14 +8,12 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import {useFirebase} from "../components/FirebaseProvider"
+import { useFirebase } from "../components/FirebaseProvider";
 import { useCollection } from "react-firebase-hooks/firestore";
-import Image from 'material-ui-image'
+import Image from "material-ui-image";
 import { isBrowser } from "react-device-detect";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,15 +39,15 @@ function SwipeableTextMobileStepper({ classMedia }) {
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const {firestore} = useFirebase()
-  const produkStorageItem = firestore.collection("promosi")
-  const [snapshot, loading] = useCollection(produkStorageItem)
-  const [tutorialSteps, setTutorialSteps] = React.useState([])
+  const { firestore } = useFirebase();
+  const produkStorageItem = firestore.collection("promosi");
+  const [snapshot, loading] = useCollection(produkStorageItem);
+  const [tutorialSteps, setTutorialSteps] = React.useState([]);
   React.useEffect(() => {
-    if (snapshot){
-      setTutorialSteps(snapshot.docs)
+    if (snapshot) {
+      setTutorialSteps(snapshot.docs);
     }
-  }, [snapshot])
+  }, [snapshot]);
 
   const maxSteps = tutorialSteps.length;
 
@@ -66,9 +64,9 @@ function SwipeableTextMobileStepper({ classMedia }) {
   };
 
   const clear = true;
-  if (!clear){
-    console.clear(loading)  
-  } 
+  if (!clear) {
+    console.clear(loading);
+  }
 
   return (
     <div className={classes.root}>
@@ -80,35 +78,34 @@ function SwipeableTextMobileStepper({ classMedia }) {
         enableMouseEvents
       >
         {tutorialSteps.map((step, index) => {
-          const img = step.data().url
+          const img = step.data().url;
           return (
-          <div key={index}>
-            {isBrowser ? (
-              <>
-              {Math.abs(activeStep - index) <= 2 ? (
-                <CardMedia
-                  className={classes.img}
-                  image={img}
-                  alt={step.id}
-                />
-              ) : null}
-              </>
-            ) : (
-              <>
-              {Math.abs(activeStep - index) <= 2 ? (
-                <Image src={img} aspectRatio={2/1} alt={step.id} />
-              ) : null}
-              </>
-            )}
-            
-          </div>
-        )}
-        )}
+            <div key={index}>
+              {isBrowser ? (
+                <>
+                  {Math.abs(activeStep - index) <= 2 ? (
+                    <CardMedia
+                      className={classes.img}
+                      image={img}
+                      alt={step.id}
+                    />
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  {Math.abs(activeStep - index) <= 2 ? (
+                    <Image src={img} aspectRatio={2 / 1} alt={step.id} />
+                  ) : null}
+                </>
+              )}
+            </div>
+          );
+        })}
       </AutoPlaySwipeableViews>
       <MobileStepper
         steps={maxSteps}
-        position="static"
-        variant="dots"
+        position="top" //sebelumnya static
+        variant="progress" //sebelumnya dots
         activeStep={activeStep}
         nextButton={
           <Button

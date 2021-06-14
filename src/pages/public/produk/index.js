@@ -554,7 +554,7 @@ function HomeProduk() {
           {/* <img src={datatidakditemukan} width={350} alt="Data not found" /> */}
         </div>
       ) : (
-        <Grid container spacing={5} className={classes.gridContainer}>
+        <Grid container spacing={2} className={classes.gridContainer}>
           {produkItems.map((produkDoc) => {
             const produkData = produkDoc.data();
             return (
@@ -580,7 +580,7 @@ function HomeProduk() {
                     />
 
                     <CardContent>
-                      <Typography variant="h6">
+                      <Typography variant="body1">
                         {produkData.namaPenginapan}
                       </Typography>
                       <Typography variant="body1" style={{ color: blue[500] }}>
@@ -622,8 +622,8 @@ function HomeProduk() {
                           {produkData.kota}
                         </Grid>
                       </Grid>
-
-                      <Typography variant="body2" color="textSecondary">
+                      {/* KETERANGAN FASILITAS DI-HIDE SEMENTARA */}
+                      {/* <Typography variant="body2" color="textSecondary">
                         {produkData.fasilitasUmum.ac ? <>ac &#183; </> : ""}
                         {produkData.fasilitasUmum.kamarMandiDalam ? (
                           <>k. mandi dlm &#183; </>
@@ -652,7 +652,7 @@ function HomeProduk() {
                           ""
                         )}
                         {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
-                      </Typography>
+                      </Typography> */}
                     </CardContent>
                   </CardActionArea>
                   <CardActions>

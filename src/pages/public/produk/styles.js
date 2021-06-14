@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "full",
     marginBottom: theme.spacing(3),
+    borderRadius: 10,
   },
   mediaPromotion: {
     height: 260,
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mediaiconMenu: {
     width: 100,
-    margin:theme.spacing(2)
+    margin: theme.spacing(2),
   },
 
   gridContainer: {
@@ -83,17 +84,17 @@ const useStyles = makeStyles((theme) => ({
   menuicon: {
     margin: "auto",
   },
-  semuaPenginapan:{
-    margin:"auto",
-    marginTop:theme.spacing(6)
+  semuaPenginapan: {
+    margin: "auto",
+    marginTop: theme.spacing(6),
   },
-  ico:{
-    marginLeft:theme.spacing(-1)
+  ico: {
+    marginLeft: theme.spacing(-1),
   },
-  bottomNav:{
-    width:"auto",
-    position: 'absolute',
-  }
+  bottomNav: {
+    width: "auto",
+    position: "absolute",
+  },
 }));
 
 export default useStyles;
