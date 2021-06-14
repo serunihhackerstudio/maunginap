@@ -757,7 +757,7 @@ function CheckoutAir(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         variant="standard"
-                        label="Alamat Lengkap (Nama Jalan/No. Rumah/RT/WRW)"
+                        label="Alamat Lengkap"
                         name="alamatLengkap"
                         value={alamatLengkap}
                         onChange={handleAlamatLengkap}
