@@ -373,7 +373,7 @@ function CheckoutAir(props) {
     );
     sendPesananToTelegram(
       `#${pesananId} - Request ${airIsiUlangForm.jumlahGln} galon (${currency(
-        airIsiUlangForm.total
+        hargaAirIsiUlang * airIsiUlangForm.jumlahGln + ongkir
       )}) ke : ${output} - ${airIsiUlangForm.nomorHpPemesan}`
     );
     props.history.push("/history/pesan-air/progress");
