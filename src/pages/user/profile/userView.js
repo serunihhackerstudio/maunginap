@@ -34,6 +34,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 // import ID from "../../../utils/idgenerator";
 
+/** SNACKBAR */
+import { useSnackbar } from "notistack";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 400,
@@ -82,6 +85,10 @@ export default function UserView({ history }) {
   const classes = useStyles();
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openDialogV, setOpenDialogV] = React.useState(false);
+
+  /**SNACK BAR */
+  const { enqueueSnackbar } = useSnackbar();
+
   // const id = ID();
   // const notifEmailVer = firestore.collection("notification").doc(`${user.uid}`);
   React.useEffect(() => {
@@ -91,8 +98,8 @@ export default function UserView({ history }) {
   }, [snapshot]);
 
   const clear = true;
-  if (!clear){
-    console.clear(loading)
+  if (!clear) {
+    console.clear(loading);
   }
 
   // const handleExpandClick = () => {
@@ -121,11 +128,14 @@ export default function UserView({ history }) {
     setOpenDialog(false);
   };
   const handleOpenDialogV = async () => {
-    setOpenDialogV(true);
+    // setOpenDialogV(true);
     const actionCodeSettings = {
       url: `${window.location.origin}/profile/view`,
     };
     await user.sendEmailVerification(actionCodeSettings);
+    enqueueSnackbar("Link verifikasi telah terkirim ke " + user.email, {
+      variant: "default",
+    });
   };
 
   const handleCloseDialogV = () => {
