@@ -137,7 +137,7 @@ function History({ match, history, location }) {
       penginapanId: data.data().penginapanId,
       id: ratingId,
     });
-    enqueueSnackbar("Berhasil memberikan rating", { variant: "success" });
+    enqueueSnackbar("Berhasil memberikan rating", { variant: "default" });
     setSubmitting(false);
   };
 
