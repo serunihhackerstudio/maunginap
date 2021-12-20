@@ -130,7 +130,7 @@ export default function UserView({ history }) {
   const handleOpenDialogV = async () => {
     // setOpenDialogV(true);
     const actionCodeSettings = {
-      url: `${window.location.origin}/profile/view`,
+      url: `https://maunginap.com/profile/view`,
     };
     await user.sendEmailVerification(actionCodeSettings);
     enqueueSnackbar("Link verifikasi telah terkirim ke " + user.email, {
