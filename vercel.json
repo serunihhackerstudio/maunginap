@@ -1,0 +1,13 @@
+{
+  "framework": "create-react-app",
+  "buildCommand": "npm run build:legacy-openssl",
+  "outputDirectory": "build",
+  "installCommand": "npm install --legacy-peer-deps",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/static/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}

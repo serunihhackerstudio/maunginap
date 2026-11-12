@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "full",
     marginBottom: theme.spacing(3),
-    borderRadius: 10,
+    borderRadius: 20,
+    background: "linear-gradient(180deg, #ffffff 0%, #ECFDF5 100%)",
   },
   mediaPromotion: {
     height: 260,
@@ -41,7 +42,9 @@ const useStyles = makeStyles((theme) => ({
     height: 140,
   },
   mediaiconMenu: {
-    width: 100,
+    width: 84,
+    height: 84,
+    objectFit: "contain",
     margin: theme.spacing(2),
   },
 
@@ -83,6 +86,8 @@ const useStyles = makeStyles((theme) => ({
   },
   menuicon: {
     margin: "auto",
+    fontWeight: 600,
+    color: theme.palette.text.primary,
   },
   semuaPenginapan: {
     margin: "auto",
