@@ -6,9 +6,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import useFavorites from "../../hooks/useFavorites";
 import { currency } from "../../utils/formatter";
 
 const FACILITIES = [
@@ -23,7 +26,13 @@ const FACILITIES = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  card: { height: "100%" },
+  card: {
+    height: "100%",
+    position: "relative",
+    animation: "fadeUp .5s ease both",
+    "&:hover $image": { transform: "scale(1.08)" },
+    "&:active": { transform: "scale(.985)" },
+  },
   actionArea: {
     height: "100%",
     display: "flex",
@@ -31,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "stretch",
     justifyContent: "flex-start",
   },
-  mediaWrap: { position: "relative" },
+  mediaWrap: { position: "relative", overflow: "hidden" },
   media: { height: 180, backgroundColor: theme.palette.grey[200] },
+  image: { height: "100%", transition: "transform .5s ease" },
   badge: {
     position: "absolute",
     top: theme.spacing(1.5),
@@ -40,13 +50,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(255,255,255,.92)",
     fontWeight: 600,
   },
-  likes: {
+  heart: {
     position: "absolute",
-    top: theme.spacing(1.5),
-    right: theme.spacing(1.5),
+    zIndex: 2,
+    top: theme.spacing(1),
+    right: theme.spacing(1),
     backgroundColor: "rgba(255,255,255,.92)",
+    "&:hover": { backgroundColor: "#fff", transform: "scale(1.12)" },
+    transition: "transform .15s ease",
   },
-  likeIcon: { color: theme.palette.error.main },
+  heartActive: { animation: "pop .35s ease" },
+  heartIcon: { color: theme.palette.error.main },
+  likes: { marginLeft: "auto", color: theme.palette.text.secondary, display: "flex", alignItems: "center", gap: 4 },
   body: { padding: theme.spacing(2), flexGrow: 1 },
   name: {
     fontWeight: 600,
@@ -69,27 +84,37 @@ const useStyles = makeStyles((theme) => ({
   facility: { height: 22, fontSize: 11 },
 }));
 
-function PropertyCard({ id, data }) {
+function PropertyCard({ id, data, index = 0 }) {
   const classes = useStyles();
+  const { isFavorite, toggle } = useFavorites();
+  const fav = isFavorite(id);
   const perYear = data.jenisPenginapan === "Kontrakan" || data.jenisPenginapan === "Ruko" || data.isTahunan;
   const facilities = FACILITIES.filter(([key]) => data.fasilitasUmum && data.fasilitasUmum[key]);
   const visible = facilities.slice(0, 4);
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}>
+      <IconButton
+        size="small"
+        className={classes.heart}
+        aria-label={fav ? "Hapus dari favorit" : "Simpan ke favorit"}
+        onClick={() => toggle(id)}
+      >
+        {fav ? (
+          <FavoriteIcon key="on" className={`${classes.heartIcon} ${classes.heartActive}`} />
+        ) : (
+          <FavoriteBorderIcon className={classes.heartIcon} />
+        )}
+      </IconButton>
       <CardActionArea component={Link} to={`/view/penginapan/${id}`} className={classes.actionArea}>
         <div className={classes.mediaWrap}>
-          <CardMedia className={classes.media} image={data.foto} title={data.namaPenginapan} />
+          <CardMedia className={classes.media} title={data.namaPenginapan}>
+            <div className={classes.image} style={{ backgroundImage: `url(${data.foto})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+          </CardMedia>
           <Chip
             size="small"
             className={classes.badge}
             label={data.isTahunan && data.jenisPenginapan !== "Ruko" ? "Kost Tahunan" : data.jenisPenginapan}
-          />
-          <Chip
-            size="small"
-            className={classes.likes}
-            icon={<FavoriteIcon className={classes.likeIcon} />}
-            label={data.likes || 0}
           />
         </div>
         <Box className={classes.body}>
@@ -102,6 +127,9 @@ function PropertyCard({ id, data }) {
           </Typography>
           <Typography variant="body2" className={classes.location}>
             <LocationOnIcon className={classes.locationIcon} /> {data.kota}
+            <span className={classes.likes}>
+              <FavoriteIcon style={{ fontSize: 14 }} /> {data.likes || 0}
+            </span>
           </Typography>
           {visible.length > 0 && (
             <div className={classes.chips}>

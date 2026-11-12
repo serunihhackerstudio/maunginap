@@ -57,9 +57,9 @@ function PropertyList({ jenis }) {
               </Card>
             </Grid>
           ))}
-        {docs.map((doc) => (
+        {docs.map((doc, i) => (
           <Grid item key={doc.id} {...cardGrid}>
-            <PropertyCard id={doc.id} data={doc.data()} />
+            <PropertyCard id={doc.id} data={doc.data()} index={i} />
           </Grid>
         ))}
       </Grid>

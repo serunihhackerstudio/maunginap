@@ -1,698 +1,338 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useFirebase } from "../../../components/FirebaseProvider";
+import React, { useMemo, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useCollection } from "react-firebase-hooks/firestore";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Container from "@material-ui/core/Container";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
-// import TextField from "@material-ui/core/TextField";
-import { currency } from "../../../utils/formatter";
-// React router
-import { Link } from "react-router-dom";
-import useStyles from "./styles";
-
-// component
-import SwipeableTextMobileStepper from "../../../components/Slider";
-
-// icon
-import Skeleton from "@material-ui/lab/Skeleton";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import Chip from "@material-ui/core/Chip";
+import InputBase from "@material-ui/core/InputBase";
+import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import Fab from "@material-ui/core/Fab";
+import Zoom from "@material-ui/core/Zoom";
+import Skeleton from "@material-ui/lab/Skeleton";
+import { makeStyles } from "@material-ui/core/styles";
+import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
-// asset
-import homekontrakan from "../../../assets/homekontrakan.png";
+import { useFirebase } from "../../../components/FirebaseProvider";
+import PropertyCard from "../../../components/Property/PropertyCard";
+import SwipeableTextMobileStepper from "../../../components/Slider";
+import useFavorites from "../../../hooks/useFavorites";
+
 import homekostan from "../../../assets/homekostan.png";
+import homekontrakan from "../../../assets/homekontrakan.png";
 import ruko from "../../../assets/ruko.png";
 import gallon from "../../../assets/gallon.png";
-// import Divider from "@material-ui/core/Divider";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { blue } from "@material-ui/core/colors";
-import StorefrontIcon from "@material-ui/icons/Storefront";
-import Tooltip from "@material-ui/core/Tooltip";
-// import ComplexButton from "./component/complexButton"
-// import datatidakditemukan from "../../../assets/datatidakditemukan.png";
+import emptyImage from "../../../assets/datatidakditemukan.png";
 
-/*
-Fitur untuk autoscroll view
-@function body
-const el = useRef(null);
+const PAGE_SIZE = 8;
 
-@useEffect
-el.current.scrollIntoView({ block: "end", behavior: "smooth" });
+const CATEGORIES = [
+  { label: "Kost", value: "Kost-kostan", img: homekostan },
+  { label: "Kontrakan", value: "Kontrakan", img: homekontrakan },
+  { label: "Ruko", value: "Ruko", img: ruko },
+  { label: "Air isi ulang", to: "/pesan-air/detail", img: gallon },
+];
 
-@HTML
-  id={"el"}
-  ref={el}
-*/
+const SORTS = {
+  terbaru: { label: "Terbaru", fn: (a, b) => (b.created ? b.created.seconds : 0) - (a.created ? a.created.seconds : 0) },
+  termurah: { label: "Harga terendah", fn: (a, b) => a.harga - b.harga },
+  termahal: { label: "Harga tertinggi", fn: (a, b) => b.harga - a.harga },
+  populer: { label: "Terpopuler", fn: (a, b) => (b.likes || 0) - (a.likes || 0) },
+};
+
+const useStyles = makeStyles((theme) => ({
+  hero: {
+    margin: theme.spacing(2, 0, 3),
+    padding: theme.spacing(5, 3),
+    borderRadius: 28,
+    color: "#fff",
+    position: "relative",
+    overflow: "hidden",
+    backgroundImage: `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 55%, #14B8A6 100%)`,
+    animation: "fadeUp .6s ease both",
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      width: 260,
+      height: 260,
+      right: -80,
+      top: -80,
+      borderRadius: "50%",
+      background: "rgba(255,255,255,.12)",
+    },
+    [theme.breakpoints.up("md")]: { padding: theme.spacing(8, 6) },
+  },
+  heroTitle: { fontWeight: 700, maxWidth: 560, position: "relative", zIndex: 1 },
+  heroSub: { opacity: 0.9, marginTop: theme.spacing(1), position: "relative", zIndex: 1 },
+  search: {
+    marginTop: theme.spacing(3),
+    padding: theme.spacing(0.5, 1, 0.5, 2),
+    display: "flex",
+    alignItems: "center",
+    maxWidth: 620,
+    borderRadius: 18,
+    position: "relative",
+    zIndex: 1,
+    transition: "box-shadow .2s ease, transform .2s ease",
+    "&:focus-within": { transform: "translateY(-2px)", boxShadow: "0 12px 32px rgba(0,0,0,.25)" },
+  },
+  searchInput: { flex: 1, marginLeft: theme.spacing(1), fontSize: 15 },
+  city: { minWidth: 120, "&:before,&:after": { display: "none" }, fontSize: 14, fontWeight: 600 },
+  categories: { marginBottom: theme.spacing(3) },
+  tile: {
+    width: "100%",
+    border: `2px solid transparent`,
+    cursor: "pointer",
+    textAlign: "center",
+    padding: theme.spacing(1.5, 1, 1),
+    borderRadius: 20,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 1px 2px rgba(15,23,42,.06), 0 4px 16px rgba(15,23,42,.06)",
+    transition: "transform .2s ease, border-color .2s ease, background-color .2s ease",
+    fontFamily: "inherit",
+    textDecoration: "none",
+    display: "block",
+    color: theme.palette.text.primary,
+    "&:hover": { transform: "translateY(-4px)" },
+    "&:active": { transform: "scale(.96)" },
+  },
+  tileActive: { borderColor: theme.palette.primary.main, backgroundColor: "#ECFDF5" },
+  tileImg: { width: 56, height: 56, objectFit: "contain", transition: "transform .3s ease" },
+  tileLabel: { display: "block", marginTop: theme.spacing(0.5), fontWeight: 600, fontSize: 13 },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+  },
+  sort: { fontSize: 14, fontWeight: 600, color: theme.palette.primary.main },
+  skeleton: { borderRadius: 20 },
+  empty: { textAlign: "center", padding: theme.spacing(6, 2), color: theme.palette.text.secondary },
+  emptyImg: { width: "100%", maxWidth: 260, marginBottom: theme.spacing(2) },
+  more: { display: "flex", justifyContent: "center", margin: theme.spacing(4, 0) },
+  fab: { position: "fixed", right: theme.spacing(2), bottom: theme.spacing(10) },
+}));
+
+const cardGrid = { xs: 12, sm: 6, md: 4, lg: 3 };
 
 function HomeProduk() {
-  const { firestore } = useFirebase();
-  const [options, setOptions] = React.useState([]);
-  const [value, setValue] = React.useState(options[0]);
-  const kotaQuery = firestore.collection("kota");
-  const [kotaSnapshot, kotaLoading] = useCollection(kotaQuery);
-
   const classes = useStyles();
-  const defaultNumPage = 8;
-  const [numPage, setNumPage] = useState(defaultNumPage);
-  const dataDoc = firestore
-    .collection(`penginapan`)
-    .doc("data")
-    .collection("produk")
-    .orderBy("created", "desc")
-    .limit(numPage);
+  const { firestore } = useFirebase();
+  const { favorites } = useFavorites();
 
-  const dataDocMax = firestore
-    .collection(`penginapan`)
-    .doc("data")
-    .collection("produk");
-  const [snapshot, loading] = useCollection(dataDoc);
-  const [produkItems, setProdukItems] = useState([]);
-  const [valueJenisPenginapan, setJenisPenginapan] = React.useState("");
-  const [success, setSuccess] = React.useState(false);
-  const [loadingBtn, setLoading] = React.useState(false);
+  const [snapshot, loading] = useCollection(
+    firestore.collection("penginapan").doc("data").collection("produk")
+  );
+  const [kotaSnapshot] = useCollection(firestore.collection("kota"));
 
-  // hilangkan fab ketika tombol search diaktifkan
-  const [searchingActivate, setSearchingActivate] = useState(false);
-
-  const timer = React.useRef();
-
-  const [form, setForm] = useState({
-    kota: "",
-    jenisPenginapan: "",
-  });
-
-  const el = useRef(null);
-  const [isNextClicked, setNextClicked] = useState(false);
+  const [query, setQuery] = useState("");
+  const [kota, setKota] = useState("");
+  const [jenis, setJenis] = useState("");
+  const [sort, setSort] = useState("terbaru");
+  const [onlyFav, setOnlyFav] = useState(false);
+  const [visible, setVisible] = useState(PAGE_SIZE);
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
-    const kotaData = [];
-    if (snapshot) {
-      setProdukItems(snapshot.docs);
-      if (isNextClicked) {
-        el.current.scrollIntoView({ block: "end", behavior: "smooth" });
-      }
-    }
+    const onScroll = () => setShowTop(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    if (kotaSnapshot) {
-      kotaSnapshot.docs.forEach((data) => {
-        kotaData.push(data.data().kota);
-      });
-      setOptions(kotaData);
-    }
-    clearTimeout(timer.current);
-  }, [snapshot, isNextClicked, kotaSnapshot]);
+  // kembali ke halaman pertama setiap filter berubah
+  useEffect(() => setVisible(PAGE_SIZE), [query, kota, jenis, sort, onlyFav]);
 
-  const [maxData, setMaxData] = useState(0);
-  dataDocMax.get().then((data) => setMaxData(data.docs.length));
+  const cities = useMemo(
+    () => (kotaSnapshot ? kotaSnapshot.docs.map((d) => d.data().kota) : []),
+    [kotaSnapshot]
+  );
 
-  const loadNextData = (e) => {
-    e.preventDefault();
-    setNextClicked(true);
-    setNumPage(numPage + defaultNumPage);
+  const items = useMemo(() => {
+    const docs = snapshot ? snapshot.docs.map((d) => ({ id: d.id, data: d.data() })) : [];
+    const q = query.trim().toLowerCase();
+    return docs
+      .filter(({ id, data }) => {
+        if (jenis && data.jenisPenginapan !== jenis) return false;
+        if (kota && data.kota !== kota) return false;
+        if (onlyFav && !favorites.includes(id)) return false;
+        if (q && !`${data.namaPenginapan} ${data.kota}`.toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => SORTS[sort].fn(a.data, b.data));
+  }, [snapshot, query, kota, jenis, sort, onlyFav, favorites]);
+
+  const reset = () => {
+    setQuery("");
+    setKota("");
+    setJenis("");
+    setOnlyFav(false);
   };
-
-  // React.useEffect(() => {
-  //   return () => {
-  //     clearTimeout(timer.current);
-  //   };
-  // }, []);
-
-  // if (loading) {
-  //   return <AppPageLoading />;
-  // }
-
-  const handleSubmit = async (e) => {
-    setSearchingActivate(true);
-    e.preventDefault();
-    if (!loadingBtn) {
-      setSuccess(false);
-      setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 1500);
-    }
-    if (produkItems !== "" || (value !== "" && valueJenisPenginapan !== "")) {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .where("kota", "==", `${value}`)
-        .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-    }
-    if (form.kota === "" && valueJenisPenginapan === "") {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .orderBy("created", "desc")
-        .limit(numPage)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-      setSearchingActivate(false);
-    }
-
-    if (form.kota !== "" && valueJenisPenginapan === "") {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .where("kota", "==", `${form.kota}`)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-      form.kota = "";
-    }
-    if (form.kota === "" && valueJenisPenginapan !== "") {
-      await firestore
-        .collection(`penginapan`)
-        .doc("data")
-        .collection("produk")
-        .where("jenisPenginapan", "==", `${valueJenisPenginapan}`)
-        .get()
-        .then((data) => setProdukItems(data.docs));
-    }
-  };
-
-  const clear = true;
-  if (!clear) {
-    console.clear(setJenisPenginapan, success);
-    console.clear(kotaLoading, setValue, setForm, handleSubmit);
-  }
+  const filtered = query || kota || jenis || onlyFav;
 
   return (
-    <>
-      {/* SLIDER */}
-      {/* <Image src="http://loremflickr.com/300/200"/> */}
-      {loading ? (
-        <Container className={classes.root}>
-          <Skeleton animation="wave" height={260} width="100%" variant="rect" />
-        </Container>
-      ) : (
-        <Container>
-          <Card className={classes.root}>
-            <CardActionArea>
-              <SwipeableTextMobileStepper classMedia={classes.mediaPromotion} />
-            </CardActionArea>
-          </Card>
-        </Container>
-      )}
-
-      <Container maxWidth="sm">
-        {/* {loading ? (
-          <Skeleton animation="wave" height={100} width="100%" variant="text" />
-        ) : (
-          <Typography variant="h3" align="center" color="primary" gutterBottom>
-            Maunginap ?
-          </Typography>
-        )}
-
-        {loading ? (
-          <>
-            <Skeleton
-              animation="wave"
-              height={20}
-              width="100%"
-              variant="text"
-            />
-            <Skeleton
-              animation="wave"
-              height={20}
-              width="100%"
-              variant="text"
-            />
-            <Skeleton
-              animation="wave"
-              height={20}
-              width="100%"
-              variant="text"
-            />
-          </>
-        ) : (
-          <Typography
-            variant="body1"
-            align="center"
-            color="textSecondary"
-            paragraph
-            className={classes.descPromotion}
+    <Container maxWidth="lg">
+      <section className={classes.hero}>
+        <Typography variant="h4" component="h1" className={classes.heroTitle}>
+          Temukan tempat tinggal yang pas untukmu
+        </Typography>
+        <Typography variant="body1" className={classes.heroSub}>
+          Kost, kontrakan, dan ruko terpercaya. Booking mudah, aman, tanpa ribet.
+        </Typography>
+        <Paper className={classes.search} elevation={0}>
+          <SearchIcon color="action" />
+          <InputBase
+            className={classes.searchInput}
+            placeholder="Cari nama atau kota…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            inputProps={{ "aria-label": "Cari penginapan" }}
+          />
+          {query && (
+            <IconButton size="small" onClick={() => setQuery("")} aria-label="Hapus pencarian">
+              <ClearIcon fontSize="small" />
+            </IconButton>
+          )}
+          <Select
+            className={classes.city}
+            value={kota}
+            displayEmpty
+            onChange={(e) => setKota(e.target.value)}
+            inputProps={{ "aria-label": "Pilih kota" }}
           >
-            Di mana aja pasti bisa nginap dengan platform ini. Mau nginap di
-            kost-kotan atau kontrakan ? mau yang bulanan atau tahunan ? nggak
-            perlu repot dan ribet, pake aja maunginap.com
-          </Typography>
-        )} */}
+            <MenuItem value="">Semua kota</MenuItem>
+            {cities.map((c) => (
+              <MenuItem key={c} value={c}>
+                {c}
+              </MenuItem>
+            ))}
+          </Select>
+        </Paper>
+      </section>
 
-        {/* ICON MENU JENIS PRODUK */}
-        {loading ? (
-          <Grid container spacing={2} className={classes.gridContainer}>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <Skeleton
-                    animation="wave"
-                    variant="rect"
-                    className={classes.media}
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Skeleton
-                    animation="wave"
-                    height={35}
-                    width="30%"
-                    className={classes.menuicon}
-                  />
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <Skeleton
-                    animation="wave"
-                    variant="rect"
-                    className={classes.media}
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Skeleton
-                    animation="wave"
-                    height={35}
-                    width="30%"
-                    className={classes.menuicon}
-                  />
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <Skeleton
-                    animation="wave"
-                    variant="rect"
-                    className={classes.media}
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Skeleton
-                    animation="wave"
-                    height={35}
-                    width="30%"
-                    className={classes.menuicon}
-                  />
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea>
-                  <Skeleton
-                    animation="wave"
-                    variant="rect"
-                    className={classes.media}
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Skeleton
-                    animation="wave"
-                    height={35}
-                    width="30%"
-                    className={classes.menuicon}
-                  />
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
-        ) : (
-          <Grid container spacing={2} className={classes.gridContainer}>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea
-                  style={{ textAlign: "center" }}
-                  component={Link}
-                  to={"/filter/kost"}
-                >
-                  <img
-                    src={homekostan}
-                    className={classes.mediaiconMenu}
-                    alt="img"
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Typography
-                    variant="subtitle1"
-                    color="textSecondary"
-                    className={classes.menuicon}
-                  >
-                    Kost
-                  </Typography>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea
-                  component={Link}
-                  style={{ textAlign: "center" }}
-                  to={"/filter/kontrakan"}
-                >
-                  <img
-                    src={homekontrakan}
-                    className={classes.mediaiconMenu}
-                    alt="img"
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Typography
-                    variant="subtitle1"
-                    color="textSecondary"
-                    className={classes.menuicon}
-                  >
-                    Kontrakan
-                  </Typography>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea
-                  component={Link}
-                  style={{ textAlign: "center" }}
-                  to={"/filter/ruko"}
-                >
-                  <img src={ruko} className={classes.mediaiconMenu} alt="img" />
-                </CardActionArea>
-                <CardActions>
-                  <Typography
-                    variant="subtitle1"
-                    color="textSecondary"
-                    className={classes.menuicon}
-                  >
-                    Ruko
-                  </Typography>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item={true} xs={6} md={3}>
-              <Card className={classes.root}>
-                <CardActionArea
-                  component={Link}
-                  style={{ textAlign: "center" }}
-                  to={"/pesan-air/detail"}
-                >
-                  <img
-                    src={gallon}
-                    className={classes.mediaiconMenu}
-                    alt="img"
-                  />
-                </CardActionArea>
-                <CardActions>
-                  <Typography
-                    variant="subtitle1"
-                    color="textSecondary"
-                    className={classes.menuicon}
-                  >
-                    Air isi ulang
-                  </Typography>
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
-        )}
-
-        {loading ? (
-          <div className={classes.all}>
-            <Skeleton
-              animation="wave"
-              height={40}
-              width="100%"
-              variant="text"
-            />
-          </div>
-        ) : (
-          <div className={classes.all}>
-            {/* <Divider /> */}
-            <Typography
-              align="center"
-              variant="h5"
-              color="primary"
-              className={classes.semuaPenginapan}
-            >
-              Semua Penginapan
-            </Typography>
-          </div>
-        )}
-      </Container>
-
-      {/* {produkItems.length === 0 && (
-        <div className={classes.textNoFound}>
-          <img src={datanotfound} width={350} alt="Data not found" />
+      {!filtered && (
+        <div style={{ marginBottom: 24, borderRadius: 20, overflow: "hidden" }}>
+          <SwipeableTextMobileStepper />
         </div>
-      )} */}
-
-      {loading && (
-        <Grid container spacing={2} className={classes.gridContainer}>
-          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
-            <Card className={classes.root}>
-              <CardActionArea component={Link}>
-                <Skeleton
-                  animation="wave"
-                  variant="rect"
-                  className={classes.media}
-                />
-
-                <CardContent>
-                  <Skeleton animation="wave" height={35} width="100%" />
-
-                  <Skeleton animation="wave" height={30} width="100%" />
-
-                  <Skeleton animation="wave" height={35} width="100%" />
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Skeleton animation="wave" height={35} width="30%" />
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
-            <Card className={classes.root}>
-              <CardActionArea component={Link}>
-                <Skeleton
-                  animation="wave"
-                  variant="rect"
-                  className={classes.media}
-                />
-
-                <CardContent>
-                  <Skeleton animation="wave" height={35} width="100%" />
-
-                  <Skeleton animation="wave" height={30} width="100%" />
-
-                  <Skeleton animation="wave" height={35} width="100%" />
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Skeleton animation="wave" height={35} width="30%" />
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
-            <Card className={classes.root}>
-              <CardActionArea component={Link}>
-                <Skeleton
-                  animation="wave"
-                  variant="rect"
-                  className={classes.media}
-                />
-
-                <CardContent>
-                  <Skeleton animation="wave" height={35} width="100%" />
-
-                  <Skeleton animation="wave" height={30} width="100%" />
-
-                  <Skeleton animation="wave" height={35} width="100%" />
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Skeleton animation="wave" height={35} width="30%" />
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item={true} xs={6} xm={6} md={3} lg={3}>
-            <Card className={classes.root}>
-              <CardActionArea component={Link}>
-                <Skeleton
-                  animation="wave"
-                  variant="rect"
-                  className={classes.media}
-                />
-
-                <CardContent>
-                  <Skeleton animation="wave" height={35} width="100%" />
-
-                  <Skeleton animation="wave" height={30} width="100%" />
-
-                  <Skeleton animation="wave" height={35} width="100%" />
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Skeleton animation="wave" height={35} width="30%" />
-              </CardActions>
-            </Card>
-          </Grid>
-        </Grid>
-      )}
-      {produkItems.length === 0 && !loading ? (
-        <div className={classes.textNoFound}>
-          {/* <img src={datatidakditemukan} width={350} alt="Data not found" /> */}
-        </div>
-      ) : (
-        <Grid container spacing={2} className={classes.gridContainer}>
-          {produkItems.map((produkDoc) => {
-            const produkData = produkDoc.data();
-            return (
-              <Grid
-                key={produkDoc.id}
-                direction="row"
-                item={true}
-                xs={6}
-                xm={6}
-                md={3}
-                lg={3}
-              >
-                <Card className={classes.root}>
-                  <CardActionArea
-                    component={Link}
-                    to={`/view/penginapan/${produkDoc.id}`}
-                  >
-                    <CardMedia
-                      className={classes.media}
-                      image={produkData.foto}
-                      title="Contemplative Reptile"
-                      alt={`gambar-${produkDoc.id}`}
-                    />
-
-                    <CardContent>
-                      <Typography variant="body1">
-                        {produkData.namaPenginapan}
-                      </Typography>
-                      <Typography variant="body1" style={{ color: blue[500] }}>
-                        {produkData.isTahunan &&
-                        produkData.jenisPenginapan !== "Ruko"
-                          ? "(Kost Tahunan)"
-                          : ""}{" "}
-                      </Typography>
-
-                      <Typography variant="body1" gutterBottom color="primary">
-                        {currency(produkData.harga)}
-                        {/* {produkData.isTahunan ? currency(produkData.harga * 12) : currency(produkData.harga)}{" "} */}
-                        {produkData.jenisPenginapan === "Kontrakan" ||
-                        produkData.jenisPenginapan === "Ruko" ||
-                        produkData.isTahunan
-                          ? " / tahun"
-                          : " / bulan"}
-                      </Typography>
-
-                      <Typography
-                        variant="body1"
-                        color="textSecondary"
-                        component="p"
-                      >
-                        {/* {produkData.lokasi} */}
-                        {/* <Chip
-                        icon={<LocationOnIcon />}
-                        label={`mataram`}
-                        size="small"
-                        color="primary"
-                      /> */}
-                        {/* <LocationOnIcon /> Mataram */}
-                      </Typography>
-                      <Grid container>
-                        <Grid item xs={1.8}>
-                          <LocationOnIcon className={classes.ico} />
-                        </Grid>
-                        <Grid item xs>
-                          {produkData.kota}
-                        </Grid>
-                      </Grid>
-                      {/* KETERANGAN FASILITAS DI-HIDE SEMENTARA */}
-                      {/* <Typography variant="body2" color="textSecondary">
-                        {produkData.fasilitasUmum.ac ? <>ac &#183; </> : ""}
-                        {produkData.fasilitasUmum.kamarMandiDalam ? (
-                          <>k. mandi dlm &#183; </>
-                        ) : (
-                          ""
-                        )}
-                        {produkData.fasilitasUmum.kasur ? (
-                          <>kasur &#183; </>
-                        ) : (
-                          ""
-                        )}
-                        {produkData.fasilitasUmum.lemari ? (
-                          <>lemari &#183; </>
-                        ) : (
-                          ""
-                        )}
-                        {produkData.fasilitasUmum.listrikSendiri ? (
-                          <>listrik sendiri &#183; </>
-                        ) : (
-                          ""
-                        )}
-                        {produkData.fasilitasUmum.meja ? <>meja &#183; </> : ""}
-                        {produkData.fasilitasUmum.tempatJemur ? (
-                          <>tempat jemur &#183; </>
-                        ) : (
-                          ""
-                        )}
-                        {produkData.fasilitasUmum.wifi ? <>wifi &#183; </> : ""}
-                      </Typography> */}
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <Chip
-                      icon={<FavoriteIcon />}
-                      label={`${produkData.likes} likes`}
-                      variant="outlined"
-                      size="small"
-                    />
-                    {produkData.jenisPenginapan === "Ruko" ? (
-                      <Tooltip title="Penyewaan Ruko">
-                        <StorefrontIcon />
-                      </Tooltip>
-                    ) : (
-                      ""
-                    )}
-                  </CardActions>
-                </Card>
-              </Grid>
-            );
-          })}
-        </Grid>
       )}
 
-      <Grid className={classes.fabGrid} id={"el"} ref={el}>
-        {produkItems.length !== maxData && !searchingActivate ? (
-          <Button
-            variant="outlined"
-            className={classes.fab}
-            color="primary"
-            onClick={loadNextData}
-          >
-            Load more data
-          </Button>
-        ) : (
-          <></>
-        )}
-        {/* {searchingActivate && <></>} */}
+      <Grid container spacing={2} className={classes.categories}>
+        {CATEGORIES.map((c) => {
+          const inner = (
+            <>
+              <img src={c.img} alt="" className={classes.tileImg} />
+              <span className={classes.tileLabel}>{c.label}</span>
+            </>
+          );
+          return (
+            <Grid item xs={3} key={c.label}>
+              {c.to ? (
+                <Link to={c.to} className={classes.tile}>
+                  {inner}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  className={`${classes.tile} ${jenis === c.value ? classes.tileActive : ""}`}
+                  onClick={() => setJenis(jenis === c.value ? "" : c.value)}
+                  aria-pressed={jenis === c.value}
+                >
+                  {inner}
+                </button>
+              )}
+            </Grid>
+          );
+        })}
       </Grid>
-    </>
+
+      <div className={classes.toolbar}>
+        <Typography variant="h6">
+          {loading ? "Memuat…" : `${items.length} penginapan`}
+        </Typography>
+        <div>
+          <Chip
+            clickable
+            icon={<FavoriteIcon />}
+            label={`Favorit${favorites.length ? ` (${favorites.length})` : ""}`}
+            color={onlyFav ? "primary" : "default"}
+            variant={onlyFav ? "default" : "outlined"}
+            onClick={() => setOnlyFav(!onlyFav)}
+            style={{ marginRight: 8 }}
+          />
+          <Select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className={classes.sort}
+            disableUnderline
+            inputProps={{ "aria-label": "Urutkan" }}
+          >
+            {Object.entries(SORTS).map(([key, s]) => (
+              <MenuItem key={key} value={key}>
+                {s.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+      </div>
+
+      <Grid container spacing={3}>
+        {loading &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <Grid item key={i} {...cardGrid}>
+              <Skeleton animation="wave" variant="rect" height={300} className={classes.skeleton} />
+            </Grid>
+          ))}
+        {items.slice(0, visible).map(({ id, data }, i) => (
+          <Grid item key={id} {...cardGrid}>
+            <PropertyCard id={id} data={data} index={i} />
+          </Grid>
+        ))}
+      </Grid>
+
+      {!loading && items.length === 0 && (
+        <div className={classes.empty}>
+          <img src={emptyImage} alt="Tidak ditemukan" className={classes.emptyImg} />
+          <Typography gutterBottom>
+            {onlyFav && !favorites.length
+              ? "Belum ada favorit. Ketuk ikon hati pada penginapan untuk menyimpannya."
+              : "Penginapan yang kamu cari belum ditemukan."}
+          </Typography>
+          {filtered && (
+            <Button color="primary" variant="outlined" onClick={reset}>
+              Reset filter
+            </Button>
+          )}
+        </div>
+      )}
+
+      {items.length > visible && (
+        <div className={classes.more}>
+          <Button variant="outlined" color="primary" onClick={() => setVisible(visible + PAGE_SIZE)}>
+            Muat lebih banyak ({items.length - visible})
+          </Button>
+        </div>
+      )}
+
+      <Zoom in={showTop}>
+        <Fab
+          size="small"
+          color="primary"
+          aria-label="Kembali ke atas"
+          className={classes.fab}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </Zoom>
+    </Container>
   );
 }
 
