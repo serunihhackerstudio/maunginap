@@ -52,12 +52,11 @@
     "validator": "^13.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "firebase deploy --only hosting",
-    "build:legacy-openssl": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build"
+    "deploy": "firebase deploy --only hosting"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -75,6 +74,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "dotenv": "^8.2.0"
   }
 }

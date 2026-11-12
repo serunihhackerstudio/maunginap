@@ -9,7 +9,7 @@ npm install --legacy-peer-deps
 npm start
 ```
 
-Node 17+ membutuhkan `NODE_OPTIONS=--openssl-legacy-provider` (react-scripts 3.4.3), sudah dipakai di `npm run build:legacy-openssl`.
+Script `start` dan `build` sudah menyertakan `--openssl-legacy-provider` (diperlukan react-scripts 3.4.3 di Node 17+).
 
 ## Struktur
 
