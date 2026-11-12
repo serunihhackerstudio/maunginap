@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCollection } from "react-firebase-hooks/firestore";
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -179,7 +178,7 @@ function HomeProduk() {
   const filtered = query || kota || jenis || onlyFav;
 
   return (
-    <Container maxWidth="lg">
+    <>
       <section className={classes.hero}>
         <Typography variant="h4" component="h1" className={classes.heroTitle}>
           Temukan tempat tinggal yang pas untukmu
@@ -332,7 +331,7 @@ function HomeProduk() {
           <KeyboardArrowUpIcon />
         </Fab>
       </Zoom>
-    </Container>
+    </>
   );
 }
 

@@ -6,12 +6,10 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useDocument, useCollection } from "react-firebase-hooks/firestore";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
 import AppPageLoading from "../../../../components/AppPageLoading";
 import { currency } from "../../../../utils/formatter";
@@ -71,7 +69,7 @@ import SwipeableTextMobileStepperDetail from "../../../../components/SliderDetai
 import { isBrowser } from "react-device-detect";
 
 function DetailProduk({ match, history, location }) {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const { firestore } = useFirebase();
   const produkDoc = firestore
@@ -224,9 +222,6 @@ function DetailProduk({ match, history, location }) {
     }
   };
 
-  const handleChange = (e) => {
-    setJenisIuran(e.target.value);
-  };
 
   // handling untuk tombol like
   const handleLikeButton = async (e) => {
@@ -278,6 +273,9 @@ function DetailProduk({ match, history, location }) {
   
 
   const value = ratingValue.toFixed(1);
+  const perYear = state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko" || state.isTahunan;
+  const totalHarga = !perYear && jenisIuran === "Tahunan" ? state.harga * 12 : state.harga;
+  const soldOut = state.jumlahKamar === 0;
   const adminNumber = "+6281990321358";
   return (
     <div>
@@ -373,7 +371,7 @@ function DetailProduk({ match, history, location }) {
                 {listImage.slice(0, 4).map((data) => {
                   const imgFile = data.data().url;
                   return (
-                    <span onClick={handleClickOpen(imgFile)}>
+                    <span key={data.id} role="button" tabIndex={0} className={classes.thumbBtn} onClick={handleClickOpen(imgFile)}>
                       <img
                         src={imgFile}
                         width={70}
@@ -648,75 +646,47 @@ function DetailProduk({ match, history, location }) {
           </div>
         ) : (
           <div>
-            <CardActions disableSpacing>
-              {!isSuka && (
-                <Tooltip title="Like" aria-label="like">
-                  <IconButton
-                    aria-label="add to favorites"
-                    onClick={handleLikeButton}
-                  >
-                    <FavoriteIcon color="disable" />
-                  </IconButton>
-                </Tooltip>
-              )}
-              {isSuka && (
-                <Tooltip title="Dislike" aria-label="dislike">
-                  <IconButton
-                    aria-label="add to favorites"
-                    onClick={handleDisLikeButton}
-                  >
-                    <FavoriteIcon color="secondary" />
-                  </IconButton>
-                </Tooltip>
-              )}
-
-              <Tooltip title="Pesan sekarang" aria-label="booking">
+            <CardActions disableSpacing className={classes.actions}>
+              <Tooltip title={isSuka ? "Batal suka" : "Suka"}>
                 <Button
-                  onClick={handleOpenDialog}
-                  className={classes.btn}
-                  variant="contained"
-                  color="primary"
-                  disabled={state.jumlahKamar === 0 ? true : false}
+                  onClick={isSuka ? handleDisLikeButton : handleLikeButton}
+                  className={clsx(classes.likeBtn, isSuka && classes.likeBtnActive)}
+                  startIcon={
+                    isSuka ? (
+                      <FavoriteIcon key="on" className={classes.likePop} />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )
+                  }
                 >
-                  {isReserved ? "Soldout" : "Pesan"}
+                  {likeNum || 0}
                 </Button>
               </Tooltip>
-              {state.jenisPenginapan === "Kontrakan" || state.jenisPenginapan === "Ruko" || state.isTahunan ? (
-                <div></div>
-              ) : (
-                <Tooltip title="Bulanan / tahunan" aria-label="jenisIuran">
-                  <ButtonBase>
-                    <FormControl className={classes.formControl} required>
-                      <InputLabel id="demo-simple-select-label">
-                        Jenis iuran
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="jenisIuran"
-                        value={jenisIuran}
-                        onChange={handleChange}
-                      >
-                        <MenuItem value={"Bulanan"}>Bulanan</MenuItem>
-                        <MenuItem value={"Tahunan"}>Tahunan</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </ButtonBase>
-                </Tooltip>
-              )}
-
-              <Tooltip title="Info lebih detail" aria-label="detail">
-                <IconButton
-                  className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded,
-                  })}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="show more"
+              {!perYear && (
+                <ToggleButtonGroup
+                  exclusive
+                  size="small"
+                  value={jenisIuran}
+                  onChange={(e, v) => v && setJenisIuran(v)}
+                  aria-label="Jenis iuran"
+                  className={classes.iuran}
                 >
-                  <ExpandMoreIcon />
-                </IconButton>
-              </Tooltip>
+                  <ToggleButton value="Bulanan">Bulanan</ToggleButton>
+                  <ToggleButton value="Tahunan">Tahunan</ToggleButton>
+                </ToggleButtonGroup>
+              )}
+              <Button
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                className={classes.moreBtn}
+                endIcon={
+                  <ExpandMoreIcon
+                    className={clsx(classes.expand, { [classes.expandOpen]: expanded })}
+                  />
+                }
+              >
+                {expanded ? "Sembunyikan" : "Fasilitas & deskripsi"}
+              </Button>
             </CardActions>
           </div>
         )}
@@ -1076,6 +1046,28 @@ function DetailProduk({ match, history, location }) {
           </CardContent>
         </Collapse>
       </Card>
+      {!loading && (
+        <div className={classes.bookingBar}>
+          <div>
+            <Typography variant="caption" color="textSecondary">
+              {perYear || jenisIuran === "Tahunan" ? "Total per tahun" : jenisIuran ? "Total per bulan" : "Mulai dari"}
+            </Typography>
+            <Typography variant="h6" color="primary" className={classes.total}>
+              {currency(totalHarga)}
+            </Typography>
+          </div>
+          <Button
+            onClick={handleOpenDialog}
+            variant="contained"
+            color="primary"
+            size="large"
+            disabled={soldOut}
+            className={classes.bookBtn}
+          >
+            {soldOut ? "Habis" : isReserved ? "Pesan lagi" : "Pesan sekarang"}
+          </Button>
+        </div>
+      )}
       <>
         <Dialog
           open={open}

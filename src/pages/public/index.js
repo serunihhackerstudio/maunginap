@@ -118,11 +118,15 @@ function Home({ history, location, match }) {
   // use detailParam to get match params penginapanId from detail page
   const { detailParam, setSearchText } = usePesanan();
 
-  const [value1, setValue1] = React.useState(0);
   // menu
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const classes = useStyles();
+  const activeTab = location.pathname.startsWith("/history")
+    ? "history"
+    : location.pathname.startsWith("/profile")
+    ? "profile"
+    : "home";
   const [open, setOpen] = React.useState(false);
   const { auth, user, firestore } = useFirebase();
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -400,7 +404,7 @@ function Home({ history, location, match }) {
     <div className={classes.root}>
       {isBrowser ? (
         <AppBar
-          position="absolute"
+          position="fixed"
           className={clsx(classes.appBar, open && classes.appBarShift)}
         >
           <Toolbar className={classes.toolbar}>
@@ -1071,6 +1075,7 @@ function Home({ history, location, match }) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
+          <div key={location.pathname} className={classes.page}>
           <Switch>
             <Route
               path="/view/penginapan/:penginapanId/proses"
@@ -1118,6 +1123,7 @@ function Home({ history, location, match }) {
             <Route path="/pesan-air/detail" exact component={DetailProdukAir} />
             <Route component={HomeProduk} />
           </Switch>
+          </div>
         </Container>
         <div className={classes.appBarSpacer} />
       </main>
@@ -1130,32 +1136,28 @@ function Home({ history, location, match }) {
             bottom: 0,
           }}
         >
-          <BottomNavigation
-            value={value1}
-            onChange={(event, newValue) => {
-              setValue1(newValue);
-            }}
-            showLabels
-            className={classes.bottomNav}
-          >
+          <BottomNavigation value={activeTab} showLabels className={classes.bottomNav}>
             <BottomNavigationAction
-              label="Home"
-              icon={<HomeOutlinedIcon />}
+              value="home"
+              label="Beranda"
+              icon={activeTab === "home" ? <HomeIcon /> : <HomeOutlinedIcon />}
               onClick={navigationTo("/")}
             />
             <BottomNavigationAction
+              value="history"
               onClick={navigationTo("/history")}
-              label="History"
+              label="Pesanan"
               icon={
                 <Badge badgeContent={jumlahPesanan} color="secondary">
-                  <ShoppingCartOutlinedIcon />
+                  {activeTab === "history" ? <ShoppingCartIcon /> : <ShoppingCartOutlinedIcon />}
                 </Badge>
               }
             />
             <BottomNavigationAction
+              value="profile"
               onClick={navigationTo("/profile/view")}
-              label="Profile"
-              icon={<AccountCircleOutlinedIcon />}
+              label="Profil"
+              icon={activeTab === "profile" ? <AccountCircleIcon /> : <AccountCircleOutlinedIcon />}
             />
           </BottomNavigation>
           {/* <Toolbar>
